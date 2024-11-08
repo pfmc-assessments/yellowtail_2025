@@ -3,8 +3,10 @@ title: "Data summary"
 format: 
   html:
     toc: true
+    output-file: "index"
 editor: visual
 ---
+
 ```{r opts, echo = FALSE, include = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(here)
@@ -13,6 +15,7 @@ library(ggplot2)
 ```
 
 ## Commercial landings
+
 ```{r, cache=TRUE}
 load(here('data/confidential/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
 
@@ -32,6 +35,7 @@ yt.n.catch |>
 ```
 
 ### Washington
+
 ```{r}
 filter(yt.n.catch, AGENCY_CODE == 'W') |>
   group_by(LANDING_YEAR) |>
@@ -40,6 +44,7 @@ filter(yt.n.catch, AGENCY_CODE == 'W') |>
 ```
 
 WDFW has alerted the STAT these do not include all tribal catches in recent years. Tribal catches are:
+
 ```{r}
 filter(yt.n.catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIAN COMMERCIAL FISHER") |>
   group_by(LANDING_YEAR) |>
@@ -47,11 +52,12 @@ filter(yt.n.catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIA
   knitr::kable(align = 'l', digits = 1)
 ```
 
-
 ### Oregon
+
 These were provided directly to the STAT
 
 ### California
+
 ```{r}
 filter(yt.n.catch, AGENCY_CODE == 'C') |>
   group_by(LANDING_YEAR) |>
@@ -66,6 +72,7 @@ Note this is for catch landed into Del Norte and Humboldt counties only.
 ### Washington
 
 Modern catches:
+
 ```{r}
 wa_modern <- readr::read_csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
   filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR < 2023)
@@ -74,13 +81,13 @@ wa_modern |> group_by(RECFIN_YEAR) |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
+Questions:
 
-Questions: 
-
-1. There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
-2. 2023 has a number of instances where `RECFIN_WEEK` is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.
+1.  There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
+2.  2023 has a number of instances where `RECFIN_WEEK` is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.
 
 Historical catches:
+
 ```{r}
 wa_historical <- readr::read_csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'))
 
@@ -89,10 +96,13 @@ wa_historical |>
   summarise(Dead_Catch_num = sum(RETAINED_NUM)) |>
   knitr::kable(align = 'l', digits = 1)
 ```
+
 ### Oregon
+
 These were provided directly to the STAT
 
 ### California
+
 ```{r}
 ca_modern <- readr::read_csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
   filter(DISTRICT_NAME == "Redwood (Humboldt County, Except Shelter Cover Area, And Del Norte County)" ) 
@@ -103,19 +113,19 @@ ca_modern |>
   
 
 ```
+
 Note that 2020 proxy catches are missing, and we will need historical recreational catches that are not on RecFIN.
 
 ## Commercial length data
 
 Initial sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
+
 ```{r, cache=TRUE}
 load(here('Data/Confidential/PacFIN.YTRK.bds.09.Oct.2024.RData'))
-bds.clean <- bds.pacfin |>
-  filter(AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | PACFIN_GROUP_PORT_CODE == 'CCA' |
-           PACFIN_GROUP_PORT_CODE == 'ERA') |>
-  PacFIN.Utilities::cleanPacFIN(verbose = FALSE)
-
+bds.clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
 bds.clean |>
+  filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
+           PACFIN_GROUP_PORT_CODE == 'ERA') |>
   filter(year < 2024) |>
   group_by(state, year) |>
   summarise(n_length = sum(!is.na(length))) |>
@@ -124,6 +134,7 @@ bds.clean |>
   knitr::kable(align = 'l', digits = 1)
 
 ```
+
 Note that California lengths are not yet available for 2023.
 
 While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.
