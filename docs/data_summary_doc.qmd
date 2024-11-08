@@ -1,5 +1,6 @@
 ---
 title: "Data summary"
+date: today
 format: 
   html:
     toc: true
@@ -14,18 +15,20 @@ library(dplyr)
 library(ggplot2)
 ```
 
+This documents data streams for use in the Northern Yellowtail Rockfish stock assessment. These data are NOT final and have NOT been fully QA/QC'ed! They are here for communication with the STAT and other collaborators. It is not official communication of the National Oceanic and Atmospheric Administration or the United States Department of Commerce.
+
 ## Commercial landings
 
 ```{r, cache=TRUE}
 load(here('data/confidential/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
 
-yt.n.catch <- catch.pacfin |>
+yt_n_catch <- catch.pacfin |>
   filter(
     AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT',
     LANDING_YEAR < 2024
   )
 
-yt.n.catch |>
+yt_n_catch |>
   group_by(AGENCY_CODE, LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
   ggplot() +
@@ -37,7 +40,7 @@ yt.n.catch |>
 ### Washington
 
 ```{r}
-filter(yt.n.catch, AGENCY_CODE == 'W') |>
+filter(yt_n_catch, AGENCY_CODE == 'W') |>
   group_by(LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
   knitr::kable(align = 'l', digits = 1)
@@ -46,7 +49,7 @@ filter(yt.n.catch, AGENCY_CODE == 'W') |>
 WDFW has alerted the STAT these do not include all tribal catches in recent years. Tribal catches are:
 
 ```{r}
-filter(yt.n.catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIAN COMMERCIAL FISHER") |>
+filter(yt_n_catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIAN COMMERCIAL FISHER") |>
   group_by(LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
   knitr::kable(align = 'l', digits = 1)
@@ -54,18 +57,38 @@ filter(yt.n.catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIA
 
 ### Oregon
 
-These were provided directly to the STAT
+The following values were provided directly to the STAT:
+```{r}
+or_comm_catch <- readr::read_csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv"))
+or_comm_catch |> 
+  group_by(YEAR) |>
+  summarise(catch_mt = sum(TOTAL)) |>
+  knitr::kable(align = 'l', digits = 1)
+```
+
 
 ### California
 
 ```{r}
-filter(yt.n.catch, AGENCY_CODE == 'C') |>
+filter(yt_n_catch, AGENCY_CODE == 'C') |>
   group_by(LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS))  |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
 Note this is for catch landed into Del Norte and Humboldt counties only.
+
+## At-Sea landings
+
+```{r}
+ashop_catch <- readxl::read_excel(here("Data/Confidential/Oken_YLT_Catch data_1976-2023_102824.xlsx"), 
+                                  sheet = 'Catch Summary Table')
+ashop_catch |>
+  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000) |>
+  select(YEAR, catch_mt) |>
+  knitr::kable(align = 'l', digits = 1)
+```
+
 
 ## Recreational landings
 
@@ -99,7 +122,14 @@ wa_historical |>
 
 ### Oregon
 
-These were provided directly to the STAT
+The following values were provided directly to the STAT:
+```{r}
+or_rec_catch <- readr::read_csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv"))
+or_rec_catch |>
+  select(Year, Total_MT) |>
+  knitr::kable(align = 'l', digits = 1)
+```
+
 
 ### California
 
@@ -116,14 +146,16 @@ ca_modern |>
 
 Note that 2020 proxy catches are missing, and we will need historical recreational catches that are not on RecFIN.
 
-## Commercial length data
+## Length Data
+
+### Commercial
 
 Initial sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r, cache=TRUE}
 load(here('Data/Confidential/PacFIN.YTRK.bds.09.Oct.2024.RData'))
-bds.clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
-bds.clean |>
+bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
+bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
            PACFIN_GROUP_PORT_CODE == 'ERA') |>
   filter(year < 2024) |>
@@ -138,3 +170,39 @@ bds.clean |>
 Note that California lengths are not yet available for 2023.
 
 While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.
+
+### Recreational
+
+STAT is working on it!
+
+### At-Sea
+```{r}
+ashop_lengths_old <- readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824.xlsx"), 
+                                        sheet = "YLT_Length data 1976-1989")
+ashop_lengths_new <- suppressWarnings(
+  readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824.xlsx"), 
+                     sheet = "YLT_Length data1990-2023") # warning is about converting text to numeric
+)
+
+bind_rows(ashop_lengths_old, ashop_lengths_new) |>
+  group_by(YEAR) |>
+  summarise(n_length = sum(FREQUENCY)) |>
+  knitr::kable(align = 'l')
+```
+
+
+## Survey data
+
+STAT is working on it!
+
+```{r, eval=FALSE}
+yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', survey = 'NWFSC.Combo')
+
+yt_survey_bio |>
+  filter(!is.na(Otosag_id),
+         is.na(Age_years)) |>
+  group_by(Year) |>
+  summarise(n())
+
+```
+
