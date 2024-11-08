@@ -22,14 +22,11 @@ vignettes/*.pdf
 # knitr and R markdown default cache directories
 *_cache/
 /cache/
-*_files/
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
 # R Environment Variables
 .Renviron
-# pkgdown site
-docs/
 # translation temp files
 po/*~
 # RStudio Connect folder
