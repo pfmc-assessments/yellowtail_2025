@@ -46,14 +46,7 @@ filter(yt_n_catch, AGENCY_CODE == 'W') |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
-WDFW has alerted the STAT these do not include all tribal catches in recent years. Tribal catches are:
-
-```{r}
-filter(yt_n_catch, AGENCY_CODE == 'W', PARTICIPATION_GROUP_NAME == "TREATY INDIAN COMMERCIAL FISHER") |>
-  group_by(LANDING_YEAR) |>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
-  knitr::kable(align = 'l', digits = 1)
-```
+WDFW has alerted the STAT these do not include all tribal catches in recent years. 
 
 ### Oregon
 
