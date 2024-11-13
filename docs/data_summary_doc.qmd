@@ -52,7 +52,8 @@ WDFW has alerted the STAT these do not include all tribal catches in recent year
 
 The following values were provided directly to the STAT:
 ```{r}
-or_comm_catch <- readr::read_csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv"))
+or_comm_catch <- read.csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv")) |>
+  tibble::as_tibble()
 or_comm_catch |> 
   group_by(YEAR) |>
   summarise(catch_mt = sum(TOTAL)) |>
@@ -74,8 +75,9 @@ Note this is for catch landed into Del Norte and Humboldt counties only.
 ## At-Sea landings
 
 ```{r}
-ashop_catch <- readxl::read_excel(here("Data/Confidential/Oken_YLT_Catch data_1976-2023_102824.xlsx"), 
-                                  sheet = 'Catch Summary Table')
+ashop_catch <- readxl::read_excel(
+  here("Data/Confidential/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
+  sheet = 'Catch Summary Table')
 ashop_catch |>
   mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000) |>
   select(YEAR, catch_mt) |>
@@ -90,8 +92,9 @@ ashop_catch |>
 Modern catches:
 
 ```{r}
-wa_modern <- readr::read_csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
-  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR < 2023)
+wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
+  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR < 2023) |>
+  tibble::as_tibble()
 wa_modern |> group_by(RECFIN_YEAR) |>
   summarise(Dead_Catch_mt = sum(SUM_TOTAL_MORTALITY_MT))  |>
   knitr::kable(align = 'l', digits = 1)
@@ -105,7 +108,8 @@ Questions:
 Historical catches:
 
 ```{r}
-wa_historical <- readr::read_csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'))
+wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
+  tibble::as_tibble()
 
 wa_historical |>
   group_by(RECFIN_YEAR) |>
@@ -117,7 +121,8 @@ wa_historical |>
 
 The following values were provided directly to the STAT:
 ```{r}
-or_rec_catch <- readr::read_csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv"))
+or_rec_catch <- read.csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv")) |>
+  tibble::as_tibble()
 or_rec_catch |>
   select(Year, Total_MT) |>
   knitr::kable(align = 'l', digits = 1)
@@ -127,17 +132,18 @@ or_rec_catch |>
 ### California
 
 ```{r}
-ca_modern <- readr::read_csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
-  filter(DISTRICT_NAME == "Redwood (Humboldt County, Except Shelter Cover Area, And Del Norte County)" ) 
+ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
+  filter(grepl("Redwood", DISTRICT_NAME)) |>
+  tibble::as_tibble()
 ca_modern |>
   group_by(RECFIN_YEAR) |>
   summarise(Dead_Catch_mt = sum(SUM_TOTAL_MORTALITY_MT))  |>
   knitr::kable(align = 'l', digits = 1)
-  
-
 ```
 
 Note that 2020 proxy catches are missing, and we will need historical recreational catches that are not on RecFIN.
+
+MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.
 
 ## Length Data
 
@@ -166,14 +172,41 @@ While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington age
 
 ### Recreational
 
-STAT is working on it!
+VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.
+
+```{r}
+rec_bio <- read.csv(here("Data/Confidential/RecFIN_Lengths.csv")) |>
+  tibble::as_tibble() |>
+  filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
+
+or_mrfss <- read.csv(here("Data/Confidential/MRFSS_BIO_2025 CYCLE_433.csv")) |>
+  tibble::as_tibble()
+
+or_mrfss_smry <- or_mrfss |> 
+  filter(Length_Flag == 'measured') |>
+  group_by(Year) |> 
+  summarise(n_length = n()) |>
+  mutate(STATE_NAME = 'OREGON')
+
+rec_bio |>
+  filter(!is.na(RECFIN_LENGTH_MM), STATE_NAME != 'OREGON' | !(RECFIN_YEAR %in% or_mrfss_smry$Year)) |>
+  group_by(RECFIN_YEAR, STATE_NAME) |>
+  summarize(n_length = n()) |>
+  rename(Year = RECFIN_YEAR) |>
+  bind_rows(or_mrfss_smry) |> 
+  tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length, values_fill = 0) |> 
+  arrange(Year) |>
+  knitr::kable(align = 'l')
+```
+From Oregon MRFSS data (provided directly to the STAT, covering `r min(or_mrfss_smry$Year)` to `r max(or_mrfss_smry$Year)`) this only includes counts of samples with `Length_Flag == "measured"`. I was not sure of recommendations for how to filter the data.
 
 ### At-Sea
 ```{r}
-ashop_lengths_old <- readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824.xlsx"), 
-                                        sheet = "YLT_Length data 1976-1989")
+ashop_lengths_old <- readxl::read_excel(
+  here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
+  sheet = "YLT_Length data 1976-1989")
 ashop_lengths_new <- suppressWarnings(
-  readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824.xlsx"), 
+  readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
                      sheet = "YLT_Length data1990-2023") # warning is about converting text to numeric
 )
 
