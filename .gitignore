@@ -33,8 +33,6 @@ po/*~
 rsconnect/
 # Confidential and/or large data files
 Data/Confidential
-Data/Raw_not_confidential
-
 # SS3 files
 admodel.cov
 admodel.dep
