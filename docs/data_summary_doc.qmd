@@ -13,13 +13,14 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(here)
 library(dplyr)
 library(ggplot2)
+theme_set(theme_gray())
 ```
 
 This documents data streams for use in the Northern Yellowtail Rockfish stock assessment. These data are NOT final and have NOT been fully QA/QC'ed! They are here for communication with the STAT and other collaborators. It is not official communication of the National Oceanic and Atmospheric Administration or the United States Department of Commerce.
 
 ## Commercial landings
 
-```{r, cache=TRUE}
+```{r pacfin-catch, cache=TRUE}
 load(here('data/confidential/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
 
 yt_n_catch <- catch.pacfin |>
@@ -35,11 +36,19 @@ yt_n_catch |>
   geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = AGENCY_CODE)) +
   ggtitle('Commercial landings through 2023')
 
+yt_n_catch |>
+  group_by(PACFIN_GROUP_GEAR_CODE, LANDING_YEAR) |>
+  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  ggplot() +
+  geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(PACFIN_GROUP_GEAR_CODE, levels = c('TWL', 'MSC', 'NET', 'POT', 'TLS', 'TWS', 'HKL')))) +
+  ggtitle('Commercial landings through 2023') +
+  labs(fill = 'PacFIN gear group') +
+  viridis::scale_fill_viridis(discrete = TRUE)
 ```
 
 ### Washington
 
-```{r}
+```{r wa-comm-catch}
 filter(yt_n_catch, AGENCY_CODE == 'W') |>
   group_by(LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
@@ -51,7 +60,7 @@ WDFW has alerted the STAT these do not include all tribal catches in recent year
 ### Oregon
 
 The following values were provided directly to the STAT:
-```{r}
+```{r or-comm-catch}
 or_comm_catch <- read.csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv")) |>
   tibble::as_tibble()
 or_comm_catch |> 
@@ -63,7 +72,7 @@ or_comm_catch |>
 
 ### California
 
-```{r}
+```{r ca-comm-catch}
 filter(yt_n_catch, AGENCY_CODE == 'C') |>
   group_by(LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS))  |>
@@ -74,7 +83,7 @@ Note this is for catch landed into Del Norte and Humboldt counties only.
 
 ## At-Sea landings
 
-```{r}
+```{r ashop-catch}
 ashop_catch <- readxl::read_excel(
   here("Data/Confidential/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
   sheet = 'Catch Summary Table')
@@ -91,7 +100,7 @@ ashop_catch |>
 
 Modern catches:
 
-```{r}
+```{r wa-rec-catch-modern}
 wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
   filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR < 2023) |>
   tibble::as_tibble()
@@ -107,7 +116,7 @@ Questions:
 
 Historical catches:
 
-```{r}
+```{r wa-rec-catch-historical}
 wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
   tibble::as_tibble()
 
@@ -120,7 +129,7 @@ wa_historical |>
 ### Oregon
 
 The following values were provided directly to the STAT:
-```{r}
+```{r or-rec-catch}
 or_rec_catch <- read.csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv")) |>
   tibble::as_tibble()
 or_rec_catch |>
@@ -131,7 +140,7 @@ or_rec_catch |>
 
 ### California
 
-```{r}
+```{r ca-rec-catch}
 ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
   filter(grepl("Redwood", DISTRICT_NAME)) |>
   tibble::as_tibble()
@@ -151,12 +160,12 @@ MRFSS data (1981-2004) does not have an obvious way to determine whether catches
 
 Initial sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
-```{r, cache=TRUE}
+```{r comm-bio, cache=TRUE}
 load(here('Data/Confidential/PacFIN.YTRK.bds.09.Oct.2024.RData'))
 bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
-           PACFIN_GROUP_PORT_CODE == 'ERA') |>
+           PACFIN_GROUP_PORT_CODE == 'ERA', geargroup != 'XXX') |> 
   filter(year < 2024) |>
   group_by(state, year) |>
   summarise(n_length = sum(!is.na(length))) |>
@@ -174,7 +183,7 @@ While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington age
 
 VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.
 
-```{r}
+```{r rec-bio}
 rec_bio <- read.csv(here("Data/Confidential/RecFIN_Lengths.csv")) |>
   tibble::as_tibble() |>
   filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
@@ -188,8 +197,15 @@ or_mrfss_smry <- or_mrfss |>
   summarise(n_length = n()) |>
   mutate(STATE_NAME = 'OREGON')
 
+filter(rec_bio, STATE_NAME == "OREGON", RECFIN_YEAR %in% or_mrfss_smry$Year) |>
+  group_by(RECFIN_YEAR) |>
+  filter(!is.na(RECFIN_LENGTH_MM)) |>
+  arrange(RECFIN_YEAR) |>
+  summarise(n_length = n())
+
 rec_bio |>
-  filter(!is.na(RECFIN_LENGTH_MM), STATE_NAME != 'OREGON' | !(RECFIN_YEAR %in% or_mrfss_smry$Year)) |>
+  filter(!is.na(RECFIN_LENGTH_MM), STATE_NAME != 'OREGON' | !(RECFIN_YEAR %in% or_mrfss_smry$Year),
+         RECFIN_LENGTH_TYPE == TRUE) |>
   group_by(RECFIN_YEAR, STATE_NAME) |>
   summarize(n_length = n()) |>
   rename(Year = RECFIN_YEAR) |>
@@ -201,7 +217,7 @@ rec_bio |>
 From Oregon MRFSS data (provided directly to the STAT, covering `r min(or_mrfss_smry$Year)` to `r max(or_mrfss_smry$Year)`) this only includes counts of samples with `Length_Flag == "measured"`. I was not sure of recommendations for how to filter the data.
 
 ### At-Sea
-```{r}
+```{r ashop-bio}
 ashop_lengths_old <- readxl::read_excel(
   here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
   sheet = "YLT_Length data 1976-1989")
@@ -216,19 +232,65 @@ bind_rows(ashop_lengths_old, ashop_lengths_new) |>
   knitr::kable(align = 'l')
 ```
 
+Figure of length frequencies in at-sea hake fishery for prioritizing which years to age.
+
+```{r ashop-bio-fig}
+ashop_lengths_new |> 
+  tidyr::uncount(FREQUENCY) |>
+  left_join(ashop_catch, by = 'YEAR') |> 
+  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_NUMBER / 1000) |>
+  ggplot() +
+  ggridges::geom_density_ridges(aes(x = LENGTH, y = YEAR, group = YEAR, 
+                                    fill = catch_mt), alpha = 0.5) +
+  xlim(30, 65) +
+  viridis::scale_fill_viridis()
+```
 
 ## Survey data
 
 STAT is working on it!
 
-```{r, eval=FALSE}
-yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', survey = 'NWFSC.Combo')
+```{r survey, eval=FALSE}
+yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', survey = 'NWFSC.Combo') 
+
+yt_n_survey_bio <- filter(yt_survey_bio, Latitude_dd > 40 + 1/6)
 
 yt_survey_bio |>
   filter(!is.na(Otosag_id),
          is.na(Age_years)) |>
   group_by(Year) |>
   summarise(n())
+
+# clear break point in selectivity between age 5 and 6.
+
+filter(yt_n_survey_bio, Age_years <= 20, Age_years >= 6) |>
+ggplot() +
+  geom_point(aes(x = Year, y = Length_cm, col = Age_years), alpha = 0.2) +
+  stat_smooth(aes(x = Year, y = Length_cm, group = Age_years, col = Age_years), se = FALSE)
+
+filter(yt_survey_bio, Age_years <= 20, Age_years >= 6) |>
+ggplot() +
+  geom_point(aes(x = Latitude_dd, y = Length_cm, col = Age_years), alpha = 0.2) +
+  stat_smooth(aes(x = Latitude_dd, y = Length_cm, group = Age_years, col = Age_years), se = FALSE)
+# possible decrease in length at age of older fish in last 4 years of data. TBD with 8 more years!
+
+yt_survey_bio |>
+  ggplot(aes(x = Latitude_dd, y = Age_years)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE)
+# Latitudinal age structure: below 43 degrees, avg age ~10, above 45 degrees, avg age ~15
+
+ggplot(yt_n_survey_bio) +
+  geom_point(aes(x = Age_years, y = Length_cm, col = Sex), alpha = 0.1)
+# Large fish female, old fish male prevails, but not as notable as with canary.
+
+yt_n_survey_bio |>
+  group_by(Age_years) |>
+  summarise(pct_f = sum(Sex == 'F')/n(),
+            se = sqrt(pct_f * (1-pct_f) / n())) |>
+  ggplot() +
+  geom_point(aes(x = Age_years, y = pct_f)) +
+  geom_errorbar(aes(x = Age_years, ymin = pct_f - se, ymax = pct_f + se))
 
 ```
 

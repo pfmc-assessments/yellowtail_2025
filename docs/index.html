@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-11-12">
+<meta name="dcterms.date" content="2024-11-21">
 
 <title>Data summary</title>
 <style>
@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 12, 2024</p>
+      <p class="date">November 21, 2024</p>
     </div>
   </div>
   
@@ -97,9 +97,12 @@ ul.task-list li input[type="checkbox"] {
 <p>This documents data streams for use in the Northern Yellowtail Rockfish stock assessment. These data are NOT final and have NOT been fully QA/QC’ed! They are here for communication with the STAT and other collaborators. It is not official communication of the National Oceanic and Atmospheric Administration or the United States Department of Commerce.</p>
 <section id="commercial-landings" class="level2">
 <h2 class="anchored" data-anchor-id="commercial-landings">Commercial landings</h2>
-<div class="cell" data-hash="data_summary_doc_cache/html/unnamed-chunk-1_7888a2233b6008dd8fef9cb15c2b1bfa">
+<div class="cell" data-hash="data_summary_doc_cache/html/pacfin-catch_ca3f3ee0d79881112ab2242d3e081cb6">
 <div class="cell-output-display">
-<p><img src="data_summary_doc_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<p><img src="data_summary_doc_files/figure-html/pacfin-catch-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="data_summary_doc_files/figure-html/pacfin-catch-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <section id="washington" class="level3">
@@ -1773,7 +1776,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="commercial" class="level3">
 <h3 class="anchored" data-anchor-id="commercial">Commercial</h3>
 <p>Initial sample sizes after running <code>PacFIN.Utilities::cleanPacFIN()</code>:</p>
-<div class="cell" data-hash="data_summary_doc_cache/html/unnamed-chunk-10_84b9840906e955c8cf27d825642066d7">
+<div class="cell" data-hash="data_summary_doc_cache/html/comm-bio_05c818a379bb9e6dac520c1bbb363903">
 <div class="cell-output cell-output-stdout">
 <pre><code>  AGE_METHOD1 AGE_METHOD2 AGE_METHOD3 Age method for best age      n
 1           B           B           B                       B   2346
@@ -2075,7 +2078,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2014</td>
-<td style="text-align: left;">219</td>
+<td style="text-align: left;">174</td>
 <td style="text-align: left;">1898</td>
 <td style="text-align: left;">1309</td>
 </tr>
@@ -2144,13 +2147,22 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="recreational">Recreational</h3>
 <p>VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.</p>
 <div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  RECFIN_YEAR n_length
+        &lt;int&gt;    &lt;int&gt;
+1        1999      326
+2        2000      192
+3        2001      704
+4        2002     1457
+5        2003     1740</code></pre>
+</div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Year</th>
 <th style="text-align: left;">WASHINGTON</th>
-<th style="text-align: left;">CALIFORNIA</th>
 <th style="text-align: left;">OREGON</th>
 </tr>
 </thead>
@@ -2158,188 +2170,57 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td style="text-align: left;">1993</td>
 <td style="text-align: left;">3</td>
-<td style="text-align: left;">0</td>
 <td style="text-align: left;">384</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1994</td>
-<td style="text-align: left;">34</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">592</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1995</td>
-<td style="text-align: left;">26</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">557</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1996</td>
-<td style="text-align: left;">27</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">284</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1997</td>
-<td style="text-align: left;">147</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">262</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1998</td>
-<td style="text-align: left;">53</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">476</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1999</td>
-<td style="text-align: left;">23</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">362</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2000</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
 <td style="text-align: left;">243</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2001</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;">0</td>
 <td style="text-align: left;">83</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2002</td>
-<td style="text-align: left;">194</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">182</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2003</td>
-<td style="text-align: left;">800</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2004</td>
-<td style="text-align: left;">675</td>
-<td style="text-align: left;">26</td>
-<td style="text-align: left;">1395</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2005</td>
-<td style="text-align: left;">869</td>
-<td style="text-align: left;">29</td>
-<td style="text-align: left;">1916</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2006</td>
-<td style="text-align: left;">362</td>
-<td style="text-align: left;">29</td>
-<td style="text-align: left;">1585</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2007</td>
-<td style="text-align: left;">313</td>
-<td style="text-align: left;">77</td>
-<td style="text-align: left;">1721</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2008</td>
-<td style="text-align: left;">189</td>
-<td style="text-align: left;">46</td>
-<td style="text-align: left;">2043</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2009</td>
-<td style="text-align: left;">464</td>
-<td style="text-align: left;">70</td>
-<td style="text-align: left;">2678</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2010</td>
-<td style="text-align: left;">218</td>
-<td style="text-align: left;">52</td>
-<td style="text-align: left;">2462</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2011</td>
-<td style="text-align: left;">391</td>
-<td style="text-align: left;">50</td>
-<td style="text-align: left;">2318</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2012</td>
-<td style="text-align: left;">228</td>
-<td style="text-align: left;">125</td>
-<td style="text-align: left;">2754</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2013</td>
-<td style="text-align: left;">356</td>
-<td style="text-align: left;">119</td>
-<td style="text-align: left;">2182</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2014</td>
-<td style="text-align: left;">680</td>
-<td style="text-align: left;">76</td>
-<td style="text-align: left;">1938</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2015</td>
-<td style="text-align: left;">683</td>
-<td style="text-align: left;">67</td>
-<td style="text-align: left;">2019</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2016</td>
-<td style="text-align: left;">928</td>
-<td style="text-align: left;">25</td>
-<td style="text-align: left;">870</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2017</td>
-<td style="text-align: left;">1326</td>
-<td style="text-align: left;">80</td>
-<td style="text-align: left;">1347</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2018</td>
-<td style="text-align: left;">908</td>
-<td style="text-align: left;">130</td>
-<td style="text-align: left;">2607</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2019</td>
-<td style="text-align: left;">1800</td>
-<td style="text-align: left;">103</td>
-<td style="text-align: left;">2865</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2020</td>
-<td style="text-align: left;">891</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">129</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2021</td>
-<td style="text-align: left;">831</td>
-<td style="text-align: left;">76</td>
-<td style="text-align: left;">1827</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2022</td>
-<td style="text-align: left;">669</td>
-<td style="text-align: left;">57</td>
-<td style="text-align: left;">1895</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2023</td>
-<td style="text-align: left;">1534</td>
-<td style="text-align: left;">144</td>
-<td style="text-align: left;">1834</td>
 </tr>
 </tbody>
 </table>
@@ -2517,6 +2398,12 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<p>Figure of length frequencies in at-sea hake fishery for prioritizing which years to age.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="data_summary_doc_files/figure-html/ashop-bio-fig-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
