@@ -13,75 +13,99 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(here)
 library(dplyr)
 library(ggplot2)
-theme_set(theme_gray())
+theme_set(theme_classic())
 ```
 
 This documents data streams for use in the Northern Yellowtail Rockfish stock assessment. These data are NOT final and have NOT been fully QA/QC'ed! They are here for communication with the STAT and other collaborators. It is not official communication of the National Oceanic and Atmospheric Administration or the United States Department of Commerce.
 
-## Commercial landings
+## Landings
 
+### Commercial landings
+Some summary figures:
 ```{r pacfin-catch, cache=TRUE}
 load(here('data/confidential/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
+# I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
-yt_n_catch <- catch.pacfin |>
+yt_n_catch_pacfin <- catch.pacfin |>
   filter(
     AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT',
     LANDING_YEAR < 2024
   )
 
-yt_n_catch |>
-  group_by(AGENCY_CODE, LANDING_YEAR) |>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
-  ggplot() +
-  geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = AGENCY_CODE)) +
-  ggtitle('Commercial landings through 2023')
+# OR landings time series
+or_comm_catch <- read.csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv")) |>
+  tibble::as_tibble() |>
+  group_by(YEAR) |>
+  summarise(catch_mt = sum(TOTAL))
 
-yt_n_catch |>
-  group_by(PACFIN_GROUP_GEAR_CODE, LANDING_YEAR) |>
+comm_draft_landings <- yt_n_catch_pacfin |> 
+  filter(AGENCY_CODE != 'O') |> 
+  group_by(PACFIN_YEAR, AGENCY_CODE)|>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  rename(YEAR = PACFIN_YEAR) |>
+  bind_rows(
+    mutate(or_comm_catch, AGENCY_CODE = 'O')
+  )|> 
+  group_by(YEAR, AGENCY_CODE) |>
+  summarise(landings_mt = sum(catch_mt)) |>
+  filter(YEAR >= 1981) 
+
+# 2017 assessment landings
+comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
+  as_tibble() |>
+  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
+  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
+         W = as.numeric(stringr::str_remove(WA, ','))) |> 
+  select(Year, W, C = CA.North..MT., O) |>
+  filter(Year >= 1981) |>
+  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'landings_mt') |>
+  mutate(model = '2017')
+
+# landings by state
+comm_draft_landings |>
   ggplot() +
-  geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(PACFIN_GROUP_GEAR_CODE, levels = c('TWL', 'MSC', 'NET', 'POT', 'TLS', 'TWS', 'HKL')))) +
-  ggtitle('Commercial landings through 2023') +
-  labs(fill = 'PacFIN gear group') +
+  geom_col(aes(x = YEAR, y = landings_mt, fill = AGENCY_CODE)) +
+  ggtitle('Commercial landings through 2023 by state') +
   viridis::scale_fill_viridis(discrete = TRUE)
+
+# landings by gear type
+yt_n_catch_pacfin |>
+  group_by(PACFIN_GROUP_GEAR_CODE, LANDING_YEAR) |>
+  summarise(landings_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  ggplot() +
+  geom_col(aes(x = LANDING_YEAR, y = landings_mt, fill = factor(PACFIN_GROUP_GEAR_CODE, levels = c('TWL', 'MSC', 'NET', 'POT', 'TLS', 'TWS', 'HKL')))) +
+  ggtitle('Commercial landings through 2023 by gear') +
+  labs(fill = 'PacFIN gear group', x = 'YEAR') +
+  viridis::scale_fill_viridis(discrete = TRUE)
+
+# compare 2017 landings to current landings, by state
+comm_draft_landings |>
+  rename(Year = YEAR) |>
+  mutate(model = 'current') |>
+  bind_rows(comm2017) |> 
+  ggplot() +
+  geom_line(aes(x = Year, y = landings_mt, col = AGENCY_CODE, linetype = model), linewidth = 1) +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  labs(title = 'Comparing commercial landings in 2017 model vs current', x = 'YEAR')
 ```
+Table of commercial landings by state, 1981 onward.
 
-### Washington
-
-```{r wa-comm-catch}
-filter(yt_n_catch, AGENCY_CODE == 'W') |>
-  group_by(LANDING_YEAR) |>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+```{r comm-catch-tbl}
+comm_draft_landings |>
+  mutate(State = case_when(AGENCY_CODE == 'C' ~ 'CA',
+                           AGENCY_CODE == 'O' ~ 'OR',
+                           AGENCY_CODE == 'W' ~ 'WA')) |>
+  select(-AGENCY_CODE) |>
+  tidyr::pivot_wider(names_from = State, values_from = landings_mt) |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
 WDFW has alerted the STAT these do not include all tribal catches in recent years. 
 
-### Oregon
-
-The following values were provided directly to the STAT:
-```{r or-comm-catch}
-or_comm_catch <- read.csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv")) |>
-  tibble::as_tibble()
-or_comm_catch |> 
-  group_by(YEAR) |>
-  summarise(catch_mt = sum(TOTAL)) |>
-  knitr::kable(align = 'l', digits = 1)
-```
-
-
-### California
-
-```{r ca-comm-catch}
-filter(yt_n_catch, AGENCY_CODE == 'C') |>
-  group_by(LANDING_YEAR) |>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS))  |>
-  knitr::kable(align = 'l', digits = 1)
-```
 
 Note this is for catch landed into Del Norte and Humboldt counties only.
 
-## At-Sea landings
+### At-Sea landings
 
 ```{r ashop-catch}
 ashop_catch <- readxl::read_excel(
@@ -94,71 +118,58 @@ ashop_catch |>
 ```
 
 
-## Recreational landings
+### Recreational landings
 
-### Washington
-
-Modern catches:
-
-```{r wa-rec-catch-modern}
+```{r rec-catch-modern}
 wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
-  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR < 2023) |>
-  tibble::as_tibble()
-wa_modern |> group_by(RECFIN_YEAR) |>
-  summarise(Dead_Catch_mt = sum(SUM_TOTAL_MORTALITY_MT))  |>
+  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023) |>
+  tibble::as_tibble() |>
+  group_by(RECFIN_YEAR) |>
+  summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
+  mutate(State = 'WA (mt)')
+
+wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
+  tibble::as_tibble() |>
+  group_by(RECFIN_YEAR) |>
+  summarise(Dead_Catch = sum(RETAINED_NUM)) |>
+  mutate(State = 'WA (numbers)')
+
+or_rec_catch <- read.csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv")) |>
+  tibble::as_tibble() |>
+  mutate(State = 'OR (mt)')
+
+ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
+  filter(grepl("Redwood", DISTRICT_NAME)) |>
+  tibble::as_tibble() |>
+  group_by(RECFIN_YEAR) |>
+  summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
+  mutate(State = 'CA (mt)')
+
+or_rec_catch |>
+  select(RECFIN_YEAR = Year, Dead_Catch = Total_MT, State) |>
+  bind_rows(wa_modern, wa_historical, ca_modern) |>
+  tidyr::pivot_wider(names_from = 'State', values_from = 'Dead_Catch', values_fill = 0) |>
+  rename(YEAR = 'RECFIN_YEAR') |>
+  arrange(YEAR) |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
-Questions:
+Outstanding issues for WA:
 
 1.  There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
 2.  2023 has a number of instances where `RECFIN_WEEK` is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.
+3.  Will likely convert the numbers in the historical sport landings to weight in mt. On the to do list.
 
-Historical catches:
-
-```{r wa-rec-catch-historical}
-wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
-  tibble::as_tibble()
-
-wa_historical |>
-  group_by(RECFIN_YEAR) |>
-  summarise(Dead_Catch_num = sum(RETAINED_NUM)) |>
-  knitr::kable(align = 'l', digits = 1)
-```
-
-### Oregon
-
-The following values were provided directly to the STAT:
-```{r or-rec-catch}
-or_rec_catch <- read.csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv")) |>
-  tibble::as_tibble()
-or_rec_catch |>
-  select(Year, Total_MT) |>
-  knitr::kable(align = 'l', digits = 1)
-```
+Outstanding issues for CA: 
+1. 2020 and 2021 proxy catches and un-ID'ed rockfish apportionment are missing.
+2. MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.
 
 
-### California
-
-```{r ca-rec-catch}
-ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
-  filter(grepl("Redwood", DISTRICT_NAME)) |>
-  tibble::as_tibble()
-ca_modern |>
-  group_by(RECFIN_YEAR) |>
-  summarise(Dead_Catch_mt = sum(SUM_TOTAL_MORTALITY_MT))  |>
-  knitr::kable(align = 'l', digits = 1)
-```
-
-Note that 2020 proxy catches are missing, and we will need historical recreational catches that are not on RecFIN.
-
-MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.
-
-## Length Data
+## Comp Data
 
 ### Commercial
 
-Initial sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
+Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
 load(here('Data/Confidential/PacFIN.YTRK.bds.09.Oct.2024.RData'))
@@ -170,9 +181,26 @@ bds_clean |>
   group_by(state, year) |>
   summarise(n_length = sum(!is.na(length))) |>
   tidyr::pivot_wider(names_from = state, values_from = n_length, values_fill = 0) |>
+  rowwise() |>
+  mutate(total = OR + WA + CA) |>
   arrange(year) |>
   knitr::kable(align = 'l', digits = 1)
 
+```
+
+Age sample sizes:
+```{r comm-ages}
+bds_clean |>
+  filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
+           PACFIN_GROUP_PORT_CODE == 'ERA') |> 
+  filter(year < 2024) |>
+  group_by(state, year) |>
+  summarise(n_length = sum(!is.na(Age))) |>
+  tidyr::pivot_wider(names_from = state, values_from = n_length, values_fill = 0) |>
+  rowwise() |>
+  mutate(total = OR + WA + CA) |>
+  arrange(year) |>
+  knitr::kable(align = 'l', digits = 1)
 ```
 
 Note that California lengths are not yet available for 2023.
@@ -183,7 +211,7 @@ While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington age
 
 VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.
 
-```{r rec-bio}
+```{r recfin-bio}
 rec_bio <- read.csv(here("Data/Confidential/RecFIN_Lengths.csv")) |>
   tibble::as_tibble() |>
   filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
@@ -195,26 +223,20 @@ or_mrfss_smry <- or_mrfss |>
   filter(Length_Flag == 'measured') |>
   group_by(Year) |> 
   summarise(n_length = n()) |>
-  mutate(STATE_NAME = 'OREGON')
+  mutate(STATE_NAME = 'OREGON (MRFSS)')
 
-filter(rec_bio, STATE_NAME == "OREGON", RECFIN_YEAR %in% or_mrfss_smry$Year) |>
-  group_by(RECFIN_YEAR) |>
-  filter(!is.na(RECFIN_LENGTH_MM)) |>
-  arrange(RECFIN_YEAR) |>
-  summarise(n_length = n())
-
+# Note: 1993 uses total length. 1994 onward uses fork length.
 rec_bio |>
-  filter(!is.na(RECFIN_LENGTH_MM), STATE_NAME != 'OREGON' | !(RECFIN_YEAR %in% or_mrfss_smry$Year),
-         RECFIN_LENGTH_TYPE == TRUE) |>
+  filter(!is.na(RECFIN_LENGTH_MM)) |> 
   group_by(RECFIN_YEAR, STATE_NAME) |>
   summarize(n_length = n()) |>
   rename(Year = RECFIN_YEAR) |>
   bind_rows(or_mrfss_smry) |> 
   tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length, values_fill = 0) |> 
-  arrange(Year) |>
+  arrange(Year) |> 
   knitr::kable(align = 'l')
 ```
-From Oregon MRFSS data (provided directly to the STAT, covering `r min(or_mrfss_smry$Year)` to `r max(or_mrfss_smry$Year)`) this only includes counts of samples with `Length_Flag == "measured"`. I was not sure of recommendations for how to filter the data.
+
 
 ### At-Sea
 ```{r ashop-bio}
