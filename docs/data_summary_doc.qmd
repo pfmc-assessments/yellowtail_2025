@@ -78,6 +78,17 @@ yt_n_catch_pacfin |>
   labs(fill = 'PacFIN gear group', x = 'YEAR') +
   viridis::scale_fill_viridis(discrete = TRUE)
 
+# total catch by gear over time with midwater trawl separated
+yt_n_catch |>
+  mutate(geargroup2 = ifelse(PACFIN_GEAR_CODE == "MDT", yes = "MDT", no = PACFIN_GROUP_GEAR_CODE)) |> # split midwater trawl as MDT
+  group_by(geargroup2, LANDING_YEAR) |>
+  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  ggplot() +
+  geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(geargroup2, levels = c("TWL", "MDT", "MSC", "NET", "POT", "TLS", "TWS", "HKL")))) +
+  ggtitle("Commercial landings through 2023") +
+  labs(fill = "PacFIN gear group\n(MDT = midwater trawl)", x = 'YEAR') #+
+  # viridis::scale_fill_viridis(discrete = TRUE) # colors were hard to see in viridis
+
 # compare 2017 landings to current landings, by state
 comm_draft_landings |>
   rename(Year = YEAR) |>
@@ -206,6 +217,36 @@ bds_clean |>
 Note that California lengths are not yet available for 2023.
 
 While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.
+
+#### Comparing midwater vs bottom trawl lengths
+```{r pacfin-midwater-vs-bottom-fig}
+# create separate geargroup2 column which separates midwater from bottom trawl
+# see note at 
+# https://github.com/pfmc-assessments/PacFIN.Utilities/issues/69#issuecomment-2499162809
+bds_clean <- bds_clean |>
+  dplyr::mutate(geargroup2 = ifelse(GRID == "MDT", yes = "MDT", no = geargroup))
+
+# length distributions for bottom trawl vs midwater trawl in recent years
+bds_clean |>
+  filter(geargroup == "TWL", SAMPLE_YEAR >= 2011) |> # exclude all non-trawl gear and pre-catch-shares years
+  ggplot(aes(
+    x = lengthcm,
+    y = forcats::fct_rev(as.factor(SAMPLE_YEAR)),
+    color = as.factor(geargroup2)
+    #fill = as.factor(geargroup2)
+  )) +
+  ggridges::geom_density_ridges(alpha = 0.2) +
+  labs(
+    x = "Length (cm)",
+    y = "Year",
+  ) + 
+  scale_color_discrete(
+    name = "Gear",
+    breaks = c("MDT", "TWL"),
+    labels = c("Midwater trawl", "Bottom trawl")
+  )
+```
+
 
 ### Recreational
 
