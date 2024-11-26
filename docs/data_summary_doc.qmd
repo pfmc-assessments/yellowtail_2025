@@ -161,6 +161,7 @@ Outstanding issues for WA:
 3.  Will likely convert the numbers in the historical sport landings to weight in mt. On the to do list.
 
 Outstanding issues for CA: 
+
 1. 2020 and 2021 proxy catches and un-ID'ed rockfish apportionment are missing.
 2. MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.
 
@@ -212,10 +213,12 @@ While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington age
 VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.
 
 ```{r recfin-bio}
+# recent length data
 rec_bio <- read.csv(here("Data/Confidential/RecFIN_Lengths.csv")) |>
   tibble::as_tibble() |>
   filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
 
+# or mrfss data
 or_mrfss <- read.csv(here("Data/Confidential/MRFSS_BIO_2025 CYCLE_433.csv")) |>
   tibble::as_tibble()
 
@@ -223,19 +226,58 @@ or_mrfss_smry <- or_mrfss |>
   filter(Length_Flag == 'measured') |>
   group_by(Year) |> 
   summarise(n_length = n()) |>
-  mutate(STATE_NAME = 'OREGON (MRFSS)')
+  mutate(STATE_NAME = 'OREGON (MRFSS)') |>
+  tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length)
+
+# ca/wa mrfss data
+ca_wa_mrfss <- read.csv(here("Data/Confidential/MRFSS_lengths_CA_WA.csv")) |>
+  as_tibble() |> 
+  filter(ST_NAME == 'Washington' | ST_NAME == 'California' & (CNTY == 87 | CNTY == 97)) |> # Need to check that these county codes are right
+  filter(T_LEN %% 1 == 0) # I believe this will filter to measured lengths
+
+ca_wa_mrfss_smry <- ca_wa_mrfss |>
+  group_by(YEAR, ST_NAME) |>
+  summarise(n_length = n()) |>
+  ungroup() |>
+  mutate(state = case_when(ST_NAME == 'California' ~ 'CA (MRFSS)',
+                           ST_NAME == 'Washington' ~ 'WA (MRFSS)')) |>
+  tidyr::pivot_wider(names_from = state, values_from = n_length, id_cols = YEAR, values_fill = 0) |>
+  rename(Year = YEAR)
+
+rec_bio |>
+  ggplot() +
+  geom_histogram(aes(x = RECFIN_LENGTH_MM), 
+               linewidth = 1, alpha = 0.2) +
+  scale_fill_manual(values = c('red', 'blue')) +
+  ggtitle('RecFIN length compositions by state and disposition') +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  facet_grid(STATE_NAME ~ IS_RETAINED)
 
 # Note: 1993 uses total length. 1994 onward uses fork length.
 rec_bio |>
   filter(!is.na(RECFIN_LENGTH_MM)) |> 
-  group_by(RECFIN_YEAR, STATE_NAME) |>
+  group_by(RECFIN_YEAR, STATE_NAME, IS_RETAINED) |>
   summarize(n_length = n()) |>
-  rename(Year = RECFIN_YEAR) |>
-  bind_rows(or_mrfss_smry) |> 
-  tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length, values_fill = 0) |> 
+  rename(Year = RECFIN_YEAR) |> 
+  tidyr::pivot_wider(names_from = c(STATE_NAME, IS_RETAINED), values_from = n_length, 
+                     values_fill = 0) |> 
+  full_join(or_mrfss_smry) |>
+  full_join(ca_wa_mrfss_smry) |>
   arrange(Year) |> 
+  mutate(across(everything(), ~tidyr::replace_na(.x, 0))) |>
   knitr::kable(align = 'l')
 ```
+
+Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, 
+`filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`\% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
+
+Options:
+
+1. Exclude released fish from comps
+2. Lump released and retained fish together
+3. Model a retention curve
+
+The fish in Washington also look slightly larger than those in Oregon and California. This difference is more pronounced than it is in survey data, indicating a possible selectivity effect.
 
 
 ### At-Sea
@@ -293,7 +335,7 @@ ggplot() +
 filter(yt_survey_bio, Age_years <= 20, Age_years >= 6) |>
 ggplot() +
   geom_point(aes(x = Latitude_dd, y = Length_cm, col = Age_years), alpha = 0.2) +
-  stat_smooth(aes(x = Latitude_dd, y = Length_cm, group = Age_years, col = Age_years), se = FALSE)
+  stat_smooth(aes(x = Latitude_dd, y = Length_cm, group = Age_years, col = Age_years), se = FALSE, method = 'lm')
 # possible decrease in length at age of older fish in last 4 years of data. TBD with 8 more years!
 
 yt_survey_bio |>
@@ -313,6 +355,13 @@ yt_n_survey_bio |>
   ggplot() +
   geom_point(aes(x = Age_years, y = pct_f)) +
   geom_errorbar(aes(x = Age_years, ymin = pct_f - se, ymax = pct_f + se))
+
+laa_by_lat_gam <- lm(Length_cm ~ I(Latitude_dd-mean(Latitude_dd))*factor(Age_years), 
+                                   data = yt_n_survey_bio, 
+                      subset = Age_years < 20 & Age_years >= 6)
+
+laa_by_age <- lm(Length_cm ~ factor(Age_years), data = yt_n_survey_bio, 
+                      subset = Age_years < 20 & Age_years >= 6)
 
 ```
 
