@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-11-25">
+<meta name="dcterms.date" content="2024-11-26">
 
 <title>Data summary</title>
 <style>
@@ -77,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 25, 2024</p>
+      <p class="date">November 26, 2024</p>
     </div>
   </div>
   
@@ -93,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="commercial-landings" class="level3">
 <h3 class="anchored" data-anchor-id="commercial-landings">Commercial landings</h3>
 <p>Some summary figures:</p>
-<div class="cell" data-hash="data_summary_doc_cache/html/pacfin-catch_ede4851f6f96b8e65b8c3631ac5f5154">
+<div class="cell" data-hash="data_summary_doc_cache/html/pacfin-catch_92da3c1d37b1725b7f439927651a652d">
 <div class="cell-output-display">
 <p><img src="data_summary_doc_files/figure-html/pacfin-catch-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -102,6 +102,9 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="cell-output-display">
 <p><img src="data_summary_doc_files/figure-html/pacfin-catch-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="data_summary_doc_files/figure-html/pacfin-catch-4.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Table of commercial landings by state, 1981 onward.</p>
@@ -966,7 +969,11 @@ ul.task-list li input[type="checkbox"] {
 <li>2023 has a number of instances where <code>RECFIN_WEEK</code> is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.</li>
 <li>Will likely convert the numbers in the historical sport landings to weight in mt. On the to do list.</li>
 </ol>
-<p>Outstanding issues for CA: 1. 2020 and 2021 proxy catches and un-ID’ed rockfish apportionment are missing. 2. MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.</p>
+<p>Outstanding issues for CA:</p>
+<ol type="1">
+<li>2020 and 2021 proxy catches and un-ID’ed rockfish apportionment are missing.</li>
+<li>MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.</li>
+</ol>
 </section>
 </section>
 <section id="comp-data" class="level2">
@@ -974,7 +981,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="commercial" class="level3">
 <h3 class="anchored" data-anchor-id="commercial">Commercial</h3>
 <p>Initial length sample sizes after running <code>PacFIN.Utilities::cleanPacFIN()</code>:</p>
-<div class="cell" data-hash="data_summary_doc_cache/html/comm-bio_71df7739aff7a86fecd3d6d7ca7e861c">
+<div class="cell" data-hash="data_summary_doc_cache/html/comm-bio_c8ef04f356483a95518c11449e923b79">
 <div class="cell-output cell-output-stdout">
 <pre><code>  AGE_METHOD1 AGE_METHOD2 AGE_METHOD3 Age method for best age      n
 1           B           B           B                       B   2346
@@ -1807,210 +1814,454 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>Note that California lengths are not yet available for 2023.</p>
 <p>While running <code>PacFIN.Utilities::cleanPacFIN()</code>, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.</p>
+<section id="comparing-midwater-vs-bottom-trawl-lengths" class="level4">
+<h4 class="anchored" data-anchor-id="comparing-midwater-vs-bottom-trawl-lengths">Comparing midwater vs bottom trawl lengths</h4>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="data_summary_doc_files/figure-html/pacfin-midwater-vs-bottom-fig-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
 </section>
 <section id="recreational" class="level3">
 <h3 class="anchored" data-anchor-id="recreational">Recreational</h3>
 <p>VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.</p>
 <div class="cell">
 <div class="cell-output-display">
+<p><img src="data_summary_doc_files/figure-html/recfin-bio-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
 <table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Year</th>
-<th style="text-align: left;">WASHINGTON</th>
-<th style="text-align: left;">OREGON</th>
-<th style="text-align: left;">CALIFORNIA</th>
-<th style="text-align: left;">OREGON (MRFSS)</th>
+<th style="text-align: left;">WA_RETAINED</th>
+<th style="text-align: left;">OR_RETAINED</th>
+<th style="text-align: left;">OR_RELEASED</th>
+<th style="text-align: left;">CA_RETAINED</th>
+<th style="text-align: left;">CA_RELEASED</th>
+<th style="text-align: left;">OR (MRFSS)</th>
+<th style="text-align: left;">CA (MRFSS)</th>
+<th style="text-align: left;">WA (MRFSS)</th>
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: left;">1980</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">224</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1981</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">131</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1982</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">61</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1983</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1984</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1985</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">76</td>
+<td style="text-align: left;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1986</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1987</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1988</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1989</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">1</td>
+</tr>
 <tr class="odd">
 <td style="text-align: left;">1993</td>
 <td style="text-align: left;">3</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">384</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1994</td>
 <td style="text-align: left;">34</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">592</td>
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1995</td>
 <td style="text-align: left;">26</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">557</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1996</td>
 <td style="text-align: left;">27</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">284</td>
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1997</td>
 <td style="text-align: left;">147</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">262</td>
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">8</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1998</td>
 <td style="text-align: left;">53</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">476</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">130</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1999</td>
 <td style="text-align: left;">23</td>
 <td style="text-align: left;">326</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">362</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">9</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2000</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">192</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">243</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2001</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">704</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">83</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">5</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2002</td>
 <td style="text-align: left;">194</td>
 <td style="text-align: left;">1457</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">182</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2003</td>
 <td style="text-align: left;">800</td>
-<td style="text-align: left;">1740</td>
+<td style="text-align: left;">1519</td>
+<td style="text-align: left;">221</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">31</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2004</td>
 <td style="text-align: left;">675</td>
-<td style="text-align: left;">1395</td>
+<td style="text-align: left;">1233</td>
+<td style="text-align: left;">162</td>
 <td style="text-align: left;">26</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2005</td>
 <td style="text-align: left;">869</td>
-<td style="text-align: left;">1916</td>
+<td style="text-align: left;">1754</td>
+<td style="text-align: left;">162</td>
 <td style="text-align: left;">29</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2006</td>
 <td style="text-align: left;">362</td>
-<td style="text-align: left;">1585</td>
+<td style="text-align: left;">1498</td>
+<td style="text-align: left;">87</td>
 <td style="text-align: left;">29</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2007</td>
 <td style="text-align: left;">313</td>
-<td style="text-align: left;">1721</td>
+<td style="text-align: left;">1583</td>
+<td style="text-align: left;">138</td>
 <td style="text-align: left;">77</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2008</td>
 <td style="text-align: left;">189</td>
-<td style="text-align: left;">2043</td>
-<td style="text-align: left;">46</td>
+<td style="text-align: left;">1896</td>
+<td style="text-align: left;">147</td>
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2009</td>
 <td style="text-align: left;">464</td>
-<td style="text-align: left;">2678</td>
-<td style="text-align: left;">70</td>
+<td style="text-align: left;">2525</td>
+<td style="text-align: left;">153</td>
+<td style="text-align: left;">69</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2010</td>
 <td style="text-align: left;">218</td>
-<td style="text-align: left;">2462</td>
-<td style="text-align: left;">52</td>
+<td style="text-align: left;">2318</td>
+<td style="text-align: left;">144</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2011</td>
 <td style="text-align: left;">391</td>
-<td style="text-align: left;">2318</td>
-<td style="text-align: left;">50</td>
+<td style="text-align: left;">2264</td>
+<td style="text-align: left;">54</td>
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2012</td>
 <td style="text-align: left;">228</td>
-<td style="text-align: left;">2754</td>
+<td style="text-align: left;">2673</td>
+<td style="text-align: left;">81</td>
 <td style="text-align: left;">125</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2013</td>
 <td style="text-align: left;">356</td>
-<td style="text-align: left;">2182</td>
-<td style="text-align: left;">119</td>
+<td style="text-align: left;">2121</td>
+<td style="text-align: left;">61</td>
+<td style="text-align: left;">114</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2014</td>
 <td style="text-align: left;">680</td>
-<td style="text-align: left;">1938</td>
-<td style="text-align: left;">76</td>
+<td style="text-align: left;">1822</td>
+<td style="text-align: left;">116</td>
+<td style="text-align: left;">57</td>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2015</td>
 <td style="text-align: left;">683</td>
-<td style="text-align: left;">2019</td>
-<td style="text-align: left;">67</td>
+<td style="text-align: left;">1869</td>
+<td style="text-align: left;">150</td>
+<td style="text-align: left;">53</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2016</td>
 <td style="text-align: left;">928</td>
-<td style="text-align: left;">870</td>
-<td style="text-align: left;">25</td>
+<td style="text-align: left;">800</td>
+<td style="text-align: left;">70</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2017</td>
 <td style="text-align: left;">1326</td>
-<td style="text-align: left;">1347</td>
-<td style="text-align: left;">80</td>
+<td style="text-align: left;">1227</td>
+<td style="text-align: left;">120</td>
+<td style="text-align: left;">74</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2018</td>
 <td style="text-align: left;">908</td>
-<td style="text-align: left;">2607</td>
-<td style="text-align: left;">130</td>
+<td style="text-align: left;">2556</td>
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">116</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2019</td>
 <td style="text-align: left;">1800</td>
-<td style="text-align: left;">2865</td>
+<td style="text-align: left;">2787</td>
+<td style="text-align: left;">78</td>
 <td style="text-align: left;">103</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
@@ -2019,32 +2270,57 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">129</td>
 <td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2021</td>
 <td style="text-align: left;">831</td>
 <td style="text-align: left;">1827</td>
-<td style="text-align: left;">76</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">74</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2022</td>
 <td style="text-align: left;">669</td>
-<td style="text-align: left;">1895</td>
-<td style="text-align: left;">57</td>
+<td style="text-align: left;">1825</td>
+<td style="text-align: left;">70</td>
+<td style="text-align: left;">52</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2023</td>
 <td style="text-align: left;">1534</td>
-<td style="text-align: left;">1834</td>
+<td style="text-align: left;">1675</td>
+<td style="text-align: left;">159</td>
 <td style="text-align: left;">144</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
 <td style="text-align: left;">0</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<p>Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, 94.8% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.</p>
+<p>Options:</p>
+<ol type="1">
+<li>Exclude released fish from comps</li>
+<li>Lump released and retained fish together</li>
+<li>Model a retention curve</li>
+</ol>
+<p>The fish in Washington also look slightly larger than those in Oregon and California. This difference is more pronounced than it is in survey data, indicating a possible selectivity effect.</p>
+<p>I am unsure how to filter MRFSS data to measured lengths for WA and CA. The counts in the table above filters lengths to whole numbers (mm).</p>
 </section>
 <section id="at-sea" class="level3">
 <h3 class="anchored" data-anchor-id="at-sea">At-Sea</h3>

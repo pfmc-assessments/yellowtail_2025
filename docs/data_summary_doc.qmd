@@ -23,7 +23,7 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 ### Commercial landings
 Some summary figures:
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
+load(here('data/confidential/commercial/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
@@ -33,7 +33,7 @@ yt_n_catch_pacfin <- catch.pacfin |>
   )
 
 # OR landings time series
-or_comm_catch <- read.csv(here("Data/Confidential/Oregon Commercial landings_433_2023.csv")) |>
+or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial landings_433_2023.csv")) |>
   tibble::as_tibble() |>
   group_by(YEAR) |>
   summarise(catch_mt = sum(TOTAL))
@@ -79,7 +79,7 @@ yt_n_catch_pacfin |>
   viridis::scale_fill_viridis(discrete = TRUE)
 
 # total catch by gear over time with midwater trawl separated
-yt_n_catch |>
+yt_n_catch_pacfin |>
   mutate(geargroup2 = ifelse(PACFIN_GEAR_CODE == "MDT", yes = "MDT", no = PACFIN_GROUP_GEAR_CODE)) |> # split midwater trawl as MDT
   group_by(geargroup2, LANDING_YEAR) |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
@@ -120,7 +120,7 @@ Note this is for catch landed into Del Norte and Humboldt counties only.
 
 ```{r ashop-catch}
 ashop_catch <- readxl::read_excel(
-  here("Data/Confidential/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
+  here("Data/Confidential/ASHOP/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
   sheet = 'Catch Summary Table')
 ashop_catch |>
   mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000) |>
@@ -145,7 +145,7 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
   summarise(Dead_Catch = sum(RETAINED_NUM)) |>
   mutate(State = 'WA (numbers)')
 
-or_rec_catch <- read.csv(here("Data/Confidential/Oregon Recreational landings_433_2023.csv")) |>
+or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landings_433_2023.csv")) |>
   tibble::as_tibble() |>
   mutate(State = 'OR (mt)')
 
@@ -184,7 +184,7 @@ Outstanding issues for CA:
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/PacFIN.YTRK.bds.09.Oct.2024.RData'))
+load(here('Data/Confidential/Commercial/PacFIN.YTRK.bds.09.Oct.2024.RData'))
 bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
@@ -255,26 +255,26 @@ VERY tentative length sample sizes. I anticipate this is biased high as I have d
 
 ```{r recfin-bio}
 # recent length data
-rec_bio <- read.csv(here("Data/Confidential/RecFIN_Lengths.csv")) |>
+rec_bio <- read.csv(here("Data/Confidential/rec/RecFIN_Lengths.csv")) |>
   tibble::as_tibble() |>
   filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
 
 # or mrfss data
-or_mrfss <- read.csv(here("Data/Confidential/MRFSS_BIO_2025 CYCLE_433.csv")) |>
+or_mrfss <- read.csv(here("Data/Confidential/rec/MRFSS_BIO_2025 CYCLE_433.csv")) |>
   tibble::as_tibble()
 
 or_mrfss_smry <- or_mrfss |> 
   filter(Length_Flag == 'measured') |>
   group_by(Year) |> 
   summarise(n_length = n()) |>
-  mutate(STATE_NAME = 'OREGON (MRFSS)') |>
+  mutate(STATE_NAME = 'OR (MRFSS)') |>
   tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length)
 
 # ca/wa mrfss data
-ca_wa_mrfss <- read.csv(here("Data/Confidential/MRFSS_lengths_CA_WA.csv")) |>
+ca_wa_mrfss <- read.csv(here("Data/Confidential/rec/MRFSS_lengths_CA_WA.csv")) |>
   as_tibble() |> 
-  filter(ST_NAME == 'Washington' | ST_NAME == 'California' & (CNTY == 87 | CNTY == 97)) |> # Need to check that these county codes are right
-  filter(T_LEN %% 1 == 0) # I believe this will filter to measured lengths
+  filter(ST_NAME == 'Washington' | (ST_NAME == 'California' & (CNTY == 15 | CNTY == 23))) |> # 15 = Del Norte, 23 = Humboldt, FIPS codes
+  filter(T_LEN %% 1 == 0 | LNGTH %% 1 == 0) # I believe this will filter to measured lengths
 
 ca_wa_mrfss_smry <- ca_wa_mrfss |>
   group_by(YEAR, ST_NAME) |>
@@ -287,20 +287,22 @@ ca_wa_mrfss_smry <- ca_wa_mrfss |>
 
 rec_bio |>
   ggplot() +
-  geom_histogram(aes(x = RECFIN_LENGTH_MM), 
+  geom_density(aes(x = RECFIN_LENGTH_MM, col = STATE_NAME, fill = IS_RETAINED), 
                linewidth = 1, alpha = 0.2) +
   scale_fill_manual(values = c('red', 'blue')) +
-  ggtitle('RecFIN length compositions by state and disposition') +
-  viridis::scale_color_viridis(discrete = TRUE) +
-  facet_grid(STATE_NAME ~ IS_RETAINED)
+  labs('RecFIN length compositions by state and disposition') +
+  viridis::scale_color_viridis(discrete = TRUE) 
 
 # Note: 1993 uses total length. 1994 onward uses fork length.
 rec_bio |>
   filter(!is.na(RECFIN_LENGTH_MM)) |> 
-  group_by(RECFIN_YEAR, STATE_NAME, IS_RETAINED) |>
+  mutate(state = case_when(STATE_NAME == 'WASHINGTON' ~'WA',
+                           STATE_NAME == 'OREGON' ~ 'OR',
+                           STATE_NAME == 'CALIFORNIA' ~ 'CA')) |>
+  group_by(RECFIN_YEAR, state, IS_RETAINED) |>
   summarize(n_length = n()) |>
   rename(Year = RECFIN_YEAR) |> 
-  tidyr::pivot_wider(names_from = c(STATE_NAME, IS_RETAINED), values_from = n_length, 
+  tidyr::pivot_wider(names_from = c(state, IS_RETAINED), values_from = n_length, 
                      values_fill = 0) |> 
   full_join(or_mrfss_smry) |>
   full_join(ca_wa_mrfss_smry) |>
@@ -310,7 +312,7 @@ rec_bio |>
 ```
 
 Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, 
-`filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`\% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
+`r filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`\% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
 
 Options:
 
@@ -320,14 +322,15 @@ Options:
 
 The fish in Washington also look slightly larger than those in Oregon and California. This difference is more pronounced than it is in survey data, indicating a possible selectivity effect.
 
+I am unsure how to filter MRFSS data to measured lengths for WA and CA. The counts in the table above filters lengths to whole numbers (mm).
 
 ### At-Sea
 ```{r ashop-bio}
 ashop_lengths_old <- readxl::read_excel(
-  here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
+  here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
   sheet = "YLT_Length data 1976-1989")
 ashop_lengths_new <- suppressWarnings(
-  readxl::read_excel(here("Data/Confidential/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
+  readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
                      sheet = "YLT_Length data1990-2023") # warning is about converting text to numeric
 )
 
