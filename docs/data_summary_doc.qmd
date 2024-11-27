@@ -85,7 +85,7 @@ yt_n_catch_pacfin |>
   summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
   ggplot() +
   geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(geargroup2, levels = c("TWL", "MDT", "MSC", "NET", "POT", "TLS", "TWS", "HKL")))) +
-  ggtitle("Commercial landings through 2023") +
+  ggtitle("Commercial landings through 2023 by gear with midwater trawl separated") +
   labs(fill = "PacFIN gear group\n(MDT = midwater trawl)", x = 'YEAR') #+
   # viridis::scale_fill_viridis(discrete = TRUE) # colors were hard to see in viridis
 
