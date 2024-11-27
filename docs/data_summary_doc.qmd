@@ -219,8 +219,11 @@ Note that California lengths are not yet available for 2023.
 
 While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.
 
-#### Comparing midwater vs bottom trawl lengths
-```{r pacfin-midwater-vs-bottom-fig}
+#### Comparing midwater vs bottom trawl lengths and ages
+
+The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages.
+
+```{r pacfin-midwater-vs-bottom-figs}
 # create separate geargroup2 column which separates midwater from bottom trawl
 # see note at 
 # https://github.com/pfmc-assessments/PacFIN.Utilities/issues/69#issuecomment-2499162809
@@ -246,6 +249,30 @@ bds_clean |>
     breaks = c("MDT", "TWL"),
     labels = c("Midwater trawl", "Bottom trawl")
   )
+
+# age comps from midwater vs bottom trawl
+bds_clean |>
+  filter(geargroup == "TWL", !is.na(Age),SAMPLE_YEAR >= 2011) |>
+  ggplot(aes(
+    x = Age,
+    y = forcats::fct_rev(as.factor(SAMPLE_YEAR)),
+    color = as.factor(geargroup2)
+  )) +
+  ggridges::geom_density_ridges(
+    alpha = 0.2,
+    stat = "binline",
+    binwidth = 1
+  ) +
+  labs(
+    x = "Age",
+    y = "Year",
+  ) +
+  scale_color_discrete(
+    name = "Gear",
+    breaks = c("MDT", "TWL"),
+    labels = c("Midwater trawl", "Bottom trawl")
+  )
+
 ```
 
 
