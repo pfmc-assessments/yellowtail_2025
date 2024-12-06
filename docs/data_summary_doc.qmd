@@ -201,7 +201,7 @@ albin <- read.csv(here('Data/Raw_not_confidential/yellowtail_rows_from_Albin_et_
 crfs_ratios <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |> 
   filter(RECFIN_SUBREGION_NAME == 'Northern California',
          RECFIN_YEAR <= 2010 ) |> # 6 years is symmetric with # of years in Albin
-  # catch-weighted average for Albin, so similar for CRFS
+  # did catch-weighted average for Albin, so similar for CRFS
   group_by(DISTRICT_NAME) |>
   summarise(Catch_mt = sum(SUM_TOTAL_MORTALITY_MT)) |>
   ungroup() |>
@@ -226,7 +226,7 @@ ca_mrfss_catch <- read.csv(here('Data/Confidential/Rec/RecFIN_CA_MRFSS.csv')) |>
 ca_mrfss_interpolate <- tibble(
   Dead_Catch = seq(from = mean(ca_mrfss_catch$Dead_Catch[ca_mrfss_catch$RECFIN_YEAR %in% 1987:1989]),
                    to = mean(ca_mrfss_catch$Dead_Catch[ca_mrfss_catch$RECFIN_YEAR %in% 1993:1995]),
-                   length.out = 3),
+                   length.out = 5)[-c(1,5)], # index 1 and 5 = before break, after break averages
   RECFIN_YEAR = 1990:1992,
   State = 'CA (mt)')
 
@@ -477,24 +477,19 @@ yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', surv
 
 yt_n_survey_bio <- filter(yt_survey_bio, Latitude_dd > 40 + 1/6)
 
-yt_survey_bio |>
-  filter(!is.na(Otosag_id),
-         is.na(Age_years)) |>
-  group_by(Year) |>
-  summarise(n())
-
+# looking at how growth varies over space and time
 # clear break point in selectivity between age 5 and 6.
-
 filter(yt_n_survey_bio, Age_years <= 20, Age_years >= 6) |>
 ggplot() +
   geom_point(aes(x = Year, y = Length_cm, col = Age_years), alpha = 0.2) +
   stat_smooth(aes(x = Year, y = Length_cm, group = Age_years, col = Age_years), se = FALSE)
+# possible decrease in length at age of older fish in last 4 years of data. TBD with 8 more years!
 
 filter(yt_survey_bio, Age_years <= 20, Age_years >= 6) |>
 ggplot() +
   geom_point(aes(x = Latitude_dd, y = Length_cm, col = Age_years), alpha = 0.2) +
   stat_smooth(aes(x = Latitude_dd, y = Length_cm, group = Age_years, col = Age_years), se = FALSE, method = 'lm')
-# possible decrease in length at age of older fish in last 4 years of data. TBD with 8 more years!
+# Larger max size farther north (consistent with theory)
 
 yt_survey_bio |>
   ggplot(aes(x = Latitude_dd, y = Age_years)) +
@@ -514,11 +509,60 @@ yt_n_survey_bio |>
   geom_point(aes(x = Age_years, y = pct_f)) +
   geom_errorbar(aes(x = Age_years, ymin = pct_f - se, ymax = pct_f + se))
 
-laa_by_lat_gam <- lm(Length_cm ~ I(Latitude_dd-mean(Latitude_dd))*factor(Age_years), 
+laa_by_lat_lm <- lm(Length_cm ~ I(Latitude_dd-mean(Latitude_dd))*factor(Age_years), 
                                    data = yt_n_survey_bio, 
                       subset = Age_years < 20 & Age_years >= 6)
 
 laa_by_age <- lm(Length_cm ~ factor(Age_years), data = yt_n_survey_bio, 
                       subset = Age_years < 20 & Age_years >= 6)
+
+W_L_pars <- yt_n_survey_bio |>
+  dplyr::mutate(Sex = 'B') |> # this will make it so a single curve is fit to all sexes, in addition to sex-specific curves
+  dplyr::bind_rows(yt_n_survey_bio) |>
+  dplyr::filter(Sex %in% c('F', 'M', 'B')) |>
+  tidyr::nest(data = -Sex) |> 
+                                         # Fit model
+  dplyr::mutate(fit = purrr::map(data, ~ lm(log(Weight) ~ log(Length_cm), data = .)),
+                tidied = purrr::map(fit, broom::tidy),
+                # Transform W-L parameters, account for lognormal bias
+                out = purrr::map2(tidied, fit, function(.x, .y) {
+                  sd_res <- sigma(.y)
+                  .x |>
+                    dplyr::mutate(term = c('A', 'B'),
+                                  median = ifelse(term == 'A', exp(estimate), estimate),
+                                  mean = ifelse(term == 'A', median * exp(0.5 * sd_res^2),
+                                                median)) |>
+                    dplyr::select(term, mean)
+                }),
+                n = purrr::map(fit, ~ length(resid(.)))) |>
+  tidyr::unnest(c(out, n)) |>
+  dplyr::select(Sex, term, mean, n) |>
+  tidyr::pivot_wider(names_from = term, values_from = mean)
+
+write.csv(W_L_pars, here('Data/Processed/W_L_pars.csv'), row.names = FALSE)
+
+### Megan this is where I look at time-varying weight-length
+W_L_pars |>
+  dplyr::mutate(out.dfr = purrr::map2(A, B, ~ dplyr::tibble(len = 1:max(yt_n_survey_bio$Length_cm, na.rm = TRUE), 
+                                                            wgt = .x*len^.y))) |>
+  tidyr::unnest(out.dfr) |>
+  dplyr::filter(Sex != 'B') |>
+  ggplot() +
+  geom_point(aes(x = Length_cm, y = Weight, col = Sex), alpha = 0.15, 
+             data = dplyr::filter(yt_n_survey_bio, Sex != 'U')) +
+  geom_line(aes(x = len, y = wgt, col = Sex), linewidth = 1) +
+  labs(x = 'Length (cm)', y = 'Weight') +
+  scale_color_manual(values = c('F' = 'red', 'M' = 'blue')) +
+  facet_wrap(~ Year) 
+
+yt_n_survey_bio |>
+  dplyr::filter(!is.na(Length_cm), !is.na(Weight_kg)) %>%
+  broom::augment(lm(log(Weight_kg) ~ log(Length_cm), data = .),
+                 .) |>
+  group_by(Year) |>
+  summarise(mean_resid = mean(.resid)) |>
+  ggplot() +
+  geom_line(aes(x = Year, y = mean_resid)) +
+  geom_hline(yintercept = 0)
 
 ```
