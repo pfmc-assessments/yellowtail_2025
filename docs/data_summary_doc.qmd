@@ -21,7 +21,9 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 ## Landings
 
 ### Commercial landings
+
 Some summary figures:
+
 ```{r pacfin-catch, cache=TRUE}
 load(here('data/confidential/commercial/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
@@ -99,6 +101,7 @@ comm_draft_landings |>
   viridis::scale_color_viridis(discrete = TRUE) +
   labs(title = 'Comparing commercial landings in 2017 model vs current', x = 'YEAR')
 ```
+
 Table of commercial landings by state, 1981 onward.
 
 ```{r comm-catch-tbl}
@@ -111,8 +114,7 @@ comm_draft_landings |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
-WDFW has alerted the STAT these do not include all tribal catches in recent years. 
-
+WDFW has alerted the STAT these do not include all tribal catches in recent years.
 
 Note this is for catch landed into Del Norte and Humboldt counties only.
 
@@ -128,10 +130,10 @@ ashop_catch |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
-
 ### Recreational landings
 
 ```{r rec-catch-modern}
+# WASHINGTON
 wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
   filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023) |>
   tibble::as_tibble() |>
@@ -145,37 +147,122 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
   summarise(Dead_Catch = sum(RETAINED_NUM)) |>
   mutate(State = 'WA (numbers)')
 
+# OREGON
 or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landings_433_2023.csv")) |>
   tibble::as_tibble() |>
-  mutate(State = 'OR (mt)')
+  mutate(State = 'OR (mt)') |>
+  select(RECFIN_YEAR = Year, Dead_Catch = Total_MT, State)
 
+# CALIFORNIA
 ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
   filter(grepl("Redwood", DISTRICT_NAME)) |>
   tibble::as_tibble() |>
   group_by(RECFIN_YEAR) |>
   summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
-  mutate(State = 'CA (mt)')
+  mutate(State = 'CA (mt)',
+         to_add = ifelse(RECFIN_YEAR == 2020, # add proxy catches from M. Parker shared 12/4/2024
+                         0.0475 + 0.0527,
+                         0),
+         Dead_Catch = Dead_Catch + to_add) |>
+  select(-to_add)
 
-or_rec_catch |>
-  select(RECFIN_YEAR = Year, Dead_Catch = Total_MT, State) |>
-  bind_rows(wa_modern, wa_historical, ca_modern) |>
+albin <- read.csv(here('Data/Raw_not_confidential/yellowtail_rows_from_Albin_et_al_1993.csv'), 
+                  skip = 1) %>%
+  `names<-`(paste(names(.), slice(., 1))) |>
+  slice(-1) |>
+  select(-1) |>
+  tidyr::pivot_longer(cols = -1, names_to = 'Label', values_to = 'Value') |>
+  tidyr::separate_wider_delim(Label, ' ', names = c('County', 'Metric')) |>
+  mutate(County = stringr::str_remove(County, '.[:digit:]')) |>
+  mutate(County = stringr::str_replace_all(County, '[:punct:]+', '_')) |>
+  filter(County != 'Total') |>
+  rename(Year = `X.1 Year`) |>
+  tidyr::pivot_wider(id_cols = c(Year, County), names_from = Metric, values_from = Value) |>
+  mutate(across(Est:CV, as.numeric)) |>
+# catch-weighted average  
+  group_by(County) |>
+  summarise(Est = sum(Est)) |>
+  ungroup() |>
+  mutate(not_slo = County != 'San_Luis_Obispo',
+    pct = Est/sum(Est),
+    pct_no_slo = Est/sum(Est * not_slo)) |>
+  filter(County == 'Del_Norte_Humboldt')
+# no weighting  
+  # group_by(Year) |>
+  # mutate(not_slo = County != 'San_Luis_Obispo',
+  #   pct = Est/sum(Est),
+  #   pct_no_slo = Est/sum(Est * not_slo)) |>
+  # ungroup() |>
+  # filter(County == 'Del_Norte_Humboldt') |>
+  # summarise(pct = mean(pct), 
+  #           pct_no_slo = mean(pct_no_slo))
+# This makes basically no difference.
+
+crfs_ratios <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |> 
+  filter(RECFIN_SUBREGION_NAME == 'Northern California',
+         RECFIN_YEAR <= 2010 ) |> # 6 years is symmetric with # of years in Albin
+  # catch-weighted average for Albin, so similar for CRFS
+  group_by(DISTRICT_NAME) |>
+  summarise(Catch_mt = sum(SUM_TOTAL_MORTALITY_MT)) |>
+  ungroup() |>
+  mutate(pct = Catch_mt / sum(Catch_mt)) |>
+  filter(grepl('Redwood', DISTRICT_NAME))
+
+# This is pre-filtered to N. CA MRFSS only
+ca_mrfss_catch <- read.csv(here('Data/Confidential/Rec/RecFIN_CA_MRFSS.csv')) |> 
+  group_by(YEAR) |>
+  summarise(n_ca_catch_mt = sum(WGT_AB1, na.rm = TRUE)/1000) |>
+  # for MRFSS phase 2, calculate ratio above 40-10 by weighted average of Albin and CRFS ratios
+  # weights are the inverse of time to last Albin year, first CRFS year
+  mutate(weighted_ratio = (albin$pct / (YEAR - 1986) + crfs_ratios$pct / (2005 - YEAR)) / (1/(YEAR - 1986) + 1/(2005 - YEAR)),
+         Dead_Catch = ifelse(YEAR < 1990,
+                             n_ca_catch_mt * albin$pct_no_slo,
+                             n_ca_catch_mt * weighted_ratio),
+         State = 'CA (mt)') |>
+  select(-n_ca_catch_mt, -weighted_ratio) |>
+  rename(RECFIN_YEAR = YEAR)
+
+# Interpolate between 3-year average before and after MRFSS break
+ca_mrfss_interpolate <- tibble(
+  Dead_Catch = seq(from = mean(ca_mrfss_catch$Dead_Catch[ca_mrfss_catch$RECFIN_YEAR %in% 1987:1989]),
+                   to = mean(ca_mrfss_catch$Dead_Catch[ca_mrfss_catch$RECFIN_YEAR %in% 1993:1995]),
+                   length.out = 3),
+  RECFIN_YEAR = 1990:1992,
+  State = 'CA (mt)')
+
+# Put it all together
+bind_rows(or_rec_catch, wa_modern, wa_historical, ca_modern, ca_mrfss_catch, ca_mrfss_interpolate) |>
   tidyr::pivot_wider(names_from = 'State', values_from = 'Dead_Catch', values_fill = 0) |>
   rename(YEAR = 'RECFIN_YEAR') |>
   arrange(YEAR) |>
   knitr::kable(align = 'l', digits = 1)
+
 ```
 
-Outstanding issues for WA:
+#### Outstanding issues for WA:
 
 1.  There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
 2.  2023 has a number of instances where `RECFIN_WEEK` is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.
 3.  Will likely convert the numbers in the historical sport landings to weight in mt. On the to do list.
 
-Outstanding issues for CA: 
+#### Method for CA MRFSS catches:
 
-1. 2020 and 2021 proxy catches and un-ID'ed rockfish apportionment are missing.
-2. MRFSS data (1981-2004) does not have an obvious way to determine whether catches should be assigned to the northern or southern stock.
+From Albin et al. (1993), which covers 1981-1986, calculate two ratios:
 
+1.  Total catch in Del Norte/Humboldt / total catch in all counties
+2.  Total catch in Del Norte/Humboldt / total catch in all counties except SLO
+
+From CRFS data for 2005-2010, calculate total catch in Redwoods district / total catch in N. CA sub-region
+
+From MRFSS data, calculate total catch by year in N. CA sub-region
+
+For CA rec catch estimates for the assessment:
+
+-   1980-1989: Multiply total N. CA catch by Albin ratio (2)
+-   1993-2004: Multiply total N. CA catch by weighted average of Albin ratio (1) and CRFS ratio. Weights are inverse of time to last Albin year or first CRFS year.
+-   1990-1992: Interpolate between average of 1987-1989 and 1993-1995
+
+**Concern**: Catches for 1980-1989 look somewhat high. They exceed rec catches in OR in 1982 and 1983.
 
 ## Comp Data
 
@@ -201,6 +288,7 @@ bds_clean |>
 ```
 
 Age sample sizes:
+
 ```{r comm-ages}
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
@@ -275,7 +363,6 @@ bds_clean |>
 
 ```
 
-
 ### Recreational
 
 VERY tentative length sample sizes. I anticipate this is biased high as I have done no filtering.
@@ -338,20 +425,20 @@ rec_bio |>
   knitr::kable(align = 'l')
 ```
 
-Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, 
-`r filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`\% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
+Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, `r filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
 
 Options:
 
-1. Exclude released fish from comps
-2. Lump released and retained fish together
-3. Model a retention curve
+1.  Exclude released fish from comps
+2.  Lump released and retained fish together
+3.  Model a retention curve
 
 The fish in Washington also look slightly larger than those in Oregon and California. This difference is more pronounced than it is in survey data, indicating a possible selectivity effect.
 
 I am unsure how to filter MRFSS data to measured lengths for WA and CA. The counts in the table above filters lengths to whole numbers (mm).
 
 ### At-Sea
+
 ```{r ashop-bio}
 ashop_lengths_old <- readxl::read_excel(
   here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
@@ -435,4 +522,3 @@ laa_by_age <- lm(Length_cm ~ factor(Age_years), data = yt_n_survey_bio,
                       subset = Age_years < 20 & Age_years >= 6)
 
 ```
-
