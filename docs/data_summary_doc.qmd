@@ -25,7 +25,7 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 Some summary figures:
 
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/commercial/PacFIN.YTRK.CompFT.09.Oct.2024.RData'))
+load(here('data/confidential/commercial/pacfin_12-09-2024/PacFIN.YTRK.CompFT.09.Dec.2024.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
@@ -40,16 +40,25 @@ or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial l
   group_by(YEAR) |>
   summarise(catch_mt = sum(TOTAL))
 
+# WA URCK/UPOP reconstruction
+wa_urck <- read.csv(here('Data/Raw_not_confidential/WA_URCK_UPOP_recon_1981-2016.csv')) |>
+  filter(Species_AfterComps %in% c('YTRK', 'YTR1')) |> 
+  group_by(Year) |>
+  summarise(catch_mt = sum(RoundPounds_AfterComps) * 0.453592 / 1000) |>
+  mutate(AGENCY_CODE = 'W',
+         model = 'URCK/UPOP')
+
+# Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
   filter(AGENCY_CODE != 'O') |> 
   group_by(PACFIN_YEAR, AGENCY_CODE)|>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  summarise(catch_mt = sum(ROUND_WEIGHT_MTONS)) |>
   rename(YEAR = PACFIN_YEAR) |>
   bind_rows(
     mutate(or_comm_catch, AGENCY_CODE = 'O')
   )|> 
   group_by(YEAR, AGENCY_CODE) |>
-  summarise(landings_mt = sum(catch_mt)) |>
+  summarise(catch_mt = sum(catch_mt)) |>
   filter(YEAR >= 1981) 
 
 # 2017 assessment landings
@@ -60,22 +69,22 @@ comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")
          W = as.numeric(stringr::str_remove(WA, ','))) |> 
   select(Year, W, C = CA.North..MT., O) |>
   filter(Year >= 1981) |>
-  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'landings_mt') |>
+  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
   mutate(model = '2017')
 
 # landings by state
 comm_draft_landings |>
   ggplot() +
-  geom_col(aes(x = YEAR, y = landings_mt, fill = AGENCY_CODE)) +
+  geom_col(aes(x = YEAR, y = catch_mt, fill = AGENCY_CODE)) +
   ggtitle('Commercial landings through 2023 by state') +
   viridis::scale_fill_viridis(discrete = TRUE)
 
 # landings by gear type
 yt_n_catch_pacfin |>
   group_by(PACFIN_GROUP_GEAR_CODE, LANDING_YEAR) |>
-  summarise(landings_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  summarise(catch_mt = sum(ROUND_WEIGHT_MTONS)) |>
   ggplot() +
-  geom_col(aes(x = LANDING_YEAR, y = landings_mt, fill = factor(PACFIN_GROUP_GEAR_CODE, levels = c('TWL', 'MSC', 'NET', 'POT', 'TLS', 'TWS', 'HKL')))) +
+  geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(PACFIN_GROUP_GEAR_CODE, levels = c('TWL', 'MSC', 'NET', 'POT', 'TLS', 'TWS', 'HKL')))) +
   ggtitle('Commercial landings through 2023 by gear') +
   labs(fill = 'PacFIN gear group', x = 'YEAR') +
   viridis::scale_fill_viridis(discrete = TRUE)
@@ -84,7 +93,7 @@ yt_n_catch_pacfin |>
 yt_n_catch_pacfin |>
   mutate(geargroup2 = ifelse(PACFIN_GEAR_CODE == "MDT", yes = "MDT", no = PACFIN_GROUP_GEAR_CODE)) |> # split midwater trawl as MDT
   group_by(geargroup2, LANDING_YEAR) |>
-  summarise(catch_mt = sum(LANDED_WEIGHT_MTONS)) |>
+  summarise(catch_mt = sum(ROUND_WEIGHT_MTONS)) |>
   ggplot() +
   geom_col(aes(x = LANDING_YEAR, y = catch_mt, fill = factor(geargroup2, levels = c("TWL", "MDT", "MSC", "NET", "POT", "TLS", "TWS", "HKL")))) +
   ggtitle("Commercial landings through 2023 by gear with midwater trawl separated") +
@@ -97,10 +106,26 @@ comm_draft_landings |>
   mutate(model = 'current') |>
   bind_rows(comm2017) |> 
   ggplot() +
-  geom_line(aes(x = Year, y = landings_mt, col = AGENCY_CODE, linetype = model), linewidth = 1) +
+  geom_line(aes(x = Year, y = catch_mt, col = AGENCY_CODE, linetype = model), linewidth = 1) +
   viridis::scale_color_viridis(discrete = TRUE) +
   labs(title = 'Comparing commercial landings in 2017 model vs current', x = 'YEAR')
+
+# compare 2017 landings to current landings, WA only
+comm_draft_landings |>
+  rename(Year = YEAR) |>
+  mutate(model = 'PacFIN') |>
+  filter(AGENCY_CODE == 'W') |>
+  bind_rows(
+    filter(comm2017, AGENCY_CODE == 'W')
+    )|> 
+  bind_rows(wa_urck) |>
+  ggplot() +
+  geom_line(aes(x = Year, y = catch_mt, col = model), linewidth = 1) +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  labs(title = 'Possible sources for WA landings (vert. line = 1994)', x = 'YEAR') +
+  geom_vline(xintercept = 1994)
 ```
+URCK/UPOP = sum of RoundPounds_AfterComps for Species_AfterComps = YTR1 or YTRK, converted to mt.
 
 Table of commercial landings by state, 1981 onward.
 
@@ -110,7 +135,7 @@ comm_draft_landings |>
                            AGENCY_CODE == 'O' ~ 'OR',
                            AGENCY_CODE == 'W' ~ 'WA')) |>
   select(-AGENCY_CODE) |>
-  tidyr::pivot_wider(names_from = State, values_from = landings_mt) |>
+  tidyr::pivot_wider(names_from = State, values_from = catch_mt) |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
@@ -136,13 +161,14 @@ ashop_catch |>
 # WASHINGTON
 wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
   filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023) |>
-  tibble::as_tibble() |>
-  group_by(RECFIN_YEAR) |>
+  tibble::as_tibble() |> 
+  group_by(RECFIN_YEAR) |> 
   summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
   mutate(State = 'WA (mt)')
 
 wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
   tibble::as_tibble() |>
+  filter(AREA %in% 1:4) |> # these are marine areas, per T. Tsou on 12/10/24 in meeting notes
   group_by(RECFIN_YEAR) |>
   summarise(Dead_Catch = sum(RETAINED_NUM)) |>
   mutate(State = 'WA (numbers)')
@@ -209,9 +235,10 @@ crfs_ratios <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.
   filter(grepl('Redwood', DISTRICT_NAME))
 
 # This is pre-filtered to N. CA MRFSS only
-ca_mrfss_catch <- read.csv(here('Data/Confidential/Rec/RecFIN_CA_MRFSS.csv')) |> 
+ca_mrfss_catch <- read.csv(here('Data/Confidential/Rec/RecFIN_CA_MRFSS.csv')) |>
+  arrange(desc(WGT_AB1)) |> 
   group_by(YEAR) |>
-  summarise(n_ca_catch_mt = sum(WGT_AB1, na.rm = TRUE)/1000) |>
+  summarise(n_ca_catch_mt = sum(WGT_AB1, na.rm = TRUE)/1000) |> 
   # for MRFSS phase 2, calculate ratio above 40-10 by weighted average of Albin and CRFS ratios
   # weights are the inverse of time to last Albin year, first CRFS year
   mutate(weighted_ratio = (albin$pct / (YEAR - 1986) + crfs_ratios$pct / (2005 - YEAR)) / (1/(YEAR - 1986) + 1/(2005 - YEAR)),
@@ -242,8 +269,8 @@ bind_rows(or_rec_catch, wa_modern, wa_historical, ca_modern, ca_mrfss_catch, ca_
 #### Outstanding issues for WA:
 
 1.  There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
-2.  2023 has a number of instances where `RECFIN_WEEK` is zero, and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.
-3.  Will likely convert the numbers in the historical sport landings to weight in mt. On the to do list.
+2.  2023 has a number of instances where `RECFIN_WEEK` is zero, ~~and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.~~ Is `RECFIN_WEEK` of zero any cause for concern?
+3.  Will likely convert the numbers in the historical sport landings to weight in mt. Waiting for rec biodata before this is possible. Will then linearly interpolate between 1967 and 1975.
 
 #### Method for CA MRFSS catches:
 
@@ -262,7 +289,7 @@ For CA rec catch estimates for the assessment:
 -   1993-2004: Multiply total N. CA catch by weighted average of Albin ratio (1) and CRFS ratio. Weights are inverse of time to last Albin year or first CRFS year.
 -   1990-1992: Interpolate between average of 1987-1989 and 1993-1995
 
-**Concern**: Catches for 1980-1989 look somewhat high. They exceed rec catches in OR in 1982 and 1983.
+**Concern**: Catches for 1980-1989 look somewhat high. They exceed rec catches in OR in 1982 and 1983. 1982, in particular, has much higher MRFSS catches in N. CA than any other year.
 
 ## Comp Data
 
@@ -271,7 +298,7 @@ For CA rec catch estimates for the assessment:
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/Commercial/PacFIN.YTRK.bds.09.Oct.2024.RData'))
+load(here('Data/Confidential/Commercial/pacfin_12-09-2024/PacFIN.YTRK.bds.09.Dec.2024.RData'))
 bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
@@ -476,6 +503,11 @@ STAT is working on it!
 yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', survey = 'NWFSC.Combo') 
 
 yt_n_survey_bio <- filter(yt_survey_bio, Latitude_dd > 40 + 1/6)
+
+yt_tri_bio <- yt_survey_bio <- nwfscSurvey::pull_bio(common_name = 'yellowtail rockfish', survey = 'Triennial') 
+
+yt_n_tri_bio <- purrr::map(yt_tri_bio, \(dat) filter(dat, Latitude_dd > 40 + 1/6))
+
 
 # looking at how growth varies over space and time
 # clear break point in selectivity between age 5 and 6.
