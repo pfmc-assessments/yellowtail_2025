@@ -25,37 +25,43 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 Some summary figures:
 
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/commercial/pacfin_12-09-2024/PacFIN.YTRK.CompFT.09.Dec.2024.RData'))
+load(here('data/confidential/commercial/pacfin_12-11-2024/PacFIN.YTRK.CompFT.11.Dec.2024.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
   filter(
-    AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT',
-    LANDING_YEAR < 2024
+    AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT', # OR, WA, N. CA
+    LANDING_YEAR < 2024,
+    !(CATCH_AREA_CODE %in% c('23A', '23C', '26A')) # exclude 48 Puget Sound fish tickets
   )
 
 # OR landings time series
 or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial landings_433_2023.csv")) |>
   tibble::as_tibble() |>
   group_by(YEAR) |>
-  summarise(catch_mt = sum(TOTAL))
+  summarise(catch_mt = sum(TOTAL)) |>
+  mutate(AGENCY_CODE = 'O')
 
-# WA URCK/UPOP reconstruction
+# WA URCK/UPOP reconstruction, use prior to 2000
 wa_urck <- read.csv(here('Data/Raw_not_confidential/WA_URCK_UPOP_recon_1981-2016.csv')) |>
-  filter(Species_AfterComps %in% c('YTRK', 'YTR1')) |> 
+  filter(Species_AfterComps %in% c('YTRK', 'YTR1'), 
+         Year < 2000) |> 
   group_by(Year) |>
   summarise(catch_mt = sum(RoundPounds_AfterComps) * 0.453592 / 1000) |>
-  mutate(AGENCY_CODE = 'W',
-         model = 'URCK/UPOP')
+  mutate(AGENCY_CODE = 'W') |>
+  rename(YEAR = Year)
 
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
-  filter(AGENCY_CODE != 'O') |> 
+  filter(AGENCY_CODE != 'O',
+         AGENCY_CODE != 'W' | PACFIN_YEAR >= 2000
+         ) |> 
   group_by(PACFIN_YEAR, AGENCY_CODE)|>
   summarise(catch_mt = sum(ROUND_WEIGHT_MTONS)) |>
   rename(YEAR = PACFIN_YEAR) |>
   bind_rows(
-    mutate(or_comm_catch, AGENCY_CODE = 'O')
+    or_comm_catch,
+    wa_urck
   )|> 
   group_by(YEAR, AGENCY_CODE) |>
   summarise(catch_mt = sum(catch_mt)) |>
@@ -118,14 +124,16 @@ comm_draft_landings |>
   bind_rows(
     filter(comm2017, AGENCY_CODE == 'W')
     )|> 
-  bind_rows(wa_urck) |>
+  bind_rows(
+    mutate(wa_urck, model = 'URCK/UPOP')
+  ) |>
   ggplot() +
   geom_line(aes(x = Year, y = catch_mt, col = model), linewidth = 1) +
   viridis::scale_color_viridis(discrete = TRUE) +
-  labs(title = 'Possible sources for WA landings (vert. line = 1994)', x = 'YEAR') +
-  geom_vline(xintercept = 1994)
+  labs(title = 'Possible sources for WA landings (vert. line = 2000)', x = 'YEAR') +
+  geom_vline(xintercept = 2000)
 ```
-URCK/UPOP = sum of RoundPounds_AfterComps for Species_AfterComps = YTR1 or YTRK, converted to mt.
+URCK/UPOP = sum of RoundPounds_AfterComps for Species_AfterComps = YTR1 or YTRK, converted to mt. This is used *instead of* PacFIN catches prior to 2000.
 
 Table of commercial landings by state, 1981 onward.
 
@@ -159,7 +167,7 @@ ashop_catch |>
 
 ```{r rec-catch-modern}
 # WASHINGTON
-wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |>
+wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |> 
   filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023) |>
   tibble::as_tibble() |> 
   group_by(RECFIN_YEAR) |> 
@@ -298,7 +306,7 @@ For CA rec catch estimates for the assessment:
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/Commercial/pacfin_12-09-2024/PacFIN.YTRK.bds.09.Dec.2024.RData'))
+load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
 bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
