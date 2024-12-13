@@ -32,7 +32,7 @@ yt_n_catch_pacfin <- catch.pacfin |>
   filter(
     AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT', # OR, WA, N. CA
     LANDING_YEAR < 2024,
-    !(CATCH_AREA_CODE %in% c('23A', '23C', '26A')) # exclude 48 Puget Sound fish tickets
+    !(CATCH_AREA_CODE %in% c('23A', '23C', '26A')) # exclude Puget Sound fish tickets
   )
 
 # OR landings time series
@@ -45,7 +45,7 @@ or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial l
 # WA URCK/UPOP reconstruction, use prior to 2000
 wa_urck <- read.csv(here('Data/Raw_not_confidential/WA_URCK_UPOP_recon_1981-2016.csv')) |>
   filter(Species_AfterComps %in% c('YTRK', 'YTR1'), 
-         Year < 2000) |> 
+         Year < 2001) |> 
   group_by(Year) |>
   summarise(catch_mt = sum(RoundPounds_AfterComps) * 0.453592 / 1000) |>
   mutate(AGENCY_CODE = 'W') |>
@@ -54,7 +54,7 @@ wa_urck <- read.csv(here('Data/Raw_not_confidential/WA_URCK_UPOP_recon_1981-2016
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
   filter(AGENCY_CODE != 'O',
-         AGENCY_CODE != 'W' | PACFIN_YEAR >= 2000
+         AGENCY_CODE != 'W' | PACFIN_YEAR >= 2001
          ) |> 
   group_by(PACFIN_YEAR, AGENCY_CODE)|>
   summarise(catch_mt = sum(ROUND_WEIGHT_MTONS)) |>
@@ -115,25 +115,7 @@ comm_draft_landings |>
   geom_line(aes(x = Year, y = catch_mt, col = AGENCY_CODE, linetype = model), linewidth = 1) +
   viridis::scale_color_viridis(discrete = TRUE) +
   labs(title = 'Comparing commercial landings in 2017 model vs current', x = 'YEAR')
-
-# compare 2017 landings to current landings, WA only
-comm_draft_landings |>
-  rename(Year = YEAR) |>
-  mutate(model = 'PacFIN') |>
-  filter(AGENCY_CODE == 'W') |>
-  bind_rows(
-    filter(comm2017, AGENCY_CODE == 'W')
-    )|> 
-  bind_rows(
-    mutate(wa_urck, model = 'URCK/UPOP')
-  ) |>
-  ggplot() +
-  geom_line(aes(x = Year, y = catch_mt, col = model), linewidth = 1) +
-  viridis::scale_color_viridis(discrete = TRUE) +
-  labs(title = 'Possible sources for WA landings (vert. line = 2000)', x = 'YEAR') +
-  geom_vline(xintercept = 2000)
 ```
-URCK/UPOP = sum of RoundPounds_AfterComps for Species_AfterComps = YTR1 or YTRK, converted to mt. This is used *instead of* PacFIN catches prior to 2000.
 
 Table of commercial landings by state, 1981 onward.
 
@@ -147,9 +129,11 @@ comm_draft_landings |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
-WDFW has alerted the STAT these do not include all tribal catches in recent years.
+WDFW has alerted the STAT these do not include all tribal catches in recent years. 1981-2000 are from the UPOP/URCK reconstruction, summing catches for YTRK and YTR1. 2001 onward comes from PacFIN
 
-Note this is for catch landed into Del Norte and Humboldt counties only.
+Oregon landings were provided directly to the STAT from ODFW and come from PacFIN and a UPOP/URCK reconstruction. 
+
+California landings are for catch landed into Del Norte and Humboldt counties only.
 
 ### At-Sea landings
 
