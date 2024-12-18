@@ -151,14 +151,14 @@ ashop_catch |>
 ```{r rec-catch-modern}
 # WASHINGTON
 wa_modern <- read.csv(here('Data/Confidential/Rec/CTE501-WASHINGTON-1990---2023.csv')) |> 
-  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023, 
-         RECFIN_CATCH_AREA_NAME != 'SEKIU AND PILLAR POINT') |>
+  filter(RECFIN_WATER_AREA_NAME != 'CANADA', RECFIN_YEAR <= 2023, 
+         RECFIN_CATCH_AREA_NAME != 'SEKIU AND PILLAR POINT') |> 
   tibble::as_tibble() |> 
   group_by(RECFIN_YEAR) |> 
   summarise(Dead_Catch = sum(TOTAL_MORTALITY_MT)) |>
   mutate(State = 'WA (mt)')
 
-wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
+wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |> 
   tibble::as_tibble() |>
   filter(AREA %in% 1:4) |> # these are marine areas, per T. Tsou on 12/10/24 in meeting notes
   group_by(RECFIN_YEAR) |>
