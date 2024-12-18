@@ -38,7 +38,11 @@ all_hauls_yt <- bind_rows(list(obs = observer_yt, em = em_yt), .id = 'program') 
   mutate(depth_std = (AVG_DEPTH - mean(AVG_DEPTH))/sd(AVG_DEPTH),
          fyear = factor(YEAR), log_duration = log(HAUL_DURATION),
          cpue = MT/HAUL_DURATION, month = lubridate::month(as.Date(SET_DATE)),
-         fDRVID = factor(DRVID), fport = factor(R_PORT)) # note D_PORT is NA in some cases, R_PORT is always defined (fish ticket)
+         fDRVID = factor(DRVID), fport = factor(R_PORT),
+         program = factor(program)) # note D_PORT is NA in some cases, R_PORT is always defined (fish ticket)
+
+nrow(filter(all_hauls_yt, MT>0)) / nrow(all_hauls_yt)
+# good to monitor % positive hauls. This is pretty high (70%).
 
 yt_mesh <- sdmTMB::make_mesh(all_hauls_yt, xy_cols = c('AVG_LONG', 'AVG_LAT'), n_knots = 50)
 plot(yt_mesh)
@@ -79,5 +83,5 @@ all_hauls_yt |>
   
 ### general observation: as I have added terms to the model, the signal in the index went from well-defined to noisy and meaningless.
 ### the port (8 levels) and vessel (46 levels) effects really did it in. should think more carefully about what terms to include.
-### note 3962 hauls, 2762 positive hauls over 12 years. ~330 hauls/yr, 230 positive hauls/yr. effort varies a lot by year.
+### note 3962 hauls, 2762 positive hauls over 12 years. ~330 hauls/yr, 230 positive hauls/yr. # of hauls varies a lot by year.
 ### (increases 2012-2018)

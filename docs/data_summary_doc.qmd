@@ -31,8 +31,7 @@ load(here('data/confidential/commercial/pacfin_12-11-2024/PacFIN.YTRK.CompFT.11.
 yt_n_catch_pacfin <- catch.pacfin |>
   filter(
     AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT', # OR, WA, N. CA
-    LANDING_YEAR < 2024,
-    !(CATCH_AREA_CODE %in% c('23A', '23C', '26A')) # exclude Puget Sound fish tickets
+    LANDING_YEAR < 2024
   )
 
 # OR landings time series
@@ -151,11 +150,12 @@ ashop_catch |>
 
 ```{r rec-catch-modern}
 # WASHINGTON
-wa_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_WA_catch_to_2023.csv')) |> 
-  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023) |>
+wa_modern <- read.csv(here('Data/Confidential/Rec/CTE501-WASHINGTON-1990---2023.csv')) |> 
+  filter(RECFIN_WATER_AREA_NAME != 'Canada', RECFIN_YEAR <= 2023, 
+         RECFIN_CATCH_AREA_NAME != 'SEKIU AND PILLAR POINT') |>
   tibble::as_tibble() |> 
   group_by(RECFIN_YEAR) |> 
-  summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
+  summarise(Dead_Catch = sum(TOTAL_MORTALITY_MT)) |>
   mutate(State = 'WA (mt)')
 
 wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |>
@@ -239,7 +239,8 @@ ca_mrfss_catch <- read.csv(here('Data/Confidential/Rec/RecFIN_CA_MRFSS.csv')) |>
                              n_ca_catch_mt * weighted_ratio),
          State = 'CA (mt)') |>
   select(-n_ca_catch_mt, -weighted_ratio) |>
-  rename(RECFIN_YEAR = YEAR)
+  rename(RECFIN_YEAR = YEAR) |>
+  filter(RECFIN_YEAR != 1980)
 
 # Interpolate between 3-year average before and after MRFSS break
 ca_mrfss_interpolate <- tibble(
