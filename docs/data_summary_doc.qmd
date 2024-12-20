@@ -42,13 +42,57 @@ or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial l
   mutate(AGENCY_CODE = 'O')
 
 # WA URCK/UPOP reconstruction, use prior to 2000
-wa_urck <- read.csv(here('Data/Raw_not_confidential/WA_URCK_UPOP_recon_1981-2016.csv')) |>
+wa_urck <- read.csv(here('Data/Confidential/Commercial/WA_URCK_UPOP_recon_1981-2016.csv')) |>
   filter(Species_AfterComps %in% c('YTRK', 'YTR1'), 
          Year < 2001) |> 
   group_by(Year) |>
   summarise(catch_mt = sum(RoundPounds_AfterComps) * 0.453592 / 1000) |>
   mutate(AGENCY_CODE = 'W') |>
   rename(YEAR = Year)
+
+# CA historical
+calcom_full <- readxl::read_excel(
+  here('Data/Confidential/Commercial/Yellowtail Rockfish California Catch Reconstructions 2024-12-18.xlsx'), 
+  sheet = 'CA COMM. 1969-1980', skip = 3
+) |>
+  select(YEAR:SPECIES_GRP) 
+
+calcom <- calcom_full |>
+  filter(PORT_COMPLEX %in% c('ERK', 'CRS')) |>
+  group_by(YEAR) |>
+  summarise(catch_mt = sum(POUNDS) * 0.453592 / 1000) |>
+  mutate(AGENCY_CODE = 'C')
+
+calcom_ratio <- calcom_full |>
+  filter(PORT_COMPLEX %in% c('ERK', 'CRS', 'BRG'), # filter to ralston region 1,
+         YEAR < 1974) |> # ratio over first 5 years of CALCOM?
+  mutate(is_n_40_10 = PORT_COMPLEX %in% c('ERK', 'CRS')) |>
+  group_by(YEAR) |>
+  summarise(region_1 = sum(POUNDS),
+            n_40_10 = sum(POUNDS * is_n_40_10)) |>
+  ungroup() |>
+  summarise(pct_n_40_10 = sum(n_40_10) / sum(region_1)) # catch-weighted avg, like rec ratios
+
+ralston_comm_or <- readxl::read_excel(
+  here('Data/Confidential/Commercial/Yellowtail Rockfish California Catch Reconstructions 2024-12-18.xlsx'), 
+  sheet = 'RALSTON ET AL. COMM. OR waters', range = 'A4:B25'
+) |>
+  rename(YEAR = Year) # use all catches, clearly are north of 40-10
+
+ralston_comm <- readxl::read_excel(
+  here('Data/Confidential/Commercial/Yellowtail Rockfish California Catch Reconstructions 2024-12-18.xlsx'), 
+  sheet = 'RALSTON ET AL. 2010 COMM.', skip = 5
+) |>
+  select(year:source) |>
+  rename(region_caught = `region_caught...3`, YEAR = year) |>
+  filter(region_caught == 2) |> # region 2 = Crescent City, Eureka, Fort Bragg
+  group_by(YEAR) |>
+  summarise(catch_mt = calcom_ratio$pct_n_40_10 * sum(pounds) * 0.453592 / 1000) |>
+  mutate(AGENCY_CODE = 'C') |>
+  left_join(ralston_comm_or) |>
+  mutate(Oregon = tidyr::replace_na(Oregon, 0),
+         catch_mt = catch_mt + Oregon) |>
+  select(-Oregon)
 
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
@@ -60,11 +104,12 @@ comm_draft_landings <- yt_n_catch_pacfin |>
   rename(YEAR = PACFIN_YEAR) |>
   bind_rows(
     or_comm_catch,
-    wa_urck
+    wa_urck,
+    calcom,
+    ralston_comm
   )|> 
   group_by(YEAR, AGENCY_CODE) |>
-  summarise(catch_mt = sum(catch_mt)) |>
-  filter(YEAR >= 1981) 
+  summarise(catch_mt = sum(catch_mt))
 
 # 2017 assessment landings
 comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
@@ -124,7 +169,7 @@ comm_draft_landings |>
                            AGENCY_CODE == 'O' ~ 'OR',
                            AGENCY_CODE == 'W' ~ 'WA')) |>
   select(-AGENCY_CODE) |>
-  tidyr::pivot_wider(names_from = State, values_from = catch_mt) |>
+  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0) |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
@@ -139,9 +184,29 @@ California landings are for catch landed into Del Norte and Humboldt counties on
 ```{r ashop-catch}
 ashop_catch <- readxl::read_excel(
   here("Data/Confidential/ASHOP/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
-  sheet = 'Catch Summary Table')
+  sheet = 'Catch Summary Table') |>
+  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000)
+
+# compare to 2017
+dat2017 <- r4ss::SS_readdat(here('Model_Runs/base_2017_3.30.23/YTRK.NORTH.data.ss'))
+
+ashop2017 <- dat2017$catch |>
+  filter(fleet == 2) |> 
+  select(Year = year, catch_mt = catch) |>
+  mutate(model = '2017')
+
 ashop_catch |>
-  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000) |>
+  select(Year = YEAR, catch_mt) |> 
+  mutate(model = 'current') |>
+  bind_rows(ashop2017) |> 
+  ggplot() +
+  geom_line(aes(x = Year, y = catch_mt, col = factor(model, levels = c('current', '2017'))), 
+                linewidth = 1) +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  labs(title = 'Comparing ASHOP landings in 2017 model vs current', col = 'Data source')
+# Matches.
+
+ashop_catch |>
   select(YEAR, catch_mt) |>
   knitr::kable(align = 'l', digits = 1)
 ```
@@ -158,12 +223,33 @@ wa_modern <- read.csv(here('Data/Confidential/Rec/CTE501-WASHINGTON-1990---2023.
   summarise(Dead_Catch = sum(TOTAL_MORTALITY_MT)) |>
   mutate(State = 'WA (mt)')
 
+wa_sport_bio <- read.csv(here('Data/Confidential/Rec/ytrk_sport_biodata.csv'))
+
+wa_hist_avg_len <- wa_sport_bio |> 
+  filter(sample_year <= 1989) |> # after 1989 WA rec catches available in weight
+  summarise(avg_len = mean(fish_length_cm, na.rm = TRUE), 
+            N = sum(!is.na(fish_length_cm)))
+# 48 total samples across 3 years, lump it all together
+# next samples are in 1995, so don't bother borrowing from early future years
+
+# could pull these from the triennial survey instead to be more temporally-appropriate...
+W_L_pars_unsexed <- read.csv(here('Data/Processed/W_L_pars.csv')) |>
+  filter(Sex == 'B')
+
 wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |> 
   tibble::as_tibble() |>
   filter(AREA %in% 1:4) |> # these are marine areas, per T. Tsou on 12/10/24 in meeting notes
   group_by(RECFIN_YEAR) |>
-  summarise(Dead_Catch = sum(RETAINED_NUM)) |>
-  mutate(State = 'WA (numbers)')
+  summarise(`WA (num)` = sum(RETAINED_NUM)) |>
+  mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^ W_L_pars_unsexed$B) * `WA (num)`)
+
+wa_historical_interpolate <- tibble(
+  Dead_Catch = seq(from = wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR == 1967],
+                   to = mean(wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR %in% 1975:1977]),
+                   length.out = 9)[-c(1,9)], # index 1 and 9 = before break, after break averages
+  RECFIN_YEAR = 1968:1974,
+  State = 'WA (mt)')
+
 
 # OREGON
 or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landings_433_2023.csv")) |>
@@ -172,14 +258,26 @@ or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landing
   select(RECFIN_YEAR = Year, Dead_Catch = Total_MT, State)
 
 # CALIFORNIA
+urck_ca_2020 <- read.csv(here('Data/Raw_not_confidential/genus_allocate_2025_assessments.csv')) |>
+  select(yellowtail_num, yellowtail_kg, year, mode, orig_allocated, district, district_name) |>
+  filter(grepl('REDWOOD', district_name),
+         orig_allocated == 'allocated',
+         yellowtail_num > 0) |>
+  summarise(catch_mt = sum(yellowtail_kg) / 1000)
+# Note that these are available for 2020 and 2021, but the amount to add in 2021 = 0.
+
+proxy_ca_2020 <- readxl::read_excel(here('Data/Raw_not_confidential/CDFWRec_YellowtailRF N 40 10_AvgProxyValuesApr-Jun2020.xlsx')) |>
+  summarise(catch_mt = sum(`Proxy Average Value (mt)`))
+
 ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
   filter(grepl("Redwood", DISTRICT_NAME)) |>
   tibble::as_tibble() |>
   group_by(RECFIN_YEAR) |>
   summarise(Dead_Catch = sum(SUM_TOTAL_MORTALITY_MT)) |>
   mutate(State = 'CA (mt)',
-         to_add = ifelse(RECFIN_YEAR == 2020, # add proxy catches from M. Parker shared 12/4/2024
-                         0.0475 + 0.0527,
+         to_add = ifelse(RECFIN_YEAR == 2020, # 
+                         proxy_ca_2020$catch_mt + # from Melanie Parker 
+                           urck_ca_2020$catch_mt, # from Julia Coates
                          0),
          Dead_Catch = Dead_Catch + to_add) |>
   select(-to_add)
@@ -250,8 +348,30 @@ ca_mrfss_interpolate <- tibble(
   RECFIN_YEAR = 1990:1992,
   State = 'CA (mt)')
 
+# Ralston reconstruction
+ralston_rec <- readxl::read_excel(
+  here('Data/Confidential/Commercial/Yellowtail Rockfish California Catch Reconstructions 2024-12-18.xlsx'), 
+  sheet = 'RALSTON ET AL. REC CA "NORTH"', skip = 12
+) |> 
+  filter(Units == 'pounds') |>
+  group_by(Year) |>
+  summarise(catch_mt_n_ca = sum(YTRK) * 0.453592 / 1000) |>
+  mutate(Dead_Catch = catch_mt_n_ca * albin$pct,
+         State = 'CA (mt)') |>
+  select(-catch_mt_n_ca) |>
+  rename(RECFIN_YEAR = Year)
+
 # Put it all together
-bind_rows(or_rec_catch, wa_modern, wa_historical, ca_modern, ca_mrfss_catch, ca_mrfss_interpolate) |>
+bind_rows(
+  or_rec_catch, 
+  wa_modern, 
+  tidyr::pivot_longer(wa_historical, cols = -RECFIN_YEAR, names_to = 'State', values_to = 'Dead_Catch'),
+  wa_historical_interpolate, 
+  ca_modern, 
+  ca_mrfss_catch, 
+  ca_mrfss_interpolate,
+  ralston_rec
+  ) |>
   tidyr::pivot_wider(names_from = 'State', values_from = 'Dead_Catch', values_fill = 0) |>
   rename(YEAR = 'RECFIN_YEAR') |>
   arrange(YEAR) |>
@@ -259,11 +379,20 @@ bind_rows(or_rec_catch, wa_modern, wa_historical, ca_modern, ca_mrfss_catch, ca_
 
 ```
 
-#### Outstanding issues for WA:
+#### Method for converting historical WA catches from numbers to weight
+We are planning to use WA (mt) for all years, but show WA (num) to compare with raw data.
 
-1.  There are three values for `RECFIN_WATER_AREA_NAME`: Estuary, Ocean, and Canada. Which should be included? Above table excludes Canada.
-2.  2023 has a number of instances where `RECFIN_WEEK` is zero, ~~and one instance where is it missing. In the instance where it is missing, there is no estimate of catch in mt.~~ Is `RECFIN_WEEK` of zero any cause for concern?
-3.  Will likely convert the numbers in the historical sport landings to weight in mt. Waiting for rec biodata before this is possible. Will then linearly interpolate between 1967 and 1975.
+From WA sport biodata, calculate average length of samples collected prior to 1990. This included 48 samples from 1979, 1981, and 1982. The next available samples are in 1995, so we did not use length data from samples in years shortly after the historical reconstruction applies.
+
+Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. (Could use triennial instead?)
+
+Would WDFW prefer we 
+
+1. linearly interpolate between 1967 and 1975, 
+2. linearly interpolate between 1967 and average of 1975-1977 (similar to the approach for missing CA MRFSS years), or 
+3. leave those years as having zero catch?
+
+Current table of catches uses approach (2). If WDFW has no strong opinion, this is what we plan to do.
 
 #### Method for CA MRFSS catches:
 
@@ -282,7 +411,7 @@ For CA rec catch estimates for the assessment:
 -   1993-2004: Multiply total N. CA catch by weighted average of Albin ratio (1) and CRFS ratio. Weights are inverse of time to last Albin year or first CRFS year.
 -   1990-1992: Interpolate between average of 1987-1989 and 1993-1995
 
-**Concern**: Catches for 1980-1989 look somewhat high. They exceed rec catches in OR in 1982 and 1983. 1982, in particular, has much higher MRFSS catches in N. CA than any other year.
+In addition, Albin ratio (1) is used to calculate what fraction of N. CA catches from the Ralston recreational reconstruction are in the assessment area.
 
 ## Comp Data
 
@@ -547,7 +676,7 @@ W_L_pars <- yt_n_survey_bio |>
   dplyr::filter(Sex %in% c('F', 'M', 'B')) |>
   tidyr::nest(data = -Sex) |> 
                                          # Fit model
-  dplyr::mutate(fit = purrr::map(data, ~ lm(log(Weight) ~ log(Length_cm), data = .)),
+  dplyr::mutate(fit = purrr::map(data, ~ lm(log(Weight_kg / 1000) ~ log(Length_cm), data = .)),
                 tidied = purrr::map(fit, broom::tidy),
                 # Transform W-L parameters, account for lognormal bias
                 out = purrr::map2(tidied, fit, function(.x, .y) {
@@ -569,14 +698,14 @@ write.csv(W_L_pars, here('Data/Processed/W_L_pars.csv'), row.names = FALSE)
 ### Megan this is where I look at time-varying weight-length
 W_L_pars |>
   dplyr::mutate(out.dfr = purrr::map2(A, B, ~ dplyr::tibble(len = 1:max(yt_n_survey_bio$Length_cm, na.rm = TRUE), 
-                                                            wgt = .x*len^.y))) |>
+                                                            wgt = 1000 * .x*len^.y))) |>
   tidyr::unnest(out.dfr) |>
   dplyr::filter(Sex != 'B') |>
   ggplot() +
   geom_point(aes(x = Length_cm, y = Weight, col = Sex), alpha = 0.15, 
              data = dplyr::filter(yt_n_survey_bio, Sex != 'U')) +
   geom_line(aes(x = len, y = wgt, col = Sex), linewidth = 1) +
-  labs(x = 'Length (cm)', y = 'Weight') +
+  labs(x = 'Length (cm)', y = 'Weight (kg)') +
   scale_color_manual(values = c('F' = 'red', 'M' = 'blue')) +
   facet_wrap(~ Year) 
 
