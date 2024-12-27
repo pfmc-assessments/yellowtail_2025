@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-12-19">
+<meta name="dcterms.date" content="2024-12-26">
 
 <title>Data summary</title>
 <style>
@@ -77,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 19, 2024</p>
+      <p class="date">December 26, 2024</p>
     </div>
   </div>
   
@@ -93,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="commercial-landings" class="level3">
 <h3 class="anchored" data-anchor-id="commercial-landings">Commercial landings</h3>
 <p>Some summary figures:</p>
-<div class="cell" data-hash="data_summary_doc_cache/html/pacfin-catch_5385a239b4438f689e1ca1c596ff6665">
+<div class="cell" data-hash="data_summary_doc_cache/html/pacfin-catch_9f5ec1d8276585739cdbad259ee8c05e">
 <div class="cell-output-display">
 <p><img src="data_summary_doc_files/figure-html/pacfin-catch-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -918,7 +918,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>WDFW has alerted the STAT these do not include all tribal catches in recent years. 1981-2000 are from the UPOP/URCK reconstruction, summing catches for YTRK and YTR1. 2001 onward comes from PacFIN</p>
 <p>Oregon landings were provided directly to the STAT from ODFW and come from PacFIN and a UPOP/URCK reconstruction.</p>
-<p>California landings are for catch landed into Del Norte and Humboldt counties only.</p>
+<p>California landings are for catch landed into Del Norte and Humboldt counties only. Data sources are:</p>
+<ul>
+<li>Ralston et al.&nbsp;(2010) + supplementary catch from OR waters: 1916 - 1968</li>
+<li>CALCOM: 1969 - 1980</li>
+<li>PacFIN: 1981 - present</li>
+</ul>
+<p>In the Ralston et al.&nbsp;(2010) reconstruction, the northernmost region (region 2) includes Crescent City, Eureka AND Fort Bragg port area groups. Catch in the Crescent City and Eureka port area groups (i.e., Del Norte and Humboldt counties) is estimated based on the fraction of catch in Crescent City and Eureka divided by catch in all of region 2 during the first five years of CALCOM. The vast majority of the catch is in the two northern port areas (96%). All supplementary catches in the Ralston reconstruction caught off the coast of Oregon, but landed into California are included.</p>
 </section>
 <section id="at-sea-landings" class="level3">
 <h3 class="anchored" data-anchor-id="at-sea-landings">At-Sea landings</h3>
@@ -1827,14 +1833,14 @@ ul.task-list li input[type="checkbox"] {
 <h4 class="anchored" data-anchor-id="method-for-converting-historical-wa-catches-from-numbers-to-weight">Method for converting historical WA catches from numbers to weight</h4>
 <p>We are planning to use WA (mt) for all years, but show WA (num) to compare with raw data.</p>
 <p>From WA sport biodata, calculate average length of samples collected prior to 1990. This included 48 samples from 1979, 1981, and 1982. The next available samples are in 1995, so we did not use length data from samples in years shortly after the historical reconstruction applies.</p>
-<p>Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. Could try triennial instead?</p>
+<p>Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. (Could use triennial instead?)</p>
 <p>Would WDFW prefer we</p>
 <ol type="1">
 <li>linearly interpolate between 1967 and 1975,</li>
 <li>linearly interpolate between 1967 and average of 1975-1977 (similar to the approach for missing CA MRFSS years), or</li>
 <li>leave those years as having zero catch?</li>
 </ol>
-<p>Current table of catches uses approach (2).</p>
+<p>Current table of catches uses approach (2). If WDFW has no strong opinion, this is what we plan to do.</p>
 </section>
 <section id="method-for-ca-mrfss-catches" class="level4">
 <h4 class="anchored" data-anchor-id="method-for-ca-mrfss-catches">Method for CA MRFSS catches:</h4>
@@ -1852,6 +1858,9 @@ ul.task-list li input[type="checkbox"] {
 <li>1990-1992: Interpolate between average of 1987-1989 and 1993-1995</li>
 </ul>
 <p>In addition, Albin ratio (1) is used to calculate what fraction of N. CA catches from the Ralston recreational reconstruction are in the assessment area.</p>
+<div class="cell">
+
+</div>
 </section>
 </section>
 </section>
@@ -1860,7 +1869,17 @@ ul.task-list li input[type="checkbox"] {
 <section id="commercial" class="level3">
 <h3 class="anchored" data-anchor-id="commercial">Commercial</h3>
 <p>Initial length sample sizes after running <code>PacFIN.Utilities::cleanPacFIN()</code>:</p>
-<div class="cell" data-hash="data_summary_doc_cache/html/comm-bio_2668abac0d099bc72a3c1078e7275134">
+<div class="cell" data-hash="data_summary_doc_cache/html/comm-bio_eebe1cf2f1e9f284a668a3671d0a636d">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   HKL    MSC    NET    POT    TLS    TWL    TWS    XXX 
+ 19247      7   2325      3    805 217645   8951     45 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    CA     OR     WA 
+ 28026  94946 126206 </code></pre>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  AGE_METHOD1 AGE_METHOD2 AGE_METHOD3 Age method for best age      n
 1           B           B           B                       B   2346
@@ -1872,6 +1891,13 @@ ul.task-list li input[type="checkbox"] {
 7           S        &lt;NA&gt;        &lt;NA&gt;                       S  17942
 8           T        &lt;NA&gt;        &lt;NA&gt;                       T      2
 9        &lt;NA&gt;        &lt;NA&gt;        &lt;NA&gt;                    &lt;NA&gt;  82197</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  strings            region    n
+1      3D       CAN (VNCVR)  441
+2      4A Sound and Straits 1015
+3      5A               CAN 7618
+4      5B               CAN 6194</code></pre>
 </div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
@@ -2691,8 +2717,6 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </div>
 </div>
-<p>Note that California lengths are not yet available for 2023.</p>
-<p>While running <code>PacFIN.Utilities::cleanPacFIN()</code>, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.</p>
 <section id="comparing-midwater-vs-bottom-trawl-lengths-and-ages" class="level4">
 <h4 class="anchored" data-anchor-id="comparing-midwater-vs-bottom-trawl-lengths-and-ages">Comparing midwater vs bottom trawl lengths and ages</h4>
 <p>The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages.</p>

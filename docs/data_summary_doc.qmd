@@ -111,17 +111,6 @@ comm_draft_landings <- yt_n_catch_pacfin |>
   group_by(YEAR, AGENCY_CODE) |>
   summarise(catch_mt = sum(catch_mt))
 
-# 2017 assessment landings
-comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
-  as_tibble() |>
-  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
-  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
-         W = as.numeric(stringr::str_remove(WA, ','))) |> 
-  select(Year, W, C = CA.North..MT., O) |>
-  filter(Year >= 1981) |>
-  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
-  mutate(model = '2017')
-
 # landings by state
 comm_draft_landings |>
   ggplot() +
@@ -150,6 +139,18 @@ yt_n_catch_pacfin |>
   labs(fill = "PacFIN gear group\n(MDT = midwater trawl)", x = 'YEAR') #+
   # viridis::scale_fill_viridis(discrete = TRUE) # colors were hard to see in viridis
 
+# 2017 assessment landings
+comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
+  as_tibble() |>
+  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
+  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
+         W = as.numeric(stringr::str_remove(WA, ',')),
+         C = CA.North..MT. + CA.North.Hist..MT.) |> 
+  select(Year, W, C, O) |>
+  # filter(Year >= 1981) |>
+  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
+  mutate(model = '2017') 
+
 # compare 2017 landings to current landings, by state
 comm_draft_landings |>
   rename(Year = YEAR) |>
@@ -177,7 +178,13 @@ WDFW has alerted the STAT these do not include all tribal catches in recent year
 
 Oregon landings were provided directly to the STAT from ODFW and come from PacFIN and a UPOP/URCK reconstruction. 
 
-California landings are for catch landed into Del Norte and Humboldt counties only.
+California landings are for catch landed into Del Norte and Humboldt counties only. Data sources are:
+
+- Ralston et al. (2010) + supplementary catch from OR waters: 1916 - 1968
+- CALCOM: 1969 - 1980
+- PacFIN: 1981 - present
+
+In the Ralston et al. (2010) reconstruction, the northernmost region (region 2) includes Crescent City, Eureka AND Fort Bragg port area groups. Catch in the Crescent City and Eureka port area groups (i.e., Del Norte and Humboldt counties) is estimated based on the fraction of catch in Crescent City and Eureka divided by catch in all of region 2 during the first five years of CALCOM. The vast majority of the catch is in the two northern port areas (`r round(calcom_ratio$pct_n_40_10 * 100, 0)`\%). All supplementary catches in the Ralston reconstruction caught off the coast of Oregon, but landed into California are included. 
 
 ### At-Sea landings
 
@@ -188,7 +195,7 @@ ashop_catch <- readxl::read_excel(
   mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000)
 
 # compare to 2017
-dat2017 <- r4ss::SS_readdat(here('Model_Runs/base_2017_3.30.23/YTRK.NORTH.data.ss'))
+dat2017 <- r4ss::SS_readdat(here('Model_Runs/1.02_base_2017_3.30.23/YTRK.NORTH.data.ss'))
 
 ashop2017 <- dat2017$catch |>
   filter(fleet == 2) |> 
@@ -362,7 +369,7 @@ ralston_rec <- readxl::read_excel(
   rename(RECFIN_YEAR = Year)
 
 # Put it all together
-bind_rows(
+rec_landings <- bind_rows(
   or_rec_catch, 
   wa_modern, 
   tidyr::pivot_longer(wa_historical, cols = -RECFIN_YEAR, names_to = 'State', values_to = 'Dead_Catch'),
@@ -371,7 +378,26 @@ bind_rows(
   ca_mrfss_catch, 
   ca_mrfss_interpolate,
   ralston_rec
-  ) |>
+  ) 
+
+# rec_landings |>
+#   filter(State != 'WA (num)') |>
+#   mutate(fleet = ifelse(State == 'WA (mt)', 'WA', 'OR/CA')) |>
+#   group_by(RECFIN_YEAR, fleet) |>
+#   summarise(Dead_Catch = sum(Dead_Catch)) |>
+#   mutate(model = 'current') |>
+#   bind_rows({
+#     filter(dat2017$catch, fleet %in% 3:4) |>
+#       mutate(fleet = ifelse(fleet == 3, 'OR/CA', 'WA'), 
+#              model = '2017') |>
+#       select(RECFIN_YEAR = year, Dead_Catch = catch, fleet, model)
+#   }) |>
+#   ggplot() +
+#   geom_line(aes(x = RECFIN_YEAR, y = Dead_Catch, col = fleet, linetype = model),
+#             linewidth = 1)
+# This is bizarre, it is as if WA was actually entered in mt, even though it is specified in numbers.
+
+rec_landings |>
   tidyr::pivot_wider(names_from = 'State', values_from = 'Dead_Catch', values_fill = 0) |>
   rename(YEAR = 'RECFIN_YEAR') |>
   arrange(YEAR) |>
@@ -413,6 +439,40 @@ For CA rec catch estimates for the assessment:
 
 In addition, Albin ratio (1) is used to calculate what fraction of N. CA catches from the Ralston recreational reconstruction are in the assessment area.
 
+```{r ss3-landings}
+rec_landings_ss3 <- rec_landings |>
+  filter(State != 'WA (num)') |>
+  group_by(RECFIN_YEAR) |>
+  summarise(catch = sum(Dead_Catch)) |>
+  rename(YEAR = RECFIN_YEAR) 
+
+comm_landings_ss3 <- comm2017 |>
+  filter(AGENCY_CODE == 'W', Year < 1981) |>
+  rename(YEAR = Year) |>
+  bind_rows(comm_draft_landings) |> 
+  select(-model) |>
+  group_by(YEAR) |>
+  summarise(catch = sum(catch_mt))
+
+ss3_landings <- bind_rows(list(
+  comm_landings_ss3,
+  select(ashop_catch, YEAR, catch = catch_mt),
+  rec_landings_ss3
+  ), .id = 'fleet') |>
+  mutate(seas = 1, catch_se = 0.05) |>
+  rename(year = YEAR) |>
+  select(names(dat2017$catch)) |>
+  as.data.frame()
+
+ss3_landings |>
+  saveRDS(file = here('Data/Processed/ss3_landings_2023.rds'))
+
+ss3_landings |>
+  filter(year < 2017) |>
+  saveRDS(file = here('Data/Processed/ss3_landings_2016.rds'))
+```
+
+
 ## Comp Data
 
 ### Commercial
@@ -421,7 +481,10 @@ Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
 load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
-bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin, verbose = FALSE) 
+bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin)#, verbose = FALSE) 
+
+# to figure out, why is clean pacfin filtering out OR ages before 1981.
+
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
            PACFIN_GROUP_PORT_CODE == 'ERA', geargroup != 'XXX') |> 
@@ -451,10 +514,6 @@ bds_clean |>
   arrange(year) |>
   knitr::kable(align = 'l', digits = 1)
 ```
-
-Note that California lengths are not yet available for 2023.
-
-While running `PacFIN.Utilities::cleanPacFIN()`, it noted that 20 Washington ages in 1991 were double read, the second reader was not recorded, the first and second ages differed, and no final age was determined.
 
 #### Comparing midwater vs bottom trawl lengths and ages
 
