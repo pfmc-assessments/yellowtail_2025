@@ -165,12 +165,22 @@ comm_draft_landings |>
 Table of commercial landings by state, 1981 onward.
 
 ```{r comm-catch-tbl}
-comm_draft_landings |>
+catch_wide <- comm_draft_landings |>
   mutate(State = case_when(AGENCY_CODE == 'C' ~ 'CA',
                            AGENCY_CODE == 'O' ~ 'OR',
                            AGENCY_CODE == 'W' ~ 'WA')) |>
   select(-AGENCY_CODE) |>
-  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0) |>
+  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0)
+
+# add in pre-1981 WA catches from 2017 model, save for PacFIN.Utilities
+filter(comm2017, AGENCY_CODE == 'W') |>
+  select(YEAR = Year, catch_mt) |>
+  right_join(catch_wide) |>
+  mutate(WA = ifelse(YEAR < 1981, WA + catch_mt, WA)) |>
+  select(-catch_mt) |>
+  saveRDS(file = here('Data/processed/catch_wide.rds'))
+
+catch_wide |>
   knitr::kable(align = 'l', digits = 1)
 ```
 
@@ -454,10 +464,11 @@ comm_landings_ss3 <- comm2017 |>
   group_by(YEAR) |>
   summarise(catch = sum(catch_mt))
 
-ss3_landings <- bind_rows(list(
-  comm_landings_ss3,
-  select(ashop_catch, YEAR, catch = catch_mt),
-  rec_landings_ss3
+ss3_landings <- bind_rows(
+  list(
+    comm_landings_ss3,
+    select(ashop_catch, YEAR, catch = catch_mt),
+    rec_landings_ss3
   ), .id = 'fleet') |>
   mutate(seas = 1, catch_se = 0.05) |>
   rename(year = YEAR) |>
