@@ -741,9 +741,9 @@ laa_by_age <- lm(Length_cm ~ factor(Age_years), data = yt_n_survey_bio,
                       subset = Age_years < 20 & Age_years >= 6)
 
 W_L_pars <- yt_n_survey_bio |>
-  dplyr::mutate(Sex = 'B') |> # this will make it so a single curve is fit to all sexes, in addition to sex-specific curves
+  dplyr::mutate(Sex = 'all') |> # this will make it so a single curve is fit to all sexes, in addition to sex-specific curves
   dplyr::bind_rows(yt_n_survey_bio) |>
-  dplyr::filter(Sex %in% c('F', 'M', 'B')) |>
+  dplyr::filter(Sex %in% c('F', 'M', 'all')) |>
   tidyr::nest(data = -Sex) |> 
                                          # Fit model
   dplyr::mutate(fit = purrr::map(data, ~ lm(log(Weight_kg / 1000) ~ log(Length_cm), data = .)),
@@ -760,8 +760,11 @@ W_L_pars <- yt_n_survey_bio |>
                 }),
                 n = purrr::map(fit, ~ length(resid(.)))) |>
   tidyr::unnest(c(out, n)) |>
-  dplyr::select(Sex, term, mean, n) |>
-  tidyr::pivot_wider(names_from = term, values_from = mean)
+  dplyr::select(sex = Sex, term, mean, n) |>
+  tidyr::pivot_wider(names_from = term, values_from = mean) |>
+  dplyr::mutate(sex = dplyr::case_when(sex == 'F' ~ 'female',
+                                       sex == 'M' ~ 'male',
+                                       TRUE ~ sex))
 
 write.csv(W_L_pars, here('Data/Processed/W_L_pars.csv'), row.names = FALSE)
 
