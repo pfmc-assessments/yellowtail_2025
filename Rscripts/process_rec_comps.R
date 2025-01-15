@@ -264,7 +264,7 @@ rec_bio_cleaned |>
 #   1   1   1   1   1   1   3   1   1   1
 
 # rely on nwfscSurvey function to do binning and calculate sample sizes (as total number of samples)
-rec_comps <- nwfscSurvey::get_raw_comps(
+rec_length_comps <- nwfscSurvey::get_raw_comps(
   data = rec_bio_cleaned |>
     mutate(
       sex = "U", # make everything unsexed because that's the majority
@@ -281,4 +281,61 @@ rec_comps <- nwfscSurvey::get_raw_comps(
   fleet = 999
 )
 
-saveRDS(rec_comps$unsexed, file = here::here("Data/Processed/ss3_rec_comps.rds"))
+saveRDS(rec_length_comps$unsexed, file = here::here("Data/Processed/ss3_rec_length_comps.rds"))
+
+## rec ages
+
+# problematic ages have NA for USE_THIS_AGE so no need for additional filtering beyond removing NA values
+table(recfin_ages$AGE_READABILITY_DESCRIPTION, is.na(recfin_ages$USE_THIS_AGE))
+  #                                              FALSE TRUE
+  #                                                  0  535
+  # AVERAGE STRUCTURE                             8065    0
+  # DIFFICULT STRUCTURE                            564    0
+  # EXCELLENT, CLEAR PATTERN                        44    0
+  # NOT AGED-PROCESS STORAGE OR COLLECTORS ERROR     1    5
+  # NOT AGED-STRUCTURE NOT DISCERNABLE               0   20
+
+# very few ages have UNKNOWN sex so filter to just ages with known sex
+table(recfin_ages$RECFIN_SEX_NAME, useNA = "always")
+#  FEMALE    MALE UNKNOWN    <NA>
+#    5380    3776      78       0
+
+# get age comps for rec 
+rec_ages_cleaned <- recfin_ages |>
+  filter(!is.na(USE_THIS_AGE) & RECFIN_SEX_NAME != "UNKNOWN") |>
+  mutate(
+    state = case_when(
+      SAMPLING_AGENCY_NAME == "WASHINGTON" ~ "WA",
+      SAMPLING_AGENCY_NAME == "OREGON" ~ "OR",
+      SAMPLING_AGENCY_NAME == "CALIFORNIA" ~ "CA"
+    ),
+    sex = case_when(
+      RECFIN_SEX_NAME == "FEMALE" ~ "F",
+      RECFIN_SEX_NAME == "MALE" ~ "M",
+      TRUE ~ "U" # will include both "UNKNOWN" and ""
+    )
+  ) |>
+  rename(
+    year = SAMPLE_YEAR,
+    length_mm = RECFIN_LENGTH_MM,
+    age = USE_THIS_AGE
+  ) |>
+  mutate(length_cm = 0.1 * length_mm)
+
+rec_age_comps <- nwfscSurvey::get_raw_comps(
+  data = rec_ages_cleaned |>
+    mutate(
+      trawl_id = 999, # column is required
+      common_name = "yellowtail_rockfish", # column is required
+      project = "rec_ages" # column is required
+    ) |>
+    as.data.frame(),
+  comp_bins = age_bin,
+  dir = "Data/Confidential/rec",
+  comp_column_name = "age",
+  input_n_method = "total_samples",
+  month = 7,
+  fleet = 999
+)
+
+saveRDS(rec_age_comps$sexed, file = here::here("Data/Processed/ss3_rec_age_comps.rds"))
