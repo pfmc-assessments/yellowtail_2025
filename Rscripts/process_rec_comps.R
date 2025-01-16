@@ -214,10 +214,8 @@ rec_ages_smry_table |>
 # | 2023|        1247|        1251|           0|
 # | 2024|         613|           0|           0|
 
-# note variables in list created by r4ss::SS_read() are $lbin_vector and $agebin_vector
-len_bin <- seq(20, 56, 2)
-age_bin <- 1:25
-
+# get age and length bins
+source("Rdata/bins.R")
 # clean length comps
 #   exclude
 #   1. missing lengths (1 out of 59808)
