@@ -32,7 +32,9 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 # Confidential and/or large data files
-Data/Confidential
+Data/Confidential/
+# place to store random stuff that doesn't belong on github
+ignored/
 # SS3 files
 admodel.cov
 admodel.dep
@@ -47,8 +49,8 @@ echoinput.sso
 fmin.log
 gradient.*
 ParmTrace.sso
-plots/
-plots_StartTime*/
+Model_Runs/*/plots/
+Model_Runs/*/plots_StartTime*/
 posterior_obj_func.sso
 posterior_vectors.sso
 posteriors.sso
@@ -72,3 +74,5 @@ ss.par_1.sso
 suggested_tuning.ss
 *.ss_new
 YTRK_2017_Final.pdf
+# specific model runs not worth including
+Model_Runs/2017_plus_mirror_rec_selex

@@ -61,36 +61,94 @@ strata <- nwfscSurvey::CreateStrataDF.fn(
 source(here::here("Rscripts/bins.R"))
 
 wcgbts_length_comps <- nwfscSurvey::get_expanded_comps(
-    bio_data = yt_n_survey_bio,
-    catch_data = yt_n_survey_catch,
-    comp_bins = len_bin,
-    strata = strata,
-    comp_column_name = "length_cm",
-    output = "full_expansion_ss3_format",
-    two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel",
-    month = 7,
-    fleet = 999,
-    dir = dir_wcgbts
-  )
+  bio_data = yt_n_survey_bio,
+  catch_data = yt_n_survey_catch,
+  comp_bins = len_bin,
+  strata = strata,
+  comp_column_name = "length_cm",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel",
+  month = 7,
+  fleet = 999,
+  dir = dir_wcgbts
+)
 
 wcgbts_raw_length_comps <- nwfscSurvey::get_raw_comps(
-    data = yt_n_survey_bio,
-    comp_bins = len_bin,
-    comp_column_name = "length_cm",
-    two_sex_comps = TRUE,
-    dir = dir_wcgbts)
+  data = yt_n_survey_bio,
+  comp_bins = len_bin,
+  comp_column_name = "length_cm",
+  two_sex_comps = TRUE,
+  dir = dir_wcgbts,
+  month = 7,
+  fleet = 999
+)
 
 nwfscSurvey::plot_comps(
   data = wcgbts_raw_length_comps,
-  dir = dir_wcgbts)
-file.copy(file.path(dir_wcgbts, "plots/length_frequency_sex_3.png"), 
-          file.path(dir_wcgbts, "plots/length_frequency_raw_sex_3.png"))
-file.copy(file.path(dir_wcgbts, "plots/length_r4ss_frequency_sex_3.png"), 
-          file.path(dir_wcgbts, "plots/length_r4ss_frequency_raw_sex_3.png"))
+  dir = dir_wcgbts
+)
+file.copy(
+  file.path(dir_wcgbts, "plots/length_frequency_sex_3.png"),
+  file.path(dir_wcgbts, "plots/length_frequency_raw_sex_3.png")
+)
+file.copy(
+  file.path(dir_wcgbts, "plots/length_r4ss_frequency_sex_3.png"),
+  file.path(dir_wcgbts, "plots/length_r4ss_frequency_raw_sex_3.png")
+)
 nwfscSurvey::plot_comps(
   data = wcgbts_length_comps,
-  dir = dir_wcgbts)
+  dir = dir_wcgbts
+)
 
 # save processed data as RDS file
 saveRDS(wcgbts_length_comps$sexed, file = here::here("Data/Processed/ss3_wcgbts_length_comps.rds"))
+
+# age comps (marginal)
+wcgbts_age_comps <- nwfscSurvey::get_expanded_comps(
+  bio_data = yt_n_survey_bio,
+  catch_data = yt_n_survey_catch,
+  comp_bins = age_bin,
+  strata = strata,
+  comp_column_name = "age",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel",
+  month = 7,
+  fleet = 999,
+  dir = dir_wcgbts
+)
+
+wcgbts_raw_age_comps <- nwfscSurvey::get_raw_comps(
+  data = yt_n_survey_bio,
+  comp_bins = age_bin,
+  comp_column_name = "age",
+  two_sex_comps = TRUE,
+  dir = dir_wcgbts,
+  age_error = 1,
+  month = 7,
+  fleet = 999
+)
+
+nwfscSurvey::plot_comps(
+  data = wcgbts_raw_age_comps,
+  dir = dir_wcgbts
+)
+file.copy(
+  file.path(dir_wcgbts, "plots/age_frequency_sex_3.png"),
+  file.path(dir_wcgbts, "plots/age_frequency_raw_sex_3.png")
+)
+file.copy(
+  file.path(dir_wcgbts, "plots/age_r4ss_frequency_sex_3.png"),
+  file.path(dir_wcgbts, "plots/age_r4ss_frequency_raw_sex_3.png")
+)
+nwfscSurvey::plot_comps(
+  data = wcgbts_age_comps,
+  dir = dir_wcgbts
+)
+
+# save processed data as RDS file
+saveRDS(wcgbts_age_comps$sexed, file = here::here("Data/Processed/ss3_wcgbts_age_comps.rds"))
+
+# age comps (conditional)
+# TODO
