@@ -94,6 +94,12 @@ ralston_comm <- readxl::read_excel(
          catch_mt = catch_mt + Oregon) |>
   select(-Oregon)
 
+# Foreign
+foreign <- read.csv(here('Data/raw_not_confidential/foreign_catch.csv')) |>
+  mutate(catch_mt = UVAN + COL + EUR,
+         AGENCY_CODE = 'Foreign') |> # MON/EUR split is ~Medocino
+  select(YEAR = year, catch_mt, AGENCY_CODE)
+
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
   filter(AGENCY_CODE != 'O',
@@ -106,7 +112,8 @@ comm_draft_landings <- yt_n_catch_pacfin |>
     or_comm_catch,
     wa_urck,
     calcom,
-    ralston_comm
+    ralston_comm,
+    foreign
   )|> 
   group_by(YEAR, AGENCY_CODE) |>
   summarise(catch_mt = sum(catch_mt))
@@ -114,8 +121,10 @@ comm_draft_landings <- yt_n_catch_pacfin |>
 # landings by state
 comm_draft_landings |>
   ggplot() +
-  geom_col(aes(x = YEAR, y = catch_mt, fill = AGENCY_CODE)) +
-  ggtitle('Commercial landings through 2023 by state') +
+  geom_col(aes(x = YEAR, y = catch_mt, 
+               fill = factor(AGENCY_CODE, levels = c('Foreign', 'C', 'O', 'W')))) +
+  labs(title = 'Commercial landings through 2023 by state',
+       fill = 'State') +
   viridis::scale_fill_viridis(discrete = TRUE)
 
 # landings by gear type
@@ -168,9 +177,11 @@ Table of commercial landings by state, 1981 onward.
 catch_wide <- comm_draft_landings |>
   mutate(State = case_when(AGENCY_CODE == 'C' ~ 'CA',
                            AGENCY_CODE == 'O' ~ 'OR',
-                           AGENCY_CODE == 'W' ~ 'WA')) |>
+                           AGENCY_CODE == 'W' ~ 'WA',
+                           TRUE ~ AGENCY_CODE)) |>
   select(-AGENCY_CODE) |>
-  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0)
+  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0) |>
+  relocate(Foreign, .after = WA)
 
 # add in pre-1981 WA catches from 2017 model, save for PacFIN.Utilities
 filter(comm2017, AGENCY_CODE == 'W') |>
@@ -183,6 +194,8 @@ filter(comm2017, AGENCY_CODE == 'W') |>
 catch_wide |>
   knitr::kable(align = 'l', digits = 1)
 ```
+
+Note that the 2017 assessment did not include foreign landings. This foreign reconstruction is from Rogers (2003).
 
 WDFW has alerted the STAT these do not include all tribal catches in recent years. 1981-2000 are from the UPOP/URCK reconstruction, summing catches for YTRK and YTR1. 2001 onward comes from PacFIN
 
@@ -251,7 +264,7 @@ wa_hist_avg_len <- wa_sport_bio |>
 
 # could pull these from the triennial survey instead to be more temporally-appropriate...
 W_L_pars_unsexed <- read.csv(here('Data/Processed/W_L_pars.csv')) |>
-  filter(Sex == 'B')
+  filter(sex == 'all')
 
 wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv')) |> 
   tibble::as_tibble() |>
