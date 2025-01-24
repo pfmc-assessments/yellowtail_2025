@@ -3,51 +3,62 @@ library(dplyr)
 
 # PacFIN comps ------------------------------------------------------------
 
+# read CONFIDENTIAL file with PacFIN BDS data
 load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
-
+# load processed catch by year/fleet
 comm_catch <- readRDS('Data/processed/catch_wide.rds') |>
   rename(year = YEAR) 
-
-bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin,
+# clean pacfin within inputs specific to Yellowtail Rockfish
+bds_clean <- pacfintools::cleanPacFIN(bds.pacfin,
                                            keep_length_type = c("", "F", "A"),
                                            keep_age_method = c('B', 'S')) |>
-  mutate(fleet = 1)  
+  mutate(fleet = 1)  # assign everything to fleet 1
 
-dat2017 <- r4ss::SS_readdat('Model_Runs/1.02_base_2017_3.30.23/YTRK.North.data.ss')
-
+# get weight-length parameters processed elsewhere
 w_l_pars <- read.csv('Data/processed/W_L_pars.csv') |>
   select(-n)
+# get age_bin and len_bin
+source("Rscripts/bins.R")
 
+# TODO: sort out foreign catch (maybe already completed by Kiva)
+# for now just removing from the catch file
+comm_catch <- comm_catch |> dplyr::select(-Foreign)
+
+# run expansions
 pacfin_exp <- bds_clean |>
   filter(SEX != 'U', # most fish (even length-only) are sexed
          year < 2024) |>
   # exclude WA surface reads. OR surface reads are actually 'B', per email with ODFW.
   mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |>
-  PacFIN.Utilities::get_pacfin_expansions(Catch = comm_catch, 
+  pacfintools::get_pacfin_expansions(Catch = comm_catch, 
                                           weight_length_estimates = w_l_pars, 
                                           stratification.cols = 'state', 
                                           Units = 'MT', maxExp = 0.9)
 
+# create length comps for SS3
 length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
-  PacFIN.Utilities::getComps(
+  pacfintools::getComps(
     Comps = "LEN",
     weightid = "Final_Sample_Size_L"
   ) |>
-  PacFIN.Utilities::writeComps(
+  pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_lcomps_2023.csv', 
-    comp_bins = dat2017$lbin_vector
+    comp_bins = len_bin # sourced above
   )
 
 
 age_comps_ss3 <- filter(pacfin_exp, !is.na(Age)) |>
-  PacFIN.Utilities::getComps(
+  pacfintools::getComps(
     Comps = "AGE",
     weightid = "Final_Sample_Size_A"
   ) |>
-  PacFIN.Utilities::writeComps(
+  pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_acomps_2023.csv', 
-    comp_bins = dat2017$agebin_vector
+    comp_bins = age_bin # sourced above
   )
+
+# TODO: save the results using a command like the following:
+# saveRDS(age_comps_ss3, file = 'Data/processed/ss3_pacfin_comps_2023.rds')
 
 # ASHOP comps -------------------------------------------------------------
 
@@ -78,7 +89,7 @@ ss3_ashop_comps <- ashop_lengths |>
   as.data.frame() %>% # function does not play with tibbles
   nwfscSurvey::UnexpandedLFs.fn(dir = NULL,
                                 datL = ., 
-                                lgthBins = dat2017$lbin_vector, 
+                                lgthBins = len_bin, # sourced above
                                 partition = 2, 
                                 fleet = 2, 
                                 month = 7) |> 
