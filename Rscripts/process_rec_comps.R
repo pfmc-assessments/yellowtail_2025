@@ -214,8 +214,9 @@ rec_ages_smry_table |>
 # | 2023|        1247|        1251|           0|
 # | 2024|         613|           0|           0|
 
-# get age and length bins
+# get age_bin and len_bin
 source("Rscripts/bins.R")
+
 # clean length comps
 #   exclude
 #   1. missing lengths (1 out of 59808)
