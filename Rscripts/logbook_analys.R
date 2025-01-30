@@ -6,6 +6,7 @@ observer <- read.csv('data/confidential/wcgop_logbook/ward_oken_observer_data_20
          sector == 'Midwater Rockfish',
          DATATYPE == 'Analysis Data') 
 
+# add catch of zero for midwater rockfish hauls without yellowtail
 observer_yt <- observer|>
   group_by(HAUL_ID) |>
   summarise(has_yt = 'Yellowtail Rockfish' %in% species,
@@ -22,6 +23,7 @@ em <- read.csv('data/confidential/wcgop_logbook/ward_oken_em_data_2024-12-03.csv
   as_tibble() |> 
   filter(AVG_LAT > 40+1/6, sector == 'Midwater Rockfish EM') 
 
+# add catch of zero for midwater rockfish hauls without yellowtail
 em_yt <- em |>
   group_by(HAUL_ID) |>
   summarise(has_yt = 'Yellowtail Rockfish' %in% species,
@@ -68,12 +70,13 @@ preds <- predict(mod_simple,
                  newdata = tibble(fyear = factor(2012:2023), depth_std = 0, month = 6, program = 'obs', fDRVID = '546053', fport = 'NEWPORT'), 
                  return_tmb_object = TRUE, re_form = NA, re_form_iid = NA)
 
-ind <- sdmTMB::get_index(preds, bias_correct = TRUE)
+ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68)
 
 ind |> 
   ggplot(aes(x = as.numeric(fyear), y = est, ymin = lwr, ymax = upr)) +
   geom_line() +
-  geom_errorbar()
+  geom_errorbar() +
+  labs(x = 'Year', y = 'CPUE')
 
 
 all_hauls_yt |>

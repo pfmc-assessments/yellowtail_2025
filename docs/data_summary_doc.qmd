@@ -50,6 +50,22 @@ wa_urck <- read.csv(here('Data/Confidential/Commercial/WA_URCK_UPOP_recon_1981-2
   mutate(AGENCY_CODE = 'W') |>
   rename(YEAR = Year)
 
+# 2017 assessment landings
+comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
+  as_tibble() |>
+  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
+  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
+         W = as.numeric(stringr::str_remove(WA, ',')),
+         C = CA.North..MT. + CA.North.Hist..MT.) |> 
+  select(Year, W, C, O) |>
+  # filter(Year >= 1981) |>
+  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
+  mutate(model = '2017') 
+
+# Use WA reconstruction from 2017 assessment
+WA_hist_2017 <- filter(comm2017, AGENCY_CODE == 'W') |>
+  select(YEAR = Year, catch_mt, AGENCY_CODE)
+
 # CA historical
 calcom_full <- readxl::read_excel(
   here('Data/Confidential/Commercial/Yellowtail Rockfish California Catch Reconstructions 2024-12-18.xlsx'), 
@@ -111,6 +127,7 @@ comm_draft_landings <- yt_n_catch_pacfin |>
   bind_rows(
     or_comm_catch,
     wa_urck,
+    WA_hist_2017,
     calcom,
     ralston_comm,
     foreign
@@ -147,18 +164,6 @@ yt_n_catch_pacfin |>
   ggtitle("Commercial landings through 2023 by gear with midwater trawl separated") +
   labs(fill = "PacFIN gear group\n(MDT = midwater trawl)", x = 'YEAR') #+
   # viridis::scale_fill_viridis(discrete = TRUE) # colors were hard to see in viridis
-
-# 2017 assessment landings
-comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
-  as_tibble() |>
-  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
-  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
-         W = as.numeric(stringr::str_remove(WA, ',')),
-         C = CA.North..MT. + CA.North.Hist..MT.) |> 
-  select(Year, W, C, O) |>
-  # filter(Year >= 1981) |>
-  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
-  mutate(model = '2017') 
 
 # compare 2017 landings to current landings, by state
 comm_draft_landings |>
@@ -271,13 +276,20 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
   filter(AREA %in% 1:4) |> # these are marine areas, per T. Tsou on 12/10/24 in meeting notes
   group_by(RECFIN_YEAR) |>
   summarise(`WA (num)` = sum(RETAINED_NUM)) |>
+  bind_rows(
+    {read.csv(here("Data/Raw_not_confidential/WA_historical_rec_addition.csv")) |>
+        group_by(Year) |>
+        summarise(`WA (num)` = sum(Total)) |>
+        rename(RECFIN_YEAR = Year)
+    }
+  ) |>
+  arrange(RECFIN_YEAR) |>
   mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^ W_L_pars_unsexed$B) * `WA (num)`)
 
 wa_historical_interpolate <- tibble(
-  Dead_Catch = seq(from = wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR == 1967],
-                   to = mean(wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR %in% 1975:1977]),
-                   length.out = 9)[-c(1,9)], # index 1 and 9 = before break, after break averages
-  RECFIN_YEAR = 1968:1974,
+  Dead_Catch = c(mean(wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR %in% c(1969, 1970, 1972, 1973)]),
+                 mean(wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR %in% c(1972, 1973, 1975, 1976)])),
+  RECFIN_YEAR = c(1971, 1974),
   State = 'WA (mt)')
 
 
@@ -404,19 +416,18 @@ rec_landings <- bind_rows(
   ) 
 
 # rec_landings |>
-#   filter(State != 'WA (num)') |>
-#   mutate(fleet = ifelse(State == 'WA (mt)', 'WA', 'OR/CA')) |>
-#   group_by(RECFIN_YEAR, fleet) |>
+#   filter(State != 'WA (num)', State != 'WA (mt)') |>
+#   group_by(RECFIN_YEAR) |>
 #   summarise(Dead_Catch = sum(Dead_Catch)) |>
 #   mutate(model = 'current') |>
 #   bind_rows({
-#     filter(dat2017$catch, fleet %in% 3:4) |>
-#       mutate(fleet = ifelse(fleet == 3, 'OR/CA', 'WA'), 
+#     filter(dat2017$catch, fleet == 3) |>
+#       mutate(fleet = 'OR/CA',
 #              model = '2017') |>
 #       select(RECFIN_YEAR = year, Dead_Catch = catch, fleet, model)
 #   }) |>
 #   ggplot() +
-#   geom_line(aes(x = RECFIN_YEAR, y = Dead_Catch, col = fleet, linetype = model),
+#   geom_line(aes(x = RECFIN_YEAR, y = Dead_Catch, linetype = model),
 #             linewidth = 1)
 # This is bizarre, it is as if WA was actually entered in mt, even though it is specified in numbers.
 
@@ -433,15 +444,9 @@ We are planning to use WA (mt) for all years, but show WA (num) to compare with 
 
 From WA sport biodata, calculate average length of samples collected prior to 1990. This included 48 samples from 1979, 1981, and 1982. The next available samples are in 1995, so we did not use length data from samples in years shortly after the historical reconstruction applies.
 
-Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. (Could use triennial instead?)
+Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. 
 
-Would WDFW prefer we 
-
-1. linearly interpolate between 1967 and 1975, 
-2. linearly interpolate between 1967 and average of 1975-1977 (similar to the approach for missing CA MRFSS years), or 
-3. leave those years as having zero catch?
-
-Current table of catches uses approach (2). If WDFW has no strong opinion, this is what we plan to do.
+Catches in 1971 and 1974 are not available, so are calculated as the average of the two previous and two subsequent years.
 
 #### Method for CA MRFSS catches:
 
@@ -505,9 +510,7 @@ Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
 load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
-bds_clean <- PacFIN.Utilities::cleanPacFIN(bds.pacfin)#, verbose = FALSE) 
-
-# to figure out, why is clean pacfin filtering out OR ages before 1981.
+bds_clean <- pacfintools::cleanPacFIN(bds.pacfin, keep_age_method = c('B', 'S'), verbose = FALSE) 
 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
@@ -659,15 +662,9 @@ rec_bio |>
 
 Retained fish tend to be larger than released fish. However, there are very few released fish. Washington has no measured released fish in RecFIN. Between Oregon and California, `r filter(rec_bio, STATE_NAME != 'WASHINGTON') %>% {100 * with(., sum(IS_RETAINED == 'RETAINED'))/nrow(.)} |> round(1)`% of lengths are for retained fish. Some fraction of those released fish is assumed to have survived, which would skew the ratio even more towards retained fish.
 
-Options:
-
-1.  Exclude released fish from comps
-2.  Lump released and retained fish together
-3.  Model a retention curve
+We plan to exclude released fish from composition data.
 
 The fish in Washington also look slightly larger than those in Oregon and California. This difference is more pronounced than it is in survey data, indicating a possible selectivity effect.
-
-I am unsure how to filter MRFSS data to measured lengths for WA and CA. The counts in the table above filters lengths to whole numbers (mm).
 
 ### At-Sea
 

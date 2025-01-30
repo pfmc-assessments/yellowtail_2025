@@ -215,7 +215,7 @@ rec_ages_smry_table |>
 # | 2024|         613|           0|           0|
 
 # get age and length bins
-source("Rdata/bins.R")
+source("Rscripts/bins.R")
 # clean length comps
 #   exclude
 #   1. missing lengths (1 out of 59808)

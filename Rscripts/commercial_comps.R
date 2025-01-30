@@ -10,8 +10,7 @@ comm_catch <- readRDS('Data/processed/catch_wide.rds') |>
   rename(year = YEAR) 
 # clean pacfin within inputs specific to Yellowtail Rockfish
 bds_clean <- pacfintools::cleanPacFIN(bds.pacfin,
-                                           keep_length_type = c("", "F", "A"),
-                                           keep_age_method = c('B', 'S')) |>
+                                      keep_age_method = c('B', 'S')) |>
   mutate(fleet = 1)  # assign everything to fleet 1
 
 # get weight-length parameters processed elsewhere
