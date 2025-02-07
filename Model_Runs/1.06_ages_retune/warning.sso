@@ -7,7 +7,7 @@ Warning 4 : fleet: 4 lencomp has N obs with partition==2 (retained); changed to 
 Warning 5 : fleet: 5 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 9
 Warning 6 Adjustment: Fleet: 5  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 10
 Warning 7 : fleet: 6 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 14
-Warning 8 Adjustment: Fleet: 6  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 355
-Warning 9 : Early recdev biasadj is >2 times ratio of rmse to sigmaR
+Warning 8 : Early recdev biasadj is >2 times ratio of rmse to sigmaR
 Note 3 Information: A revised protocol for the Fcast_yr specification is available and recommended.
- 9 warnings  and 3 notes 
+Note 4 Information:  N parameters that are on or within 1% of min-max bound: 1; check results, variance may be suspect
+ 8 warnings  and 4 notes 

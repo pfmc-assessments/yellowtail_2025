@@ -1,5 +1,5 @@
 #C file created using an r4ss function
-#C file write time: 2025-01-17  16:02:54
+#C file write time: 2025-02-06  17:13:06
 #
 0 # 0 means do not read wtatage.ss; 1 means read and usewtatage.ss and also read and use growth parameters
 1 #_N_Growth_Patterns
@@ -131,10 +131,10 @@
 -9999	0	0	0	0	0	#_terminator
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_CommercialTrawl(1)
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_HakeByCatch(2)    
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)      
-  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5)     
+-30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)  
+  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5) 
+-30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_NWFSCcombo(6) 
+  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_NWFSCcombo(6)
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -173,10 +173,10 @@
   -5	70	     70	 0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_4_HakeByCatch(2)       
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_5_HakeByCatch(2)       
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_6_HakeByCatch(2)       
-  20	55	 30.811	 0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_P_1_RecORandCA(3)        
+  20	55	 30.811	 0	99	0	  6	0	0	0	0	0	3	2	#_SizeSel_P_1_RecORandCA(3)        
  -20	70	    -20	 0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_2_RecORandCA(3)        
-  -5	20	  3.173	 0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_P_3_RecORandCA(3)        
-  -5	20	     20	 0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_4_RecORandCA(3)        
+  -5	20	  3.173	 0	99	0	  6	0	0	0	0	0	3	2	#_SizeSel_P_3_RecORandCA(3)        
+  -5	20	     20	 0	99	0	 -4	0	0	0	0	0	3	2	#_SizeSel_P_4_RecORandCA(3)        
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_5_RecORandCA(3)        
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_6_RecORandCA(3)        
   20	55	     55	 0	99	0	-99	0	0	0	0	0	3	2	#_SizeSel_P_1_RecWA(4)             
@@ -211,6 +211,9 @@
 -10	20	 0.475635	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2009
 -10	20	 0.138629	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2010
 -10	20	  7.37535	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2011
+ 20	55	    31.22	0	99	0	  6	#_SizeSel_P_1_RecORandCA(3)_BLK3repl_2003        
+ -5	20	    2.904	0	99	0	  6	#_SizeSel_P_3_RecORandCA(3)_BLK3repl_2003        
+ -5	20	    4.248	0	99	0	  6	#_SizeSel_P_4_RecORandCA(3)_BLK3repl_2003        
  20	55	    33.46	0	99	0	-99	#_SizeSel_P_1_RecWA(4)_BLK3repl_2003             
  -5	20	    2.726	0	99	0	-99	#_SizeSel_P_3_RecWA(4)_BLK3repl_2003             
  -5	70	    8.841	0	99	0	-99	#_SizeSel_P_4_RecWA(4)_BLK3repl_2003             

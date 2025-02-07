@@ -6,8 +6,8 @@ Warning 3 : fleet: 2 lencomp has N obs with partition==2 (retained); changed to 
 Warning 4 Adjustment: Fleet: 4  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 8
 Warning 5 : fleet: 5 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 9
 Warning 6 Adjustment: Fleet: 5  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 10
-Warning 7 : fleet: 6 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 14
-Warning 8 Adjustment: Fleet: 6  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 355
+Warning 7 Adjustment: Fleet: 6  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 355
+Warning 8 : Final gradient: 0.000411532 is larger than final_conv: 1e-05
 Note 3 Information: A revised protocol for the Fcast_yr specification is available and recommended.
 Note 4 Information:  N parameters that are on or within 1% of min-max bound: 3; check results, variance may be suspect
  8 warnings  and 4 notes 
