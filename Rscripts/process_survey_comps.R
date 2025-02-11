@@ -4,6 +4,8 @@
 
 require(dplyr)
 require(ggplot2)
+# get age_bin and len_bin
+source("Rscripts/bins.R")
 
 dir_wcgbts <- here::here("Data/Raw_not_confidential/wcgbts")
 dir_tri <- here::here("Data/Raw_not_confidential/triennial")
@@ -97,8 +99,6 @@ yt_n_survey_bio |> dplyr::filter(Sex != "U") |>
   guides(colour = guide_legend(override.aes = list(alpha = 1)))
 ggsave(file.path(dir_wcgbts, "wcgbts_weight_at_length.png"))
 
-# get age_bin and len_bin
-source("Rscripts/bins.R")
 
 # now create comps
 
@@ -207,36 +207,7 @@ yt_n_survey_catch |> dplyr::filter(Trawl_id == 201303017092) |> dplyr::select(ti
 # 1           60.25            1348.9
 
 # age comps (conditional) 
-wcgbts_caal <- nwfscSurvey::SurveyAgeAtLen.fn(
-  datAL = yt_n_survey_bio, 
-  datTows = yt_n_survey_catch,
-  strat.df = strata,
-  lgthBins = len_bin, 
-  ageBins = age_bin,
-  dir = dir_wcgbts,
-  month = 7,
-  fleet = 999,
-  ageerr = 1)
-
-# check sample size by sex (confirm that we can ignore unsexed)
-purrr::map(wcgbts_caal, ~ sum(.$input_n)) 
-# $female
-# [1] 3014
-
-# $male
-# [1] 3158
-
-# $unsexed
-# [1] 14
-wcgbts_caal$unsexed$year
-# [1] 2007 2007 2007 2007 2007 2007 2012 2014
-
-wcgbts_caal_for_ss3 <- rbind(wcgbts_caal$female, wcgbts_caal$male)
-saveRDS(wcgbts_caal_for_ss3, file = here::here("Data/Processed/ss3_wcgbts_caal_comps.rds"))
-
-# testing new function Chantel is adding to nwfscSurvey (as of 29 Jan 2025)
-if (FALSE) {
-wcgbts_caal2 <- nwfscSurvey::get_raw_caal(
+wcgbts_caal <- nwfscSurvey::get_raw_caal(
   data = yt_n_survey_bio, 
   len_bins = len_bin, 
   age_bins = age_bin,
@@ -246,17 +217,9 @@ wcgbts_caal2 <- nwfscSurvey::get_raw_caal(
   month = 7,
   fleet = 999,
   ageerr = 1)
+saveRDS(wcgbts_caal, file = here::here("Data/Processed/ss3_wcgbts_caal_comps.rds"))
 
-wcgbts_caal_U <- yt_n_survey_bio |> 
-  dplyr::mutate(Sex = "U") |> 
-  nwfscSurvey::get_raw_caal(
-    len_bins = len_bin, 
-    age_bins = age_bin,
-    length_column_name = "length_cm",
-    age_column_name = "age", 
-    month = 7,
-    fleet = 999,
-    ageerr = 1
-  )
-
-}
+# confirm that there are very few unsexed fish:
+table(yt_n_survey_bio$Sex)
+#    F    M    U
+# 7845 9462   22
