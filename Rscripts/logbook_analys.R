@@ -41,7 +41,8 @@ all_hauls_yt <- bind_rows(list(obs = observer_yt, em = em_yt), .id = 'program') 
          fyear = factor(YEAR), log_duration = log(HAUL_DURATION),
          cpue = MT/HAUL_DURATION, month = lubridate::month(as.Date(SET_DATE)),
          fDRVID = factor(DRVID), fport = factor(R_PORT),
-         program = factor(program)) # note D_PORT is NA in some cases, R_PORT is always defined (fish ticket)
+         program = factor(program),
+         area = factor(ifelse(AVG_LAT > 46.2, 'North', 'South'))) # note D_PORT is NA in some cases, R_PORT is always defined (fish ticket)
 
 nrow(filter(all_hauls_yt, MT>0)) / nrow(all_hauls_yt)
 # good to monitor % positive hauls. This is pretty high (70%).
@@ -51,7 +52,7 @@ plot(yt_mesh)
 # this does not look like a st model is a good idea. very clear "hotspots" of fishing effort.
 # but we need it for sdmTMB to work (not actually used)
 
-mod_simple <- sdmTMB::sdmTMB(formula = cpue ~ fyear + s(depth_std) + s(month, bs = 'cc') + program + (1|fDRVID) + (1|fport) - 1, family = sdmTMB::delta_lognormal(),
+mod_simple <- sdmTMB::sdmTMB(formula = cpue ~ fyear + s(depth_std) + s(month, bs = 'cc') + program + (1|fDRVID) + (1|fport) - 1 + area, family = sdmTMB::delta_lognormal(),
                              data = all_hauls_yt, spatial = 'off', spatiotemporal = 'off', time = 'fyear', mesh = yt_mesh)
 
 summary(mod_simple)
@@ -67,7 +68,7 @@ sdmTMB::visreg_delta(mod_simple, xvar = "month", model = 1, gg = TRUE)
 sdmTMB::visreg_delta(mod_simple, xvar = "month", model = 2, gg = TRUE)
 
 preds <- predict(mod_simple, 
-                 newdata = tibble(fyear = factor(2012:2023), depth_std = 0, month = 6, program = 'obs', fDRVID = '546053', fport = 'NEWPORT'), 
+                 newdata = tibble(fyear = factor(2012:2023), depth_std = 0, month = 6, program = 'obs', area = 'North', fDRVID = '546053', fport = 'NEWPORT'), 
                  return_tmb_object = TRUE, re_form = NA, re_form_iid = NA)
 
 ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68)

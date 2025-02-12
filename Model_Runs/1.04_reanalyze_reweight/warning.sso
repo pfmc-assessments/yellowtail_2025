@@ -5,8 +5,7 @@ Warning 2 : parameter init value is less than parameter min 0.4997 < 0.5 for par
 Warning 3 : fleet: 2 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 39
 Warning 4 : fleet: 5 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 9
 Warning 5 Adjustment: Fleet: 5  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 10
-Warning 6 : Final gradient: 0.000676749 is larger than final_conv: 1e-05
-Warning 7 : Early recdev biasadj is >2 times ratio of rmse to sigmaR
+Warning 6 : Final gradient: 0.00271527 is larger than final_conv: 1e-05
 Note 3 Information: A revised protocol for the Fcast_yr specification is available and recommended.
-Note 4 Information:  N parameters that are on or within 1% of min-max bound: 2; check results, variance may be suspect
- 7 warnings  and 4 notes 
+Note 4 Information:  N parameters that are on or within 1% of min-max bound: 3; check results, variance may be suspect
+ 6 warnings  and 4 notes 

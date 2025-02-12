@@ -204,15 +204,15 @@ Note that the 2017 assessment did not include foreign landings. This foreign rec
 
 WDFW has alerted the STAT these do not include all tribal catches in recent years. 1981-2000 are from the UPOP/URCK reconstruction, summing catches for YTRK and YTR1. 2001 onward comes from PacFIN
 
-Oregon landings were provided directly to the STAT from ODFW and come from PacFIN and a UPOP/URCK reconstruction. 
+Oregon landings were provided directly to the STAT from ODFW and come from PacFIN and a UPOP/URCK reconstruction.
 
 California landings are for catch landed into Del Norte and Humboldt counties only. Data sources are:
 
-- Ralston et al. (2010) + supplementary catch from OR waters: 1916 - 1968
-- CALCOM: 1969 - 1980
-- PacFIN: 1981 - present
+-   Ralston et al. (2010) + supplementary catch from OR waters: 1916 - 1968
+-   CALCOM: 1969 - 1980
+-   PacFIN: 1981 - present
 
-In the Ralston et al. (2010) reconstruction, the northernmost region (region 2) includes Crescent City, Eureka AND Fort Bragg port area groups. Catch in the Crescent City and Eureka port area groups (i.e., Del Norte and Humboldt counties) is estimated based on the fraction of catch in Crescent City and Eureka divided by catch in all of region 2 during the first five years of CALCOM. The vast majority of the catch is in the two northern port areas (`r round(calcom_ratio$pct_n_40_10 * 100, 0)`\%). All supplementary catches in the Ralston reconstruction caught off the coast of Oregon, but landed into California are included. 
+In the Ralston et al. (2010) reconstruction, the northernmost region (region 2) includes Crescent City, Eureka AND Fort Bragg port area groups. Catch in the Crescent City and Eureka port area groups (i.e., Del Norte and Humboldt counties) is estimated based on the fraction of catch in Crescent City and Eureka divided by catch in all of region 2 during the first five years of CALCOM. The vast majority of the catch is in the two northern port areas (`r round(calcom_ratio$pct_n_40_10 * 100, 0)`%). All supplementary catches in the Ralston reconstruction caught off the coast of Oregon, but landed into California are included.
 
 ### At-Sea landings
 
@@ -440,11 +440,12 @@ rec_landings |>
 ```
 
 #### Method for converting historical WA catches from numbers to weight
+
 We are planning to use WA (mt) for all years, but show WA (num) to compare with raw data.
 
 From WA sport biodata, calculate average length of samples collected prior to 1990. This included 48 samples from 1979, 1981, and 1982. The next available samples are in 1995, so we did not use length data from samples in years shortly after the historical reconstruction applies.
 
-Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data. 
+Calculate average weight using the unsexed version of the weight-length relationship calculated from WCGBTS data.
 
 Catches in 1971 and 1974 are not available, so are calculated as the average of the two previous and two subsequent years.
 
@@ -500,7 +501,6 @@ ss3_landings |>
   filter(year < 2017) |>
   saveRDS(file = here('Data/Processed/ss3_landings_2016.rds'))
 ```
-
 
 ## Comp Data
 

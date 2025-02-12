@@ -24,16 +24,14 @@ author:
         postal-code: '98112-2097'
   - name: 'Alison D. Whitman'
     affiliations:
-      - name: 'NOAA Fisheries Oregon Department of Fish and Wildlife'
+      - name: 'Oregon Department of Fish and Wildlife'
         address: '2040 Southeast Marine Science Drive'
         city: 'Newport'
         state: 'OR'
         postal-code: '97365'
-  - name: 'NA'
-    affiliations: NO AFFILIATION
-  - name: 'Tien-Shui Tsou'
+  - name: 'Fabio P. Caltabellotta'
     affiliations:
-      - name: 'NOAA Fisheries Washington Department of Fish and Wildlife'
+      - name: 'Washington Department of Fish and Wildlife'
         address: '600 Capital Way North'
         city: 'Olympia'
         state: 'WA'
@@ -167,7 +165,7 @@ R0 <- output |>
 
 Please cite this publication as: 
 
-Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta, T. Tsou. Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$) in 2025.2025. Prepared by [COMMITTEE]. [XX] p.
+Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$) in 2025. Prepared by [COMMITTEE]. [XX] p.
 
  {{< pagebreak >}} 
 

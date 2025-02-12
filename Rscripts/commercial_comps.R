@@ -3,14 +3,31 @@ library(dplyr)
 
 # PacFIN comps ------------------------------------------------------------
 
+# 2017 PacFIN data looks very different, cannot expand.
+# FREQ is only ever 1. Phew.
+# load('q:/assessments/currentassessments/yellowtail_rockfish_north/data/commercial/pacfin_6-3-2017/PacFIN.YTRK.bds.25.Apr.2017.dmp')
+# bds.pacfin <- PacFIN.YTRK.bds.25.Apr.2017
+# raw_comps_2017 <- bds.pacfin |> filter(!is.na(age1)) |>
+#   rename(year = SAMPLE_YEAR) |>
+#   nwfscSurvey::get_raw_comps(comp_column_name = 'age1', comp_bins = age_bin, input_n_method = 'tows')
+
 # read CONFIDENTIAL file with PacFIN BDS data
 load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
 # load processed catch by year/fleet
 comm_catch <- readRDS('Data/processed/catch_wide.rds') |>
-  rename(year = YEAR) 
+  rename(year = YEAR) |>
+  select(-Foreign)
+
+# TODO: sort out foreign catch (maybe already completed by Kiva)
+# for now just removing from the catch file
+# KO: was not planning on allocating that to states, just ignoring it for the purposes of comp expansions
+# It is only available by INFPC area anyway, which doesn't map exactly onto states.
+
 # clean pacfin within inputs specific to Yellowtail Rockfish
 bds_clean <- pacfintools::cleanPacFIN(bds.pacfin,
+                                      keep_sample_type = c('M', 'S'),
                                       keep_age_method = c('B', 'S')) |>
+  filter(SAMPLE_TYPE == 'M' | (state == 'OR' & year <= 1986)) |>  # keep old OR special request
   mutate(fleet = 1)  # assign everything to fleet 1
 
 # get weight-length parameters processed elsewhere
@@ -19,20 +36,18 @@ w_l_pars <- read.csv('Data/processed/W_L_pars.csv') |>
 # get age_bin and len_bin
 source("Rscripts/bins.R")
 
-# TODO: sort out foreign catch (maybe already completed by Kiva)
-# for now just removing from the catch file
-comm_catch <- comm_catch |> dplyr::select(-Foreign)
-
 # run expansions
 pacfin_exp <- bds_clean |>
-  filter(SEX != 'U', # most fish (even length-only) are sexed
-         year < 2024) |>
+  filter(year < 2024,
+         SEX != 'U') |> # sample sizes are not calculated separately for sexed and unsexed rows. 
+                        # need to do a whole separate expansion for unsexed (length only) data
   # exclude WA surface reads. OR surface reads are actually 'B', per email with ODFW.
-  mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |>
+  mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |> 
+  as.data.frame() |> 
   pacfintools::get_pacfin_expansions(Catch = comm_catch, 
                                           weight_length_estimates = w_l_pars, 
                                           stratification.cols = 'state', 
-                                          Units = 'MT', maxExp = 0.9)
+                                          Units = 'MT', maxExp = 0.8)
 
 # create length comps for SS3
 length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
@@ -45,7 +60,6 @@ length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
     comp_bins = len_bin # sourced above
   )
 
-
 age_comps_ss3 <- filter(pacfin_exp, !is.na(Age)) |>
   pacfintools::getComps(
     Comps = "AGE",
@@ -53,11 +67,13 @@ age_comps_ss3 <- filter(pacfin_exp, !is.na(Age)) |>
   ) |>
   pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_acomps_2023.csv', 
+    month = 7, 
     comp_bins = age_bin # sourced above
   )
 
-# TODO: save the results using a command like the following:
-# saveRDS(age_comps_ss3, file = 'Data/processed/ss3_pacfin_comps_2023.rds')
+age_comps_raw <- bds_clean |> 
+  filter(!is.na(Age)) |>
+  nwfscSurvey::get_raw_comps(comp_column_name = 'Age', comp_bins = age_bin, input_n_method = 'tows')
 
 # ASHOP comps -------------------------------------------------------------
 
