@@ -25,13 +25,13 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 Some summary figures:
 
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/commercial/pacfin_12-11-2024/PacFIN.YTRK.CompFT.11.Dec.2024.RData'))
+load(here('data/confidential/commercial/pacfin-02-13-2025/PacFIN.YTRK.CompFT.13.Feb.2025.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
   filter(
     AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | COUNTY_NAME == 'DEL NORTE' | COUNTY_NAME == 'HUMBOLDT', # OR, WA, N. CA
-    LANDING_YEAR < 2024
+    LANDING_YEAR < 2025
   )
 
 # OR landings time series
@@ -63,7 +63,7 @@ comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")
   mutate(model = '2017') 
 
 # Use WA reconstruction from 2017 assessment
-WA_hist_2017 <- filter(comm2017, AGENCY_CODE == 'W') |>
+WA_hist_2017 <- filter(comm2017, AGENCY_CODE == 'W', Year < 1981) |>
   select(YEAR = Year, catch_mt, AGENCY_CODE)
 
 # CA historical
@@ -118,7 +118,7 @@ foreign <- read.csv(here('Data/raw_not_confidential/foreign_catch.csv')) |>
 
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
-  filter(AGENCY_CODE != 'O',
+  filter(AGENCY_CODE != 'O' | PACFIN_YEAR == 2024,
          AGENCY_CODE != 'W' | PACFIN_YEAR >= 2001
          ) |> 
   group_by(PACFIN_YEAR, AGENCY_CODE)|>
@@ -217,10 +217,15 @@ In the Ralston et al. (2010) reconstruction, the northernmost region (region 2) 
 ### At-Sea landings
 
 ```{r ashop-catch}
-ashop_catch <- readxl::read_excel(
-  here("Data/Confidential/ASHOP/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
-  sheet = 'Catch Summary Table') |>
-  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000)
+ashop_catch <- bind_rows(
+  readxl::read_excel(
+    here("Data/Confidential/ASHOP/Oken_YLT_Catch data_1976-2023_102824_ASHOP.xlsx"), 
+    sheet = 'Catch Summary Table'),
+  readxl::read_excel(
+    here("Data/Confidential/ASHOP/Oken_YLT_Catch data_2024_020425.xlsx"), 
+    sheet = '2024_Summary Table')
+  )|>
+  mutate(catch_mt = EXPANDED_SumOfEXTRAPOLATED_2SECTOR_WEIGHT_KG / 1000) 
 
 # compare to 2017
 dat2017 <- r4ss::SS_readdat(here('Model_Runs/1.02_base_2017_3.30.23/YTRK.NORTH.data.ss'))
@@ -250,8 +255,8 @@ ashop_catch |>
 
 ```{r rec-catch-modern}
 # WASHINGTON
-wa_modern <- read.csv(here('Data/Confidential/Rec/CTE501-WASHINGTON-1990---2023.csv')) |> 
-  filter(RECFIN_WATER_AREA_NAME != 'CANADA', RECFIN_YEAR <= 2023, 
+wa_modern <- read.csv(here('Data/Confidential/Rec/CTE501-WASHINGTON-1990---2024.csv')) |> 
+  filter(RECFIN_WATER_AREA_NAME != 'CANADA', 
          RECFIN_CATCH_AREA_NAME != 'SEKIU AND PILLAR POINT') |> 
   tibble::as_tibble() |> 
   group_by(RECFIN_YEAR) |> 
@@ -311,7 +316,7 @@ urck_ca_2020 <- read.csv(here('Data/Raw_not_confidential/genus_allocate_2025_ass
 proxy_ca_2020 <- readxl::read_excel(here('Data/Raw_not_confidential/CDFWRec_YellowtailRF N 40 10_AvgProxyValuesApr-Jun2020.xlsx')) |>
   summarise(catch_mt = sum(`Proxy Average Value (mt)`))
 
-ca_modern <- read.csv(here('Data/Raw_not_confidential/RecFIN_CA_catch_to_2023.csv')) |>
+ca_modern <- read.csv(here('Data/Raw_not_confidential/CTE001-California-1990---2024.csv')) |>
   filter(grepl("Redwood", DISTRICT_NAME)) |>
   tibble::as_tibble() |>
   group_by(RECFIN_YEAR) |>
@@ -475,11 +480,7 @@ rec_landings_ss3 <- rec_landings |>
   summarise(catch = sum(Dead_Catch)) |>
   rename(YEAR = RECFIN_YEAR) 
 
-comm_landings_ss3 <- comm2017 |>
-  filter(AGENCY_CODE == 'W', Year < 1981) |>
-  rename(YEAR = Year) |>
-  bind_rows(comm_draft_landings) |> 
-  select(-model) |>
+comm_landings_ss3 <- comm_draft_landings |> 
   group_by(YEAR) |>
   summarise(catch = sum(catch_mt))
 
@@ -496,10 +497,6 @@ ss3_landings <- bind_rows(
 
 ss3_landings |>
   saveRDS(file = here('Data/Processed/ss3_landings_2023.rds'))
-
-ss3_landings |>
-  filter(year < 2017) |>
-  saveRDS(file = here('Data/Processed/ss3_landings_2016.rds'))
 ```
 
 ## Comp Data
@@ -509,13 +506,13 @@ ss3_landings |>
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/Commercial/pacfin_12-11-2024/PacFIN.YTRK.bds.11.Dec.2024.RData'))
+load(here('Data/Confidential/Commercial/pacfin-02-13-2025/PacFIN.YTRK.bds.13.Feb.2025.RData'))
 bds_clean <- pacfintools::cleanPacFIN(bds.pacfin, keep_age_method = c('B', 'S'), verbose = FALSE) 
 
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
            PACFIN_GROUP_PORT_CODE == 'ERA', geargroup != 'XXX') |> 
-  filter(year < 2024) |>
+  filter(year < 2025) |>
   group_by(state, year) |>
   summarise(n_length = sum(!is.na(length))) |>
   tidyr::pivot_wider(names_from = state, values_from = n_length, values_fill = 0) |>
@@ -532,7 +529,7 @@ Age sample sizes:
 bds_clean |>
   filter(state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' |
            PACFIN_GROUP_PORT_CODE == 'ERA') |> 
-  filter(year < 2024) |>
+  filter(year < 2025) |>
   group_by(state, year) |>
   summarise(n_length = sum(!is.na(Age))) |>
   tidyr::pivot_wider(names_from = state, values_from = n_length, values_fill = 0) |>
@@ -544,7 +541,8 @@ bds_clean |>
 
 #### Comparing midwater vs bottom trawl lengths and ages
 
-The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages.
+The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). 
+<!-- Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages. -->
 
 ```{r pacfin-midwater-vs-bottom-figs}
 # create separate geargroup2 column which separates midwater from bottom trawl
@@ -676,8 +674,11 @@ ashop_lengths_new <- suppressWarnings(
   readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
                      sheet = "YLT_Length data1990-2023") # warning is about converting text to numeric
 )
+ashop_lengths_2024 <- readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_2024_020425.xlsx")) |>
+  mutate(HAUL_JOIN = as.numeric(HAUL_JOIN),
+         PERMIT = as.character(PERMIT))
 
-bind_rows(ashop_lengths_old, ashop_lengths_new) |>
+bind_rows(ashop_lengths_old, ashop_lengths_new, ashop_lengths_2024) |>
   group_by(YEAR) |>
   summarise(n_length = sum(FREQUENCY)) |>
   knitr::kable(align = 'l')
