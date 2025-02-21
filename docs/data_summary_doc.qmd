@@ -35,13 +35,13 @@ yt_n_catch_pacfin <- catch.pacfin |>
   )
 
 # OR landings time series
-or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial landings_433_2023.csv")) |>
+or_comm_catch <- read.csv(here("Data/Confidential/commercial/Oregon Commercial landings_433_2024.csv")) |>
   tibble::as_tibble() |>
   group_by(YEAR) |>
   summarise(catch_mt = sum(TOTAL)) |>
   mutate(AGENCY_CODE = 'O')
 
-# WA URCK/UPOP reconstruction, use prior to 2000
+# WA URCK/UPOP reconstruction, use 1981-2000
 wa_urck <- read.csv(here('Data/Confidential/Commercial/WA_URCK_UPOP_recon_1981-2016.csv')) |>
   filter(Species_AfterComps %in% c('YTRK', 'YTR1'), 
          Year < 2001) |> 
@@ -50,21 +50,17 @@ wa_urck <- read.csv(here('Data/Confidential/Commercial/WA_URCK_UPOP_recon_1981-2
   mutate(AGENCY_CODE = 'W') |>
   rename(YEAR = Year)
 
-# 2017 assessment landings
-comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
-  as_tibble() |>
-  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
-  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
-         W = as.numeric(stringr::str_remove(WA, ',')),
-         C = CA.North..MT. + CA.North.Hist..MT.) |> 
-  select(Year, W, C, O) |>
-  # filter(Year >= 1981) |>
-  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
-  mutate(model = '2017') 
-
-# Use WA reconstruction from 2017 assessment
-WA_hist_2017 <- filter(comm2017, AGENCY_CODE == 'W', Year < 1981) |>
-  select(YEAR = Year, catch_mt, AGENCY_CODE)
+# WA historical reconstruction
+wa_hist <- read.csv(here('Data/Confidential/Commercial/SpeciesSumOutput2_2017.csv')) |> 
+  filter(SPID == 'YTRK' | SPID == 'YTR1') |> 
+  group_by(Year) |>
+   summarise(catch_mt = #format(
+    sum(SpeciesPounds, na.rm = TRUE) * 0.453592 / 1000, 
+    #scientific = FALSE),
+    ) |>
+  filter(Year < 1981) |>
+  rename(YEAR = Year) |>
+  mutate(AGENCY_CODE = 'W')
 
 # CA historical
 calcom_full <- readxl::read_excel(
@@ -118,7 +114,7 @@ foreign <- read.csv(here('Data/raw_not_confidential/foreign_catch.csv')) |>
 
 # Put it all together
 comm_draft_landings <- yt_n_catch_pacfin |> 
-  filter(AGENCY_CODE != 'O' | PACFIN_YEAR == 2024,
+  filter(AGENCY_CODE != 'O',
          AGENCY_CODE != 'W' | PACFIN_YEAR >= 2001
          ) |> 
   group_by(PACFIN_YEAR, AGENCY_CODE)|>
@@ -127,7 +123,7 @@ comm_draft_landings <- yt_n_catch_pacfin |>
   bind_rows(
     or_comm_catch,
     wa_urck,
-    WA_hist_2017,
+    wa_hist,
     calcom,
     ralston_comm,
     foreign
@@ -166,6 +162,19 @@ yt_n_catch_pacfin |>
   # viridis::scale_fill_viridis(discrete = TRUE) # colors were hard to see in viridis
 
 # compare 2017 landings to current landings, by state
+
+# 2017 assessment landings
+comm2017 <- read.csv(here("Data/Raw_not_confidential/commercial_catch_2017.csv")) |> 
+  as_tibble() |>
+  tidyr::replace_na(list(Mirick.reconstructed.POP1.URCK = 0)) |>
+  mutate(O = OR.Recent..MT. + Mirick.reconstructed.POP1.URCK + OR.Hist..MT.,
+         W = as.numeric(stringr::str_remove(WA, ',')),
+         C = CA.North..MT. + CA.North.Hist..MT.) |> 
+  select(Year, W, C, O) |>
+  # filter(Year >= 1981) |>
+  tidyr::pivot_longer(-Year, names_to = 'AGENCY_CODE', values_to = 'catch_mt') |>
+  mutate(model = '2017') 
+
 comm_draft_landings |>
   rename(Year = YEAR) |>
   mutate(model = 'current') |>
@@ -282,6 +291,9 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
   group_by(RECFIN_YEAR) |>
   summarise(`WA (num)` = sum(RETAINED_NUM)) |>
   bind_rows(
+    # data originally emailed by T. Tsou 1/28/25.
+    # corrected by T. Tsou and F. Caltabellotta 2/18/25
+    # Bargmann, G.G. 1977. The recreational hook and line fishery for marine fish in Washington 196801973. Washington Department of Fisheries, Progress Report No. 33.
     {read.csv(here("Data/Raw_not_confidential/WA_historical_rec_addition.csv")) |>
         group_by(Year) |>
         summarise(`WA (num)` = sum(Total)) |>
@@ -289,7 +301,9 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
     }
   ) |>
   arrange(RECFIN_YEAR) |>
-  mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^ W_L_pars_unsexed$B) * `WA (num)`)
+  mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^
+                        W_L_pars_unsexed$B) * `WA (num)`
+  )
 
 wa_historical_interpolate <- tibble(
   Dead_Catch = c(mean(wa_historical$`WA (mt)`[wa_historical$RECFIN_YEAR %in% c(1969, 1970, 1972, 1973)]),
@@ -299,7 +313,7 @@ wa_historical_interpolate <- tibble(
 
 
 # OREGON
-or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landings_433_2023.csv")) |>
+or_rec_catch <- read.csv(here("Data/Confidential/Rec/Oregon Recreational landings_433_2024.csv")) |>
   tibble::as_tibble() |>
   mutate(State = 'OR (mt)') |>
   select(RECFIN_YEAR = Year, Dead_Catch = Total_MT, State)
@@ -541,8 +555,7 @@ bds_clean |>
 
 #### Comparing midwater vs bottom trawl lengths and ages
 
-The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). 
-<!-- Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages. -->
+The length and age distribution associated with the midwater trawl (MDT) code in PacFIN is is very similar to bottom trawl catch (everything else in the TWL gear group). <!-- Note that the sample sizes for ages in 2022-2024 are lower than other years, especially midwater in 2022 which only has 14 ages. -->
 
 ```{r pacfin-midwater-vs-bottom-figs}
 # create separate geargroup2 column which separates midwater from bottom trawl

@@ -1,5 +1,5 @@
 #C file created using an r4ss function
-#C file write time: 2025-01-16  12:20:08
+#C file write time: 2025-02-18  17:47:40
 #
 0 # 0 means do not read wtatage.ss; 1 means read and usewtatage.ss and also read and use growth parameters
 1 #_N_Growth_Patterns
@@ -19,9 +19,9 @@
 3 #_Nblock_Patterns
 10 1 1 #_blocks_per_pattern
 #_begin and end years of blocks
-2002 2002 2003 2003 2004 2004 2005 2005 2006 2006 2007 2007 2008 2008 2009 2009 2010 2010 2011 2023
-2002 2023
-2003 2023
+2002 2002 2003 2003 2004 2004 2005 2005 2006 2006 2007 2007 2008 2008 2009 2009 2010 2010 2011 2024
+2002 2024
+2003 2024
 #
 # controls for all timevary parameters 
 1 #_env/block/dev_adjust_method for all time-vary parms (1=warn relative to base parm bounds; 3=no bound check)
@@ -94,7 +94,7 @@
 #_no timevary SR parameters
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1962 # first year of main recr_devs; early devs can preceed this era
-2014 # last year of main recr_devs; forecast devs start in following year
+2018 # last year of main recr_devs; forecast devs start in following year
 2 #_recdev phase
 1 # (0/1) to read 13 advanced options
 1932 #_recdev_early_start (0=none; neg value makes relative to recdev_start)
@@ -126,19 +126,15 @@
 #
 #_Q_setup for fleets with cpue or survey data
 #_fleet	link	link_info	extra_se	biasadj	float  #  fleetname
-    1	1	0	0	0	1	#_CommercialTrawl
-    2	1	0	0	0	1	#_HakeByCatch    
-    5	1	0	1	0	1	#_Triennial      
-    6	1	0	1	0	1	#_NWFSCcombo     
--9999	0	0	0	0	0	#_terminator     
+    5	1	0	1	0	1	#_Triennial 
+    6	1	0	1	0	1	#_NWFSCcombo
+-9999	0	0	0	0	0	#_terminator
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_CommercialTrawl(1)
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_HakeByCatch(2)    
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)      
-  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5)     
--30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_NWFSCcombo(6)     
-  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_NWFSCcombo(6)    
+-30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)  
+  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5) 
+-30	 15	 -15	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_NWFSCcombo(6) 
+  0	0.5	0.01	0	1	0	 1	0	0	0	0	0	0	0	#_Q_extraSD_NWFSCcombo(6)
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -183,10 +179,10 @@
   -5	20	     20	 0	99	0	 -4	0	0	0	0	0	3	2	#_SizeSel_P_4_RecORandCA(3)        
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_5_RecORandCA(3)        
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_6_RecORandCA(3)        
-  20	55	     55	 0	99	0	 -6	0	0	0	0	0	3	2	#_SizeSel_P_1_RecWA(4)             
- -20	70	    -20	 0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_2_RecWA(4)             
-  -5	20	  5.365	 0	99	0	  6	0	0	0	0	0	3	2	#_SizeSel_P_3_RecWA(4)             
-  -5	70	     20	 0	99	0	 -4	0	0	0	0	0	3	2	#_SizeSel_P_4_RecWA(4)             
+  20	55	     55	 0	99	0	-99	0	0	0	0	0	3	2	#_SizeSel_P_1_RecWA(4)             
+ -20	70	    -20	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_2_RecWA(4)             
+  -5	20	  5.365	 0	99	0	-99	0	0	0	0	0	3	2	#_SizeSel_P_3_RecWA(4)             
+  -5	70	     20	 0	99	0	-99	0	0	0	0	0	3	2	#_SizeSel_P_4_RecWA(4)             
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_5_RecWA(4)             
 -999	25	   -999	 0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_6_RecWA(4)             
   20	55	     55	 0	99	0	 -1	0	0	0	0	0	0	0	#_SizeSel_P_1_Triennial(5)         
@@ -205,22 +201,22 @@
 #_No age_selex_parm
 # timevary selex parameters 
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE
--10	20	  2.22742	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2002
--10	20	  3.70725	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2003
--10	20	  1.12665	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2004
--10	20	-0.119847	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2005
--10	20	  1.76073	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2006
--10	20	  -0.5268	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2007
--10	20	  2.39693	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2008
--10	20	 0.475635	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2009
--10	20	 0.138629	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2010
--10	20	  7.37535	3	99	0	6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2011
- 20	55	    31.22	0	99	0	6	#_SizeSel_P_1_RecORandCA(3)_BLK3repl_2003        
- -5	20	    2.904	0	99	0	6	#_SizeSel_P_3_RecORandCA(3)_BLK3repl_2003        
- -5	20	    4.248	0	99	0	6	#_SizeSel_P_4_RecORandCA(3)_BLK3repl_2003        
- 20	55	    33.46	0	99	0	6	#_SizeSel_P_1_RecWA(4)_BLK3repl_2003             
- -5	20	    2.726	0	99	0	6	#_SizeSel_P_3_RecWA(4)_BLK3repl_2003             
- -5	70	    8.841	0	99	0	6	#_SizeSel_P_4_RecWA(4)_BLK3repl_2003             
+-10	20	  2.22742	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2002
+-10	20	  3.70725	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2003
+-10	20	  1.12665	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2004
+-10	20	-0.119847	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2005
+-10	20	  1.76073	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2006
+-10	20	  -0.5268	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2007
+-10	20	  2.39693	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2008
+-10	20	 0.475635	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2009
+-10	20	 0.138629	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2010
+-10	20	  7.37535	3	99	0	  6	#_SizeSel_PRet_3_CommercialTrawl(1)_BLK1repl_2011
+ 20	55	    31.22	0	99	0	  6	#_SizeSel_P_1_RecORandCA(3)_BLK3repl_2003        
+ -5	20	    2.904	0	99	0	  6	#_SizeSel_P_3_RecORandCA(3)_BLK3repl_2003        
+ -5	20	    4.248	0	99	0	  6	#_SizeSel_P_4_RecORandCA(3)_BLK3repl_2003        
+ 20	55	    33.46	0	99	0	-99	#_SizeSel_P_1_RecWA(4)_BLK3repl_2003             
+ -5	20	    2.726	0	99	0	-99	#_SizeSel_P_3_RecWA(4)_BLK3repl_2003             
+ -5	70	    8.841	0	99	0	-99	#_SizeSel_P_4_RecWA(4)_BLK3repl_2003             
 # info on dev vectors created for selex parms are reported with other devs after tag parameter section
 #
 0 #  use 2D_AR1 selectivity(0/1):  experimental feature
@@ -231,16 +227,17 @@
 #
 # Input variance adjustments factors: 
 #_factor	fleet	value
-    4	1	0.261873	#_Variance_adjustment_list1 
-    4	2	0.232302	#_Variance_adjustment_list2 
-    4	3	 0.01348	#_Variance_adjustment_list3 
+    4	1	0.115236	#_Variance_adjustment_list1 
+    4	2	0.227741	#_Variance_adjustment_list2 
+    4	3	0.014364	#_Variance_adjustment_list3 
     4	4	 0.03222	#_Variance_adjustment_list4 
-    4	5	0.039075	#_Variance_adjustment_list5 
-    4	6	0.027566	#_Variance_adjustment_list6 
-    5	1	0.507381	#_Variance_adjustment_list7 
-    5	4	0.023784	#_Variance_adjustment_list8 
-    5	5	0.091498	#_Variance_adjustment_list9 
-    5	6	0.263566	#_Variance_adjustment_list10
+    4	5	0.037147	#_Variance_adjustment_list5 
+    4	6	 0.07516	#_Variance_adjustment_list6 
+    5	1	       1	#_Variance_adjustment_list7 
+    5	4	0.021984	#_Variance_adjustment_list8 
+    5	5	0.177343	#_Variance_adjustment_list9 
+    5	6	0.259467	#_Variance_adjustment_list10
+    5	3	0.012674	#_Variance_adjustment_list11
 -9999	0	       0	#_terminator                
 #
 5 #_maxlambdaphase

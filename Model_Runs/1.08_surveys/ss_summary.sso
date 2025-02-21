@@ -1,7 +1,7 @@
 #V3.30.23.1;_safe;_compile_date:_Dec  5 2024;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_13.2
 YTRK.North.data.ss #_DataFile 
 YTRK.North.control.ss #_Control 
-Run_Date: Tue Feb 11 11:00:25 2025
+Run_Date: Tue Feb 18 17:16:43 2025
 Final_phase: 6  N_iterations: 520
 #_LIKELIHOOD 
 Label logL*Lambda

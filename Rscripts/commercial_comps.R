@@ -24,12 +24,13 @@ comm_catch <- readRDS('Data/processed/catch_wide.rds') |>
 # It is only available by INFPC area anyway, which doesn't map exactly onto states.
 
 # clean pacfin within inputs specific to Yellowtail Rockfish
-bds_clean <- pacfintools::cleanPacFIN(bds.pacfin,
-                                      keep_sample_type = c('M', 'S'),
-                                      keep_age_method = c('B', 'S')) |>
-  filter(SAMPLE_TYPE == 'M' | (state == 'OR' & year <= 1986)) |>  # keep old OR special request
-  mutate(fleet = 1)  # assign everything to fleet 1
-
+bds_clean <- bds.pacfin |>
+  pacfintools::cleanPacFIN(keep_sample_type = c('M', 'S'),
+                           keep_age_method = c('B', 'S')) |>
+  mutate(fleet = 1) |> # assign everything to fleet 1
+  filter(SAMPLE_TYPE == 'M' | (state == 'OR' & SAMPLE_YEAR <= 1986),  # keep old OR special request
+         state == 'WA' | state == 'OR' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA') # only y-t north
+  
 # get weight-length parameters processed elsewhere
 w_l_pars <- read.csv('Data/processed/W_L_pars.csv') |>
   select(-n)
@@ -71,9 +72,23 @@ age_comps_ss3 <- filter(pacfin_exp, !is.na(Age)) |>
     comp_bins = age_bin # sourced above
   )
 
-age_comps_raw <- bds_clean |> 
-  filter(!is.na(Age)) |>
-  nwfscSurvey::get_raw_comps(comp_column_name = 'Age', comp_bins = age_bin, input_n_method = 'tows')
+# unexpanded PacFIN comps (for consistency with 2017 assessment)
+
+bds_clean |>
+  rename(trawl_id = SAMPLE_NO) |>
+  filter(!is.na(Age), SEX != 'U') |>
+  nwfscSurvey::get_raw_comps(comp_column_name = 'Age', comp_bins = age_bin, 
+                             input_n_method = 'tows', month = 7, fleet = 1, ageerr = 1) |>
+  `names<-`(NULL) |>
+  as.data.frame() |> 
+  saveRDS(file = 'data/processed/pacfin_acomps_raw.rds')
+
+bds_clean |>
+  rename(trawl_id = SAMPLE_NO) |> 
+  nwfscSurvey::get_raw_comps(comp_column_name = 'lengthcm', comp_bins = len_bin, input_n_method = 'tows',
+                             month = 7, fleet = 1) |>
+  bind_rows() |> 
+  saveRDS(file = 'data/processed/pacfin_lcomps_raw.rds')
 
 # ASHOP comps -------------------------------------------------------------
 
