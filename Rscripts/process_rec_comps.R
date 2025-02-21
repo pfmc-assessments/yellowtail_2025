@@ -3,50 +3,54 @@
 # code copied from rec bio section of /docs/data_summary_doc.qmd
 # then modified and expanded
 
-
-# dir("Data/Confidential/Rec")
-
-# # files with rec catch
-# "CTE501-WASHINGTON-1990---2023.csv"
-# "Oregon Recreational landings_433_2023.csv"
-
-# # files with MRFSS bio data
-# "MRFSS_BIO_2025 CYCLE_433.csv"              # rec bio from OR
-# "MRFSS_lengths_CA_WA.csv"                   # rec bio from WA & OR
-
-# # files with bio data from RECFIN
-# "RecFIN_ages.csv"
-# "RecFIN_CA_MRFSS.csv"
-# "RecFIN_lengths.csv"
-
-# # other files with bio data
-# "ytrk_sport_biodata.csv"                    # rec bio from WA
-
 library(dplyr)
 # recent length data
-rec_bio <- read.csv(here::here("Data/Confidential/rec/RecFIN_Lengths.csv")) |>
+rec_bio <- read.csv(here::here("Data/Confidential/rec/SD501--1983---2024_lengths.csv")) |>
   tibble::as_tibble() |>
   filter(STATE_NAME == "OREGON" | STATE_NAME == "WASHINGTON" | grepl("REDWOOD", RECFIN_PORT_NAME))
 
-recfin_ages <- read.csv(here::here("Data/Confidential/rec/RecFIN_Ages.csv")) |>
+recfin_ages <- read.csv(here::here("Data/Confidential/rec/SD506--1984---2024_ages.csv")) |>
   tibble::as_tibble()
 
 # or mrfss data
 or_mrfss <- read.csv(here::here("Data/Confidential/rec/MRFSS_BIO_2025 CYCLE_433.csv")) |>
   tibble::as_tibble()
 
+table(or_mrfss$Length_Flag)
+# computed measured  missing
+#     1145     3456      383
+
+# apply filter for measured
+or_mrfss <- or_mrfss |> 
+  filter(Length_Flag == "measured")
+
 or_mrfss_smry <- or_mrfss |>
-  filter(Length_Flag == "measured") |>
   group_by(Year) |>
   summarise(n_length = n()) |>
   mutate(STATE_NAME = "OR (MRFSS)") |>
   tidyr::pivot_wider(names_from = STATE_NAME, values_from = n_length)
 
 # ca/wa mrfss data
+ca_wa_mrfss_with_computed <- read.csv(here::here("Data/Confidential/rec/MRFSS_lengths_CA_WA.csv")) |> 
+  as_tibble() |>
+  filter(ST_NAME == "Washington" | (ST_NAME == "California" & (CNTY == 15 | CNTY == 23))) # 15 = Del Norte, 23 = Humboldt, FIPS codes
 ca_wa_mrfss <- read.csv(here::here("Data/Confidential/rec/MRFSS_lengths_CA_WA.csv")) |>
   as_tibble() |>
   filter(ST_NAME == "Washington" | (ST_NAME == "California" & (CNTY == 15 | CNTY == 23))) |> # 15 = Del Norte, 23 = Humboldt, FIPS codes
   filter(T_LEN %% 1 == 0 | LNGTH %% 1 == 0) # I believe this will filter to measured lengths
+
+# confirm that filtering for measured lengths only removes about 5%
+nrow(ca_wa_mrfss) / nrow(ca_wa_mrfss_with_computed)
+#[1] 0.9491243
+
+# area within Washington for the MRFSS data
+table(ca_wa_mrfss$AREA_X_NAME)
+#                     Inland Ocean <= 3 miles  Ocean > 3 miles
+#        26              452              345              315
+ca_wa_mrfss <- ca_wa_mrfss |> filter(grepl("Ocean", AREA_X_NAME))
+# filtering out unknown and "Inland" areas leaves only about 55% of original samples
+nrow(ca_wa_mrfss) / nrow(ca_wa_mrfss_with_computed)
+# [1] 0.5504587
 
 ca_wa_mrfss_smry <- ca_wa_mrfss |>
   group_by(YEAR, ST_NAME) |>
@@ -154,7 +158,7 @@ rec_bio_smry_table |>
 # | 2010|         218|         218|          0|
 # | 2011|         391|         391|          0|
 # | 2012|         228|         228|          0|
-# | 2013|         358|         356|          0|
+# | 2013|         358|         358|          0|
 # | 2014|         680|         680|          0|
 # | 2015|         683|         683|          0|
 # | 2016|         928|         928|          0|
@@ -165,7 +169,7 @@ rec_bio_smry_table |>
 # | 2021|         827|         831|          0|
 # | 2022|         669|         669|          0|
 # | 2023|        1534|        1534|          0|
-# | 2024|        1279|           0|          0|
+# | 2024|        1279|        1279|          0|
 
 # table of age sample sizes
 rec_ages_smry_table <- recfin_ages |>
@@ -212,7 +216,7 @@ rec_ages_smry_table |>
 # | 2021|         683|         695|           0|
 # | 2022|         613|         615|           0|
 # | 2023|        1247|        1251|           0|
-# | 2024|         613|           0|           0|
+# | 2024|         613|         859|           0|
 
 # get age_bin and len_bin
 source("Rscripts/bins.R")
@@ -221,6 +225,8 @@ source("Rscripts/bins.R")
 #   exclude
 #   1. missing lengths (1 out of 59808)
 #   2. discards mean(rec_bio$IS_RETAINED == "RELEASED") = ~0.04
+#   3. fish from inside waters of Washington: 
+#      1 - mean(rec_bio$STATE_NAME != "WASHINGTON" | rec_bio$AGENCY_FISHED_AREA_NAME %in% paste("PUNCH CARD AREA", 1:4)) = ~0.003
 #
 # Note: majority of samples in all years are unsexed (top row in table below is blank entry: "")
 # table(rec_bio$RECFIN_SEX_NAME, rec_bio$RECFIN_YEAR)
@@ -231,7 +237,11 @@ source("Rscripts/bins.R")
 # UNKNOWN    0    0   23    0    0    0    0    0    0    3   11   10    8    9    0    3    8    3    1    0   34    6   31    4    4    4    7    1    3    3    8
 
 rec_bio_cleaned <- rec_bio |>
-  filter(!is.na(RECFIN_LENGTH_MM), IS_RETAINED == "RETAINED") |>
+  filter(
+    !is.na(RECFIN_LENGTH_MM), 
+    IS_RETAINED == "RETAINED",
+    (STATE_NAME != "WASHINGTON" | AGENCY_FISHED_AREA_NAME %in% paste("PUNCH CARD AREA", 1:4))
+  ) |>
   mutate(
     state = case_when(
       STATE_NAME == "WASHINGTON" ~ "WA",
@@ -249,6 +259,10 @@ rec_bio_cleaned <- rec_bio |>
     length_mm = RECFIN_LENGTH_MM
   ) |>
   mutate(length_cm = 0.1 * length_mm)
+
+# cleaning removes about 4% of records (most because of "RETAINED" filter)
+nrow(rec_bio_cleaned) / nrow(rec_bio)
+# [1] 0.9604069
 
 # look for outliers
 # the largest 2 lengths might be outliers but won't impact results
@@ -282,6 +296,37 @@ rec_length_comps <- nwfscSurvey::get_raw_comps(
 
 saveRDS(rec_length_comps$unsexed, file = here::here("Data/Processed/ss3_rec_length_comps.rds"))
 
+# add MRFSS lengths to recfin data
+rec_bio_cleaned_with_mrfss <- rbind(
+  rec_bio_cleaned |> 
+    select(year, length_cm),
+  or_mrfss |> 
+    mutate(year = Year, length_cm = Length / 10) |> 
+    select(year, length_cm),
+  ca_wa_mrfss |> 
+    mutate(year = YEAR, length_cm = LNGTH / 10) |> 
+    select(year, length_cm)
+)
+# length comps with MRFSS added
+rec_length_comps_with_mrfss <- nwfscSurvey::get_raw_comps(
+  data = rec_bio_cleaned_with_mrfss |>
+    mutate(
+      sex = "U", # make everything unsexed because that's the majority
+      trawl_id = 999, # column is required
+      common_name = "yellowtail_rockfish", # column is required
+      project = "rec_lens" # column is required
+    ) |>
+    as.data.frame(),
+  comp_bins = len_bin,
+  dir = "Data/Confidential/rec",
+  comp_column_name = "length_cm",
+  input_n_method = "total_samples",
+  month = 7,
+  fleet = 999
+)
+
+saveRDS(rec_length_comps_with_mrfss$unsexed, file = here::here("Data/Processed/ss3_rec_length_comps_with_mrfss.rds"))
+
 ## rec ages
 
 # problematic ages have NA for USE_THIS_AGE so no need for additional filtering beyond removing NA values
@@ -298,6 +343,21 @@ table(recfin_ages$AGE_READABILITY_DESCRIPTION, is.na(recfin_ages$USE_THIS_AGE))
 table(recfin_ages$RECFIN_SEX_NAME, useNA = "always")
 #  FEMALE    MALE UNKNOWN    <NA>
 #    5380    3776      78       0
+
+# doesn't seem like there are ages from inside waters of WA
+# Sekiu is in Strait of Juan de Fuca but catch could be outside and few samples
+table(recfin_ages$PORT_NAME, recfin_ages$SAMPLING_AGENCY_NAME)
+
+  #            ODFW WDFW
+  # BROOKINGS    80    0
+  # CHARLESTON   54    0
+  # DEPOE BAY    36    0
+  # GARIBALDI   311    0
+  # LA PUSH       0  498
+  # NEAH BAY      0 1442
+  # NEWPORT      50    0
+  # SEKIU         0  224
+  # WESTPORT      0 7398
 
 # get age comps for rec 
 rec_ages_cleaned <- recfin_ages |>
@@ -338,3 +398,53 @@ rec_age_comps <- nwfscSurvey::get_raw_comps(
 )
 
 saveRDS(rec_age_comps$sexed, file = here::here("Data/Processed/ss3_rec_age_comps.rds"))
+
+
+### explorations with MRFSS
+
+# comparing WA data in RecFIN to what's in MRFSS for an overlapping year
+wa_mrfss_1998 <- ca_wa_mrfss |> dplyr::filter(ST_NAME == "Washington" & YEAR == 1998)
+wa_recfin_1998 <- rec_bio |> dplyr::filter(STATE_NAME == "WASHINGTON" & RECFIN_YEAR == 1998)
+
+# additional explorations of day within year (didn't go anywhere)
+ca_wa_mrfss <- ca_wa_mrfss |> dplyr::mutate(
+  date = lubridate::as_date(DATE1,  format = "%m/%d/%Y"),
+  yday = lubridate::yday(date),
+  year2 = lubridate::year(date),
+  year1 = YEAR
+)
+
+rec_bio <- rec_bio |> dplyr::mutate(
+  date = lubridate::as_date(RECFIN_DATE,  format = "%m/%d/%Y"),
+  yday = lubridate::yday(date),
+  year2 = lubridate::year(date),
+  year1 = RECFIN_YEAR
+)
+
+rec_bio_wa <- rec_bio_wa |> dplyr::mutate(
+  date = paste(sample_year, sample_month, sample_day, sep= ' ') |> lubridate::ymd(),
+  yday = lubridate::yday(date),
+  year2 = lubridate::year(date),
+  year1 = sample_year
+)
+
+WA_dates <- rbind(
+  rec_bio |> 
+    dplyr::filter(STATE_NAME == "WASHINGTON") |> 
+    dplyr::mutate(source = "RecFIN") |>
+    dplyr::select(year1, year2, yday, source),
+  rec_bio_wa |> 
+    dplyr::mutate(source = "GDrive") |>
+    dplyr::select(year1, year2, yday, source),
+  ca_wa_mrfss |> 
+    dplyr::filter(ST_NAME == "Washington") |> 
+    dplyr::mutate(source = "MRFSS") |>
+    dplyr::select(year1, year2, yday, source)
+)
+
+WA_dates |> 
+  ggplot() +
+  geom_point(aes(x = year1, y = yday, col = source), alpha = 0.1, position = "jitter") + 
+  guides(colour = guide_legend(override.aes = list(alpha = 1)))
+
+
