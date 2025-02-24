@@ -31,6 +31,9 @@ names(pacfin_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
   # `names<-`(names(mod_ages$dat$agecomp)) |>
   # mutate(ageerr = 1)
 
+ashop_ages <- readRDS('data/processed/ss3_ashop_ages.rds')
+names(ashop_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
+
 rec_ages <- readRDS('data/processed/ss3_rec_age_comps.rds') |> 
   mutate(fleet = 4, ageerr = as.numeric(1)) 
 names(rec_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
@@ -56,6 +59,7 @@ names(tri_mar_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
 
 mod_ages$dat$agecomp <- bind_rows(
   pacfin_ages, 
+  ashop_ages,
   rec_ages, 
   wcgbts_ages, 
   wcgbts_mar_ages,
@@ -319,6 +323,106 @@ SSplotComparisons(mods, subplots = c(1,3), new = FALSE,
 out <- SS_output('model_runs/2.03_no_hkl_lengths')
 SS_plots(out)
 
+
+# Try to fit index better -------------------------------------------------
+mod <- SS_read('model_runs/2.03_no_hkl_lengths')
+
+mod$ctl$Q_options['NWFSCcombo', 'extra_se'] <- 0
+mod$ctl$Q_parms <- mod$ctl$Q_parms[-grep('extraSD_NWFSC', rownames(mod$ctl$Q_parms)),]
+
+SS_write(mod, 'model_runs/2.04_no_extrasd_WCGBTS', overwrite = TRUE)
+run('model_runs/2.04_no_extrasd_WCGBTS', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+out <- SS_output('model_runs/2.04_no_extrasd_WCGBTS')
+SSplotIndices(out)
+
+tune_comps(dir = 'model_runs/2.04_no_extrasd_WCGBTS', niters_tuning = 0, allow_up_tuning = TRUE, exe = exe_loc, extras = '-nohess')
+# nope.
+
+
+# update lengths and ages -------------------------------------------------
+mod <- SS_read('model_runs/2.04_no_extrasd_WCGBTS')
+
+mod$dat$agecomp <- mod_ages$dat$agecomp
+
+mod$dat$lencomp <- mod_lengths$dat$lencomp
+
+# bah this isn't working. we will remove these eventually. be patient.
+# mod$dat$use_lencomp <- 2 # downweight discard length comps
+# mod$dat$len_info <- bind_rows(mod$dat$len_info, mod$dat$len_info[1,]) |>
+#   mutate(fleet = c(1, 1, (-2):(-6)),
+#          part = c(1, 2, rep(0, 5))) |>
+#   relocate(fleet:part, .before = mintailcomp) |>
+#   `rownames<-`(NULL)
+
+SS_write(mod, 'model_runs/2.05_data_deadline_comps', overwrite = TRUE)
+run('model_runs/2.05_data_deadline_comps', exe = exe_loc, extras = '-nohess', skipfinished = FALSE, show_in_console = TRUE)
+
+out2 <- SS_output('model_runs/2.05_data_deadline_comps')
+SS_plots(out)
+
+tune_comps(dir = 'model_runs/2.05_data_deadline_comps', niters_tuning = 0, allow_up_tuning = TRUE, exe = exe_loc, extras = '-nohess')
+
+
+# dome-shaped selectivity -------------------------------------------------
+
+mod <- SS_read('model_runs/2.05_data_deadline_comps')
+
+mod$ctl$size_selex_parms[grep('P_2', rownames(mod$ctl$size_selex_parms)), 'INIT'] <- -15 
+
+mod$ctl$size_selex_parms[grep('P_4', rownames(mod$ctl$size_selex_parms)), 'INIT'] <- 4.5
+mod$ctl$size_selex_parms[grep('P_4', rownames(mod$ctl$size_selex_parms)), 'PHASE'] <- 4
+
+SS_write(mod, 'model_runs/2.06_domed_selectivity', overwrite = TRUE)
+
+out <- SS_output('model_runs/2.06_domed_selectivity')
+SS_plots(out)
+
+SSsummarize(list(out2, out)) |>
+  SStableComparisons()
+
+# creates a bunch of cryptic biomass, increasing the scale (as expected)
+# Survey likelihood goes up (I think it is actually the NLL?), but fits are bad regardless
+# Decreases M and makes male and female M more similar (as expected)
+# triennial and rec selectivity pars are on bounds
+# fits to length comps do not changes
+# improves fits to age comps
+# still trying to actually fit the survey index!!!
+
+# another idea: try expanded comps, tune sigma R
+
+# why is the scale of the survey likelihood so low? It will never get fit well when it is 3 and age comp likelihood is 900.
+
+
+# expanded PacFIN comps ---------------------------------------------------
+
+mod <- SS_read('model_runs/2.06_domed_selectivity')
+
+pacfin_expanded_ages <- read.csv('data/processed/pacfin_acomps_2023.csv') |>
+  `names<-`(names(mod_ages$dat$agecomp)) |>
+  mutate(ageerr = 1)
+
+pacfin_expanded_lengths <- read.csv('data/processed/pacfin_lcomps_2023.csv') |>
+`names<-`(names(mod_lengths$dat$lencomp))
+
+mod$dat$agecomp <- mod$dat$agecomp |> 
+  filter(fleet != 1) |> 
+  rbind(pacfin_expanded_ages)
+
+mod$dat$lencomp <- mod$dat$lencomp |> 
+  filter(fleet != 1) |> 
+  rbind(pacfin_expanded_lengths)
+
+SS_write(mod, 'model_runs/2.07_expanded_pacfin')
+
+tune_comps(niters_tuning = 2, dir = 'model_runs/2.07_expanded_pacfin',
+           exe = exe_loc, extras = '-nohess')
+
+out <- SS_output('model_runs/2.07_expanded_pacfin')
+SS_plots(out)
+
+# using these comps did weird things to the early rec devs, gave them a quite a trend.
+# I wonder if the pacfin expansions are not working well for early years.
 
 # troubleshooting ages ----------------------------------------------------
 

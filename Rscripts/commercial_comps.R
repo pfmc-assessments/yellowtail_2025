@@ -39,8 +39,7 @@ source("Rscripts/bins.R")
 
 # run expansions
 pacfin_exp <- bds_clean |>
-  filter(year < 2024,
-         SEX != 'U') |> # sample sizes are not calculated separately for sexed and unsexed rows. 
+  filter(SEX != 'U') |> # sample sizes are not calculated separately for sexed and unsexed rows. 
                         # need to do a whole separate expansion for unsexed (length only) data
   # exclude WA surface reads. OR surface reads are actually 'B', per email with ODFW.
   mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |> 
@@ -101,11 +100,13 @@ ashop_lengths_new <- suppressWarnings(
   readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
                      sheet = "YLT_Length data1990-2023")
 )  # warning is about converting text to numeric for HAUL_JOIN, but values seems sensible, no NAs
-
+ashop_lengths_2024 <- readxl::read_excel('Data/Confidential/ASHOP/Oken_YLT_Length data_2024_020425.xlsx') |>
+  mutate(HAUL_JOIN = as.numeric(HAUL_JOIN))
 
 ashop_lengths <- bind_rows(
   select(ashop_lengths_old, Sex = SEX, Length_cm = SIZE_GROUP, FREQUENCY, Year = YEAR, HAUL_JOIN),
-  select(ashop_lengths_new, Sex = SEX, Length_cm = LENGTH, FREQUENCY, Year = YEAR, HAUL_JOIN)
+  select(ashop_lengths_new, Sex = SEX, Length_cm = LENGTH, FREQUENCY, Year = YEAR, HAUL_JOIN),
+  select(ashop_lengths_2024, Sex = SEX, Length_cm = LENGTH, FREQUENCY, Year = YEAR, HAUL_JOIN)
 )
 
 ntow <- ashop_lengths |>
@@ -131,3 +132,14 @@ ss3_ashop_comps <- ashop_lengths |>
   arrange(year) # consider filtering out low n
 
 saveRDS(ss3_ashop_comps, file = 'Data/processed/ss3_ashop_comps_2023.rds')
+
+ashop_ages <- readxl::read_excel('Data/Confidential/ASHOP/Oken_YLT_Bio data_ages added_2019-2024_022125.xlsx')
+
+ashop_ages |>
+  filter(YEAR != 2020, !is.na(AGE)) |> # only one sample
+  rename(trawl_id = HAUL_JOIN) |>
+  as.data.frame() |>
+  nwfscSurvey::get_raw_comps(comp_bins = age_bin, comp_column_name = 'AGE', input_n_method = 'tows', two_sex_comps = TRUE,
+                             month = 7, fleet = 2, partition = 2, ageerr = 1) |>
+  purrr::pluck(1) |>
+  saveRDS('Data/processed/ss3_ashop_ages.rds')

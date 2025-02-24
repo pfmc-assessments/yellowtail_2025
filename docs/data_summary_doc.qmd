@@ -195,14 +195,7 @@ catch_wide <- comm_draft_landings |>
                            TRUE ~ AGENCY_CODE)) |>
   select(-AGENCY_CODE) |>
   tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0) |>
-  relocate(Foreign, .after = WA)
-
-# add in pre-1981 WA catches from 2017 model, save for PacFIN.Utilities
-filter(comm2017, AGENCY_CODE == 'W') |>
-  select(YEAR = Year, catch_mt) |>
-  right_join(catch_wide) |>
-  mutate(WA = ifelse(YEAR < 1981, WA + catch_mt, WA)) |>
-  select(-catch_mt) |>
+  relocate(Foreign, .after = WA) |>
   saveRDS(file = here('Data/processed/catch_wide.rds'))
 
 catch_wide |>
