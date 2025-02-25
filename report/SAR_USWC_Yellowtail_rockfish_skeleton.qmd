@@ -207,20 +207,10 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('04a_assessment-configuration.qmd', quiet = TRUE)
+a <- knitr::knit_child('04a_model_summary.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'assessment-results'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('04b_assessment-results.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
 
  {{< pagebreak >}} 
 
@@ -229,7 +219,7 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('04c_assessment-sensitivity.qmd', quiet = TRUE)
+a <- knitr::knit_child('04b_model_results.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 
@@ -240,18 +230,7 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('04d_assessment-benchmarks.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'assessment-projections'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('04e_assessment-projections.qmd', quiet = TRUE)
+a <- knitr::knit_child('04c_model_diagnostics.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 
@@ -262,7 +241,7 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('05_discussion.qmd', quiet = TRUE)
+a <- knitr::knit_child('05_management.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 
