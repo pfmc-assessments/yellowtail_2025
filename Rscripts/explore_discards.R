@@ -210,5 +210,5 @@ pikitch <- Pikitch.et.al.Yellowtail.Discards.Rates |> dplyr::filter(Areas == "2B
 # discard rates are pretty stable without a strong trend (based on plot)
 range(pikitch$DiscardRate.Sp.Wt.Wgting)
 # [1] 0.0368 0.0542
-round(mean(pikitch$DiscardRate.Sp.Wt.Wgting), 4)
+(rate <- round(mean(pikitch$DiscardRate.Sp.Wt.Wgting), 4))
 # [1] 0.0451

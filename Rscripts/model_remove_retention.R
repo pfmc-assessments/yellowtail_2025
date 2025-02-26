@@ -61,17 +61,22 @@ add_discards <- function(inputs) {
         fleet == "Recreational" ~ 3
       )
     )
-  # simple loop over rows in gemm summary to add into data file
+  # simple loop over rows in GEMM summary to add to catch in data file
   for (irow in 1:nrow(dead_discards)) {
     y <- dead_discards$year[irow]
     f <- dead_discards$fleet[irow]
     subset <- inputs$dat$catch$year == y & inputs$dat$catch$fleet == f
     inputs$dat$catch$catch[subset] <- inputs$dat$catch$catch[subset] + dead_discards$catch[irow]
+    rownames(inputs$dat$catch)[subset] <- paste(rownames(inputs$dat$catch)[subset], "discard added:", dead_discards$catch[irow])
   }
 
-  # TODO: add Pikitch data to early commercial catch either via catch multiplier parameter or 
-  #       by modifying the time series of catch as done for the GEMM data above
-  
+  # inflate time series of catch prior to 2002 by the average rate from the Pikitch study
+  # NOTE: an alternative would be to use a catch multiplier parameter with a time block but that seems more complex
+  subset <- inputs$dat$catch$fleet == 1 & inputs$dat$catch$year < 2002
+  inputs$dat$catch$catch[subset] <- 
+    1.0451 * inputs$dat$catch$catch[subset]
+  # modify rownames to help confirm where change took place
+  rownames(inputs$dat$catch)[subset] <- paste(rownames(inputs$dat$catch)[subset], "scaled by Pikitch rate: 1.0451")
   # return modified list
   return(invisible(inputs))
 }
