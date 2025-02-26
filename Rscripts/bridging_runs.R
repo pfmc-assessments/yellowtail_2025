@@ -359,7 +359,7 @@ SS_write(mod, 'model_runs/2.05_data_deadline_comps', overwrite = TRUE)
 run('model_runs/2.05_data_deadline_comps', exe = exe_loc, extras = '-nohess', skipfinished = FALSE, show_in_console = TRUE)
 
 out2 <- SS_output('model_runs/2.05_data_deadline_comps')
-SS_plots(out)
+SS_plots(out2)
 
 tune_comps(dir = 'model_runs/2.05_data_deadline_comps', niters_tuning = 0, allow_up_tuning = TRUE, exe = exe_loc, extras = '-nohess')
 
@@ -423,6 +423,15 @@ SS_plots(out)
 
 # using these comps did weird things to the early rec devs, gave them a quite a trend.
 # I wonder if the pacfin expansions are not working well for early years.
+
+
+# removing discards
+source("Rscripts/model_remove_retention.R")
+mod <- SS_read('model_runs/2.05_data_deadline_comps') |> 
+  remove_retention() |> 
+  add_discards()
+SS_write(mod, 'model_runs/2.08_remove_discards_from_2.05', overwrite = TRUE)
+run('model_runs/2.08_remove_discards_from_2.05', exe = exe_loc, extras = '-nohess')
 
 # troubleshooting ages ----------------------------------------------------
 
