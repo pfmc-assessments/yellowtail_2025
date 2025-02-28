@@ -1,0 +1,5 @@
+"Region","Temp_bin","Year","Effort Offset","Df","Log-Likelihood","AICc","Delta"
+"Included","Included","Included","Included",16,-914.2,1861.2,0
+"Included",NA,"Included","Included",12,-919.4,1863.3,2.1
+NA,"Included","Included","Included",15,-923,1876.8,15.6
+NA,NA,"Included","Included",11,-942.3,1907,45.8
