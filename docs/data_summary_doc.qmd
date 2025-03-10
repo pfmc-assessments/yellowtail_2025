@@ -25,7 +25,7 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 Some summary figures:
 
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/commercial/pacfin-02-13-2025/PacFIN.YTRK.CompFT.13.Feb.2025.RData'))
+load(here('data/confidential/commercial/pacfin-2025-03-03/PacFIN.YTRK.CompFT.03.Mar.2025.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
@@ -513,7 +513,7 @@ ss3_landings |>
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/Commercial/pacfin-02-13-2025/PacFIN.YTRK.bds.13.Feb.2025.RData'))
+load(here('Data/Confidential/Commercial/pacfin-2025-03-03/PacFIN.YTRK.bds.03.Mar.2025.RData'))
 bds_clean <- pacfintools::cleanPacFIN(bds.pacfin, keep_age_method = c('B', 'S'), verbose = FALSE) 
 
 bds_clean |>

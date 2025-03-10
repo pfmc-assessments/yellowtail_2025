@@ -23,7 +23,7 @@ mod_ages <- SS_read('model_runs/1.02_base_2017_3.30.23')
 mod_ages$dat$agebin_vector <- age_bin
 mod_ages$dat$N_agebins <- length(age_bin)
 
-pacfin_ages <- readRDS('data/processed/pacfin_acomps_raw.rds') 
+pacfin_ages <- read.csv('data/processed/pacfin_acomps_raw.csv') 
 names(pacfin_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
 
 # don't use expanded ages for more consistency with 2017 
@@ -78,7 +78,7 @@ tune_comps(niters_tuning = 2, dir = 'model_runs/1.06_ages_retune',
 
 mod_lengths <- SS_read('model_runs/1.02_base_2017_3.30.23')
 
-pacfin_lengths <- readRDS('data/processed/pacfin_lcomps_raw.rds') |>
+pacfin_lengths <- read.csv('data/processed/pacfin_lcomps_raw.csv') |>
   `names<-`(names(mod_lengths$dat$lencomp))
 
 # don't use expanded lengths for more consistency with 2017 
@@ -273,13 +273,14 @@ mod$ctl$last_yr_fullbias_adj <- 2016.5
 mod$ctl$first_recent_yr_nobias_adj <- 2021.6
 mod$ctl$max_bias_adj <- 0.7855
 
-SS_write(mod, 'model_runs/2.02_bias_adjust')
-run('model_runs/2.02_bias_adjust', exe = exe_loc, skipfinished = FALSE, extras = '-nohess')
+SS_write(mod, 'model_runs/2.02_bias_adjust', overwrite = TRUE)
+run('model_runs/2.02_bias_adjust', exe = exe_loc, skipfinished = FALSE, 
+    extras = '-nohess')
 
 mods <- SSgetoutput(dirvec = glue::glue('model_runs/{model}', 
                                        model = c('1.02_base_2017_3.30.23',
-                                                 '1.04_reanalyze_reweight',
-                                                 '2.01_extend_2024',
+                                                 '1.12_reanalyze_data_new_abins_reweight',
+                                                 # '2.01_extend_2024',
                                                  '2.02_bias_adjust'))) |>
   SSsummarize()
   
@@ -291,6 +292,24 @@ SSplotComparisons(mods, subplots = c(1,3, 11), new = FALSE,
 
 out <- SS_output('model_runs/2.02_bias_adjust')
 SS_plots(out)
+
+
+# odds and ends ----------------------------------------------------------------
+
+source('Rscripts/model_remove_retention.R')
+source('Rscripts/model_rename_fleets.R')
+
+mod <- SS_read('model_runs/2.02_bias_adjust')
+mod <- remove_retention(mod) |>
+  add_discards()
+
+# mod$ctl$F_Method <- 3
+# mod$ctl$maxF <- 4
+# need to figure out name of n tuning iterations
+
+SS_write(mod, 'model_runs/2.09_remove_discards_2.02', overwrite = TRUE)
+run('model_runs/2.09_remove_discards_2.02', exe = exe_loc, extras = '-nohess')
+
 
 
 # No HKL or sparse lengths ----------------------------------------------------------

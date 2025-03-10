@@ -1,5 +1,5 @@
 ---
-title: 'Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$) in 2025'
+title: 'Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025'
 author:
   - name: 'Kiva L. Oken'
     affiliations:
@@ -65,7 +65,8 @@ params:
    spp_latin: 'Sebastes flavidus'
    region: 'U.S. West Coast north of 40°10$\prime$)'
 bibliography: 
--  asar_references.bib 
+  -  asar_references.bib 
+  -  yellowtail.bib
 ---
 ```{r} 
 #| label: 'output_and_quantities'
