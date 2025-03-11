@@ -15,7 +15,12 @@ rename_fleets <- function(inputs) {
   inputs$dat$fleetinfo$fleetname <- c("Commercial", "At-Sea-Hake", "Recreational", "PLACEHOLDER", "Triennial", "WCGBTS")
   r4ss::SS_write(inputs, "Model_Runs/temp", overwrite = TRUE)
   # stopph -1 causes model to write ss_new files without running anything
-  r4ss::run("Model_Runs/temp", extras = "-nohess -stopph -1")
+  exe_loc <- here("model_runs/ss3.exe")
+  r4ss::run("Model_Runs/temp",
+    extras = "-nohess -stopph -1",
+    exe = exe_loc,
+    skipfinished = FALSE
+  )
   inputs2 <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
 
   return(invisible(inputs2))
