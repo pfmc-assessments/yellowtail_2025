@@ -50,7 +50,14 @@ pacfin_exp <- bds_clean |>
   pacfintools::get_pacfin_expansions(Catch = comm_catch, 
                                           weight_length_estimates = w_l_pars, 
                                           stratification.cols = 'state', 
-                                          Units = 'MT', maxExp = 0.8)
+                                          Units = 'MT', maxExp = 0.8, 
+                                          savedir = 'Data/Processed/pacfin_expansions')
+# explore expansion factors
+pacfin_exp |> 
+  ggplot(aes(Expansion_Factor_1_L)) +
+  geom_histogram()
+ggsave('Data/Processed/pacfin_expansions/expansion_factor_1_L_hist.png')
+
 
 # create length comps for SS3
 length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
