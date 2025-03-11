@@ -12,7 +12,7 @@ library(dplyr)
 #   nwfscSurvey::get_raw_comps(comp_column_name = 'age1', comp_bins = age_bin, input_n_method = 'tows')
 
 # read CONFIDENTIAL file with PacFIN BDS data
-load(here('Data/Confidential/Commercial/pacfin-2025-03-03/PacFIN.YTRK.bds.03.Mar.2025.RData'))
+load(here('Data/Confidential/Commercial/pacfin-2025-03-10/PacFIN.YTRK.bds.10.Mar.2025.RData'))
 # load processed catch by year/fleet
 comm_catch <- readRDS('Data/processed/catch_wide.rds') |>
   rename(year = YEAR) |>
@@ -35,8 +35,7 @@ bds_clean <- bds.pacfin |>
   filter(n > 100) # filter to sex-year combinations >100, avoid sparse lengths.
   
 # get weight-length parameters processed elsewhere
-w_l_pars <- read.csv('Data/processed/W_L_pars.csv') |>
-  select(-n)
+w_l_pars <- read.csv('Data/processed/W_L_pars.csv') 
 # get age_bin and len_bin
 source("Rscripts/bins.R")
 

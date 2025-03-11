@@ -25,7 +25,7 @@ This documents data streams for use in the Northern Yellowtail Rockfish stock as
 Some summary figures:
 
 ```{r pacfin-catch, cache=TRUE}
-load(here('data/confidential/commercial/pacfin-2025-03-03/PacFIN.YTRK.CompFT.03.Mar.2025.RData'))
+load(here('data/confidential/commercial/pacfin-2025-03-10/PacFIN.YTRK.CompFT.10.Mar.2025.RData'))
 # I have checked and LANDING_YEAR = PACFIN_YEAR for all rows.
 
 yt_n_catch_pacfin <- catch.pacfin |>
@@ -194,8 +194,9 @@ catch_wide <- comm_draft_landings |>
                            AGENCY_CODE == 'W' ~ 'WA',
                            TRUE ~ AGENCY_CODE)) |>
   select(-AGENCY_CODE) |>
-  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0) |>
-  relocate(Foreign, .after = WA) |>
+  tidyr::pivot_wider(names_from = State, values_from = catch_mt, values_fill = 0)
+
+catch_wide |>
   saveRDS(file = here('Data/processed/catch_wide.rds'))
 
 catch_wide |>
@@ -513,7 +514,7 @@ ss3_landings |>
 Initial length sample sizes after running `PacFIN.Utilities::cleanPacFIN()`:
 
 ```{r comm-bio, cache=TRUE}
-load(here('Data/Confidential/Commercial/pacfin-2025-03-03/PacFIN.YTRK.bds.03.Mar.2025.RData'))
+load(here('Data/Confidential/Commercial/pacfin-2025-03-10/PacFIN.YTRK.bds.10.Mar.2025.RData'))
 bds_clean <- pacfintools::cleanPacFIN(bds.pacfin, keep_age_method = c('B', 'S'), verbose = FALSE) 
 
 bds_clean |>
@@ -757,31 +758,7 @@ laa_by_lat_lm <- lm(Length_cm ~ I(Latitude_dd-mean(Latitude_dd))*factor(Age_year
 laa_by_age <- lm(Length_cm ~ factor(Age_years), data = yt_n_survey_bio, 
                       subset = Age_years < 20 & Age_years >= 6)
 
-W_L_pars <- yt_n_survey_bio |>
-  dplyr::mutate(Sex = 'all') |> # this will make it so a single curve is fit to all sexes, in addition to sex-specific curves
-  dplyr::bind_rows(yt_n_survey_bio) |>
-  dplyr::filter(Sex %in% c('F', 'M', 'all')) |>
-  tidyr::nest(data = -Sex) |> 
-                                         # Fit model
-  dplyr::mutate(fit = purrr::map(data, ~ lm(log(Weight_kg / 1000) ~ log(Length_cm), data = .)),
-                tidied = purrr::map(fit, broom::tidy),
-                # Transform W-L parameters, account for lognormal bias
-                out = purrr::map2(tidied, fit, function(.x, .y) {
-                  sd_res <- sigma(.y)
-                  .x |>
-                    dplyr::mutate(term = c('A', 'B'),
-                                  median = ifelse(term == 'A', exp(estimate), estimate),
-                                  mean = ifelse(term == 'A', median * exp(0.5 * sd_res^2),
-                                                median)) |>
-                    dplyr::select(term, mean)
-                }),
-                n = purrr::map(fit, ~ length(resid(.)))) |>
-  tidyr::unnest(c(out, n)) |>
-  dplyr::select(sex = Sex, term, mean, n) |>
-  tidyr::pivot_wider(names_from = term, values_from = mean) |>
-  dplyr::mutate(sex = dplyr::case_when(sex == 'F' ~ 'female',
-                                       sex == 'M' ~ 'male',
-                                       TRUE ~ sex))
+W_L_pars <- yt_n_survey_bio |> nwfscSurvey::estimate_weight_length()
 
 write.csv(W_L_pars, here('Data/Processed/W_L_pars.csv'), row.names = FALSE)
 
