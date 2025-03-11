@@ -54,18 +54,11 @@ remove_retention <- function(inputs) {
 add_discards <- function(inputs) {
   # read processed GEMM data and apply fleet numbers
   dead_discards <- readRDS("Data/Processed/gemm_discards_by_fleet.rds") |>
-    dplyr::mutate(
-      fleet = dplyr::case_when(
-        fleet == "Commercial" ~ 1,
-        fleet == "At-Sea-Hake" ~ 2,
-        fleet == "Recreational" ~ 3
-      )
-    )
+    dplyr::filter(fleet == "Commercial")
   # simple loop over rows in GEMM summary to add to catch in data file
   for (irow in 1:nrow(dead_discards)) {
     y <- dead_discards$year[irow]
-    f <- dead_discards$fleet[irow]
-    subset <- inputs$dat$catch$year == y & inputs$dat$catch$fleet == f
+    subset <- inputs$dat$catch$year == y & inputs$dat$catch$fleet == 1
     inputs$dat$catch$catch[subset] <- inputs$dat$catch$catch[subset] + dead_discards$catch[irow]
     rownames(inputs$dat$catch)[subset] <- paste(rownames(inputs$dat$catch)[subset], "discard added:", dead_discards$catch[irow])
   }
