@@ -28,7 +28,7 @@ ss3_ashop_comps <- ashop_lengths |>
   nwfscSurvey::UnexpandedLFs.fn(dir = NULL,
                                 datL = ., 
                                 lgthBins = len_bin, # sourced above
-                                partition = 2, 
+                                partition = 0, 
                                 fleet = 2, 
                                 month = 7) |> 
   purrr::pluck('comps') |>
@@ -47,6 +47,6 @@ ashop_ages |>
   rename(trawl_id = HAUL_JOIN) |>
   as.data.frame() |>
   nwfscSurvey::get_raw_comps(comp_bins = age_bin, comp_column_name = 'AGE', input_n_method = 'tows', two_sex_comps = TRUE,
-                             month = 7, fleet = 2, partition = 2, ageerr = 1) |>
+                             month = 7, fleet = 2, partition = 0, ageerr = 1) |>
   purrr::pluck(1) |>
   saveRDS('Data/processed/ss3_ashop_ages.rds')

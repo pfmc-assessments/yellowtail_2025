@@ -41,7 +41,7 @@ source("Rscripts/bins.R")
 
 # run expansions
 pacfin_exp <- bds_clean |>
-  filter(GRID != 'HKL' | SEX != 'U', # could look into stratifying if there is time...
+  filter(# GRID != 'HKL' | SEX != 'U', # for now instead just use the 100 sample cutoff. more defensible.
          year != 2025) |>
   # exclude WA surface reads. OR surface reads are actually 'B', per email with ODFW.
   mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |> 
@@ -66,7 +66,7 @@ length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
   ) |>
   pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_lcomps.csv', 
-    column_with_input_n = 'n_stewart',
+    column_with_input_n = 'n_stewart', partition = 0,
     comp_bins = len_bin # sourced above
   )
 
@@ -78,7 +78,7 @@ age_comps_ss3 <- filter(pacfin_exp, !is.na(Age),
   ) |> 
   pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_acomps.csv', 
-    month = 7, 
+    month = 7, ageErr = 1, partition = 0,
     column_with_input_n = 'n_stewart',
     comp_bins = age_bin # sourced above
   )
@@ -94,7 +94,7 @@ pacfin_exp |>
   ) |> 
   pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_lcomps_raw.csv', 
-    month = 7,
+    month = 7, partition = 0,
     column_with_input_n = 'n_stewart',
     comp_bins = len_bin # sourced above
   )
@@ -108,7 +108,7 @@ pacfin_exp |>
   ) |> 
   pacfintools::writeComps(
     fname = 'Data/Processed/pacfin_acomps_raw.csv', 
-    month = 7, ageErr = 1,
+    month = 7, ageErr = 1, partition = 0,
     column_with_input_n = 'n_stewart',
     comp_bins = age_bin # sourced above
   )
