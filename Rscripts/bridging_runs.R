@@ -4,14 +4,16 @@ library(dplyr)
 
 exe_loc <- here('model_runs/ss3.exe')
 source('Rscripts/bins.R')
+source('Rscripts/model_rename_fleets.R')
+source('Rscripts/model_remove_retention.R')
 
 # update catches ----------------------------------------------------------
 
 mod_catches <- SS_read('model_runs/1.02_base_2017_3.30.23')
 
-mod_catches$dat$catch <- readRDS('data/processed/ss3_landings_2023.rds')
-
 mod_catches <- rename_fleets(mod_catches)
+
+mod_catches$dat$catch <- readRDS('data/processed/ss3_landings_2023.rds')
 
 SS_write(mod_catches, dir = 'model_runs/3.01_reanalyze_catch', overwrite = TRUE)
 
@@ -27,22 +29,27 @@ mod_survey <- SS_read('model_runs/3.01_reanalyze_catch')
 load("data/confidential/wcgbts_updated/interaction/delta_lognormal/index/sdmTMB_save.RData")
 
 wcgbts <- results_by_area$`North of Cape Mendocino`$index |>
-  mutate(month = 7, index = 6) |> # is this right?
+  mutate(month = 7, index = 6) |> 
   rename(obs = est, se_log = se) |>
   select(names(mod_survey$dat$CPUE))
 
 load("data/confidential/triennial/delta_lognormal/index/sdmTMB_save.RData")
 
 triennial <- results_by_area$`North of Cape Mendocino`$index |>
-  mutate(month = 7, index = 5) |> # is this right?
+  mutate(month = 7, index = 5) |>
   rename(obs = est, se_log = se) |>
   select(names(mod_survey$dat$CPUE))
 
 mod_survey$dat$CPUE <- bind_rows(wcgbts, triennial)
 
-mod_survey$ctl$Q_options <- mod_survey$ctl$Q_options[c('Triennial', 'NWFSCcombo'),]
-mod_survey$ctl$Q_parms <- mod_survey$ctl$Q_parms[grep('Tri|NWFSC', rownames(mod_survey$ctl$Q_parms)),]
+mod_survey$ctl$Q_options <- mod_survey$ctl$Q_options[c('Triennial', 'WCGBTS'),]
+mod_survey$ctl$Q_options$float <- 0
 
+mod_survey$ctl$Q_parms <- mod_survey$ctl$Q_parms[grep('Tri|WCGBTS', rownames(mod_survey$ctl$Q_parms)),]
+
+# Order: tri Q, tri extra SD, wcgbts Q, wcgbts SD 
+mod_survey$ctl$Q_parms$PHASE <- c(2, 2, 2, -99) 
+mod_survey$ctl$Q_parms$INIT <- c(-1, 0.01, -1, 0)
 
 SS_write(mod_survey, dir = 'model_runs/3.02_surveys', overwrite = TRUE)
 run('model_runs/3.02_surveys', 
@@ -57,8 +64,8 @@ mod_biology <- SS_read('model_runs/3.02_surveys')
 mod_biology$ctl$maturity_option <- 2 # age-based maturity
 mod_biology$ctl$First_Mature_Age <- 1
 
-mod_biology$ctl$MG_parms['Mat50%_Fem_GP_1', 'INIT'] <- 13.31
-mod_biology$ctl$MG_parms['Mat_slope_Fem_GP_1', 'INIT'] <- 0.67
+mod_biology$ctl$MG_parms['Mat50%_Fem_GP_1', 'INIT'] <- 10
+mod_biology$ctl$MG_parms['Mat_slope_Fem_GP_1', 'INIT'] <- -0.67
 
 W_L_pars <- read.csv('Data/processed/W_L_pars.csv')
 mod_biology$ctl$MG_parms['Wtlen_1_Fem_GP_1', 'INIT'] <- W_L_pars$A[W_L_pars$sex == 'female']
@@ -70,11 +77,16 @@ mod_biology$ctl$MG_parms['Wtlen_2_Mal_GP_1', 'INIT'] <- W_L_pars$B[W_L_pars$sex 
 mod_biology$ctl$recr_dist_method <- 4
 mod_biology$ctl$MG_parms <- mod_biology$ctl$MG_parms[-grep('RecrDist', rownames(mod_biology$ctl$MG_parms)),] 
 
-SS_write(mod_survey, dir = 'model_runs/3.03_biology', overwrite = TRUE)
+SS_write(mod_biology, dir = 'model_runs/3.03_biology', overwrite = TRUE)
 run('model_runs/3.03_biology', 
     exe = exe_loc, extras = '-nohess', verbose = TRUE, 
-    skipfinished = FALSE, show_in_console = TRUE)
+    skipfinished = FALSE, show_in_console = FALSE)
 
+# out <- SSgetoutput(dirvec = c('model_runs/3.02_surveys', 'model_runs/3.03_biology', 'ignored/3.03_biology'))
+# SS_plots(out[[3]])
+# out |>
+#   SSsummarize() |> # SStableComparisons()
+#   SSplotComparisons(subplots = c(1,3), new = FALSE)
 
 # update discards ---------------------------------------------------------
 
@@ -143,11 +155,6 @@ mod_ages$dat$agecomp <- bind_rows(
   tri_mar_ages
 )
 
-mod_ages$ctl$Variance_adjustment_list <- rbind(mod_ages$ctl$Variance_adjustment_list, 
-                                               c(5,2,0.25)) |> # tune ashop ages
-  arrange(factor, fleet) |>
-  filter(fleet != 4 | factor == 4) # no fleet 4 ages to tune
-
 SS_write(mod_ages, dir = 'model_runs/3.05_ages_raw_pacfin', overwrite = TRUE)
 run('model_runs/3.05_ages_raw_pacfin', 
     exe = exe_loc, extras = '-nohess', verbose = TRUE, 
@@ -181,7 +188,7 @@ mod_lengths_raw <- SS_read('model_runs/3.05_ages_raw_pacfin')
 pacfin_lengths <- read.csv('data/processed/pacfin_lcomps_raw.csv') |>
   `names<-`(names(mod_lengths_raw$dat$lencomp))
 
-rec_lengths <- readRDS('data/processed/ss3_rec_length_comps.rds') |> 
+rec_lengths <- readRDS('data/processed/ss3_rec_length_comps_with_mrfss.rds') |> 
   `names<-`(names(mod_lengths_raw$dat$lencomp)) |>
   mutate(fleet = 3)
 
@@ -201,8 +208,6 @@ mod_lengths_raw$dat$lencomp <- bind_rows(pacfin_lengths,
                                          rec_lengths, 
                                          wcgbts_lengths, 
                                          tri_lengths)
-mod_length_raw$ctl$Variance_adjustment_list <- mod_length_raw$ctl$Variance_adjustment_list |>
-  filter(fleet != 4) # no fleet 4 ages OR lengths to tune
 
 SS_write(mod_lengths_raw, dir = 'model_runs/3.07_lengths_raw_pacfin', overwrite = TRUE)
 run('model_runs/3.07_lengths_raw_pacfin', 
@@ -222,8 +227,6 @@ mod_lengths_exp$dat$lencomp <- bind_rows(pacfin_lengths_exp,
                                          rec_lengths, 
                                          wcgbts_lengths, 
                                          tri_lengths)
-mod_length_exp$ctl$Variance_adjustment_list <- mod_length_exp$ctl$Variance_adjustment_list |>
-  filter(fleet != 4) # no fleet 4 ages OR lengths to tune
 
 SS_write(mod_lengths_exp, dir = 'model_runs/3.08_lengths_exp_pacfin', overwrite = TRUE)
 run('model_runs/3.08_lengths_exp_pacfin', 
@@ -250,65 +253,61 @@ SS_plots(out[[5]])
 SS_plots(out[[6]])
 
 # run some profiles
-profile_info <- nwfscDiag::get_settings_profile(parameters = 'NatM_uniform_Fem_GP_1',
-                                                low = 0.1, high = 0.2, step_size = 0.01,
-                                                param_space = 'real')
-model_settings <- nwfscDiag::get_settings(
-  settings = list(base_name = '3.07_lengths_raw_pacfin',
-                  run = 'profile',
-                  profile_details = profile_info,
-                  exe = exe_loc)
-)
-
-future::plan(future::multisession)
-nwfscDiag::run_diagnostics(mydir = 'model_runs',
-                           model_settings = model_settings)
-
-model_settings$base_name <- '3.08_lengths_exp_pacfin'
-nwfscDiag::run_diagnostics(mydir = 'model_runs',
-                           model_settings = model_settings)
-future::plan(future::sequential)
 
 # extend to 2024 ----------------------------------------------------------
 
+mod_raw <- SS_read('model_runs/3.07_lengths_raw_pacfin')
 mod <- SS_read('model_runs/3.08_lengths_exp_pacfin')
-mod$dat$endyr <- 2024
-mod$ctl$Block_Design <- purrr::map(mod$ctl$Block_Design,
-                                   \(x){x[length(x)] <- 2024; return(x)})
-mod$ctl$MainRdevYrLast <- 2018
 
-mod$ctl$last_early_yr_nobias_adj <- 1950.5
-mod$ctl$first_yr_fullbias_adj <- 1976.9
-mod$ctl$last_yr_fullbias_adj <- 2016.5
-mod$ctl$first_recent_yr_nobias_adj <- 2021.6
-mod$ctl$max_bias_adj <- 0.7855
+mod$dat$endyr <- mod_raw$dat$endyr <- 2024
+mod$ctl$Block_Design <- mod_raw$ctl$Block_Design <- purrr::map(mod$ctl$Block_Design,
+                                                               \(x){x[length(x)] <- 2024; return(x)})
+mod$ctl$MainRdevYrLast <- mod_raw$ctl$MainRdevYrLast <- 2018
 
+mod$ctl$last_early_yr_nobias_adj <- mod_raw$ctl$last_early_yr_nobias_adj <- 1950.5
+mod$ctl$first_yr_fullbias_adj <- mod_raw$ctl$first_yr_fullbias_adj <- 1976.9
+mod$ctl$last_yr_fullbias_adj <- mod_raw$ctl$last_yr_fullbias_adj <- 2016.5
+mod$ctl$first_recent_yr_nobias_adj <- mod_raw$ctl$first_recent_yr_nobias_adj <- 2021.6
+mod$ctl$max_bias_adj <- mod_raw$ctl$max_bias_adj <- 0.7855
+
+SS_write(mod_raw, 'model_runs/3.09_raw_comps_2024', overwrite = TRUE)
 SS_write(mod, 'model_runs/3.10_exp_comps_2024', overwrite = TRUE)
-run('model_runs/3.10_exp_comps_2024', 
+
+# note to self: need to run these first thing in am
+
+run('model_runs/3.09_raw_comps_2024', 
     exe = exe_loc, extras = '-nohess', verbose = TRUE, 
+    skipfinished = FALSE)
+tune_comps(dir = 'model_runs/3.09_raw_comps_2024', 
+           niters_tuning = 2, exe = exe_loc, extras = '-nohess')
+
+run('model_runs/3.10_exp_comps_2024', 
+    exe = exe_loc, extras = '-nohess',
+    verbose = TRUE, 
     skipfinished = FALSE)
 tune_comps(dir = 'model_runs/3.10_exp_comps_2024', 
            niters_tuning = 2, exe = exe_loc, extras = '-nohess')
 
-run('model_runs/2.01_extend_2024', 
-    exe = exe_loc, 
-    # extras = '-nohess',
-    verbose = TRUE, 
-    skipfinished = FALSE)
+out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
+                              glue::glue('model_runs/3.{mod}', 
+                                         mod = c('04_discards',
+                                                 '07_lengths_raw_pacfin',
+                                                 '08_lengths_exp_pacfin',
+                                                 '09_raw_comps_2024',
+                                                 '10_exp_comps_2024'))))
 
-out <- SS_output('model_runs/2.01_extend_2024')
-SS_plots(out)
+SS_plots(out[[5]])
+SS_plots(out[[6]])
 
-mods <- SSgetoutput(dirvec = glue::glue('model_runs/{model}', 
-                                        model = c('1.02_base_2017_3.30.23',
-                                                  '1.04_reanalyze_reweight',
-                                                  '2.01_extend_2024'))) |>
-  SSsummarize()
-
-SSplotComparisons(mods, subplots = c(1,3), new = FALSE, 
-                  legendlabels = c('2017', 
-                                   'update everything, retune',
-                                   'extend to 2023'))
+out |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3), new = FALSE, 
+                    legendlabels = c('2017', 
+                                     'most updates',
+                                     'raw pacfin',
+                                     'expanded pacfin',
+                                     'raw pacfin to 20204',
+                                     'expanded pacfin to 2024'))
 
 new_ages_long <- pacfin_ages |>
   select(year, f1:f25) |>
@@ -318,6 +317,24 @@ new_ages_long <- pacfin_ages |>
          age = as.numeric(stringr::str_remove(age, 'f'))) |>
   filter(year < 2017)
 
+profile_info <- nwfscDiag::get_settings_profile(parameters = 'NatM_uniform_Fem_GP_1',
+                                                low = 0.1, high = 0.2, step_size = 0.01,
+                                                param_space = 'real')
+model_settings <- nwfscDiag::get_settings(
+  settings = list(base_name = '3.10_exp_comps_2024',
+                  run = 'profile',
+                  profile_details = profile_info,
+                  exe = exe_loc)
+)
+
+future::plan(future::multisession, workers = parallelly::availableCores(omit = 1))
+nwfscDiag::run_diagnostics(mydir = 'model_runs',
+                           model_settings = model_settings)
+
+model_settings$base_name <- '3.09_raw_comps_2024'
+nwfscDiag::run_diagnostics(mydir = 'model_runs',
+                           model_settings = model_settings)
+future::plan(future::sequential)
 
 # Update bias adjustment --------------------------------------------------
 
