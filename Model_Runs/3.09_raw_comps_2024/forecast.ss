@@ -1,5 +1,5 @@
 #C file created using an r4ss function
-#C file write time: 2025-03-17  11:28:36
+#C file write time: 2025-03-24  13:38:08
 #
 1 #_benchmarks
 2 #_MSY
@@ -20,8 +20,8 @@
 0.956 #_Flimitfraction
 3 #_N_forecast_loops
 3 #_First_forecast_loop_with_stochastic_recruitment
--1 #_fcast_rec_option
-0 #_fcast_rec_val
+0 #_fcast_rec_option
+1 #_fcast_rec_val
 0 #_Fcast_loop_control_5
 2050 #_FirstYear_for_caps_and_allocations
 0 #_stddev_of_log_catch_ratio

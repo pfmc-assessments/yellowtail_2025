@@ -9,7 +9,7 @@ Warning 6 : fleet: 5 lencomp has N obs with partition==2 (retained); changed to 
 Warning 7 Adjustment: Fleet: 5  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 10
 Warning 8 : fleet: 6 lencomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 14
 Warning 9 Adjustment: Fleet: 6  agecomp has N obs with partition==2 (retained); changed to partition=0 because retention not defined; N= 355
-Warning 10 : Final gradient: 3.73956e-05 is larger than final_conv: 1e-05
+Warning 10 : Final gradient: 0.000121721 is larger than final_conv: 1e-05
 Warning 11 : Early recdev biasadj is >2 times ratio of rmse to sigmaR
 Note 3 Information: A revised protocol for the Fcast_yr specification is available and recommended.
  11 warnings  and 3 notes 

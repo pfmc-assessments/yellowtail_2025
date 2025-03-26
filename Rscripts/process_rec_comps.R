@@ -299,13 +299,13 @@ saveRDS(rec_length_comps$unsexed, file = here::here("Data/Processed/ss3_rec_leng
 # add MRFSS lengths to recfin data
 rec_bio_cleaned_with_mrfss <- rbind(
   rec_bio_cleaned |> 
-    select(year, length_cm),
+    select(year, length_cm, state = STATE_NAME),
   or_mrfss |> 
     mutate(year = Year, length_cm = Length / 10) |> 
-    select(year, length_cm),
+    select(year, length_cm) |> mutate(state = 'OREGON'),
   ca_wa_mrfss |> 
     mutate(year = YEAR, length_cm = LNGTH / 10) |> 
-    select(year, length_cm)
+    mutate(state = stringr::str_to_upper(ST_NAME)) |> select(year, length_cm, state)
 )
 # length comps with MRFSS added
 rec_length_comps_with_mrfss <- nwfscSurvey::get_raw_comps(
@@ -326,6 +326,48 @@ rec_length_comps_with_mrfss <- nwfscSurvey::get_raw_comps(
 )
 
 saveRDS(rec_length_comps_with_mrfss$unsexed, file = here::here("Data/Processed/ss3_rec_length_comps_with_mrfss.rds"))
+
+# OR/CA length comps (smaller fish)
+or_ca_rec_length_comps <- rec_bio_cleaned_with_mrfss |>
+  mutate(
+    sex = "U", # make everything unsexed because that's the majority
+    trawl_id = 999, # column is required
+    common_name = "yellowtail_rockfish", # column is required
+    project = "rec_lens" # column is required
+  ) |>
+  filter(state != 'WASHINGTON') |>
+  as.data.frame() |>
+  nwfscSurvey::get_raw_comps(
+  comp_bins = len_bin,
+  dir = "Data/Confidential/rec",
+  comp_column_name = "length_cm",
+  input_n_method = "total_samples",
+  month = 7,
+  fleet = 999
+)
+
+saveRDS(or_ca_rec_length_comps$unsexed, file = here::here("Data/Processed/ss3_or_ca_only_rec_length_comps.rds"))
+
+# WA length comps (bigger fish)
+wa_rec_length_comps <- rec_bio_cleaned_with_mrfss |>
+  mutate(
+    sex = "U", # make everything unsexed because that's the majority
+    trawl_id = 999, # column is required
+    common_name = "yellowtail_rockfish", # column is required
+    project = "rec_lens" # column is required
+  ) |>
+  filter(state == 'WASHINGTON') |>
+  as.data.frame() |>
+  nwfscSurvey::get_raw_comps(
+    comp_bins = len_bin,
+    dir = "Data/Confidential/rec",
+    comp_column_name = "length_cm",
+    input_n_method = "total_samples",
+    month = 7,
+    fleet = 999
+  )
+
+saveRDS(wa_rec_length_comps$unsexed, file = here::here("Data/Processed/ss3_wa_only_rec_length_comps.rds"))
 
 ## rec ages
 
