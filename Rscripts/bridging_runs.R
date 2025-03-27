@@ -336,6 +336,88 @@ nwfscDiag::run_diagnostics(mydir = 'model_runs',
                            model_settings = model_settings)
 future::plan(future::sequential)
 
+
+# Selectivity changes -----------------------------------------------------
+
+mod <- SS_read('model_runs/3.10_exp_comps_2024')
+
+# get rid of discard and random unused block
+mod$ctl$N_Block_Designs <- 1
+mod$ctl$blocks_per_pattern <- 1
+# 2017 used 2003, added at STAR panel. 
+# Ali recommended 2004 (when yelloweye depth restrictions went into place) and it matches data better.
+mod$ctl$Block_Design <- list(c(2004, 2024))
+rownames(mod$ctl$size_selex_parms_tv) <- gsub('2003', '2004', rownames(mod$ctl$size_selex_parms_tv))
+
+# some cleanup
+mod$ctl$MG_parms['Mat50%_Fem_GP_1', c('LO', 'HI')] <- c(1,30)
+mod$ctl$MG_parms[c('Mat50%_Fem_GP_1', 'Mat_slope_Fem_GP_1', 'Eggs_beta_Fem_GP_1', 'FracFemale_GP_1', 'CohortGrowDev'), 
+                 'PRIOR'] <- 99
+mod$ctl$SR_parms['SR_sigmaR', 'LO'] <- 0.4
+
+# selectivity clean up
+mod$ctl$size_selex_types['PLACEHOLDER', 'Pattern'] <- 0
+mod$ctl$size_selex_parms <- mod$ctl$size_selex_parms[-grep('PLACEHOLDER', rownames(mod$ctl$size_selex_parms)),]
+mod$ctl$size_selex_parms_tv <- mod$ctl$size_selex_parms_tv[-grep('PLACEHOLDER', rownames(mod$ctl$size_selex_parms_tv)),]
+
+# estimate descending limb for early rec period
+mod$ctl$size_selex_parms['SizeSel_P_4_Recreational(3)', c('INIT', 'PHASE')] <- c(7, 4)
+# only block descending limb (ascending limb parameter did not change)
+mod$ctl$size_selex_parms[paste0('SizeSel_P_', c(1,3), '_Recreational(3)'), c('Block', 'Block_Fxn')] <- 0
+# blocks were redefined
+mod$ctl$size_selex_parms['SizeSel_P_4_Recreational(3)', 'Block'] <- 1
+# only one tv parameter is left
+mod$ctl$size_selex_parms_tv <- mod$ctl$size_selex_parms_tv['SizeSel_P_4_Recreational(3)_BLK3repl_2004',]
+
+SS_write(mod, 'model_runs/4.01_simplify_selex', overwrite = TRUE)
+run('model_runs/4.01_simplify_selex', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+
+mod <- SS_read('model_runs/4.01_simplify_selex')
+
+# add new block for longleader fishery
+mod$ctl$blocks_per_pattern <- 2
+# need to decide whether new block starts 2017 or 2018
+mod$ctl$Block_Design <- list(c(2004, 2017, 2018, 2024))
+
+# add new row to tv selectivity pars
+mod$ctl$size_selex_parms_tv <- slice(mod$ctl$size_selex_parms_tv, c(1,1))
+rownames(mod$ctl$size_selex_parms_tv) <- paste0('SizeSel_P_4_Recreational(3)_BLK1repl_', c(2003, 2018))
+
+SS_write(mod, 'model_runs/4.02_add_rec_block', overwrite = TRUE)
+run('model_runs/4.02_add_rec_block', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+mod <- SS_read('model_runs/4.02_add_rec_block')
+
+# block for peak parameter
+mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', c('Block', 'Block_Fxn')] <- c(1, 2)
+
+mod$ctl$size_selex_parms_tv <- bind_rows(
+  mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', 1:7],
+  mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', 1:7],
+  mod$ctl$size_selex_parms_tv
+)
+rownames(mod$ctl$size_selex_parms_tv)[1:2] <- paste0('SizeSel_P_1_Recreational(3)_BLK1repl_', c(2003, 2018)) 
+
+SS_write(mod, 'model_runs/4.03_block_peak_param', overwrite = TRUE)
+run('model_runs/4.03_block_peak_param', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+out <- SSgetoutput(dirvec = paste0('model_runs/', c('3.10_exp_comps_2024',
+                                                    '4.01_simplify_selex',
+                                                    '4.02_add_rec_block',
+                                                    '4.03_block_peak_param')))
+
+out_sum <- SSsummarize(out)
+SStableComparisons(out_sum)
+SSplotComparisons(out_sum, subplots = c(1,3), new = FALSE, legendlabels = c('working base', 'simplify selex',
+                                                                            'add longleader block', 'block peak param'))
+SS_plots(out[[4]], new = FALSE)
+
+# consider fixing descending limb of last rec block so that it is logistic.
+# need to deal with peak of hake (hitting bound), triennial (will hit bound if allowed to be estimated)
+# I think if the hake bound increases to the max popn lbin it is estimable.
+# Triennial hits bound no matter what. (Bizarre)
+
 # Update bias adjustment --------------------------------------------------
 
 mod <- SS_read('model_runs/2.01_extend_2024')
