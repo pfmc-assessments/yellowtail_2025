@@ -7,7 +7,6 @@
 ]{scrartcl}
 
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -17,6 +16,10 @@
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -38,14 +41,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{5}
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -72,28 +89,38 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
   \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
   \fi
   % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
 \usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{hyphenat}
@@ -134,10 +161,6 @@
 \setkomafont{pageheadfoot}{\small}
 
 \makeatletter
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
 \ifdefined\contentsname
@@ -173,17 +196,12 @@
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \makeatother
 \makeatletter
+\makeatother
+\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
-\makeatother
+
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
 \else
@@ -196,7 +214,8 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -210,11 +229,12 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
+
 \title{Status of the Yellowtail rockfish stock off the U.S. West Coast
 north of 40°10\(\prime\) in 2025}
 \author{Kiva L. Oken \and Ian G. Taylor \and Megan L.
 Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
-\date{3/3/25}
+\date{2025-03-31}
 
 \begin{document}
   \begin{titlepage}
@@ -334,7 +354,6 @@ Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
   \end{minipage}
   \restoregeometry
   \end{titlepage}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, enhanced, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, breakable, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -344,6 +363,7 @@ Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
 }
 \listoffigures
 \listoftables
+
 \newpage{}
 
 Please cite this publication as:
@@ -354,77 +374,166 @@ Status of the Yellowtail rockfish stock off the U.S. West Coast north of
 
 \newpage{}
 
-\hypertarget{executive-summary}{%
-\subsection{Executive Summary}\label{executive-summary}}
+\subsection{Executive Summary}\label{executive-summary}
 
-\hypertarget{assessment-model}{%
-\subsubsection{Assessment Model}\label{assessment-model}}
+\subsubsection{Assessment Model}\label{assessment-model}
 
-\hypertarget{reference-points-stock-status-and-projections}{%
 \subsubsection{Reference Points, Stock Status, and
-Projections}\label{reference-points-stock-status-and-projections}}
+Projections}\label{reference-points-stock-status-and-projections}
 
 \newpage{}
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\section{Introduction}\label{introduction}
 
 Testing adding in an introduction for Yellowtail rockfish. There is
 currently no read of parameters for child documents.
 
-\hypertarget{life-history}{%
-\subsection{Life History}\label{life-history}}
+\subsection{Life History}\label{life-history}
 
-\hypertarget{ecosystem-considerations}{%
-\subsection{Ecosystem considerations}\label{ecosystem-considerations}}
+\subsection{Ecosystem considerations}\label{ecosystem-considerations}
 
-\hypertarget{fishery-description}{%
-\subsection{Fishery description}\label{fishery-description}}
+\subsection{Fishery description}\label{fishery-description}
 
-\hypertarget{management-history}{%
-\subsection{Management History}\label{management-history}}
+\subsection{Management History}\label{management-history}
 
-\hypertarget{management-performance}{%
-\subsection{Management performance}\label{management-performance}}
+\subsection{Management performance}\label{management-performance}
 
-\hypertarget{fisheries-off-canada-and-alaska}{%
 \subsection{Fisheries off Canada and
-Alaska}\label{fisheries-off-canada-and-alaska}}
+Alaska}\label{fisheries-off-canada-and-alaska}
 
 \newpage{}
 
-\hypertarget{data}{%
-\section{Data}\label{data}}
+\section{Data}\label{data}
 
-\hypertarget{fishery-dependent-data}{%
-\subsection{Fishery-dependent data}\label{fishery-dependent-data}}
+\subsection{Fishery-dependent data}\label{fishery-dependent-data}
 
-\hypertarget{landings}{%
-\subsubsection{Landings}\label{landings}}
+\subsubsection{Landings}\label{landings}
 
-\hypertarget{discards}{%
-\subsubsection{Discards}\label{discards}}
+\subsubsection{Discards}\label{discards}
 
-\hypertarget{biological-data}{%
-\subsubsection{Biological data}\label{biological-data}}
+\subsubsection{Biological data}\label{biological-data}
 
-\hypertarget{abundance-indices}{%
-\subsubsection{Abundance indices}\label{abundance-indices}}
+\subsubsection{Abundance indices}\label{abundance-indices}
 
-\hypertarget{fishery-independent-data}{%
-\subsection{Fishery-independent data}\label{fishery-independent-data}}
+\paragraph{Oregon ORBS Dockside Index (2001 -
+2024)}\label{oregon-orbs-dockside-index-2001---2024}
 
-\hypertarget{biological-parameters}{%
-\subsection{Biological Parameters}\label{biological-parameters}}
+Trip-level catch-per-unit-effort data from ORBS dockside sampling was
+obtained from ODFW. To mitigate the confounding of hourly effort
+associated with these trips with travel, the travel time was subtracted
+from the hours fished. Travel time was stratified by boat type (charter
+and private) and was calculated as boat type-specific speeds (13 mph for
+charter boat trips and 18 mph for private boat trips) multiplied by
+twice the distance between the port of origin and the reef that was
+fished. CPUE, expressed in terms of fish per angler-hour, was calculated
+by multiplying the number of anglers and the adjusted travel time. The
+database contains information on catch by species (number of retained
+fish), effort (angler hours), sample location (port where data were
+collected), date, bag limits and other relevant regulations, boat type
+(charter or private), and trip type (e.g., bottom associated fish).
 
-\hypertarget{natural-mortality}{%
-\subsubsection{Natural Mortality}\label{natural-mortality}}
+The unfiltered data set contained 456,172 trips from 2001 - 2024.
+Multiple standardized filters are applied to ORBS trip-level data to
+remove outliers and data unsuitable for an index. These filters include
+trips with incorrect interview times, which impact calculation of
+effort, unreasonably long or short trips, and retaining only bottomfish
+target trips. Further filters were utilized for fishing closures
+(i.e.~temporal or spatial closures) and catches exceeding bag limits,
+which would presumably impact catch rates. Trips from several ports with
+extremely small sample sizes (\textless1\% of total trips) were also
+excluded and finally, trips that met criteria for irrational effort
+reporting (i.e., implausible values) or extreme catch rates were
+excluded as well. The final dataset included 137,502 trips (TABLE
+``percent\_pos.csv'').
 
-\hypertarget{weight-at-length}{%
-\subsubsection{Weight-at-length}\label{weight-at-length}}
+Covariates evaluated included year, month, port, the open depths to
+fishing (all depths or inside 20/30/40fm), boat type and the daily bag
+limit for Yellowtail Rockfish. Preliminary model explorations indicated
+that the daily bag limit covariate could not be combined with the open
+depth of the fishery due to changes in recreational fishing regulations
+over time. Prior to 2017, Yellowtail Rockfish were included in the
+general marine bag limit. However, in 2017, Yellowtail Rockfish were
+also included in a specialized longleader recreational bag limit where
+participants were required to be outside of 40fm. As a result, the bag
+limits were binned into a binary covariate for low (5 -- 8 fish) and
+high (10 -- 15fish) bag limits during the 2001 -- 2024 time period.
+Negative binomial models were fit in sdmTMB (Version 0.6.0) to the
+trip-level data (catch with a log offset for adjusted angler hours).
+Tweedie distributions were also explored for selected models but
+generally did not improve model diagnostics. The final model selected
+includes year, month, port, open fishery depths, longleader trip and
+binned target bag limit covariates, which was the best fit model by AIC
+in this series (TABLE ``model\_selection.csv''). Acceptable diagnostics
+for the model were achieved (FIGURE -- qqplot) and the negative binomial
+distribution was preferred over the tweedie. The index of abundance are
+shown in Figure/Table XXXX.
 
-\hypertarget{maturity}{%
-\subsubsection{Maturity}\label{maturity}}
+\subsection{Fishery-independent data}\label{fishery-independent-data}
+
+\subsubsection{Abundance Indices}\label{abundance-indices-1}
+
+\paragraph{SMURF YOY Index}\label{smurf-yoy-index}
+
+ODFW and Oregon State University (OSU) have collaborated on young of the
+year (YOY) fish and environmental monitoring in and around Oregon Marine
+Reserves (MR) using SMURF devices, standardized sampling units that
+collect newly-settled juvenile fishes. Data were provided for two
+regions on the Oregon coast, near the Otter Rock MR (central) and the
+Redfish Rocks MR (southern) with a site inside of the reserve and a
+comparison site outside of the reserve from 2011 to the present. These
+are monitored regularly (approximately every 2 weeks) during the
+settlement season (April - September) and YOY are collected for genetic
+identification and measured. Settlement rate of YOY Yellowtail Rockfish
+was provided by OSU for each site within each region. Paired temperature
+at depth data was provided by ODFW MR Ecological Monitoring team for
+this assessment. Daily mean temperature data was provided for three
+depth strata (1m, 7.5m, and 15m) for each site within each region.
+
+Oceanographic sampling by the ODFW MR Ecological Monitoring team has not
+been able to be done simultaneously in both reserves at each mooring
+site at all depths due to a lack of equipment. However, for time periods
+when there was matched data, temperature was highly correlated across
+depths (Pearson's correlation coefficient \textgreater{} 0.90) and
+between sites within each region (Pearson's correlation coefficients
+\textgreater0.98). In order to calculate an index of daily water column
+temperature that was continuous enough to be combined with settlement
+rate data, temperature data was standardized within year and depth. For
+periods with multiple observations, the mean was taken in order to
+generate a single continuous temperature time series. Mean SMURF
+deployment lasted 15.5 days. In order to summarize temperature in an
+ecologically meaningful way relative to the SMURF sampling design, a
+16-day rolling mean of temperature and cumulative degree days over
+16-day periods were calculated. These data were matched with settlement
+rate data such that the mean temperature or the cumulative degree days
+during the 16-day period that the SMURF was deployed was used.
+
+Covariates evaluated for were year, month, region (Redfish Rocks or
+Otter Rock), temperature, and site (within marine reserve or nearby
+comparison site). Preliminary model runs indicated a consistent lack of
+convergence and additional filters were applied to address this,
+including limiting the data to 2014 - 2024 and to the peak months of
+settlement for yellowtail (May - July). Month was not included in models
+that included temperature as both covariates were used to describe
+seasonal variation in settlement rate. Site was not a significant
+covariate in this model but this was not unexpected, as the presence of
+a reserve would not be anticipated to impact juvenile settlement rates.
+Models were fit to the settlement rate data (YOY fish per day) using
+sdmTMB R package (Version 0.6.0). Both negative binomial and tweedie
+distributions were evaluated. The model that was selected based on fit
+(TABLE X) and expert opinion from OSU and ODFW staff. The final model
+contained year, region, and temperature summarized as cumulative degree
+days 16-days prior to SMURF recovery using a negative binomial
+distribution. Acceptable model convergence and other diagnostic criteria
+for the final index were achieved (FIGURE - qqplot). The index of YOY
+abundance and associated standard errors are shown in Figure/Table Y.
+
+\subsection{Biological Parameters}\label{biological-parameters}
+
+\subsubsection{Natural Mortality}\label{natural-mortality}
+
+\subsubsection{Weight-at-length}\label{weight-at-length}
+
+\subsubsection{Maturity}\label{maturity}
 
 We used a total of 292 individual histological samples of aged female
 yellowtail rockfish to estimate maturity for the assessment. These
@@ -454,127 +563,133 @@ and general sparsity, we did not find support for including temporal or
 spatial effects, and decided on the simpler null model (equivalent to a
 logistic regression). For the age-based model, we estimated an intercept
 of -6.70 (SE = 0.99) and slope of 0.67 (SE = 0.10), equivalent to an A50
-of 13.31 years. For a more direct comparison to the previous assessment,
+of 10.0 years. For a more direct comparison to the previous assessment,
 we used these same 292 samples to fit an equivalent length -- based
-model, which resulted in an estimated L50 = 43.35 cm.
+model, which resulted in an estimated L50 = 42.5 cm.
 
-\hypertarget{fecundity}{%
-\subsubsection{Fecundity}\label{fecundity}}
+\subsubsection{Fecundity}\label{fecundity}
 
-\hypertarget{environmental-and-ecosystem-data}{%
 \subsection{Environmental and ecosystem
-data}\label{environmental-and-ecosystem-data}}
+data}\label{environmental-and-ecosystem-data}
+
+\subsubsection{Oceanographic Index}\label{oceanographic-index}
+
+Over the past several years, progress has been made in understanding how
+oceanographic conditions drive recruitment of groundfish species in the
+California Current Ecosystem across lifestages including petrale sole,
+sablefish and hake. Recent increases in capacity supported by the
+Climate, Ecosystem, and Fisheries Initiative provided the ability to
+build on these previous lines of research and examine the relationship
+between northern Yellowtail rockfish recruitment and oceanographic
+drivers based on model output from Global Ocean Physics Reanalysis
+(GLORYS) from \href{https://marine.copernicus.eu/}{Copernicus Marine
+Environment Monitoring Service} (CMEMS) and Regional Ocean Modeling
+System (ROMS) model for the California Current Ecosystem (Neveu et
+al.~2016). The results suggest that GLORYS and ROMS output may allow for
+better model precision and near-term forecasting. This approach builds
+on previous research (Tolimieri et al.~2020, Haltuch et al.~2020,
+Vestfals et al.~2023) and assessments (Taylor et al.~2023, Johnson et
+al.~2023) by applying similar techniques to establish oceanographic
+relationships and develop an oceanographic index based on a conceptual
+life history model for yellowtail rockfish (Darby et al.~in prep).
+GLORYS also provides a temporally robust time series and is not
+susceptible to discontinuities identified in the 2023 petrale sole
+assessment. Appendix A of this report describes the most recent efforts
+in developing a new environmental index of northern Yellowtail
+recruitment based on GLORYS products. The final selected model included
+the date of spring transition from the Coastal Upwelling Transport
+Index, degree days (represent temperature exposure) during egg
+fertilization and development, long-shore transport during the pelagic
+juvenile lifestage, and El Nino conditions during the pelagic juvenile
+lifestage. The oceanographic model was fit using the recruitment
+deviations (1994 - 2019) from the base model and used to predict log
+recruitment deviations 5 years ahead, 2020 - 2024, using oceanographic
+conditions.
 
 \newpage{}
 
-\hypertarget{assessment-model-1}{%
-\section{Assessment model}\label{assessment-model-1}}
+\section{Assessment model}\label{assessment-model-1}
 
-\hypertarget{history-of-modeling-approaches}{%
 \subsection{History of modeling
-approaches}\label{history-of-modeling-approaches}}
+approaches}\label{history-of-modeling-approaches}
 
-\hypertarget{response-to-most-recent-star-panel-and-ssc-recommendations}{%
 \subsection{Response to most recent STAR panel and SSC
-recommendations}\label{response-to-most-recent-star-panel-and-ssc-recommendations}}
+recommendations}\label{response-to-most-recent-star-panel-and-ssc-recommendations}
 
-\hypertarget{model-structure-and-assumptions}{%
 \subsection{Model Structure and
-Assumptions}\label{model-structure-and-assumptions}}
+Assumptions}\label{model-structure-and-assumptions}
 
-\hypertarget{model-changes-from-the-last-assessment}{%
 \subsubsection{Model Changes from the Last
-Assessment}\label{model-changes-from-the-last-assessment}}
+Assessment}\label{model-changes-from-the-last-assessment}
 
-\hypertarget{modeling-platform-and-structure}{%
 \subsubsection{Modeling Platform and
-Structure}\label{modeling-platform-and-structure}}
+Structure}\label{modeling-platform-and-structure}
 
-\hypertarget{model-parameters}{%
-\subsubsection{Model Parameters}\label{model-parameters}}
+\subsubsection{Model Parameters}\label{model-parameters}
 
-\hypertarget{key-assumptions-and-structural-choices}{%
 \subsubsection{Key Assumptions and Structural
-Choices}\label{key-assumptions-and-structural-choices}}
+Choices}\label{key-assumptions-and-structural-choices}
 
 \newpage{}
 
-\hypertarget{base-model-results}{%
-\subsection{Base Model Results}\label{base-model-results}}
+\subsection{Base Model Results}\label{base-model-results}
 
-\hypertarget{parameter-estimates}{%
-\subsubsection{Parameter Estimates}\label{parameter-estimates}}
+\subsubsection{Parameter Estimates}\label{parameter-estimates}
 
-\hypertarget{fits-to-the-data}{%
-\subsubsection{Fits to the Data}\label{fits-to-the-data}}
+\subsubsection{Fits to the Data}\label{fits-to-the-data}
 
-\hypertarget{population-trajectory}{%
-\subsubsection{Population Trajectory}\label{population-trajectory}}
+\subsubsection{Population Trajectory}\label{population-trajectory}
 
 \newpage{}
 
-\hypertarget{model-diagnostics}{%
-\subsection{Model Diagnostics}\label{model-diagnostics}}
+\subsection{Model Diagnostics}\label{model-diagnostics}
 
-\hypertarget{convergence}{%
-\subsubsection{Convergence}\label{convergence}}
+\subsubsection{Convergence}\label{convergence}
 
-\hypertarget{sensitivity-analyses}{%
-\subsubsection{Sensitivity Analyses}\label{sensitivity-analyses}}
+\subsubsection{Sensitivity Analyses}\label{sensitivity-analyses}
 
-\hypertarget{retrospective-analysis}{%
-\subsubsection{Retrospective Analysis}\label{retrospective-analysis}}
+\subsubsection{Retrospective Analysis}\label{retrospective-analysis}
 
-\hypertarget{likelihood-profiles}{%
-\subsubsection{Likelihood Profiles}\label{likelihood-profiles}}
+\subsubsection{Likelihood Profiles}\label{likelihood-profiles}
 
-\hypertarget{unresolved-problems-and-major-uncertainties}{%
 \subsection{Unresolved Problems and Major
-Uncertainties}\label{unresolved-problems-and-major-uncertainties}}
+Uncertainties}\label{unresolved-problems-and-major-uncertainties}
 
 \newpage{}
 
-\hypertarget{management}{%
-\section{Management}\label{management}}
+\section{Management}\label{management}
 
-\hypertarget{reference-points}{%
-\subsection{Reference Points}\label{reference-points}}
+\subsection{Reference Points}\label{reference-points}
 
-\hypertarget{harvest-projections-and-decision-tables}{%
 \subsection{Harvest Projections and Decision
-Tables}\label{harvest-projections-and-decision-tables}}
+Tables}\label{harvest-projections-and-decision-tables}
 
-\hypertarget{evaluation-of-scientific-uncertainty}{%
 \subsection{Evaluation of Scientific
-Uncertainty}\label{evaluation-of-scientific-uncertainty}}
+Uncertainty}\label{evaluation-of-scientific-uncertainty}
 
-\hypertarget{regional-management-considerations}{%
 \subsection{Regional management
-considerations}\label{regional-management-considerations}}
+considerations}\label{regional-management-considerations}
 
-\hypertarget{research-and-data-needs}{%
-\subsection{Research and Data Needs}\label{research-and-data-needs}}
-
-\newpage{}
-
-\hypertarget{sec-acknowledgements}{%
-\subsection{Acknowledgements}\label{sec-acknowledgements}}
+\subsection{Research and Data Needs}\label{research-and-data-needs}
 
 \newpage{}
 
-\hypertarget{references}{%
-\subsection{References}\label{references}}
+\subsection{Acknowledgements}\label{sec-acknowledgements}
 
-\hypertarget{refs}{}
+\newpage{}
+
+\subsection{References}\label{references}
+
+\phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-Anderson:2024:SRP}{}}%
+\bibitem[\citeproctext]{ref-Anderson:2024:SRP}
 Anderson, Sean C., Eric J. Ward, Philina A. English, Lewis A. K.
 Barnett, and James T. Thorson. 2024. {``sdmTMB: An r Package for Fast,
 Flexible, and User-Friendly Generalized Linear Mixed Effects Models with
 Spatial and Spatiotemporal Random Fields.''} \emph{bioRxiv}
 2022.03.24.485545. \url{https://doi.org/10.1101/2022.03.24.485545}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-grandin_status_2024}{}}%
+\bibitem[\citeproctext]{ref-grandin_status_2024}
 Grandin, C. J., Johnson K. F., Edwards A. M., and Berger A. M. 2024.
 {``Status of the {P}acific {H}ake (Whiting) Stock in {U}.{S}. And
 {C}anadian Waters in 2024.''} Joint Technical Committee of the U.S.;
@@ -585,23 +700,20 @@ Service; Fisheries; Oceans Canada.
 
 \newpage{}
 
-\hypertarget{tables}{%
-\subsection{Tables}\label{tables}}
+\subsection{Tables}\label{tables}
 
 \newpage{}
 
-\hypertarget{figures}{%
-\subsection{Figures}\label{figures}}
+\subsection{Figures}\label{figures}
 
 \newpage{}
 
-\hypertarget{notes}{%
-\subsection{Notes}\label{notes}}
+\subsection{Notes}\label{notes}
 
 \newpage{}
 
-\hypertarget{sec-appendix}{%
-\subsection{Appendices}\label{sec-appendix}}
+\subsection{Appendices}\label{sec-appendix}
+
 
 
 
