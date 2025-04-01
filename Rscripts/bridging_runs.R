@@ -126,7 +126,8 @@ ashop_ages <- readRDS('data/processed/ss3_ashop_ages.rds')
 names(ashop_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
 
 rec_ages <- readRDS('data/processed/ss3_rec_age_comps.rds') |> 
-  mutate(fleet = 3, ageerr = as.numeric(1)) 
+  mutate(fleet = 3, ageerr = as.numeric(1)) |>
+  filter(year != 2009) # two samples
 names(rec_ages)[1:9] <- names(mod_ages$dat$agecomp)[1:9]
 
 wcgbts_ages <- readRDS('data/processed/ss3_wcgbts_caal_comps.rds') |>
@@ -186,7 +187,8 @@ tune_comps(niters_tuning = 2, dir = 'model_runs/3.06_ages_exp_pacfin',
 mod_lengths_raw <- SS_read('model_runs/3.05_ages_raw_pacfin')
 
 pacfin_lengths <- read.csv('data/processed/pacfin_lcomps_raw.csv') |>
-  `names<-`(names(mod_lengths_raw$dat$lencomp))
+  `names<-`(names(mod_lengths_raw$dat$lencomp)) |>
+  filter(sex != 0) # these are generally heterogeneous from the rest of the fleet, and are sparse.
 
 rec_lengths <- readRDS('data/processed/ss3_rec_length_comps_with_mrfss.rds') |> 
   `names<-`(names(mod_lengths_raw$dat$lencomp)) |>
@@ -220,7 +222,8 @@ tune_comps(dir = 'model_runs/3.07_lengths_raw_pacfin',
 mod_lengths_exp <- SS_read('model_runs/3.06_ages_exp_pacfin')
 
 pacfin_lengths_exp <- read.csv('data/processed/pacfin_lcomps.csv') |>
-  `names<-`(names(mod_lengths_exp$dat$lencomp))
+  `names<-`(names(mod_lengths_exp$dat$lencomp)) |>
+  filter(sex != 0) # these are generally heterogeneous from the rest of the fleet, and are sparse.
 
 mod_lengths_exp$dat$lencomp <- bind_rows(pacfin_lengths_exp, 
                                          ashop_lengths, 
@@ -235,22 +238,22 @@ run('model_runs/3.08_lengths_exp_pacfin',
 tune_comps(dir = 'model_runs/3.08_lengths_exp_pacfin', 
            niters_tuning = 2, exe = exe_loc, extras = '-nohess')
 
-out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
-                              glue::glue('model_runs/3.0{mod}', 
-                                         mod = c('4_discards',
-                                                 '5_ages_raw_pacfin',
-                                                 '6_ages_exp_pacfin',
-                                                 '7_lengths_raw_pacfin',
-                                                 '8_lengths_exp_pacfin'))))
-SSsummarize(out) |>
-  SSplotComparisons(subplots = c(1,3), 
-                    legendlabels = c('2017', 'stuff', 'raw ages', 'exp ages', 'raw ages+len', 'exp ages+len'), 
-                    new = FALSE)
+# out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
+#                               glue::glue('model_runs/3.0{mod}', 
+#                                          mod = c('4_discards',
+#                                                  '5_ages_raw_pacfin',
+#                                                  '6_ages_exp_pacfin',
+#                                                  '7_lengths_raw_pacfin',
+#                                                  '8_lengths_exp_pacfin'))))
+# SSsummarize(out) |>
+#   SSplotComparisons(subplots = c(1,3), 
+#                     legendlabels = c('2017', 'stuff', 'raw ages', 'exp ages', 'raw ages+len', 'exp ages+len'), 
+#                     new = FALSE)
 
-SSsummarize(out) |> SStableComparisons()
+# SSsummarize(out) |> SStableComparisons()
 
-SS_plots(out[[5]])
-SS_plots(out[[6]])
+# SS_plots(out[[5]])
+# SS_plots(out[[6]])
 
 # run some profiles
 
@@ -288,65 +291,39 @@ run('model_runs/3.10_exp_comps_2024',
 tune_comps(dir = 'model_runs/3.10_exp_comps_2024', 
            niters_tuning = 2, exe = exe_loc, extras = '-nohess')
 
-out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
-                              glue::glue('model_runs/3.{mod}', 
-                                         mod = c('04_discards',
-                                                 '07_lengths_raw_pacfin',
-                                                 '08_lengths_exp_pacfin',
-                                                 '09_raw_comps_2024',
-                                                 '10_exp_comps_2024'))))
+# out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
+#                               glue::glue('model_runs/3.{mod}', 
+#                                          mod = c('04_discards',
+#                                                  '07_lengths_raw_pacfin',
+#                                                  '08_lengths_exp_pacfin',
+#                                                  '09_raw_comps_2024',
+#                                                  '10_exp_comps_2024'))))
+# 
+# SS_plots(out[[5]])
+# SS_plots(out[[6]])
 
-SS_plots(out[[5]])
-SS_plots(out[[6]])
-
-out |>
-  SSsummarize() |>
-  SSplotComparisons(subplots = c(1,3), new = FALSE, 
-                    legendlabels = c('2017', 
-                                     'most updates',
-                                     'raw pacfin',
-                                     'expanded pacfin',
-                                     'raw pacfin to 20204',
-                                     'expanded pacfin to 2024'))
-
-new_ages_long <- pacfin_ages |>
-  select(year, f1:f25) |>
-  tidyr::pivot_longer(cols = -year, names_to = 'age', values_to = 'freq') |>
-  group_by(year) |>
-  mutate(freq = freq/sum(freq),
-         age = as.numeric(stringr::str_remove(age, 'f'))) |>
-  filter(year < 2017)
-
-profile_info <- nwfscDiag::get_settings_profile(parameters = 'NatM_uniform_Fem_GP_1',
-                                                low = 0.1, high = 0.2, step_size = 0.01,
-                                                param_space = 'real')
-model_settings <- nwfscDiag::get_settings(
-  settings = list(base_name = '3.10_exp_comps_2024',
-                  run = 'profile',
-                  profile_details = profile_info,
-                  exe = exe_loc)
-)
-
-future::plan(future::multisession, workers = parallelly::availableCores(omit = 1))
-nwfscDiag::run_diagnostics(mydir = 'model_runs',
-                           model_settings = model_settings)
-
-model_settings$base_name <- '3.09_raw_comps_2024'
-nwfscDiag::run_diagnostics(mydir = 'model_runs',
-                           model_settings = model_settings)
-future::plan(future::sequential)
-
+# out |>
+#   SSsummarize() |>
+#   SSplotComparisons(subplots = c(1,3), new = FALSE, 
+#                     legendlabels = c('2017', 
+#                                      'most updates',
+#                                      'raw pacfin',
+#                                      'expanded pacfin',
+#                                      'raw pacfin to 20204',
+#                                      'expanded pacfin to 2024'))
 
 # Selectivity changes -----------------------------------------------------
 
 mod <- SS_read('model_runs/3.10_exp_comps_2024')
 
 # get rid of discard and random unused block
-mod$ctl$N_Block_Designs <- 1
-mod$ctl$blocks_per_pattern <- 1
+mod$ctl$N_Block_Designs <- 2
+mod$ctl$blocks_per_pattern <- c(2, 1)
 # 2017 used 2003, added at STAR panel. 
 # Ali recommended 2004 (when yelloweye depth restrictions went into place) and it matches data better.
-mod$ctl$Block_Design <- list(c(2004, 2024))
+# Second time period is for longleader
+mod$ctl$Block_Design <- list(c(2004, 2016, 2017, 2024), # rec
+                             c(2015, 2024)) # hake
 rownames(mod$ctl$size_selex_parms_tv) <- gsub('2003', '2004', rownames(mod$ctl$size_selex_parms_tv))
 
 # some cleanup
@@ -362,56 +339,93 @@ mod$ctl$size_selex_parms_tv <- mod$ctl$size_selex_parms_tv[-grep('PLACEHOLDER', 
 
 # estimate descending limb for early rec period
 mod$ctl$size_selex_parms['SizeSel_P_4_Recreational(3)', c('INIT', 'PHASE')] <- c(7, 4)
-# only block descending limb (ascending limb parameter did not change)
-mod$ctl$size_selex_parms[paste0('SizeSel_P_', c(1,3), '_Recreational(3)'), c('Block', 'Block_Fxn')] <- 0
+# only block descending limb (other parameters did not change)
+mod$ctl$size_selex_parms['SizeSel_P_3_Recreational(3)', c('Block', 'Block_Fxn')] <- 0
 # blocks were redefined
-mod$ctl$size_selex_parms['SizeSel_P_4_Recreational(3)', 'Block'] <- 1
-# only one tv parameter is left
-mod$ctl$size_selex_parms_tv <- mod$ctl$size_selex_parms_tv['SizeSel_P_4_Recreational(3)_BLK3repl_2004',]
+mod$ctl$size_selex_parms[paste0('SizeSel_P_', c(1,4), '_Recreational(3)'), 'Block'] <- 1
 
-SS_write(mod, 'model_runs/4.01_simplify_selex', overwrite = TRUE)
-run('model_runs/4.01_simplify_selex', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+# make hake fleet tv
+mod$ctl$size_selex_parms[paste0('SizeSel_P_', c(1,3), '_At-Sea-Hake(2)'), 'Block'] <- 2
+mod$ctl$size_selex_parms[paste0('SizeSel_P_', c(1,3), '_At-Sea-Hake(2)'), 'Block_Fxn'] <- 2
+
+# remove 2 rec tv parameters, add extra rec block, add hake tv parameters
+mod$ctl$size_selex_parms_tv <- mod$ctl$size_selex_parms_tv[-grep('P_3', rownames(mod$ctl$size_selex_parms_tv)),]
+mod$ctl$size_selex_parms_tv <- slice(mod$ctl$size_selex_parms_tv, c(1,2,1,1,2,2))
+rownames(mod$ctl$size_selex_parms_tv) <- c(paste0('SizeSel_P_', c(1,3), '_At-Sea-Hake(2)_BLK2repl_2015'),
+                                           paste0('SizeSel_P_1_Recreational(3)_BLK1repl_', c(2003, 2017)),
+                                           paste0('SizeSel_P_4_Recreational(3)_BLK1repl_', c(2003, 2017)))
+mod$ctl$size_selex_parms_tv['SizeSel_P_1_At-Sea-Hake(2)_BLK2repl_2015', 'INIT'] <- 48.64850
+
+SS_write(mod, 'model_runs/4.10_hake_blocks', overwrite = TRUE)
+run('model_runs/4.10_hake_blocks', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+# Now add sex specific selectivity
+mod <- SS_read('model_runs/4.10_hake_blocks')
+
+# sex specific for all fleets except PLACEHOLDER
+mod$ctl$size_selex_types$Male <- c(3,3,3,0,3,3) 
+
+sex_rows <- mod$ctl$size_selex_parms[1:5,]
+rownames(sex_rows) <- paste0('SizeSel_PMalOff_', 1:5)
+sex_rows$LO <- c(rep(-10, 4), 0)
+sex_rows$HI <- c(rep(10, 4), 2)
+sex_rows$INIT <- c(rep(0, 4), 1)
+sex_rows$PHASE <- rep(-99, 5)
+
+sex_rows_temp <- sex_rows
+size_selex_temp <- mod$ctl$size_selex_parms
+
+rownames(sex_rows_temp) <- paste0(rownames(sex_rows), '_Commercial(1)')
+size_selex_temp <- bind_rows(size_selex_temp[1:6,], sex_rows_temp, size_selex_temp[7:nrow(size_selex_temp),])
+
+sex_rows_temp <- sex_rows
+rownames(sex_rows_temp) <- paste0(rownames(sex_rows), '_At-Sea-Hake(2)')
+size_selex_temp <- bind_rows(size_selex_temp[1:17,], sex_rows_temp, size_selex_temp[18:nrow(size_selex_temp),])
+
+sex_rows_temp <- sex_rows
+rownames(sex_rows_temp) <- paste0(rownames(sex_rows), '_Recreational(3)')
+sex_rows_temp[3,'PHASE'] <- 6 # estimate separate descending limbs by sex
+sex_rows_temp[5,'PHASE'] <- 6 # estimate scale for male selectivity
+size_selex_temp <- bind_rows(size_selex_temp[1:28,], sex_rows_temp, size_selex_temp[29:nrow(size_selex_temp),])
+
+sex_rows_temp <- sex_rows
+rownames(sex_rows_temp) <- paste0(rownames(sex_rows), '_Triennial(5)')
+size_selex_temp <- bind_rows(size_selex_temp[1:39,], sex_rows_temp, size_selex_temp[40:nrow(size_selex_temp),])
+
+sex_rows_temp <- sex_rows
+rownames(sex_rows_temp) <- paste0(rownames(sex_rows), '_WCGBTS(6)')
+size_selex_temp <- bind_rows(size_selex_temp, sex_rows_temp)
+
+mod$ctl$size_selex_parms <- size_selex_temp
+
+SS_write(mod, 'model_runs/4.11_sex_selex_setup', overwrite = TRUE)
+run('model_runs/4.11_sex_selex_setup', exe = exe_loc, skipfinished = FALSE, extras = '-nohess')
+tune_comps(dir = 'model_runs/4.11_sex_selex_setup', niters_tuning = 1, extras = '-nohess', exe = exe_loc)
+tune_comps(dir = 'model_runs/4.11_sex_selex_setup', niters_tuning = 1, exe = exe_loc)
 
 
-mod <- SS_read('model_runs/4.01_simplify_selex')
+out <- SSgetoutput(dirvec = paste0('model_runs/', c('1.02_base_2017_3.30.23', '3.07_lengths_raw_pacfin', '3.08_lengths_exp_pacfin', 
+                                                    '3.10_exp_comps_2024', '4.11_sex_selex_setup')))
 
-# add new block for longleader fishery
-mod$ctl$blocks_per_pattern <- 2
-# need to decide whether new block starts 2017 or 2018
-mod$ctl$Block_Design <- list(c(2004, 2017, 2018, 2024))
+SS_plots(out[[5]])
+SSsummarize(out) |>
+  SSplotComparisons(subplots = c(1,3), new = FALSE, legendlabels = c('2017', 'update data', 'expand pacfin comps', 'extend to 2024', 'update selectivity'))
 
-# add new row to tv selectivity pars
-mod$ctl$size_selex_parms_tv <- slice(mod$ctl$size_selex_parms_tv, c(1,1))
-rownames(mod$ctl$size_selex_parms_tv) <- paste0('SizeSel_P_4_Recreational(3)_BLK1repl_', c(2003, 2018))
-
-SS_write(mod, 'model_runs/4.02_add_rec_block', overwrite = TRUE)
-run('model_runs/4.02_add_rec_block', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
-
-mod <- SS_read('model_runs/4.02_add_rec_block')
-
-# block for peak parameter
-mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', c('Block', 'Block_Fxn')] <- c(1, 2)
-
-mod$ctl$size_selex_parms_tv <- bind_rows(
-  mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', 1:7],
-  mod$ctl$size_selex_parms['SizeSel_P_1_Recreational(3)', 1:7],
-  mod$ctl$size_selex_parms_tv
+profile_info <- nwfscDiag::get_settings_profile(parameters = 'NatM_uniform_Fem_GP_1',
+                                                low = 0.1, high = 0.2, step_size = 0.01,
+                                                param_space = 'real')
+model_settings <- nwfscDiag::get_settings(
+  settings = list(base_name = '4.11_sex_selex_setup',
+                  run = 'profile',
+                  profile_details = profile_info,
+                  exe = exe_loc)
 )
-rownames(mod$ctl$size_selex_parms_tv)[1:2] <- paste0('SizeSel_P_1_Recreational(3)_BLK1repl_', c(2003, 2018)) 
 
-SS_write(mod, 'model_runs/4.03_block_peak_param', overwrite = TRUE)
-run('model_runs/4.03_block_peak_param', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+future::plan(future::multisession, workers = parallelly::availableCores(omit = 1))
+nwfscDiag::run_diagnostics(mydir = 'model_runs',
+                           model_settings = model_settings)
+future::plan(future::sequential)
 
-out <- SSgetoutput(dirvec = paste0('model_runs/', c('3.10_exp_comps_2024',
-                                                    '4.01_simplify_selex',
-                                                    '4.02_add_rec_block',
-                                                    '4.03_block_peak_param')))
-
-out_sum <- SSsummarize(out)
-SStableComparisons(out_sum)
-SSplotComparisons(out_sum, subplots = c(1,3), new = FALSE, legendlabels = c('working base', 'simplify selex',
-                                                                            'add longleader block', 'block peak param'))
-SS_plots(out[[4]], new = FALSE)
 
 # consider fixing descending limb of last rec block so that it is logistic.
 # need to deal with peak of hake (hitting bound), triennial (will hit bound if allowed to be estimated)
