@@ -1,8 +1,17 @@
 # Introduction
 
-Testing adding in an introduction for `r params$species`. There is currently no read of parameters for child documents.
 
 <!-- Scientific name, distribution, the basis for the choice of stock structure, including regional differences in life history or other biological characteristics that should form the basis of management units. A map showing the scope of the assessment and depicting boundaries for fisheries or data collection strata.  -->
+
+Yellowtail Rockfish, *Sebastes flavidus*, occur off the West Coast of the United States from Baja California to the Aleutian Islands.  Yellowtail is a major commercial species, captured mostly in trawls from Central California to British Columbia [@Love2011].  Because it is an aggregating, midwater species it is usually caught in the commercial midwater trawl fishery. In California there is a large recreational fishery as well. The center of Yellowtail Rockfish abundance is from southern Oregon through British Columbia [@Fraidenburg1980].  Yellowtail Rockfish are colloquially known as "greenies", although *flavidus* is Latin for "yellow" [@Love2011].  We briefly summarize Yellowtail Rockfish life history, fisheries, assessment and management here, but in-depth, extensive background information on Yellowtail Rockfish and other managed species is available at [@PFMC2016].  
+
+A number of studies correlate environmental conditions to pelagic juvenile abundance and juvenile recruitment of rockfishes, including Yellowtail Rockfish. Year-class strength is particularly impacted during the early larval phase, and annual pelagic juvenile abundance is correlated with physical conditions, especially upwelling strength along the coast (e.g., [@Field2005], [@Laidig2007], [@Laidig2010], [@Ralston2013]).
+
+A recent genetic study [@Hess2011] indicates that there are in fact two stocks of Yellowtail Rockfish, with a genetic cline at Cape Mendocino, California, roughly $40^\circ 10^\prime$ North Latitude.  This study of 1013 fish from 21 sites along the West Coast from Mexico through Alaska examined two datasets, one of mitochondrial DNA, and one of nuclear DNA microsattelite loci.  Findings in both datasets agreed, and also concur with the findings of Field and Ralston [@Field2005] who looked at differences in recruitment trends related to physical forcing and coherence along the coast, and found the greatest differences among the U.S. and Canadian stocks to be defined by Cape Mendocino.  Neither the genetic study nor the oceanographic studies definitively identify mechanisms of stock isolation, however they suggest that a combination of physical forcing due to offshore advection and differences in available habitat across Cape Mendocino may together account for the differences observed.
+
+The species has never had a full length and age integrated assessment south of Cape Mendocino, mainly due to a lack of fishery-independent data; this assessment represents an initial attempt to do so.
+
+A map showing the scope of the assessment and depicting boundaries for fisheries or data collection strata is provided in Figure \ref{fig:assess_region_map}.
 
 ## Life History
 
