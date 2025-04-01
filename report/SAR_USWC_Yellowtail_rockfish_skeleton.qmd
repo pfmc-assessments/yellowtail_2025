@@ -68,6 +68,15 @@ bibliography:
   -  asar_references.bib 
   -  yellowtail.bib
 ---
+```{r}
+#| label: 'custom code'
+#| echo: false 
+#| warning: true
+#| eval: true
+# CUSTOM CHANGE: source additional script to create r4ss plots and exec summary tables
+source("custom_code.R")
+```
+
 ```{r} 
 #| label: 'output_and_quantities'
 #| echo: false 

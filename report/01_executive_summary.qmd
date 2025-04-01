@@ -2,11 +2,75 @@
 
 <!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
 
-### Assessment Model
+### Stock
 
-<!-- Include a short statement describing the assessment model used for the current management cycle and any data updates. -->
+### Catches
 
-### Reference Points, Stock Status, and Projections
+\clearpage
 
-<!-- Short summary of reference points, stock status, and projections. When using `asar`, tables of reference points and projections will be automatically generated. -->
+\input{tex_tables/a_Catches_ES.tex}
+
+![Landings by fleet used in the base model where catches in metric tons by fleet are stacked](r4ss_plots/catch2_landings_stacked.png){fig-alt='See Table TODO for landings by fleet.' width=6in #fig-es-catch}
+
+\clearpage
+
+### Data and assessment
+
+### Stock biomass and dynamics
+
+\clearpage 
+\input{tex_tables/b_SSB_ES.tex}
+
+![Estimated time series of spawning output for the base model](r4ss_plots/ts7_Spawning_output.png){fig-alt='See Table TODO for spawning output time series.' width=6in #fig-es-ssb}
+
+![Estimated time series of fraction of unfished spawning output for the base model](r4ss_plots/ts9_Relative_spawning_output.png){fig-alt='See Table TODO for spawning output time series.' width=6in #fig-es-frac-unfished}
+
+\clearpage
+
+### Recruitment
+
+\input{tex_tables/c_Recr_ES.tex}
+
+![Estimated time series of age-0 recruits (1000s) for the base model](r4ss_plots/ts11_Age-0_recruits_(1000s).png){fig-alt='See Table TODO for recruitment time series.' width=6in #fig-es-frac-unfished}
+
+![Estimated time series of recruitment deviations for the base model](r4ss_plots/recdevs1_points.png){fig-alt='See Table TODO for estimates of recruitment deviation parameters.' width=6in #fig-es-rec-devs}
+
+
+\clearpage
+### Exploitation status
+
+\input{tex_tables/d_SPR_ES.tex}
+
+![Estimated time series of the fishing intensity (1 - SPR), where SPR is the spawning potential ratio, with approximate 95\% asymptotic intervals. The horizontal line at 0.6 corresponds to SPR = 0.4, the management reference point for yellowtail rockfish. The horizontal line at 1.0 corresponds to SPR = 0 (all spawning fish removed from the population).](r4ss_plots/SPR3_ratiointerval.png){fig-alt='See Table TODO for 1-SPR time series.' width=6in #fig-es-spr}
+
+\clearpage
+
+### Ecosystem considerations
+
+### Reference points
+
+\clearpage
+
+\input{tex_tables/e_ReferencePoints_ES.tex}
+
+![Equilibrium yield curve for the base case model.](r4ss_plots/yield2_yield_curve_with_refpoints.png){fig-alt='See SPR/YPR\_Profile table in Report.sso for values.' width=6in #fig-es-yield}
+
+\clearpage
+
+### Management performance
+
+### Unresolved problems and major uncertainties
+
+### Decision table and projections
+
+<!-- \input{tex_tables/projections.tex} -->
+
+\clearpage
+
+<!-- \input{tex_tables/decision_table.tex} -->
+
+\clearpage
+### Scientific uncertainty
+
+### Research and data needs
 
