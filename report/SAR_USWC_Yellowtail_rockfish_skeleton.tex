@@ -146,20 +146,6 @@
 \ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}
 \setkomafont{pageheadfoot}{\small}
 
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -232,7 +218,7 @@
 north of 40°10\(\prime\) in 2025}
 \author{Kiva L. Oken \and Ian G. Taylor \and Megan L.
 Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
-\date{2025-04-01}
+\date{2025-04-02}
 
 \begin{document}
   \begin{titlepage}
@@ -361,14 +347,6 @@ Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
 }
 \listoffigures
 \listoftables
-\begin{verbatim}
-i Reading model output
-\end{verbatim}
-
-\begin{verbatim}
-covar file not found, input 'covar' changed to FALSE
-\end{verbatim}
-
 \newpage{}
 
 Please cite this publication as:
@@ -541,41 +519,37 @@ projections}\label{decision-table-and-projections}
 Yellowtail Rockfish, \emph{Sebastes flavidus}, occur off the West Coast
 of the United States from Baja California to the Aleutian Islands.
 Yellowtail is a major commercial species, captured mostly in trawls from
-Central California to British Columbia (\citeproc{ref-Love2011}{Love
-2011}). Because it is an aggregating, midwater species it is usually
-caught in the commercial midwater trawl fishery. In California there is
-a large recreational fishery as well. The center of Yellowtail Rockfish
-abundance is from southern Oregon through British Columbia
-(\citeproc{ref-Fraidenburg1980}{Fraidenburg 1980}). Yellowtail Rockfish
-are colloquially known as ``greenies'', although \emph{flavidus} is
-Latin for ``yellow'' (\citeproc{ref-Love2011}{Love 2011}). We briefly
+Central California to British Columbia (Love 2011). Because it is an
+aggregating, midwater species it is usually caught in the commercial
+midwater trawl fishery. In California there is a large recreational
+fishery as well. The center of Yellowtail Rockfish abundance is from
+southern Oregon through British Columbia (Fraidenburg 1980). Yellowtail
+Rockfish are colloquially known as ``greenies'', although
+\emph{flavidus} is Latin for ``yellow'' (Love 2011). We briefly
 summarize Yellowtail Rockfish life history, fisheries, assessment and
 management here, but in-depth, extensive background information on
-Yellowtail Rockfish and other managed species is available at
-(\citeproc{ref-PFMC2016}{Council 2016}).
+Yellowtail Rockfish and other managed species is available at (Council
+2016).
 
 A number of studies correlate environmental conditions to pelagic
 juvenile abundance and juvenile recruitment of rockfishes, including
 Yellowtail Rockfish. Year-class strength is particularly impacted during
 the early larval phase, and annual pelagic juvenile abundance is
 correlated with physical conditions, especially upwelling strength along
-the coast (e.g., (\citeproc{ref-Field2005}{Field and Ralston 2005}),
-(\citeproc{ref-Laidig2007}{Laidig, Chess, and Howard 2007}),
-(\citeproc{ref-Laidig2010}{Laidig 2010}),
-(\citeproc{ref-Ralston2013}{Ralston and Stewart 2013})).
+the coast (e.g., (Field and Ralston 2005), (Laidig et al. 2007), (Laidig
+2010), (Ralston and Stewart 2013)).
 
-A recent genetic study (\citeproc{ref-Hess2011}{Hess, Vetter, and Moran
-2011}) indicates that there are in fact two stocks of Yellowtail
-Rockfish, with a genetic cline at Cape Mendocino, California, roughly
-\(40^\circ 10^\prime\) North Latitude. This study of 1013 fish from 21
-sites along the West Coast from Mexico through Alaska examined two
-datasets, one of mitochondrial DNA, and one of nuclear DNA
-microsattelite loci. Findings in both datasets agreed, and also concur
-with the findings of Field and Ralston (\citeproc{ref-Field2005}{Field
-and Ralston 2005}) who looked at differences in recruitment trends
-related to physical forcing and coherence along the coast, and found the
-greatest differences among the U.S. and Canadian stocks to be defined by
-Cape Mendocino. Neither the genetic study nor the oceanographic studies
+A recent genetic study (Hess et al. 2011) indicates that there are in
+fact two stocks of Yellowtail Rockfish, with a genetic cline at Cape
+Mendocino, California, roughly \(40^\circ 10^\prime\) North Latitude.
+This study of 1013 fish from 21 sites along the West Coast from Mexico
+through Alaska examined two datasets, one of mitochondrial DNA, and one
+of nuclear DNA microsattelite loci. Findings in both datasets agreed,
+and also concur with the findings of Field and Ralston (Field and
+Ralston 2005) who looked at differences in recruitment trends related to
+physical forcing and coherence along the coast, and found the greatest
+differences among the U.S. and Canadian stocks to be defined by Cape
+Mendocino. Neither the genetic study nor the oceanographic studies
 definitively identify mechanisms of stock isolation, however they
 suggest that a combination of physical forcing due to offshore advection
 and differences in available habitat across Cape Mendocino may together
@@ -753,12 +727,11 @@ range of ages, providing a less accurate understanding of the spawning
 population. We treated maturity as a binomial response, and considered a
 variety of models with temporal and spatial covariates, using a logit
 link and generalized linear mixed model framework, implemented the R
-package sdmTMB (\citeproc{ref-Anderson:2024:SRP}{Anderson et al. 2024}).
-Briefly, we considered models that included (1) temporal year effects
-(either estimated as a random walk intercept, or smooth term), (2)
-spatial random fields (using a mesh cutoff distance of 50km), and (3)
-spatially varying coefficients of age, following the model adopted by
-Grandin et al. (\citeproc{ref-grandin_status_2024}{2024}). Models that
+package sdmTMB (Anderson et al. 2024). Briefly, we considered models
+that included (1) temporal year effects (either estimated as a random
+walk intercept, or smooth term), (2) spatial random fields (using a mesh
+cutoff distance of 50km), and (3) spatially varying coefficients of age,
+following the model adopted by Grandin et al. (2024). Models that
 converged were compared by examining QQ plots, AUC metrics, and AIC
 scores. Likely because of the uneven temporal distribution of sampling,
 and general sparsity, we did not find support for including temporal or
@@ -885,62 +858,63 @@ considerations}\label{regional-management-considerations}
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-Anderson:2024:SRP}
-Anderson, Sean C., Eric J. Ward, Philina A. English, Lewis A. K.
-Barnett, and James T. Thorson. 2024. {``sdmTMB: An r Package for Fast,
-Flexible, and User-Friendly Generalized Linear Mixed Effects Models with
-Spatial and Spatiotemporal Random Fields.''} \emph{bioRxiv}
-2022.03.24.485545. \url{https://doi.org/10.1101/2022.03.24.485545}.
+Anderson, S.C., Ward, E.J., English, P.A., Barnett, L.A.K., and Thorson,
+J.T. 2024. sdmTMB: An r package for fast, flexible, and user-friendly
+generalized linear mixed effects models with spatial and spatiotemporal
+random fields. bioRxiv \textbf{2022.03.24.485545}.
+doi:\href{https://doi.org/10.1101/2022.03.24.485545}{10.1101/2022.03.24.485545}.
 
 \bibitem[\citeproctext]{ref-PFMC2016}
-Council, Pacific Fishery Management. 2016. {``{Status of the Pacific
-Coast Groundfish Fishery}.''} 2016.
-\url{http://www.pcouncil.org/wp-content/uploads/2017/02/SAFE_Dec2016_02_28_2017.pdf}.
+Council, P.F.M. 2016. {Status of the Pacific Coast Groundfish Fishery}.
+Available from
+\url{http://www.pcouncil.org/wp-content/uploads/2017/02/SAFE_Dec2016_02_28_2017.pdf}
+{[}accessed 18 June 2017{]}.
 
 \bibitem[\citeproctext]{ref-Field2005}
-Field, JC, and S Ralston. 2005. {``{Spatial variability in rockfish
-(Sebastes spp.) recruitment events in the California Current System}.''}
-\emph{Canadian Journal of Fisheries and Aquatic Sciences} 62:
+Field, J., and Ralston, S. 2005. {Spatial variability in rockfish
+(Sebastes spp.) recruitment events in the California Current System}.
+Canadian Journal of Fisheries and Aquatic Sciences \textbf{62}:
 2199--2210.
 
 \bibitem[\citeproctext]{ref-Fraidenburg1980}
-Fraidenburg, ME. 1980. {``Yellowtail Rockfish, Sebastes-Flavidus, Length
-and Age Composition Off California, Oregon, and Washington in 1977.''}
-\emph{Marine Fisheries Review} 42 (3-4): 54--56.
+Fraidenburg, M. 1980. Yellowtail rockfish, sebastes-flavidus, length and
+age composition off california, oregon, and washington in 1977. Marine
+Fisheries Review \textbf{42}(3-4): 54--56. Natl Marine Fisheries qervice
+Scientific Subl Office 7600 Sand Point Way NE bin c15700, Seattle, WA
+98115.
 
 \bibitem[\citeproctext]{ref-grandin_status_2024}
-Grandin, C. J., Johnson K. F., Edwards A. M., and Berger A. M. 2024.
-{``Status of the {P}acific {H}ake (Whiting) Stock in {U}.{S}. And
-{C}anadian Waters in 2024.''} Joint Technical Committee of the U.S.;
-Canada Pacific Hake/Whiting Agreement, National Marine Fisheries
-Service; Fisheries; Oceans Canada.
+Grandin, C.J., F., J.K., M., E.A., and M., B.A. 2024. Status of the
+{P}acific {H}ake (whiting) stock in {U}.{S}. And {C}anadian waters in
+2024. Joint Technical Committee of the U.S.; Canada Pacific Hake/Whiting
+Agreement, National Marine Fisheries Service; Fisheries; Oceans Canada.
 
 \bibitem[\citeproctext]{ref-Hess2011}
-Hess, J. E., R. D. Vetter, and P. Moran. 2011. {``{A steep genetic cline
-in yellowtail rockfish, Sebastes flavidus, suggests regional isolation
-across the Cape Mendocino faunal break}.''} \emph{Canadian Journal of
-Fisheries and Aquatic Sciences} 68: 89--104.
+Hess, J.E., Vetter, R.D., and Moran, P. 2011. {A steep genetic cline in
+yellowtail rockfish, Sebastes flavidus, suggests regional isolation
+across the Cape Mendocino faunal break}. Canadian Journal of Fisheries
+and Aquatic Sciences \textbf{68}: 89--104.
 
 \bibitem[\citeproctext]{ref-Laidig2010}
-Laidig, Thomas E. 2010. {``Influence of Ocean Conditions on the Timing
-of Early Life History Events for Blue Rockfish (Sebastes Mystinus) Off
-California.''} \emph{Fishery Bulletin} 108 (4): 442--49.
+Laidig, T.E. 2010. Influence of ocean conditions on the timing of early
+life history events for blue rockfish (sebastes mystinus) off
+california. Fishery Bulletin \textbf{108}(4): 442--449.
 
 \bibitem[\citeproctext]{ref-Laidig2007}
-Laidig, Thomas E, James R Chess, and Daniel F Howard. 2007.
-{``Relationship Between Abundance of Juvenile Rockfishes (Sebastes Spp.)
-and Environmental Variables Documented Off Northern California and
-Potential Mechanisms for the Covariation.''} \emph{Fishery Bulletin} 105
-(1): 39--49.
+Laidig, T.E., Chess, J.R., and Howard, D.F. 2007. Relationship between
+abundance of juvenile rockfishes (sebastes spp.) and environmental
+variables documented off northern california and potential mechanisms
+for the covariation. Fishery Bulletin \textbf{105}(1): 39--49. National
+Marine Fisheries Service.
 
 \bibitem[\citeproctext]{ref-Love2011}
-Love, Milton S. 2011. \emph{Certainly More Than You Want to Know about
-the Fishes of the Pacific Coast: A Postmodern Experience}. Really Big
-Press.
+Love, M.S. 2011. Certainly more than you want to know about the fishes
+of the pacific coast: A postmodern experience. Really Big Press.
 
 \bibitem[\citeproctext]{ref-Ralston2013}
-Ralston, Stephen, and Ian J Stewart. 2013. {``Anomalous Distributions of
-Pelagic Juvenile Rockfish on the US West Coast in 2005 and 2006.''}
-\emph{California Cooper. Ocean. Fish. Invest. Rep} 54: 155--66.
+Ralston, S., and Stewart, I.J. 2013. Anomalous distributions of pelagic
+juvenile rockfish on the US west coast in 2005 and 2006. California
+Cooper. Ocean. Fish. Invest. Rep \textbf{54}: 155--166.
 
 \end{CSLReferences}
 
