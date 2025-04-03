@@ -8,3 +8,4 @@
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 ``` 
 
+![Map depicting the boundaries for the two genetic stocks of Yellowtail](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
