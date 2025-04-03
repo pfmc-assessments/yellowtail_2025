@@ -50,9 +50,10 @@ format:
       - 'support_files/_titlepage.tex'
     include-in-header:
       - 'support_files/in-header.tex'
+      - 'support_files/pfmc.tex'
     toc: true
-    lof: true
-    lot: true
+    lof: false
+    lot: false
     titlepage-geometry: 
       - top=2in
       - bottom=1in
@@ -63,12 +64,18 @@ params:
    office: 'NWFSC'
    species: 'Yellowtail rockfish'
    spp_latin: 'Sebastes flavidus'
-   region: 'U.S. West Coast north of 40°10$\prime$)'
+   region: 'U.S. West Coast north of 40°10$\prime$'
 bibliography: 
   -  asar_references.bib 
   -  yellowtail.bib
 csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 ---
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\renewcommand{\thetable}{\roman{table}}
+\renewcommand{\thefigure}{\roman{figure}}
 
 ```{r} 
 #| label: 'output_and_quantities'
@@ -168,7 +175,7 @@ R0 <- output |>
 
 Please cite this publication as: 
 
-Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$) in 2025. Prepared by [COMMITTEE]. [XX] p.
+Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Managment Council, Portland, Oregon. [XX] p.
 
  {{< pagebreak >}} 
 
@@ -182,6 +189,16 @@ cat(a, sep = '\n')
 ```
 
  {{< pagebreak >}} 
+
+\setlength{\parskip}{5mm plus1mm minus1mm}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\setcounter{section}{0}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+
 
 ```{r, results='asis'}
 #| label: 'introduction'
@@ -215,8 +232,6 @@ cat(a, sep = '\n')
 ```
 
 
- {{< pagebreak >}} 
-
 ```{r, results='asis'}
 #| label: 'assessment-sensitivity'
 #| eval: true
@@ -226,7 +241,6 @@ a <- knitr::knit_child('04b_model_results.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 
- {{< pagebreak >}} 
 
 ```{r, results='asis'}
 #| label: 'assessment-benchmarks'
@@ -289,17 +303,6 @@ cat(a, sep = '\n')
 #| echo: false
 #| warning: false
 a <- knitr::knit_child('09_figures.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'notes'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('10_notes.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 

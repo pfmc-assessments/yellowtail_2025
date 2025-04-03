@@ -1,10 +1,10 @@
-## Executive Summary
+# Executive Summary{-}
 
 <!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
 
-### Stock
+## Stock{-}
 
-### Catches
+## Catches{-}
 
 \clearpage
 
@@ -14,9 +14,9 @@
 
 \clearpage
 
-### Data and assessment
+## Data and assessment{-}
 
-### Stock biomass and dynamics
+## Stock biomass and dynamics{-}
 
 \clearpage 
 \input{tex_tables/b_SSB_ES.tex}
@@ -27,7 +27,7 @@
 
 \clearpage
 
-### Recruitment
+## Recruitment{-}
 
 \input{tex_tables/c_Recr_ES.tex}
 
@@ -37,7 +37,7 @@
 
 
 \clearpage
-### Exploitation status
+## Exploitation status{-}
 
 \input{tex_tables/d_SPR_ES.tex}
 
@@ -45,9 +45,9 @@
 
 \clearpage
 
-### Ecosystem considerations
+## Ecosystem considerations{-}
 
-### Reference points
+## Reference points{-}
 
 \clearpage
 
@@ -57,11 +57,11 @@
 
 \clearpage
 
-### Management performance
+## Management performance{-}
 
-### Unresolved problems and major uncertainties
+## Unresolved problems and major uncertainties{-}
 
-### Decision table and projections
+## Decision table and projections{-}
 
 <!-- \input{tex_tables/projections.tex} -->
 
@@ -70,7 +70,7 @@
 <!-- \input{tex_tables/decision_table.tex} -->
 
 \clearpage
-### Scientific uncertainty
+## Scientific uncertainty{-}
 
-### Research and data needs
+## Research and data needs{-}
 
