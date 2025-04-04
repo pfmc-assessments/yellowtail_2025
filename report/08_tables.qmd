@@ -8,6 +8,7 @@
 #| include: false
 library(flextable)
 
+
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/rda_files'
 ``` 
 
@@ -31,9 +32,14 @@ percpos
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| tbl-cap: "Model selection for covariates considered for the ORBS index"
+#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
 
-orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1,]
-flextable(orbs_modselect)
-
+orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1:10,]
+orbs_modselect[orbs_modselect=="Included"] <- "Yes"
+orbs_modselect<-flextable(orbs_modselect)
+orbs_modselect<-fontsize(orbs_modselect, size=10)
+orbs_modselect<-font(orbs_modselect, fontname ="Times New Roman")
+orbs_modselect<-font(orbs_modselect, fontname ="Times New Roman",part='header')
+orbs_modselect<-width(orbs_modselect, width = 0.7)
+orbs_modselect
 ```
