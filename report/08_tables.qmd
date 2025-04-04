@@ -11,3 +11,29 @@ library(flextable)
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/rda_files'
 ``` 
 
+
+```{r, orbs_perc_pos}
+#| label: tbl-percent_pos
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
+
+
+percpos<-read.csv('Tables/yellowtail_percent_pos.csv')
+percpos<-flextable(percpos)
+percpos<-width(percpos, width = 1.1)
+percpos
+```
+
+```{r, orbs_mod_sel}
+#| label: tbl-orbs_mod_select
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| tbl-cap: "Model selection for covariates considered for the ORBS index"
+
+orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1,]
+flextable(orbs_modselect)
+
+```

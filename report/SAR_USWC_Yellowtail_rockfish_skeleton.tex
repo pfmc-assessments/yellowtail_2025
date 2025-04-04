@@ -146,6 +146,18 @@
 \ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}
 \setkomafont{pageheadfoot}{\small}
 
+\usepackage{fontspec}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage{hhline}
+\newlength\Oldarrayrulewidth
+\newlength\Oldtabcolsep
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{wrapfig}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -632,16 +644,131 @@ lingcod, porpoises, fur seals, harbor seals, sablefish and skates.
 
 \subsection{Fishery description}\label{fishery-description}
 
+There has been a commercial fishery in California for Yellowtail
+Rockfish since at least 1916, the earliest year for which we have data.
+Records for recreational fishing start in 1928. In Washington the
+recreational data go back to 1889, however in Washington and Oregon the
+commercial trawl fishery is many times larger than the recreation
+fishery. In California that has not been the case in recent time; the
+recreational fishery has been larger than the commercial fishery since
+the late 1990s.
+
+The rockfish fishery off the U.S. Pacific coast first developed off
+California in the late 19th century as a hook-and-line fishery
+(\citeproc{ref-Love2002}{Love et al. 2002}). The rockfish trawl fishery
+was established in the early 1940s, when the United States became
+involved in World War II and wartime shortage of red meat created an
+increased demand for other sources of protein
+(\citeproc{ref-Harry1961}{Harry and Morgan 1961};
+\citeproc{ref-Alverson1964}{Alverson et al. 1964};
+\citeproc{ref-Miller2014}{Miller et al. 2014}).
+
 \subsection{Management History}\label{management-history}
 
-Rockfish Conservation Areas (RCAs) have been closed to fishing since
-2002. Following that closure, Yellowtail Rockfish are among the many
-species that have been seen to increase in both abundance and in average
-size in Central California (\citeproc{ref-Marks2015}{Marks et al.
-2015}). \#\# Management performance
+Until late 2002, Yellowtail Rockfish were harvested as part of a
+directed mid-water trawl fishery, with fairly high landings in the 1980s
+and 1990s. Yellowtail commonly co-occur with Canary, Widow Rockfish and
+several other rockfishes (\citeproc{ref-Tagart1988}{Tagart 1988});
+(\citeproc{ref-Rogers1992}{Rogers and Pikitch 1992}). Association with
+these and other rockfish species has substantially altered fishing
+opportunity for Yellowtail Rockfish since Canary Rockfish stocks were
+declared overfished by National Marine Fisheries service in 2000. In
+order to achieve the necessary reduction in the catch of Canary
+Rockfish, Widow Rockfish and other overfished species, stringent
+management measures were adopted, limiting harvest of Yellowtail
+Rockfish as well as other co-occurring species.
+
+Beginning in 2000, shelf rockfish species could no longer be retained by
+vessels using bottom trawl footropes with a diameter greater than 8
+inches. The use of small footrope gear increases the risk of gear loss
+in rocky areas. This restriction was intended to provide an incentive
+for fishers to avoid high-relief, rocky habitat, thus reducing the
+exposure of many depleted species to trawling. This was reinforced
+through reductions in landing limits for most shelf rockfish species.
+
+Since September 2002, Rockfish Conservation Areas (RCAs, areas known to
+be critical habitat) have been closed to fishing. Alongside these
+closures, limits on landings have been put in place that were designed
+so as to accommodate incidental bycatch only. These eliminated directed
+mid-water fishing opportunities for Yellowtail Rockfish in non-tribal
+trawl fisheries. A somewhat greater opportunity to target Yellowtail
+Rockfish in the trawl fishery has been available since 2011 under the
+trawl rationalization program, however quotas for Widow and Canary
+Rockfish continue to constrain targeting of Yellowtail Rockfish. With
+the recent improved status of constraining stocks, the industry is
+developing strategies to better attain allocations of Yellowtail
+Rockfish and Widow Rockfish.
+
+Early studies of Yellowtail Rockfish stocks on the U.S. West Coast north
+of \(40^\circ 10^\prime\) N. latitude (Cape Mendocino, northern
+California) began in the 1980s with observational surveys. Statistical
+assessments of Yellowtail Rockfish were conducted in 1982
+(\citeproc{ref-Tagart1982}{Tagart 1982}), 1988
+(\citeproc{ref-Tagart1988}{Tagart 1988}), 1996
+(\citeproc{ref-Tagart1997}{Tagart et al. 1997}), and 1997
+(\citeproc{ref-Tagart1997}{Tagart et al. 1997}) to determine harvest
+specifications for the stock. These early assessments employed a variety
+of statistical methods, for example, the 1997 assessment used cohort
+analysis and dynamic pool modeling. Figure
+\ref{fig:assessment_history}shows the timeseries of age 4+ biomass for
+Yellowtail Rockfish across past assessments.
+
+\subsection{Management performance}\label{management-performance-1}
+
+The Yellowtail Rockfish assessment in 2000
+(\citeproc{ref-Tagart2000}{Tagart et al. 2000}) was the first that
+estimated stock status, with an estimated depletion of 60.5 percent at
+the start of 2000. Lai et al. (\citeproc{ref-Lai2003}{Lai et al. 2003})
+updated the 2000 assessment and estimated that stock depletion was 46
+percent at the start of 2003. A second assessment update was prepared in
+2005 (\citeproc{ref-Wallace2005}{Wallace and Lai 2005}) with an
+estimated depletion of 55 percent at the start of 2005. The 2000
+assessment and updates were age-structured assessments conducted using
+AD Model Builder as the software platform for nonlinear optimization
+(\citeproc{ref-Fournier2012}{Fournier et al. 2012}).
+
+A data-moderate assessment of Yellowtail Rockfish south of
+\(40^\circ 10^\prime\) N. latitude was conducted in 2013
+(\citeproc{ref-Cope2013}{Cope et al. 2013}). This assessment estimated
+depletion at the start of 2013 at 67 percent, and estimated the spawning
+biomass at 50,043 mt. This was a large biomass increase relative to
+previous estimates and may be attributed to the low removals over the
+previous decade.
+
+The data-poor assessment method, Depletion-Based Stock Reduction
+Analysis (\citeproc{ref-Dick2011}{Dick and MacCall 2011}) was applied to
+the Southern stock in 2011 (\citeproc{ref-Dick2010}{J. and D. 2010}).
+This method does not estimate biomass, but did provide the estimate of
+the OFL contribution for the southern stock to the complex in which it
+is managed.
+
+Yellowtail Rockfish are currently managed with stock-specific harvest
+specifications north of \(40^\circ 10^\prime\) N. latitude, and as part
+of the Southern Shelf Rockfish complex south of \(40^\circ 10^\prime\)
+N. latitude. Total catch (including landings and discards) in both areas
+has remained well below the management limits and harvest specifications
+in recent years (Tables \ref{tab:mnmgt_perform.N})
 
 \subsection{Fisheries off Canada and
 Alaska}\label{fisheries-off-canada-and-alaska}
+
+Yellowtail Rockfish are a target species in Canada with catches between
+4000-6000 mt since the late 1980s. It has the second largest
+single-species Total Allowable Catch (TAC) among rockfish species under
+quota management for the Canadian Pacific Coast. In Canada it is caught
+in similar amounts by bottom and midwater trawl gear. A 2015 Stock
+Assessment conducted by the Fisheries and Oceans Canada found the stock
+to be at 50\% of unfished spawning biomass, in the ``healthy'' range
+(\citeproc{ref-DFO2015}{Canadian Science Advisory Secretariat 2015}).
+
+The Alaska Fisheries Science Center assesses Yellowtail Rockfish as one
+of 25 species in the ``Other Rockfish'' complex in the Gulf of Alaska.
+The 2015 full assessment of this complex found no evidence of
+overfishing, which is confirmed in the 2016 SAFE
+document(\citeproc{ref-AFSC2016}{Center 2016}).
+
+Limited catches of Yellowtail are reported as far south as Baja
+California(\citeproc{ref-Love2011}{Love 2011}).
 
 \newpage{}
 
@@ -685,8 +812,8 @@ which would presumably impact catch rates. Trips from several ports with
 extremely small sample sizes (\textless1\% of total trips) were also
 excluded and finally, trips that met criteria for irrational effort
 reporting (i.e., implausible values) or extreme catch rates were
-excluded as well. The final dataset included 137,502 trips (TABLE
-``percent\_pos.csv'').
+excluded as well. The final dataset included 137,502 trips
+Table~\ref{tbl-percent_pos}.
 
 Covariates evaluated included year, month, port, the open depths to
 fishing (all depths or inside 20/30/40fm), boat type and the daily bag
@@ -705,7 +832,7 @@ Tweedie distributions were also explored for selected models but
 generally did not improve model diagnostics. The final model selected
 includes year, month, port, open fishery depths, longleader trip and
 binned target bag limit covariates, which was the best fit model by AIC
-in this series (TABLE ``model\_selection.csv''). Acceptable diagnostics
+in this series (Table~\ref{tbl-orbs_mod_select}). Acceptable diagnostics
 for the model were achieved (FIGURE -- qqplot) and the negative binomial
 distribution was preferred over the tweedie. The index of abundance are
 shown in Figure/Table XXXX.
@@ -820,34 +947,39 @@ data}\label{environmental-and-ecosystem-data}
 Over the past several years, progress has been made in understanding how
 oceanographic conditions drive recruitment of groundfish species in the
 California Current Ecosystem across lifestages including petrale sole,
-sablefish and hake. Recent increases in capacity supported by the
-Climate, Ecosystem, and Fisheries Initiative provided the ability to
+sablefish and Pacific hake. Recent increases in capacity supported by
+the Climate, Ecosystem, and Fisheries Initiative provided the ability to
 build on these previous lines of research and examine the relationship
-between northern Yellowtail rockfish recruitment and oceanographic
+between northern Yellowtail Rockfish recruitment and oceanographic
 drivers based on model output from Global Ocean Physics Reanalysis
 (GLORYS) from \href{https://marine.copernicus.eu/}{Copernicus Marine
 Environment Monitoring Service} (CMEMS) and Regional Ocean Modeling
-System (ROMS) model for the California Current Ecosystem (Neveu et
-al.~2016). The results suggest that GLORYS and ROMS output may allow for
-better model precision and near-term forecasting. This approach builds
-on previous research (Tolimieri et al.~2020, Haltuch et al.~2020,
-Vestfals et al.~2023) and assessments (Taylor et al.~2023, Johnson et
-al.~2023) by applying similar techniques to establish oceanographic
-relationships and develop an oceanographic index based on a conceptual
-life history model for yellowtail rockfish (Darby et al.~in prep).
+System (ROMS) model for the California Current Ecosystem
+(\citeproc{ref-neveu2016ROMS}{Neveu et al. 2016}). The results suggest
+that GLORYS and ROMS output may allow for better model precision and
+near-term forecasting. This approach builds on previous research
+(Tolimieri et al. (\citeproc{ref-tolimieri_oceanographic_2018}{2018});
+Haltuch et al. (\citeproc{ref-haltuch_oceanographic_2020}{2020});
+Vestfals et al. (\citeproc{ref-vestfals2023stage}{2023})) and
+assessments (Taylor et al. (\citeproc{ref-Taylor_petrale_2023}{2023});
+Berger et al. (\citeproc{ref-berger_status_2023}{2023}); Grandin et al.
+(\citeproc{ref-grandin_status_2024}{2024})) by applying similar
+techniques to establish oceanographic relationships and develop an
+oceanographic index based on a conceptual life history model for
+Yellowtail Rockfish (\citeproc{ref-Darby}{Darby and Tolimiei In Prep}).
 GLORYS also provides a temporally robust time series and is not
 susceptible to discontinuities identified in the 2023 petrale sole
 assessment. Appendix A of this report describes the most recent efforts
 in developing a new environmental index of northern Yellowtail
 recruitment based on GLORYS products. The final selected model included
 the date of spring transition from the Coastal Upwelling Transport
-Index, degree days (represent temperature exposure) during egg
+Index, degree days (which represents temperature exposure) during egg
 fertilization and development, long-shore transport during the pelagic
 juvenile lifestage, and El Nino conditions during the pelagic juvenile
 lifestage. The oceanographic model was fit using the recruitment
 deviations (1994 - 2019) from the base model and used to predict log
-recruitment deviations 5 years ahead, 2020 - 2024, using oceanographic
-conditions.
+recruitment deviations for the next five years, 2020 - 2024, using
+oceanographic conditions.
 
 \newpage{}
 
@@ -925,20 +1057,59 @@ considerations}\label{regional-management-considerations}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-Alverson1964}
+Alverson, D.L., Pruter, a.T., and Ronholt, L.L. 1964. {A Study of
+Demersal Fishes and Fisheries of the Northeastern Pacific Ocean}.
+Institute of Fisheries, University of British Columbia.
+
 \bibitem[\citeproctext]{ref-Anderson:2024:SRP}
 Anderson, S.C., Ward, E.J., English, P.A., Barnett, L.A.K., and Thorson,
 J.T. 2024. sdmTMB: An r package for fast, flexible, and user-friendly
 generalized linear mixed effects models with spatial and spatiotemporal
-random fields. bioRxiv \textbf{2022.03.24.485545}.
+random fields. bioRxiv: 2022.03.24.485545.
 doi:\href{https://doi.org/10.1101/2022.03.24.485545}{10.1101/2022.03.24.485545}.
+
+\bibitem[\citeproctext]{ref-berger_status_2023}
+Berger, A.M., J., G.C., F., J.K., and M., E.A. 2023. Status of the
+{P}acific {H}ake (whiting) stock in {U}.{S}. And {C}anadian waters in
+2023. Joint Technical Committee of the U.S.; Canada Pacific Hake/Whiting
+Agreement, National Marine Fisheries Service; Fisheries; Oceans Canada.
+
+\bibitem[\citeproctext]{ref-DFO2015}
+Canadian Science Advisory Secretariat. 2015. {Yellowtail Rockfish
+(Sebastes flavidus) Stock assessment for the Coast of British Columbia,
+Canada}. {Science Advisory Report 2015/010}.
+
+\bibitem[\citeproctext]{ref-AFSC2016}
+Center, A.F.S. 2016. {Assessment of the Other Rockfish stock complex in
+the Gulf of Alaska}. Available from
+\url{https://www.afsc.noaa.gov/REFM/Docs/2016/GOAorock.pdf} {[}accessed
+18 June 2017{]}.
+
+\bibitem[\citeproctext]{ref-Cope2013}
+Cope, J., Dick, E., MacCall, A., Monk, M., Soper, B., and Wetzel, C.
+2013. Data-moderate stock assessments for brown, china, copper,
+sharpchin, stripetail, and yellowtail rockfishes and english and rex
+soles in 2013. National Oceanic and Atmospheric Administration, National
+Marine Fisheries Service.
 
 \bibitem[\citeproctext]{ref-PFMC2024}
 Council, P.F.M. 2024. {Status of the Pacific Coast Groundfish Fishery}.
+
+\bibitem[\citeproctext]{ref-Darby}
+Darby, A., and Tolimiei, N. In Prep. {Developing environmental
+indicators of recruitment for yellowtail rockfish (Sebastes Flavidus)}.
+\textbf{22}.
 
 \bibitem[\citeproctext]{ref-Dick2017}
 Dick, E., Beyer, S., Mangel, M., and Ralston, S. 2017. A meta-analysis
 of fecundity in rockfishes (genus sebastes). Fisheries Research
 \textbf{187}: 73--85. Elsevier.
+
+\bibitem[\citeproctext]{ref-Dick2011}
+Dick, E.J., and MacCall, A.D. 2011. {Depletion-Based Stock Reduction
+Analysis: A catch-based method for determining sustainable yields for
+data-poor fish stocks}. Fisheries Research \textbf{110}(2): 331--341.
 
 \bibitem[\citeproctext]{ref-Eldridge1991}
 Eldridge, M.B., Whipple, J.A., Bowers, M.J., Jarvis, B.M., and Gold, J.
@@ -951,6 +1122,13 @@ Field, J., and Ralston, S. 2005. {Spatial variability in rockfish
 (Sebastes spp.) recruitment events in the California Current System}.
 Canadian Journal of Fisheries and Aquatic Sciences \textbf{62}:
 2199--2210.
+
+\bibitem[\citeproctext]{ref-Fournier2012}
+Fournier, D.A., Skaug, H.J., Ancheta, J., Ianelli, J., Magnusson, A.,
+Maunder, M.N., Nielsen, A., and Sibert, J. 2012. AD model builder: Using
+automatic differentiation for statistical inference of highly
+parameterized complex nonlinear models. Optimization Methods and
+Software \textbf{27}(2): 233--249. Taylor \& Francis.
 
 \bibitem[\citeproctext]{ref-Fraidenburg1980}
 Fraidenburg, M. 1980. Yellowtail rockfish, sebastes-flavidus, length and
@@ -965,11 +1143,31 @@ Grandin, C.J., F., J.K., M., E.A., and M., B.A. 2024. Status of the
 2024. Joint Technical Committee of the U.S.; Canada Pacific Hake/Whiting
 Agreement, National Marine Fisheries Service; Fisheries; Oceans Canada.
 
+\bibitem[\citeproctext]{ref-haltuch_oceanographic_2020}
+Haltuch, M.A., Tolimieri, N., Lee, Q., and Jacox, M.G. 2020.
+Oceanographic drivers of petrale sole recruitment in the {California}
+{Current} {Ecosystem}. Fisheries Oceanography \textbf{0}(0).
+doi:\href{https://doi.org/10.1111/fog.12459}{10.1111/fog.12459}.
+
+\bibitem[\citeproctext]{ref-Harry1961}
+Harry, G., and Morgan, A.R. 1961. {History of the trawl fishery,
+1884-1961}. Oregon Fish Commission Research Briefs \textbf{19}: 5--26.
+
 \bibitem[\citeproctext]{ref-Hess2011}
 Hess, J.E., Vetter, R.D., and Moran, P. 2011. {A steep genetic cline in
 yellowtail rockfish, Sebastes flavidus, suggests regional isolation
 across the Cape Mendocino faunal break}. Canadian Journal of Fisheries
 and Aquatic Sciences \textbf{68}: 89--104.
+
+\bibitem[\citeproctext]{ref-Dick2010}
+J., D.E., and D., M.A. 2010. {Estimates of sustainable yield for 50
+data-poor stocks in the Pacific coast groundfish fishery management
+plan}. Department of Commerce.
+
+\bibitem[\citeproctext]{ref-Lai2003}
+Lai, H., Tagart, J., Ianelli, J., and Wallace, F. 2003. Status of the
+yellowtail rockfish resource in 2003. Status of the Pacific Coast
+groundfish fishery through.
 
 \bibitem[\citeproctext]{ref-Laidig2010}
 Laidig, T.E. 2010. Influence of ocean conditions on the timing of early
@@ -992,24 +1190,82 @@ spp.) in deep waters along the central coast of california.
 Love, M.S. 2011. Certainly more than you want to know about the fishes
 of the pacific coast: A postmodern experience. Really Big Press.
 
-\bibitem[\citeproctext]{ref-Marks2015}
-Marks, C.I., Fields, R.T., Starr, R.M., Field, J.C., Miller, R.R.,
-Beyer, S.G., Sogard, S.M., Miller, R.R., Beyer, S.G., Wilson-Vandenberg,
-D., and others. 2015. Changes in size composition and relative abundance
-of fishes in central california after a decade of spatial fishing
-closures. California Cooperative Oceanic Fisheries Investigations
-Reports \textbf{56}: 119--132. Scripps Inst Oceanography a-003, La
-Jolla, CA 92093 USA.
+\bibitem[\citeproctext]{ref-Love2002}
+Love, M., Yoklavich, M., and Thorsteinson, L. 2002. {The rockfishes of
+the northeast Pacific}. University of California Press, Berkeley, CA,
+USA.
+
+\bibitem[\citeproctext]{ref-Miller2014}
+Miller, R.R., Field, J.C., Santora, J.A., Schroeder, I.D., Huff, D.D.,
+Key, M., Pearson, D.E., and MacCall, A.D. 2014. A spatially distinct
+history of the development of california groundfish fisheries. PloS one
+\textbf{9}(6): e99758. Public Library of Science.
+
+\bibitem[\citeproctext]{ref-neveu2016ROMS}
+Neveu, E., Moore, A.M., Edwards, C.A., Fiechter, J., Drake, P.,
+Crawford, W.J., Jacox, M.G., and Nuss, E. 2016. An historical analysis
+of the california current circulation using ROMS 4D-var: System
+configuration and diagnostics. Ocean Modelling \textbf{99}: 133--151.
+Elsevier.
 
 \bibitem[\citeproctext]{ref-Ralston2013}
 Ralston, S., and Stewart, I.J. 2013. Anomalous distributions of pelagic
 juvenile rockfish on the US west coast in 2005 and 2006. California
 Cooper. Ocean. Fish. Invest. Rep \textbf{54}: 155--166.
 
+\bibitem[\citeproctext]{ref-Rogers1992}
+Rogers, J.B., and Pikitch, E.K. 1992. {Numerical definition of
+groundfish assemblages caught off the coasts of Oregon and Washington
+using commercial fishing strategies}. Canadian Journal of Fisheries and
+and Aquatic Sciences \textbf{49}: 2648--2656.
+
+\bibitem[\citeproctext]{ref-Tagart1982}
+Tagart, J. 1982. Status of the yellowtail rockfish (sebastes flavidus)
+fishery. State of Washington, Department of Fisheries.
+
 \bibitem[\citeproctext]{ref-Tagart1991}
 Tagart, J. 1991. Population dynamics of yellowtail rockfish (sebastes
 flavidus) stocks in the northem california to southwest vancouver island
 region. Ph. D\_ thesis, University of Wash-ington, Seattle.
+
+\bibitem[\citeproctext]{ref-Tagart1997}
+Tagart, J., Ianelli, J., Hoffman, A., and Wallace, F. 1997. Status of
+the yellowtail rockfish resource in 1997. Pacific Fishery Management
+Council, Portland, OR.
+
+\bibitem[\citeproctext]{ref-Tagart1988}
+Tagart, J.V. 1988. Status of the yellowtail rockfish stocks in the
+international north pacific fishery commission vancouver and columbia
+areas. Department of Fish; Wildlife.
+
+\bibitem[\citeproctext]{ref-Tagart2000}
+Tagart, J., Wallace, F., and Ianelli, J.N. 2000. Status of the
+yellowtail rockfish resource in 2000. Pacific Fishery Management
+Council.
+
+\bibitem[\citeproctext]{ref-Taylor_petrale_2023}
+Taylor, I., Gertseva, V., and Tolimieri, N. 2023. Status of petrel sole
+(\emph{{Eopsetta} jordan}) along the {US} {West} {Coast} in 2013.
+Pacific Fishery Management Council, Pacific Fishery Management Council,
+7700 Ambassador Place NE, Suite 200, Portland, OR 97220.
+
+\bibitem[\citeproctext]{ref-tolimieri_oceanographic_2018}
+Tolimieri, N., Haltuch, M.A., Lee, Q., Jacox, M.G., and Bograd, S.J.
+2018. Oceanographic drivers of sablefish recruitment in the {California}
+{Current}. Fisheries Oceanography \textbf{27}(5): 458--474.
+doi:\href{https://doi.org/10.1111/fog.12266}{10.1111/fog.12266}.
+
+\bibitem[\citeproctext]{ref-vestfals2023stage}
+Vestfals, C.D., Marshall, K.N., Tolimieri, N., Hunsicker, M.E., Berger,
+A.M., Taylor, I.G., Jacox, M.G., and Turley, B.D. 2023. Stage-specific
+drivers of pacific hake (merluccius productus) recruitment in the
+california current ecosystem. Fisheries Oceanography \textbf{32}(4):
+352--389. Wiley Online Library.
+
+\bibitem[\citeproctext]{ref-Wallace2005}
+Wallace, J., and Lai, H.-L. 2005. {Status of the Yellowtail Rockfish in
+2004}. \emph{In} Human Biology. Pacific Fisheries Management Council,
+Portland, OR.
 
 \bibitem[\citeproctext]{ref-Wippel2017}
 Wippel, B., Dufault, A.M., Marshall, K., and Kaplan, I.C. 2017. Data
@@ -1022,6 +1278,240 @@ doi:\url{https://doi.org/10.5061/dryad.412nn}.
 \newpage{}
 
 \subsection{Tables}\label{tables}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable}[c]{|p{1.10in}|p{1.10in}|p{1.10in}|p{1.10in}|p{1.10in}}
+
+\caption{\label{tbl-percent_pos}Summary of trips from ORBS dockside
+sampling from ODFW}
+
+\tabularnewline
+
+\ascline{1.5pt}{666666}{1-5}
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{year}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{tripsWithTarget}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{tripsWOTarget}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{totalTrips}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{percentpos}}}} \\
+
+\ascline{1.5pt}{666666}{1-5}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-5}
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{year}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{tripsWithTarget}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{tripsWOTarget}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{totalTrips}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{percentpos}}}} \\
+
+\ascline{1.5pt}{666666}{1-5}\endhead
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,001}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{448}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,324}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,772}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.12}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,002}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{548}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,266}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,814}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.14}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,003}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{626}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,536}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,162}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.15}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,004}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{510}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,825}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{3,335}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.15}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,005}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{639}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,831}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,470}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.10}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,006}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{592}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,046}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,638}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.09}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,007}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{449}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,177}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,626}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.10}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,008}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{497}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,840}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,337}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.09}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,009}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{648}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,654}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,302}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.12}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,010}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{894}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,996}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,890}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.15}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,011}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{837}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,389}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,226}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.16}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,012}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{912}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,171}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,083}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.18}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,013}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{1,019}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,814}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,833}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.15}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,014}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{956}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,608}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,564}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.17}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,015}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{979}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,954}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{7,933}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.12}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,016}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{474}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,180}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,654}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.07}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,017}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{623}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,436}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{7,059}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.09}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,018}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{623}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,143}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,766}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.09}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,019}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{711}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,244}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,955}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.12}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,020}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{772}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,961}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,733}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.11}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,021}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{570}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{4,925}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,495}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.10}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,022}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{569}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,606}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,175}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.09}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,023}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{845}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,533}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,378}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.13}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{2,024}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{690}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{5,612}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{6,302}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.1in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0.11}}}} \\
+
+\ascline{1.5pt}{666666}{1-5}
+
+
+\end{longtable}
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable}[c]{|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}}
+
+\caption{\label{tbl-orbs_mod_select}Model selection for covariates
+considered for the ORBS index}
+
+\tabularnewline
+
+\ascline{1.5pt}{666666}{1-12}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Boattype}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Gf\_opendepth}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Lltrip}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Month}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Port}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Tgt.bag\_bin}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Year}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Effort.Offset}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Df}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Log.Likelihood}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{AICc}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Delta}}}} \\
+
+\ascline{1.5pt}{666666}{1-12}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-12}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Boattype}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Gf\_opendepth}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Lltrip}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Month}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Port}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Tgt.bag\_bin}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Year}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Effort.Offset}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Df}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Log.Likelihood}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{AICc}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Delta}}}} \\
+
+\ascline{1.5pt}{666666}{1-12}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{Included}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{49}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{-66,518.8}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{133,135.6}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Helvetica}{0}}}} \\
+
+\ascline{1.5pt}{666666}{1-12}
+
+
+\end{longtable}
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
 
 \newpage{}
 

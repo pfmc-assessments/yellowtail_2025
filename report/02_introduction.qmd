@@ -33,17 +33,44 @@ Yellowtail Rockfish are prey for Chinook Salmon, Lingcod, Cormorants, Pigeon Gui
 
 <!-- Important features of current fishery and relevant history of fishery.  -->
 
+There has been a commercial fishery in California for Yellowtail Rockfish since at least 1916, the earliest year for which we have data.  Records for recreational fishing start in 1928.  In Washington the recreational data go back to 1889, however in Washington and Oregon the commercial trawl fishery is many times larger than the recreation fishery. In California that has not been the case in recent time; the recreational fishery has been larger than the commercial fishery since the late 1990s.
+
+The rockfish fishery off the U.S. Pacific coast first developed off California in the late 19th century as a hook-and-line fishery [@Love2002].  The rockfish trawl fishery was established in the early 1940s, when the United States became involved in World War II and wartime shortage of red meat created an increased demand for other sources of protein [@Alverson1964; @Harry1961; @Miller2014].
+
+
 ## Management History
 
 <!---
 Summary of management history (e.g., changes in mesh sizes, trip limits, or other management actions that may have significantly altered selection, catch rates, or discards). 
 --->
 
-Rockfish Conservation Areas (RCAs) have been closed to fishing since 2002.  Following that closure, Yellowtail Rockfish are among the many species that have been seen to increase in both abundance and in average size in Central California  [@Marks2015].
+Until late 2002, Yellowtail Rockfish were harvested as part of a directed mid-water trawl fishery, with fairly high landings in the 1980s and 1990s. Yellowtail commonly co-occur with Canary, Widow Rockfish and several other rockfishes [@Tagart1988]; [@Rogers1992]. Association with these and other rockfish species has substantially altered fishing opportunity for Yellowtail Rockfish since Canary Rockfish stocks were declared overfished by National Marine Fisheries service in 2000. In order to achieve the necessary reduction in the catch of Canary Rockfish, Widow Rockfish and other overfished species, stringent management measures were adopted, limiting harvest of Yellowtail Rockfish as well as other co-occurring species.
+
+Beginning in 2000, shelf rockfish species could no longer be retained by vessels using bottom trawl footropes with a diameter greater than 8 inches. The use of small footrope gear increases the risk of gear loss in rocky areas. This restriction was intended to provide an incentive for fishers to avoid high-relief, rocky habitat, thus reducing the exposure of many depleted species to trawling. This was reinforced through reductions in landing limits for most shelf rockfish species.
+
+Since September 2002, Rockfish Conservation Areas (RCAs, areas known to be critical habitat) have been closed to fishing.  Alongside these closures, limits on landings have been put in place that were designed so as to accommodate incidental bycatch only.  These eliminated directed mid-water fishing opportunities for Yellowtail Rockfish in non-tribal trawl fisheries. A somewhat greater opportunity to target Yellowtail Rockfish in the trawl fishery has been available since 2011 under the trawl rationalization program, however quotas for Widow and Canary Rockfish continue to constrain targeting of Yellowtail Rockfish.  With the recent improved status of constraining stocks, the industry is developing strategies to better attain allocations of Yellowtail Rockfish and Widow Rockfish. 
+
+Early studies of Yellowtail Rockfish stocks on the U.S. West Coast north of  $40^\circ 10^\prime$ N. latitude (Cape Mendocino, northern California) began in the 1980s with observational surveys.  Statistical assessments of Yellowtail Rockfish  were conducted in 1982 [@Tagart1982], 1988 [@Tagart1988], 1996 [@Tagart1997], and 1997 [@Tagart1997] to determine harvest specifications for the stock. These early assessments employed a variety of statistical methods, for example, the 1997 assessment used cohort analysis and dynamic pool modeling.  Figure \ref{fig:assessment_history}shows the timeseries of age 4+ biomass for Yellowtail Rockfish across past assessments.
+
+
 ## Management performance
 
 <!-- Management performance, including a table or tables comparing Overfishing Limit (OFL), Acceptable Biological Catch (ABC), Annual Catch Limit (ACL), landings, and catch (i.e., landings plus discard) for each area and year. Groundfish assessments that estimate dead discarded catch must include a disclaimer noting that total mortality estimates from the WCGOP and from the stock assessment may differ due to the use of different methods. Investigation into how these methods differ is beyond the scope of a benchmark assessment. The rationale for modeling discard mortality can also be provided. This should be included in all update assessments.  -->
 
+The Yellowtail Rockfish assessment in 2000 [@Tagart2000] was the first that estimated stock status, with an estimated depletion of 60.5 percent at the start of 2000. Lai et al. [@Lai2003] updated the 2000 assessment and estimated that stock depletion was 46 percent at the start of 2003. A second assessment update was prepared in 2005 [@Wallace2005] with an estimated depletion of 55 percent at the start of 2005.  The 2000 assessment and updates were age-structured assessments conducted using AD Model Builder as the software platform for nonlinear optimization [@Fournier2012].
+
+A data-moderate assessment of Yellowtail Rockfish south of $40^\circ 10^\prime$ N. latitude was conducted in 2013 [@Cope2013]. This assessment estimated depletion at the start of 2013 at 67 percent, and estimated the spawning biomass at 50,043 mt. This was a large biomass increase relative to previous estimates and may be attributed to the low removals over the previous decade.
+
+The data-poor assessment method, Depletion-Based Stock Reduction Analysis [@Dick2011] was applied to the Southern stock in 2011 [@Dick2010]. This method does not estimate biomass, but did provide the estimate of the OFL contribution for the southern stock to the complex in which it is managed.
+
+Yellowtail Rockfish are currently managed with stock-specific harvest specifications north of $40^\circ 10^\prime$ N. latitude, and as part of the Southern Shelf Rockfish complex south of $40^\circ 10^\prime$ N. latitude. Total catch (including landings and discards) in  both areas has remained well below the management limits and harvest specifications in recent years (Tables \ref{tab:mnmgt_perform.N})
+
 ## Fisheries off Canada and Alaska
 
 <!-- Description of fisheries for this species off Canada, Alaska and/or Mexico, including references to any recent assessments of those stocks extending beyond the Council’s jurisdiction. STATs are strongly encouraged to include a summary of catches and estimates of stock size and stock status for the most recent ten years if such information can be assembled without excessive difficulty. This is not required for an update assessment.    -->
+
+Yellowtail Rockfish are a target species in Canada with catches between 4000-6000 mt since the late 1980s. It has the second largest single-species Total Allowable Catch (TAC) among rockfish species under quota management for the Canadian Pacific Coast. In Canada it is caught in similar amounts by bottom and midwater trawl gear. A 2015 Stock Assessment conducted by the Fisheries and Oceans Canada found the stock to be at 50\% of unfished spawning biomass, in the "healthy" range [@DFO2015].
+
+The Alaska Fisheries Science Center assesses Yellowtail Rockfish as one of 25 species in the "Other Rockfish" complex in the Gulf of Alaska.  The 2015 full assessment of this complex found no evidence of overfishing, which is confirmed in the 2016 SAFE document[@AFSC2016].
+
+Limited catches of Yellowtail are reported as far south as Baja California[@Love2011].
