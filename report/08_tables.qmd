@@ -7,39 +7,81 @@
 #| eval: true 
 #| include: false
 library(flextable)
-
+library(tidyr)
 
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/rda_files'
 ``` 
+
+```{r, flextableprops}
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| include: false
+
+table_format <- function(csv, width, size) {
+rawtable<-flextable(csv)
+table<-fontsize(rawtable, size=size)%>%
+font(fontname ="Times New Roman")%>%
+font(fontname ="Times New Roman",part='header')%>%
+width(width = width)%>%
+align(align='center')%>%
+ align(align='center',part='header')
+}
+
+```
+
 
 
 ```{r, orbs_perc_pos}
 #| label: tbl-percent_pos
 #| echo: false 
 #| warning: false 
-#| eval: true 
 #| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
 
 
 percpos<-read.csv('Tables/yellowtail_percent_pos.csv')
-percpos<-flextable(percpos)
-percpos<-width(percpos, width = 1.1)
+percpos<-table_format(percpos,1,10)
 percpos
 ```
+<!-- Reformat to landscape once orientation issue is resolved!  -->
 
-```{r, orbs_mod_sel}
+::: {.landscape}
+```{r}
 #| label: tbl-orbs_mod_select
 #| echo: false 
 #| warning: false 
-#| eval: true 
 #| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
 
 orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1:10,]
-orbs_modselect[orbs_modselect=="Included"] <- "Yes"
-orbs_modselect<-flextable(orbs_modselect)
-orbs_modselect<-fontsize(orbs_modselect, size=10)
-orbs_modselect<-font(orbs_modselect, fontname ="Times New Roman")
-orbs_modselect<-font(orbs_modselect, fontname ="Times New Roman",part='header')
-orbs_modselect<-width(orbs_modselect, width = 0.7)
-orbs_modselect
+orbs_modselect[orbs_modselect=="Included"] <- "Incl."
+orbs_tab<-table_format(orbs_modselect,0.45,8)
+orbs_tab
+
 ```
+:::
+
+{{< pagebreak >}}
+
+::: {.landscape}
+
+```{r} 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: This is your table caption.
+
+# Import your data
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
+
+# Make your table
+your_table <- flextable::flextable(your_df) |>
+  flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
+
+# Show your table
+your_table
+``` 
+
+:::
