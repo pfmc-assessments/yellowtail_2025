@@ -15,7 +15,6 @@ rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/rda_files'
 ```{r, flextableprops}
 #| echo: false 
 #| warning: false 
-#| eval: true 
 #| include: false
 
 table_format <- function(csv, width, size) {
@@ -32,6 +31,8 @@ align(align='center')%>%
 
 
 
+
+
 ```{r, orbs_perc_pos}
 #| label: tbl-percent_pos
 #| echo: false 
@@ -43,9 +44,12 @@ percpos<-read.csv('Tables/yellowtail_percent_pos.csv')
 percpos<-table_format(percpos,1,10)
 percpos
 ```
-<!-- Reformat to landscape once orientation issue is resolved!  -->
+
+
+{{< pagebreak >}}
 
 ::: {.landscape}
+
 ```{r}
 #| label: tbl-orbs_mod_select
 #| echo: false 
@@ -54,34 +58,11 @@ percpos
 
 orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1:10,]
 orbs_modselect[orbs_modselect=="Included"] <- "Incl."
-orbs_tab<-table_format(orbs_modselect,0.45,8)
+orbs_tab<-table_format(orbs_modselect,0.6,11)
 orbs_tab
 
 ```
+
 :::
 
 {{< pagebreak >}}
-
-::: {.landscape}
-
-```{r} 
-#| label: 'tbl-custom1' # choose a label
-#| echo: false
-#| warning: false
-#| tbl-cap: This is your table caption.
-
-# Import your data
-your_df <- data.frame(
-  "x" = c(1, 2, 3),
-  "y" = c(4, 5, 6)
-)
-
-# Make your table
-your_table <- flextable::flextable(your_df) |>
-  flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
-
-# Show your table
-your_table
-``` 
-
-:::
