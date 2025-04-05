@@ -8,6 +8,12 @@
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 ``` 
 
-
 ![Map depicting the boundaries for the two genetic stocks of Yellowtail](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
 
+![Q-Q plot diagnostics for ORBS index](Figures/ORBSqq.png){fig-alt='A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-orbsqq}
+
+![Time series of the relative index of abundance from ORBS dockside sampling from ODFW](Figures/ORBSIndex.png){fig-alt='An annual relative index of abundance plotted from 2001 to 2024 with error bars' #fig-orbsindex}
+
+![Q-Q plot diagnostics for SMURF YOY index](Figures/SMURFqq.png){fig-alt='A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-smurfqq}
+
+![Time series of the relative index of abundance from SMURF YOY index](Figures/SMURFIndex.png){fig-alt='An annual relative index of abundance plotted from 2014 to 2024 with error bars' #fig-smurfindex}
