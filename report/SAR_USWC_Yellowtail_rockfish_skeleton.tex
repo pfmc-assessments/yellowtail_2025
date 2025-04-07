@@ -7,7 +7,6 @@
 ]{scrartcl}
 
 \usepackage{amsmath,amssymb}
-\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -17,6 +16,10 @@
   \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -72,28 +75,38 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
   \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
   \fi
   % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
 \usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{hyphenat}
@@ -133,19 +146,20 @@
 \ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}
 \setkomafont{pageheadfoot}{\small}
 
-% Landscape tables and figures
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
 \usepackage{pdflscape}
-\newcommand{\blandscape}{\begin{landscape}}
-\newcommand{\elandscape}{\end{landscape}}
-
-% Acronyms
-\usepackage[acronym]{glossaries}
-\glsdisablehyper
-\loadglsentries{sa4ss_glossaries.tex}
-\makeatletter
-\makeatother
-\makeatletter
-\makeatother
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -182,16 +196,10 @@
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \makeatother
 \makeatletter
+\makeatother
+\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
-\makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
 \makeatother
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
@@ -205,7 +213,8 @@
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
@@ -223,7 +232,7 @@
 north of 40°10\(\prime\) in 2025}
 \author{Kiva L. Oken \and Ian G. Taylor \and Megan L.
 Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
-\date{4/3/25}
+\date{2025-04-01}
 
 \begin{document}
   \begin{titlepage}
@@ -343,7 +352,6 @@ Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
   \end{minipage}
   \restoregeometry
   \end{titlepage}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, enhanced, sharp corners, borderline west={3pt}{0pt}{shadecolor}, interior hidden, boxrule=0pt, breakable]}{\end{tcolorbox}}\fi
 
 \renewcommand*\contentsname{Table of contents}
 {
@@ -351,11 +359,15 @@ Feddern \and Alison D. Whitman \and Fabio P. Caltabellotta}
 \setcounter{tocdepth}{3}
 \tableofcontents
 }
-\pagenumbering{roman}
-\setcounter{page}{1}
+\listoffigures
+\listoftables
+\begin{verbatim}
+i Reading model output
+\end{verbatim}
 
-\renewcommand{\thetable}{\roman{table}}
-\renewcommand{\thefigure}{\roman{figure}}
+\begin{verbatim}
+covar file not found, input 'covar' changed to FALSE
+\end{verbatim}
 
 \newpage{}
 
@@ -363,22 +375,15 @@ Please cite this publication as:
 
 Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta.
 Status of the Yellowtail rockfish stock off the U.S. West Coast north of
-40°10\(\prime\) in 2025. Pacific Fishery Managment Council, Portland,
-Oregon. {[}XX{]} p.
+40°10\(\prime\)) in 2025. Prepared by {[}COMMITTEE{]}. {[}XX{]} p.
 
 \newpage{}
 
-\hypertarget{executive-summary}{%
-\section*{Executive Summary}\label{executive-summary}}
-\addcontentsline{toc}{section}{Executive Summary}
+\subsection{Executive Summary}\label{executive-summary}
 
-\hypertarget{stock}{%
-\subsection*{Stock}\label{stock}}
-\addcontentsline{toc}{subsection}{Stock}
+\subsubsection{Stock}\label{stock}
 
-\hypertarget{catches}{%
-\subsection*{Catches}\label{catches}}
-\addcontentsline{toc}{subsection}{Catches}
+\subsubsection{Catches}\label{catches}
 
 \clearpage
 
@@ -386,92 +391,96 @@ Oregon. {[}XX{]} p.
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/catch2_landings_stacked.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/catch2_landings_stacked.png}
 
 }
 
 \caption{\label{fig-es-catch}Landings by fleet used in the base model
 where catches in metric tons by fleet are stacked}
 
-\end{figure}
+\end{figure}%
 
 \clearpage
 
-\hypertarget{data-and-assessment}{%
-\subsection*{Data and assessment}\label{data-and-assessment}}
-\addcontentsline{toc}{subsection}{Data and assessment}
+\subsubsection{Data and assessment}\label{data-and-assessment}
 
-\hypertarget{stock-biomass-and-dynamics}{%
-\subsection*{Stock biomass and
-dynamics}\label{stock-biomass-and-dynamics}}
-\addcontentsline{toc}{subsection}{Stock biomass and dynamics}
+\subsubsection{Stock biomass and
+dynamics}\label{stock-biomass-and-dynamics}
 
 \clearpage 
 \input{tex_tables/b_SSB_ES.tex}
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/ts7_Spawning_output.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/ts7_Spawning_output.png}
 
 }
 
 \caption{\label{fig-es-ssb}Estimated time series of spawning output for
 the base model}
 
-\end{figure}
+\end{figure}%
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/ts9_Relative_spawning_output.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/ts9_Relative_spawning_output.png}
 
 }
 
 \caption{\label{fig-es-frac-unfished}Estimated time series of fraction
 of unfished spawning output for the base model}
 
-\end{figure}
+\end{figure}%
 
 \clearpage
 
-\hypertarget{recruitment}{%
-\subsection*{Recruitment}\label{recruitment}}
-\addcontentsline{toc}{subsection}{Recruitment}
+\subsubsection{Recruitment}\label{recruitment}
 
 \input{tex_tables/c_Recr_ES.tex}
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/ts11_Age-0_recruits_(1000s).png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/ts11_Age-0_recruits_(1000s).png}
 
 }
 
 \caption{\label{fig-es-frac-unfished}Estimated time series of age-0
 recruits (1000s) for the base model}
 
-\end{figure}
+\end{figure}%
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/recdevs1_points.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/recdevs1_points.png}
 
 }
 
 \caption{\label{fig-es-rec-devs}Estimated time series of recruitment
 deviations for the base model}
 
-\end{figure}
+\end{figure}%
 
 \clearpage
 
-\hypertarget{exploitation-status}{%
-\subsection*{Exploitation status}\label{exploitation-status}}
-\addcontentsline{toc}{subsection}{Exploitation status}
+\subsubsection{Exploitation status}\label{exploitation-status}
 
 \input{tex_tables/d_SPR_ES.tex}
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/SPR3_ratiointerval.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/SPR3_ratiointerval.png}
 
 }
 
@@ -482,17 +491,13 @@ corresponds to SPR = 0.4, the management reference point for yellowtail
 rockfish. The horizontal line at 1.0 corresponds to SPR = 0 (all
 spawning fish removed from the population).}
 
-\end{figure}
+\end{figure}%
 
 \clearpage
 
-\hypertarget{ecosystem-considerations}{%
-\subsection*{Ecosystem considerations}\label{ecosystem-considerations}}
-\addcontentsline{toc}{subsection}{Ecosystem considerations}
+\subsubsection{Ecosystem considerations}\label{ecosystem-considerations}
 
-\hypertarget{reference-points}{%
-\subsection*{Reference points}\label{reference-points}}
-\addcontentsline{toc}{subsection}{Reference points}
+\subsubsection{Reference points}\label{reference-points}
 
 \clearpage
 
@@ -500,92 +505,77 @@ spawning fish removed from the population).}
 
 \begin{figure}
 
-{\centering \includegraphics[width=6in,height=\textheight]{r4ss_plots/yield2_yield_curve_with_refpoints.png}
+\centering{
+
+\includegraphics[width=6in,height=\textheight]{r4ss_plots/yield2_yield_curve_with_refpoints.png}
 
 }
 
 \caption{\label{fig-es-yield}Equilibrium yield curve for the base case
 model.}
 
-\end{figure}
+\end{figure}%
 
 \clearpage
 
-\hypertarget{management-performance}{%
-\subsection*{Management performance}\label{management-performance}}
-\addcontentsline{toc}{subsection}{Management performance}
+\subsubsection{Management performance}\label{management-performance}
 
-\hypertarget{unresolved-problems-and-major-uncertainties}{%
-\subsection*{Unresolved problems and major
-uncertainties}\label{unresolved-problems-and-major-uncertainties}}
-\addcontentsline{toc}{subsection}{Unresolved problems and major
-uncertainties}
+\subsubsection{Unresolved problems and major
+uncertainties}\label{unresolved-problems-and-major-uncertainties}
 
-\hypertarget{decision-table-and-projections}{%
-\subsection*{Decision table and
-projections}\label{decision-table-and-projections}}
-\addcontentsline{toc}{subsection}{Decision table and projections}
+\subsubsection{Decision table and
+projections}\label{decision-table-and-projections}
 
 \clearpage
 
 \clearpage
 
-\hypertarget{scientific-uncertainty}{%
-\subsection*{Scientific uncertainty}\label{scientific-uncertainty}}
-\addcontentsline{toc}{subsection}{Scientific uncertainty}
+\subsubsection{Scientific uncertainty}\label{scientific-uncertainty}
 
-\hypertarget{research-and-data-needs}{%
-\subsection*{Research and data needs}\label{research-and-data-needs}}
-\addcontentsline{toc}{subsection}{Research and data needs}
+\subsubsection{Research and data needs}\label{research-and-data-needs}
 
 \newpage{}
 
-\setlength{\parskip}{5mm plus1mm minus1mm}
-\pagenumbering{arabic}
-\setcounter{page}{1}
-\setcounter{section}{0}
-\renewcommand{\thefigure}{\arabic{figure}}
-\renewcommand{\thetable}{\arabic{table}}
-\setcounter{table}{0}
-\setcounter{figure}{0}
-
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\section{Introduction}\label{introduction}
 
 Yellowtail Rockfish, \emph{Sebastes flavidus}, occur off the West Coast
 of the United States from Baja California to the Aleutian Islands.
 Yellowtail is a major commercial species, captured mostly in trawls from
-Central California to British Columbia (Love 2011). Because it is an
-aggregating, midwater species it is usually caught in the commercial
-midwater trawl fishery. In California there is a large recreational
-fishery as well. The center of Yellowtail Rockfish abundance is from
-southern Oregon through British Columbia (Fraidenburg 1980). Yellowtail
-Rockfish are colloquially known as ``greenies'', although
-\emph{flavidus} is Latin for ``yellow'' (Love 2011). We briefly
+Central California to British Columbia (\citeproc{ref-Love2011}{Love
+2011}). Because it is an aggregating, midwater species it is usually
+caught in the commercial midwater trawl fishery. In California there is
+a large recreational fishery as well. The center of Yellowtail Rockfish
+abundance is from southern Oregon through British Columbia
+(\citeproc{ref-Fraidenburg1980}{Fraidenburg 1980}). Yellowtail Rockfish
+are colloquially known as ``greenies'', although \emph{flavidus} is
+Latin for ``yellow'' (\citeproc{ref-Love2011}{Love 2011}). We briefly
 summarize Yellowtail Rockfish life history, fisheries, assessment and
 management here, but in-depth, extensive background information on
-Yellowtail Rockfish and other managed species is available at (Council
-2016).
+Yellowtail Rockfish and other managed species is available at
+(\citeproc{ref-PFMC2016}{Council 2016}).
 
 A number of studies correlate environmental conditions to pelagic
 juvenile abundance and juvenile recruitment of rockfishes, including
 Yellowtail Rockfish. Year-class strength is particularly impacted during
 the early larval phase, and annual pelagic juvenile abundance is
 correlated with physical conditions, especially upwelling strength along
-the coast (e.g., (Field and Ralston 2005), (Laidig et al. 2007), (Laidig
-2010), (Ralston and Stewart 2013)).
+the coast (e.g., (\citeproc{ref-Field2005}{Field and Ralston 2005}),
+(\citeproc{ref-Laidig2007}{Laidig, Chess, and Howard 2007}),
+(\citeproc{ref-Laidig2010}{Laidig 2010}),
+(\citeproc{ref-Ralston2013}{Ralston and Stewart 2013})).
 
-A recent genetic study (Hess et al. 2011) indicates that there are in
-fact two stocks of Yellowtail Rockfish, with a genetic cline at Cape
-Mendocino, California, roughly \(40^\circ 10^\prime\) North Latitude.
-This study of 1013 fish from 21 sites along the West Coast from Mexico
-through Alaska examined two datasets, one of mitochondrial DNA, and one
-of nuclear DNA microsattelite loci. Findings in both datasets agreed,
-and also concur with the findings of Field and Ralston (Field and
-Ralston 2005) who looked at differences in recruitment trends related to
-physical forcing and coherence along the coast, and found the greatest
-differences among the U.S. and Canadian stocks to be defined by Cape
-Mendocino. Neither the genetic study nor the oceanographic studies
+A recent genetic study (\citeproc{ref-Hess2011}{Hess, Vetter, and Moran
+2011}) indicates that there are in fact two stocks of Yellowtail
+Rockfish, with a genetic cline at Cape Mendocino, California, roughly
+\(40^\circ 10^\prime\) North Latitude. This study of 1013 fish from 21
+sites along the West Coast from Mexico through Alaska examined two
+datasets, one of mitochondrial DNA, and one of nuclear DNA
+microsattelite loci. Findings in both datasets agreed, and also concur
+with the findings of Field and Ralston (\citeproc{ref-Field2005}{Field
+and Ralston 2005}) who looked at differences in recruitment trends
+related to physical forcing and coherence along the coast, and found the
+greatest differences among the U.S. and Canadian stocks to be defined by
+Cape Mendocino. Neither the genetic study nor the oceanographic studies
 definitively identify mechanisms of stock isolation, however they
 suggest that a combination of physical forcing due to offshore advection
 and differences in available habitat across Cape Mendocino may together
@@ -599,48 +589,35 @@ A map showing the scope of the assessment and depicting boundaries for
 fisheries or data collection strata is provided in Figure
 \ref{fig:assess_region_map}.
 
-\hypertarget{life-history}{%
-\subsection{Life History}\label{life-history}}
+\subsection{Life History}\label{life-history}
 
-\hypertarget{ecosystem-considerations-1}{%
-\subsection{Ecosystem considerations}\label{ecosystem-considerations-1}}
+\subsection{Ecosystem considerations}\label{ecosystem-considerations-1}
 
-\hypertarget{fishery-description}{%
-\subsection{Fishery description}\label{fishery-description}}
+\subsection{Fishery description}\label{fishery-description}
 
-\hypertarget{management-history}{%
-\subsection{Management History}\label{management-history}}
+\subsection{Management History}\label{management-history}
 
-\hypertarget{management-performance-1}{%
-\subsection{Management performance}\label{management-performance-1}}
+\subsection{Management performance}\label{management-performance-1}
 
-\hypertarget{fisheries-off-canada-and-alaska}{%
 \subsection{Fisheries off Canada and
-Alaska}\label{fisheries-off-canada-and-alaska}}
+Alaska}\label{fisheries-off-canada-and-alaska}
 
 \newpage{}
 
-\hypertarget{data}{%
-\section{Data}\label{data}}
+\section{Data}\label{data}
 
-\hypertarget{fishery-dependent-data}{%
-\subsection{Fishery-dependent data}\label{fishery-dependent-data}}
+\subsection{Fishery-dependent data}\label{fishery-dependent-data}
 
-\hypertarget{landings}{%
-\subsubsection{Landings}\label{landings}}
+\subsubsection{Landings}\label{landings}
 
-\hypertarget{discards}{%
-\subsubsection{Discards}\label{discards}}
+\subsubsection{Discards}\label{discards}
 
-\hypertarget{biological-data}{%
-\subsubsection{Biological data}\label{biological-data}}
+\subsubsection{Biological data}\label{biological-data}
 
-\hypertarget{abundance-indices}{%
-\subsubsection{Abundance indices}\label{abundance-indices}}
+\subsubsection{Abundance indices}\label{abundance-indices}
 
-\hypertarget{oregon-orbs-dockside-index-2001---2024}{%
 \paragraph{Oregon ORBS Dockside Index (2001 -
-2024)}\label{oregon-orbs-dockside-index-2001---2024}}
+2024)}\label{oregon-orbs-dockside-index-2001---2024}
 
 Trip-level catch-per-unit-effort data from ORBS dockside sampling was
 obtained from ODFW. To mitigate the confounding of hourly effort
@@ -692,14 +669,11 @@ for the model were achieved (FIGURE -- qqplot) and the negative binomial
 distribution was preferred over the tweedie. The index of abundance are
 shown in Figure/Table XXXX.
 
-\hypertarget{fishery-independent-data}{%
-\subsection{Fishery-independent data}\label{fishery-independent-data}}
+\subsection{Fishery-independent data}\label{fishery-independent-data}
 
-\hypertarget{abundance-indices-1}{%
-\subsubsection{Abundance Indices}\label{abundance-indices-1}}
+\subsubsection{Abundance Indices}\label{abundance-indices-1}
 
-\hypertarget{smurf-yoy-index}{%
-\paragraph{SMURF YOY Index}\label{smurf-yoy-index}}
+\paragraph{SMURF YOY Index}\label{smurf-yoy-index}
 
 ODFW and Oregon State University (OSU) have collaborated on young of the
 year (YOY) fish and environmental monitoring in and around Oregon Marine
@@ -754,17 +728,13 @@ distribution. Acceptable model convergence and other diagnostic criteria
 for the final index were achieved (FIGURE - qqplot). The index of YOY
 abundance and associated standard errors are shown in Figure/Table Y.
 
-\hypertarget{biological-parameters}{%
-\subsection{Biological Parameters}\label{biological-parameters}}
+\subsection{Biological Parameters}\label{biological-parameters}
 
-\hypertarget{natural-mortality}{%
-\subsubsection{Natural Mortality}\label{natural-mortality}}
+\subsubsection{Natural Mortality}\label{natural-mortality}
 
-\hypertarget{weight-at-length}{%
-\subsubsection{Weight-at-length}\label{weight-at-length}}
+\subsubsection{Weight-at-length}\label{weight-at-length}
 
-\hypertarget{maturity}{%
-\subsubsection{Maturity}\label{maturity}}
+\subsubsection{Maturity}\label{maturity}
 
 We used a total of 292 individual histological samples of aged female
 yellowtail rockfish to estimate maturity for the assessment. These
@@ -783,11 +753,12 @@ range of ages, providing a less accurate understanding of the spawning
 population. We treated maturity as a binomial response, and considered a
 variety of models with temporal and spatial covariates, using a logit
 link and generalized linear mixed model framework, implemented the R
-package sdmTMB (Anderson et al. 2024). Briefly, we considered models
-that included (1) temporal year effects (either estimated as a random
-walk intercept, or smooth term), (2) spatial random fields (using a mesh
-cutoff distance of 50km), and (3) spatially varying coefficients of age,
-following the model adopted by Grandin et al. (2024). Models that
+package sdmTMB (\citeproc{ref-Anderson:2024:SRP}{Anderson et al. 2024}).
+Briefly, we considered models that included (1) temporal year effects
+(either estimated as a random walk intercept, or smooth term), (2)
+spatial random fields (using a mesh cutoff distance of 50km), and (3)
+spatially varying coefficients of age, following the model adopted by
+Grandin et al. (\citeproc{ref-grandin_status_2024}{2024}). Models that
 converged were compared by examining QQ plots, AUC metrics, and AIC
 scores. Likely because of the uneven temporal distribution of sampling,
 and general sparsity, we did not find support for including temporal or
@@ -798,15 +769,12 @@ of 10.0 years. For a more direct comparison to the previous assessment,
 we used these same 292 samples to fit an equivalent length -- based
 model, which resulted in an estimated L50 = 42.5 cm.
 
-\hypertarget{fecundity}{%
-\subsubsection{Fecundity}\label{fecundity}}
+\subsubsection{Fecundity}\label{fecundity}
 
-\hypertarget{environmental-and-ecosystem-data}{%
 \subsection{Environmental and ecosystem
-data}\label{environmental-and-ecosystem-data}}
+data}\label{environmental-and-ecosystem-data}
 
-\hypertarget{oceanographic-index}{%
-\subsubsection{Oceanographic Index}\label{oceanographic-index}}
+\subsubsection{Oceanographic Index}\label{oceanographic-index}
 
 Over the past several years, progress has been made in understanding how
 oceanographic conditions drive recruitment of groundfish species in the
@@ -842,182 +810,155 @@ conditions.
 
 \newpage{}
 
-\hypertarget{assessment-model}{%
-\section{Assessment model}\label{assessment-model}}
+\section{Assessment model}\label{assessment-model}
 
-\hypertarget{history-of-modeling-approaches}{%
 \subsection{History of modeling
-approaches}\label{history-of-modeling-approaches}}
+approaches}\label{history-of-modeling-approaches}
 
-\hypertarget{response-to-most-recent-star-panel-and-ssc-recommendations}{%
 \subsection{Response to most recent STAR panel and SSC
-recommendations}\label{response-to-most-recent-star-panel-and-ssc-recommendations}}
+recommendations}\label{response-to-most-recent-star-panel-and-ssc-recommendations}
 
-\hypertarget{model-structure-and-assumptions}{%
 \subsection{Model Structure and
-Assumptions}\label{model-structure-and-assumptions}}
+Assumptions}\label{model-structure-and-assumptions}
 
-\hypertarget{model-changes-from-the-last-assessment}{%
 \subsubsection{Model Changes from the Last
-Assessment}\label{model-changes-from-the-last-assessment}}
+Assessment}\label{model-changes-from-the-last-assessment}
 
-\hypertarget{modeling-platform-and-structure}{%
 \subsubsection{Modeling Platform and
-Structure}\label{modeling-platform-and-structure}}
+Structure}\label{modeling-platform-and-structure}
 
-\hypertarget{model-parameters}{%
-\subsubsection{Model Parameters}\label{model-parameters}}
+\subsubsection{Model Parameters}\label{model-parameters}
 
-\hypertarget{key-assumptions-and-structural-choices}{%
 \subsubsection{Key Assumptions and Structural
-Choices}\label{key-assumptions-and-structural-choices}}
+Choices}\label{key-assumptions-and-structural-choices}
 
-\hypertarget{base-model-results}{%
-\subsection{Base Model Results}\label{base-model-results}}
+\newpage{}
 
-\hypertarget{parameter-estimates}{%
-\subsubsection{Parameter Estimates}\label{parameter-estimates}}
+\subsection{Base Model Results}\label{base-model-results}
 
-\hypertarget{fits-to-the-data}{%
-\subsubsection{Fits to the Data}\label{fits-to-the-data}}
+\subsubsection{Parameter Estimates}\label{parameter-estimates}
 
-\hypertarget{population-trajectory}{%
-\subsubsection{Population Trajectory}\label{population-trajectory}}
+\subsubsection{Fits to the Data}\label{fits-to-the-data}
 
-\hypertarget{model-diagnostics}{%
-\subsection{Model Diagnostics}\label{model-diagnostics}}
+\subsubsection{Population Trajectory}\label{population-trajectory}
 
-\hypertarget{convergence}{%
-\subsubsection{Convergence}\label{convergence}}
+\newpage{}
 
-\hypertarget{sensitivity-analyses}{%
-\subsubsection{Sensitivity Analyses}\label{sensitivity-analyses}}
+\subsection{Model Diagnostics}\label{model-diagnostics}
 
-\hypertarget{retrospective-analysis}{%
-\subsubsection{Retrospective Analysis}\label{retrospective-analysis}}
+\subsubsection{Convergence}\label{convergence}
 
-\hypertarget{likelihood-profiles}{%
-\subsubsection{Likelihood Profiles}\label{likelihood-profiles}}
+\subsubsection{Sensitivity Analyses}\label{sensitivity-analyses}
 
-\hypertarget{unresolved-problems-and-major-uncertainties-1}{%
+\subsubsection{Retrospective Analysis}\label{retrospective-analysis}
+
+\subsubsection{Likelihood Profiles}\label{likelihood-profiles}
+
 \subsection{Unresolved Problems and Major
-Uncertainties}\label{unresolved-problems-and-major-uncertainties-1}}
+Uncertainties}\label{unresolved-problems-and-major-uncertainties-1}
 
 \newpage{}
 
-\hypertarget{management}{%
-\section{Management}\label{management}}
+\section{Management}\label{management}
 
-\hypertarget{reference-points-1}{%
-\subsection{Reference Points}\label{reference-points-1}}
+\subsection{Reference Points}\label{reference-points-1}
 
-\hypertarget{harvest-projections-and-decision-tables}{%
 \subsection{Harvest Projections and Decision
-Tables}\label{harvest-projections-and-decision-tables}}
+Tables}\label{harvest-projections-and-decision-tables}
 
-\hypertarget{evaluation-of-scientific-uncertainty}{%
 \subsection{Evaluation of Scientific
-Uncertainty}\label{evaluation-of-scientific-uncertainty}}
+Uncertainty}\label{evaluation-of-scientific-uncertainty}
 
-\hypertarget{regional-management-considerations}{%
 \subsection{Regional management
-considerations}\label{regional-management-considerations}}
+considerations}\label{regional-management-considerations}
 
-\hypertarget{research-and-data-needs-1}{%
-\subsection{Research and Data Needs}\label{research-and-data-needs-1}}
-
-\newpage{}
-
-\hypertarget{sec-acknowledgements}{%
-\subsection{Acknowledgements}\label{sec-acknowledgements}}
+\subsection{Research and Data Needs}\label{research-and-data-needs-1}
 
 \newpage{}
 
-\hypertarget{references}{%
-\subsection{References}\label{references}}
+\subsection{Acknowledgements}\label{sec-acknowledgements}
 
-\hypertarget{refs}{}
+\newpage{}
+
+\subsection{References}\label{references}
+
+\phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-Anderson:2024:SRP}{}}%
-Anderson, S.C., Ward, E.J., English, P.A., Barnett, L.A.K., and Thorson,
-J.T. 2024. sdmTMB: An r package for fast, flexible, and user-friendly
-generalized linear mixed effects models with spatial and spatiotemporal
-random fields. bioRxiv \textbf{2022.03.24.485545}.
-doi:\href{https://doi.org/10.1101/2022.03.24.485545}{10.1101/2022.03.24.485545}.
+\bibitem[\citeproctext]{ref-Anderson:2024:SRP}
+Anderson, Sean C., Eric J. Ward, Philina A. English, Lewis A. K.
+Barnett, and James T. Thorson. 2024. {``sdmTMB: An r Package for Fast,
+Flexible, and User-Friendly Generalized Linear Mixed Effects Models with
+Spatial and Spatiotemporal Random Fields.''} \emph{bioRxiv}
+2022.03.24.485545. \url{https://doi.org/10.1101/2022.03.24.485545}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-PFMC2016}{}}%
-Council, P.F.M. 2016. {Status of the Pacific Coast Groundfish Fishery}.
-Available from
-\url{http://www.pcouncil.org/wp-content/uploads/2017/02/SAFE_Dec2016_02_28_2017.pdf}
-{[}accessed 18 June 2017{]}.
+\bibitem[\citeproctext]{ref-PFMC2016}
+Council, Pacific Fishery Management. 2016. {``{Status of the Pacific
+Coast Groundfish Fishery}.''} 2016.
+\url{http://www.pcouncil.org/wp-content/uploads/2017/02/SAFE_Dec2016_02_28_2017.pdf}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Field2005}{}}%
-Field, J., and Ralston, S. 2005. {Spatial variability in rockfish
-(Sebastes spp.) recruitment events in the California Current System}.
-Canadian Journal of Fisheries and Aquatic Sciences \textbf{62}:
+\bibitem[\citeproctext]{ref-Field2005}
+Field, JC, and S Ralston. 2005. {``{Spatial variability in rockfish
+(Sebastes spp.) recruitment events in the California Current System}.''}
+\emph{Canadian Journal of Fisheries and Aquatic Sciences} 62:
 2199--2210.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Fraidenburg1980}{}}%
-Fraidenburg, M. 1980. Yellowtail rockfish, sebastes-flavidus, length and
-age composition off california, oregon, and washington in 1977. Marine
-Fisheries Review \textbf{42}(3-4): 54--56. Natl Marine Fisheries qervice
-Scientific Subl Office 7600 Sand Point Way NE bin c15700, Seattle, WA
-98115.
+\bibitem[\citeproctext]{ref-Fraidenburg1980}
+Fraidenburg, ME. 1980. {``Yellowtail Rockfish, Sebastes-Flavidus, Length
+and Age Composition Off California, Oregon, and Washington in 1977.''}
+\emph{Marine Fisheries Review} 42 (3-4): 54--56.
 
-\leavevmode\vadjust pre{\hypertarget{ref-grandin_status_2024}{}}%
-Grandin, C.J., F., J.K., M., E.A., and M., B.A. 2024. Status of the
-{P}acific {H}ake (whiting) stock in {U}.{S}. And {C}anadian waters in
-2024. Joint Technical Committee of the U.S.; Canada Pacific Hake/Whiting
-Agreement, National Marine Fisheries Service; Fisheries; Oceans Canada.
+\bibitem[\citeproctext]{ref-grandin_status_2024}
+Grandin, C. J., Johnson K. F., Edwards A. M., and Berger A. M. 2024.
+{``Status of the {P}acific {H}ake (Whiting) Stock in {U}.{S}. And
+{C}anadian Waters in 2024.''} Joint Technical Committee of the U.S.;
+Canada Pacific Hake/Whiting Agreement, National Marine Fisheries
+Service; Fisheries; Oceans Canada.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Hess2011}{}}%
-Hess, J.E., Vetter, R.D., and Moran, P. 2011. {A steep genetic cline in
-yellowtail rockfish, Sebastes flavidus, suggests regional isolation
-across the Cape Mendocino faunal break}. Canadian Journal of Fisheries
-and Aquatic Sciences \textbf{68}: 89--104.
+\bibitem[\citeproctext]{ref-Hess2011}
+Hess, J. E., R. D. Vetter, and P. Moran. 2011. {``{A steep genetic cline
+in yellowtail rockfish, Sebastes flavidus, suggests regional isolation
+across the Cape Mendocino faunal break}.''} \emph{Canadian Journal of
+Fisheries and Aquatic Sciences} 68: 89--104.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Laidig2010}{}}%
-Laidig, T.E. 2010. Influence of ocean conditions on the timing of early
-life history events for blue rockfish (sebastes mystinus) off
-california. Fishery Bulletin \textbf{108}(4): 442--449.
+\bibitem[\citeproctext]{ref-Laidig2010}
+Laidig, Thomas E. 2010. {``Influence of Ocean Conditions on the Timing
+of Early Life History Events for Blue Rockfish (Sebastes Mystinus) Off
+California.''} \emph{Fishery Bulletin} 108 (4): 442--49.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Laidig2007}{}}%
-Laidig, T.E., Chess, J.R., and Howard, D.F. 2007. Relationship between
-abundance of juvenile rockfishes (sebastes spp.) And environmental
-variables documented off northern california and potential mechanisms
-for the covariation. Fishery Bulletin \textbf{105}(1): 39--49. National
-Marine Fisheries Service.
+\bibitem[\citeproctext]{ref-Laidig2007}
+Laidig, Thomas E, James R Chess, and Daniel F Howard. 2007.
+{``Relationship Between Abundance of Juvenile Rockfishes (Sebastes Spp.)
+and Environmental Variables Documented Off Northern California and
+Potential Mechanisms for the Covariation.''} \emph{Fishery Bulletin} 105
+(1): 39--49.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Love2011}{}}%
-Love, M.S. 2011. Certainly more than you want to know about the fishes
-of the pacific coast: A postmodern experience. Really Big Press.
+\bibitem[\citeproctext]{ref-Love2011}
+Love, Milton S. 2011. \emph{Certainly More Than You Want to Know about
+the Fishes of the Pacific Coast: A Postmodern Experience}. Really Big
+Press.
 
-\leavevmode\vadjust pre{\hypertarget{ref-Ralston2013}{}}%
-Ralston, S., and Stewart, I.J. 2013. Anomalous distributions of pelagic
-juvenile rockfish on the US west coast in 2005 and 2006. California
-Cooper. Ocean. Fish. Invest. Rep \textbf{54}: 155--166.
+\bibitem[\citeproctext]{ref-Ralston2013}
+Ralston, Stephen, and Ian J Stewart. 2013. {``Anomalous Distributions of
+Pelagic Juvenile Rockfish on the US West Coast in 2005 and 2006.''}
+\emph{California Cooper. Ocean. Fish. Invest. Rep} 54: 155--66.
 
 \end{CSLReferences}
 
 \newpage{}
 
-\hypertarget{tables}{%
-\subsection{Tables}\label{tables}}
+\subsection{Tables}\label{tables}
 
 \newpage{}
 
-\hypertarget{figures}{%
-\subsection{Figures}\label{figures}}
+\subsection{Figures}\label{figures}
 
 \newpage{}
 
-\hypertarget{notes}{%
-\subsection{Notes}\label{notes}}
+\subsection{Notes}\label{notes}
 
 \newpage{}
 
-\hypertarget{sec-appendix}{%
-\subsection{Appendices}\label{sec-appendix}}
+\subsection{Appendices}\label{sec-appendix}
 
 
 

@@ -7,7 +7,96 @@
 #| eval: true 
 #| include: false
 library(flextable)
+library(tidyr)
 
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/rda_files'
 ``` 
 
+```{r, flextableprops}
+#| echo: false 
+#| warning: false 
+#| include: false
+
+table_format <- function(csv, width, size) {
+rawtable<-flextable(csv)
+table<-fontsize(rawtable, size=size)%>%
+font(fontname ="Times New Roman")%>%
+font(fontname ="Times New Roman",part='header')%>%
+height(height = 0)%>%
+width(width = width)%>%
+align(align='center')%>%
+ align(align='center',part='header')
+}
+
+```
+<!-- Needs Alt text -->
+```{r, orbs_perc_pos}
+#| label: tbl-percent_pos
+#| echo: false 
+#| warning: false 
+#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
+
+
+percpos<-read.csv('Tables/yellowtail_percent_pos.csv')
+percpos<-table_format(percpos,1,10)
+percpos
+
+```
+
+{{< pagebreak >}}
+
+::: {.landscape}
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-orbs_mod_select
+#| echo: false 
+#| warning: false 
+#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
+
+orbs_modselect<-read.csv('Tables/yellowtail_model_selection.csv')[1:10,]
+orbs_modselect[orbs_modselect=="Included"] <- "Incl."
+orbs_tab<-table_format(orbs_modselect,0.6,11)
+orbs_tab
+
+```
+
+:::
+
+{{< pagebreak >}}
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-orbs_index
+#| echo: false 
+#| warning: false 
+#| tbl-cap: "Relative index of abundance from ORBS dockside sampling from ODFW."
+
+orbs_in<-read.csv('Tables/index_forreport_ORBS.csv')
+orbs_in_tab<-table_format(orbs_in,1,11)
+orbs_in_tab
+
+```
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-smurf_mod_select
+#| echo: false 
+#| warning: false 
+#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index"
+
+smurf_modselect<-read.csv('Tables/SMURF_model_selection.csv')
+smurf_modselect[smurf_modselect=="Included"] <- "Incl."
+smurf_tab<-table_format(smurf_modselect,0.7,11)
+smurf_tab
+
+```
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-smurf_index
+#| echo: false 
+#| warning: false 
+#| tbl-cap: "Relative index of abundance from SMURF YOY index."
+
+smurf_in<-read.csv('Tables/SMURF_index.csv')
+smurf_in_tab<-table_format(smurf_in,1,11)
+smurf_in_tab
+
+```

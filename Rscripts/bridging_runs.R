@@ -421,16 +421,24 @@ model_settings <- nwfscDiag::get_settings(
                   exe = exe_loc)
 )
 
-future::plan(future::multisession, workers = parallelly::availableCores(omit = 1))
-nwfscDiag::run_diagnostics(mydir = 'model_runs',
-                           model_settings = model_settings)
-future::plan(future::sequential)
+# future::plan(future::multisession, workers = parallelly::availableCores(omit = 1))
+# nwfscDiag::run_diagnostics(mydir = 'model_runs',
+#                            model_settings = model_settings)
+# future::plan(future::sequential)
 
 
-# consider fixing descending limb of last rec block so that it is logistic.
-# need to deal with peak of hake (hitting bound), triennial (will hit bound if allowed to be estimated)
-# I think if the hake bound increases to the max popn lbin it is estimable.
-# Triennial hits bound no matter what. (Bizarre)
+# M and aging error -------------------------------------------------------
+
+mod <- SS_read('model_runs/4.11_sex_selex_setup')
+
+# 99.9th percentile is 43 years
+mod$ctl$MG_parms['NatM_p_1_Fem_GP_1', c('INIT', 'PRIOR', 'PR_SD')] <- c(0.126, round(log(0.126), 2), 0.31)
+
+SS_write(mod, 'model_runs/4.12_age_and_M', overwrite = TRUE)
+run('model_runs/4.12_age_and_M', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+
+out <- SSgetoutput(dirvec = paste0('model_runs/4.1', c('1_sex_selex_setup', '2_age_and_M')))
+SSsummarize(out) |> SSplotComparisons(subplots = c(1,3), new = FALSE)
 
 # Update bias adjustment --------------------------------------------------
 
