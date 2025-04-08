@@ -78,6 +78,7 @@ YTRK_2017_Final.pdf
 Model_Runs/2017_plus_mirror_rec_selex
 Model_Runs/temp
 */.DS_Store
+.DS_Store
 
 # quarto files
 *.tex
