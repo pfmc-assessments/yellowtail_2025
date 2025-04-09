@@ -69,6 +69,8 @@ Yellowtail Rockfish are currently managed with stock-specific harvest specificat
 
 <!-- Description of fisheries for this species off Canada, Alaska and/or Mexico, including references to any recent assessments of those stocks extending beyond the Council’s jurisdiction. STATs are strongly encouraged to include a summary of catches and estimates of stock size and stock status for the most recent ten years if such information can be assembled without excessive difficulty. This is not required for an update assessment.    -->
 
+<!-- See if AK has a more up to date assessment (MF) and add updated information on the Canada Assessment (IT) -->
+
 Yellowtail Rockfish are a target species in Canada with catches between 4000-6000 mt since the late 1980s. It has the second largest single-species Total Allowable Catch (TAC) among rockfish species under quota management for the Canadian Pacific Coast. In Canada it is caught in similar amounts by bottom and midwater trawl gear. A 2015 Stock Assessment conducted by the Fisheries and Oceans Canada found the stock to be at 50\% of unfished spawning biomass, in the "healthy" range [@DFO2015].
 
 The Alaska Fisheries Science Center assesses Yellowtail Rockfish as one of 25 species in the "Other Rockfish" complex in the Gulf of Alaska.  The 2015 full assessment of this complex found no evidence of overfishing, which is confirmed in the 2016 SAFE document[@AFSC2016].
