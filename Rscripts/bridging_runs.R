@@ -291,26 +291,42 @@ run('model_runs/3.10_exp_comps_2024',
 tune_comps(dir = 'model_runs/3.10_exp_comps_2024', 
            niters_tuning = 2, exe = exe_loc, extras = '-nohess')
 
-# out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
-#                               glue::glue('model_runs/3.{mod}', 
-#                                          mod = c('04_discards',
-#                                                  '07_lengths_raw_pacfin',
-#                                                  '08_lengths_exp_pacfin',
-#                                                  '09_raw_comps_2024',
-#                                                  '10_exp_comps_2024'))))
-# 
-# SS_plots(out[[5]])
-# SS_plots(out[[6]])
+out1 <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
+                              glue::glue('model_runs/3.{mod}',
+                                         mod = c('01_reanalyze_catch',
+                                                 '02_surveys',
+                                                 '03_biology',
+                                                 '04_discards'))))
+out2 <- SSgetoutput(dirvec = glue::glue('model_runs/3.{mod}',
+                                        mod = c('04_discards',
+                                                '05_ages_raw_pacfin',
+                                                '06_ages_exp_pacfin',
+                                                '07_lengths_raw_pacfin',
+                                                '08_lengths_exp_pacfin',
+                                                '10_exp_comps_2024')))
 
-# out |>
-#   SSsummarize() |>
-#   SSplotComparisons(subplots = c(1,3), new = FALSE, 
-#                     legendlabels = c('2017', 
-#                                      'most updates',
-#                                      'raw pacfin',
-#                                      'expanded pacfin',
-#                                      'raw pacfin to 20204',
-#                                      'expanded pacfin to 2024'))
+
+out1 |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3), new = FALSE,
+                    legendlabels = c('2017',
+                                     'Reanalyze catch', 
+                                     '+ index', 
+                                     '+ bio', 
+                                     '+ discard'), 
+                    png = TRUE, plotdir = 'report/figures/bridging', 
+                    filenameprefix = 'bridging1')
+out2 |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3), new = FALSE,
+                    legendlabels = c('first steps',
+                                     'reanalyze raw pacfin ages',
+                                     'reanalyze exp pacfin ages',
+                                     'raw pacfin lengths',
+                                     'exp pacfin lengths',
+                                     'extend to 2024'), 
+                    png = TRUE, plotdir = 'report/figures/bridging',
+                    filenameprefix = 'bridging2')
 
 # Selectivity changes -----------------------------------------------------
 
@@ -434,8 +450,12 @@ mod <- SS_read('model_runs/4.11_sex_selex_setup')
 # 99.9th percentile is 43 years
 mod$ctl$MG_parms['NatM_p_1_Fem_GP_1', c('INIT', 'PRIOR', 'PR_SD')] <- c(0.126, round(log(0.126), 2), 0.31)
 
+# update ageing error
+mod$dat$N_ageerror_definitions <- 1
+mod$dat$ageerror <- read.csv('data/processed/ageing_error/final_ageing_error.csv')
+
 SS_write(mod, 'model_runs/4.12_age_and_M', overwrite = TRUE)
-run('model_runs/4.12_age_and_M', exe = exe_loc, extras = '-nohess', skipfinished = FALSE)
+run('model_runs/4.12_age_and_M', exe = exe_loc, skipfinished = FALSE)
 
 out <- SSgetoutput(dirvec = paste0('model_runs/4.1', c('1_sex_selex_setup', '2_age_and_M')))
 SSsummarize(out) |> SSplotComparisons(subplots = c(1,3), new = FALSE)
