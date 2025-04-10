@@ -1,4 +1,4 @@
-## Figures 
+# Figures 
  
 ```{r} 
 #| label: 'set-rda-dir-figs'
@@ -8,7 +8,19 @@
 rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 ``` 
 
+```{r} 
+#| label: 'set-fig-uncertainty'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+uncertainty <- "r4ss_plots/recdevs2_withbars.png" %in% dir("r4ss_plots")
+```
+
 ![Map depicting the boundaries for the two genetic stocks of Yellowtail](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
+
+{{< pagebreak >}}
+
+## Data
 
 ![Q-Q plot diagnostics for ORBS index](Figures/ORBSqq.png){fig-alt='A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-orbsqq}
 
@@ -18,4 +30,175 @@ rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 
 ![Time series of the relative index of abundance from SMURF YOY index](Figures/SMURFIndex.png){fig-alt='An annual relative index of abundance plotted from 2014 to 2024 with error bars' #fig-smurfindex}
 
-![Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40∘10′, but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling](Figures\historical_assessment_timeseries.png){fig-alt='A time series of 13 colored lines showing estimates from 9 different assessment. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment.' #fig-historical}
+{{< pagebreak >}}
+
+## Model Bridging
+
+## Biology
+
+
+## Selectivity
+
+
+## Fits to Data
+
+
+## Time-series
+
+![Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40°10', but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling](Figures\historical_assessment_timeseries.png){fig-alt='A time series of 13 colored lines showing estimates from 9 different assessment. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment.' #fig-historical}
+
+
+```{r} 
+#| label: fig-sb
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Estimated time series of spawning output for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+if (uncertainty) {
+    knitr::include_graphics(
+        "r4ss_plots/ts7_Spawning_output_with_95_intervals.png"
+    )
+} else {
+    knitr::include_graphics(
+        "r4ss_plots/ts7_Spawning_output.png"
+    )
+}
+```
+
+
+```{r} 
+#| label: fig-depl
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Estimated time series of fraction of unfished spawning output for the base model."
+#| fig-alt: "See table TODO"
+#| fig-pos: H
+
+if (uncertainty) {
+    knitr::include_graphics(
+        "r4ss_plots/ts9_Relative_spawning_output_intervals.png"
+    )
+} else {
+    knitr::include_graphics(
+        "r4ss_plots/ts9_Relative_spawning_output.png"
+    )
+}
+```
+
+
+```{r} 
+#| label: fig-recruits
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Estimated time series of age-0 recruits for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+if (uncertainty) {
+    knitr::include_graphics(
+        "r4ss_plots/ts11_Age-0_recruits_(1000s)_with_95_asymptotic_intervals.png"
+    )
+} else {
+    knitr::include_graphics(
+        "r4ss_plots/ts11_Age-0_recruits_(1000s).png"
+    )
+}
+```
+
+\pagebreak
+
+
+```{r} 
+#| label: fig-recdevs
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Estimated time series of recruitment deviations for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+if (uncertainty) {
+    knitr::include_graphics(
+        "r4ss_plots/recdevs2_withbars.png"
+    )
+} else {
+    knitr::include_graphics(
+        "r4ss_plots/recdevs1_points.png"
+    )
+}
+
+```
+
+```{r} 
+#| label: fig-spr
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Estimated time series of fishing intensity for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+if (uncertainty) {
+    knitr::include_graphics(
+        "r4ss_plots/SPR3_ratiointerval.png"
+    )
+} else {
+    knitr::include_graphics(
+        "r4ss_plots/SPR1_series.png"
+    )
+}
+```
+
+
+```{r} 
+#| label: fig-spr-phase
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Phase plot of fishing intensity versus fraction unfished for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+knitr::include_graphics(
+  "r4ss_plots/SPR4_phase.png"
+)
+
+```
+
+
+```{r} 
+#| label: fig-yield
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated yield curve with reference points for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+knitr::include_graphics(
+  "r4ss_plots/yield2_yield_curve_with_refpoints.png"
+)
+
+```
+
+
+
+```{r} 
+#| label: fig-dyn-b0
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Dynamic B0 plot. The lower line shows the time series of estimated spawning output in the presence of fishing mortality. The upper line shows the time series that could occur under the same dynamics (including deviations in recruitment), but without fishing. The point at the left represents the unfished equilibrium."
+#| fig-alt: ""
+#| fig-pos: H
+
+knitr::include_graphics(
+  "r4ss_plots/ts_DynamicB0.png"
+)
+
+```

@@ -354,6 +354,19 @@ all_data_all_readers <- rbind(
   ODFW_double_reads_format4,
   PSMFC_double_reads_format4
 )
+# stats for report
+nrow (all_data_all_readers)
+# [1] 6339
+lab1 <- !apply(all_data_all_readers[,1:4], 1, function(x) all(x == -999))
+lab2 <- !apply(all_data_all_readers[,5:8], 1, function(x) all(x == -999))
+table(lab1, lab2)
+#        lab2
+# lab1    FALSE TRUE
+#   FALSE     0 4402
+#   TRUE   1716  221
+
+4402+1716+221
+# [1] 6339
 
 # run2 has separate readers but same single shared CV and no bias
 dir_run2 <- "Data/Processed/ageing_error/run2_simple_all_readers"
