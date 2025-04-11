@@ -1,0 +1,153 @@
+```{r}
+#| echo: false
+
+  all_files <- list.files(here::here("report/Tables"), full.names = TRUE)
+  all_rda_files <- all_files[grep(".rda", all_files)]
+  for (a in 1:length(all_rda_files)) {
+    load(all_rda_files[a])
+  }
+  
+  # process all executive summary tables
+  catches_es_table <- catches_es$table
+  catches_es_cap <- catches_es$cap
+  rm(catches_es)
+  
+  ssb_es_table <- ssb_es$table
+  ssb_es_cap <- ssb_es$cap
+  rm(ssb_es)
+  
+  spr_es_table <- spr_es$table
+  spr_es_cap <- spr_es$cap
+  rm(spr_es)
+  
+  recr_es_table <- recr_es$table
+  recr_es_cap <- recr_es$cap
+  rm(recr_es)
+  
+  reference_points_table <- reference_points$table
+  reference_points_cap <- reference_points$cap
+  rm(reference_points)
+  
+  recent_management_table <- recent_management$table
+  recent_management_cap <- recent_management$cap
+  rm(recent_management)
+    
+  projections_table <- projections$table
+  projections_cap <- projections$cap
+  rm(projections)
+  
+  compweight_table <- table_compweight$table
+  compweight_cap <- table_compweight$cap
+  rm(table_compweight)
+  
+  config_table <- table_config$table
+  config_cap <- table_config$cap
+  rm(table_config)
+  
+  parcount_table <- table_parcounts$table
+  parcount_cap <- table_parcounts$cap
+  rm(table_parcounts)
+  
+  pars_table <- table_pars$table
+  pars_cap <- table_pars$cap
+  rm(table_pars)
+
+  ts_table <- table_ts$table
+  ts_cap <- table_ts$cap
+  rm(table_ts)
+
+```
+
+
+```{r}
+#| echo: false
+#| eval: false
+
+# Special modification to the management and projection tables to add quantities
+# from a sourced csv file in the skeleton r chunk.
+  add_col <- data.frame(acl_north = recent_management_table[, "ACL (mt)"]) 
+  recent_management_table <- dplyr::bind_cols(
+    recent_management_table |>
+      dplyr::rename(`ACL South (mt)` = `ACL (mt)`),
+    add_col
+  ) |>
+  dplyr::relocate(acl_north, .after = `ABC (mt)`) |>
+  dplyr::rename(`ACL North (mt)` = acl_north)
+  
+  recent_management_table[, "OFL (mt)"] <- cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "OFL", YEAR %in% es_10_years) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  recent_management_table[, "ABC (mt)"] <- cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "ABC", YEAR %in% es_10_years) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  recent_management_table[, "ACL North (mt)"] <- area_harvest_spex |>
+    dplyr::filter(AREA_NAME == "N36", YEAR %in% es_10_years) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  recent_management_table[, "ACL South (mt)"] <-area_harvest_spex |>
+    dplyr::filter(AREA_NAME == "S36", YEAR %in% es_10_years) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  
+  area_management_table <- dplyr::bind_cols(
+    area_harvest_spex |>
+    dplyr::select(YEAR, AREA_NAME, VAL) |>
+    dplyr::rename(
+      Year = YEAR,
+      area = AREA_NAME
+    ) |>
+    tidyr::pivot_wider(
+      names_from = area,
+      values_from = VAL
+    ),
+    cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "OFL") |>
+    dplyr::select(VAL) |>
+    dplyr::rename(
+      ofl = VAL),
+    cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "ABC") |>
+    dplyr::select(VAL) |>
+    dplyr::rename(
+      abc = VAL)
+  ) |>
+    dplyr::relocate(
+      ofl, .after = Year
+    ) |>
+    dplyr::relocate(
+      abc, .after = ofl
+    ) |>
+    dplyr::rename(
+      `OFL Coastwide (mt)` = ofl,
+      `ABC Coastwide (mt)` = abc,
+      `ACL South (mt)` = S36,
+      `ACL North (mt)` = N36
+    )
+
+  projections_table[1:2, "Adopted OFL (mt)"] <- cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "OFL", YEAR >= end_year) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  projections_table[1:2, "Adopted ACL (mt)"] <- cw_harvest_spex |>
+    dplyr::filter(SPECIFICATION_TYPE == "ACL", YEAR >= end_year) |>
+    dplyr::arrange(YEAR) |>
+    dplyr::select(VAL)
+  
+  all_files <- list.files(here::here("data"))
+  all_rda_files <- all_files[grep(".rda", all_files)]
+  for (a in 1:length(all_rda_files)) {
+    load(here::here("data", all_rda_files[a]))
+  }
+  
+  wcgbt_catch <- data_survey_catch$nwfsc_combo |>
+  dplyr::mutate(
+    positive = dplyr::case_when(total_catch_numbers > 0 ~ 1, .default = 0),
+    state = dplyr::case_when(Latitude_dd > 46.25 ~ "WA", 
+                             Latitude_dd < 36.0 ~ "SCA", 
+                             Latitude_dd >= 36.0 & Latitude_dd < 42.0 ~ "NCA",
+                             .default = "OR"))
+  wcgbt_bio <- data_survey_bio$nwfsc_combo
+
+```
