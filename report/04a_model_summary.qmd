@@ -21,6 +21,7 @@ Is this required if there are no "deficiencies"? -->
 
 ### Modeling Platform and Structure
 
+The stock assessment is conducted in Stock Synthesis 
 <!-- Assessment program and its version used for the assessment (i.e., date executable program file was compiled), description of model structure, definitions of fleets and areas. Description of how the first year that is included in the model was selected and how the population state at the time is defined (e.g., B0, stable age structure). -->
 
 
