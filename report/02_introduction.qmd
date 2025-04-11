@@ -57,11 +57,15 @@ Early studies of Yellowtail Rockfish stocks on the U.S. West Coast north of  $40
 
 <!-- Management performance, including a table or tables comparing Overfishing Limit (OFL), Acceptable Biological Catch (ABC), Annual Catch Limit (ACL), landings, and catch (i.e., landings plus discard) for each area and year. Groundfish assessments that estimate dead discarded catch must include a disclaimer noting that total mortality estimates from the WCGOP and from the stock assessment may differ due to the use of different methods. Investigation into how these methods differ is beyond the scope of a benchmark assessment. The rationale for modeling discard mortality can also be provided. This should be included in all update assessments.  -->
 
+<!-- Marlene might have the info we need? Look at what Chantel has for sablefish -->
+
 The Yellowtail Rockfish assessment in 2000 [@Tagart2000] was the first that estimated stock status, with an estimated depletion of 60.5 percent at the start of 2000. Lai et al. [@Lai2003] updated the 2000 assessment and estimated that stock depletion was 46 percent at the start of 2003. A second assessment update was prepared in 2005 [@Wallace2005] with an estimated depletion of 55 percent at the start of 2005.  The 2000 assessment and updates were age-structured assessments conducted using AD Model Builder as the software platform for nonlinear optimization [@Fournier2012].
 
 A data-moderate assessment of Yellowtail Rockfish south of $40^\circ 10^\prime$ N. latitude was conducted in 2013 [@Cope2013]. This assessment estimated depletion at the start of 2013 at 67 percent, and estimated the spawning biomass at 50,043 mt. This was a large biomass increase relative to previous estimates and may be attributed to the low removals over the previous decade.
 
 The data-poor assessment method, Depletion-Based Stock Reduction Analysis [@Dick2011] was applied to the Southern stock in 2011 [@Dick2010]. This method does not estimate biomass, but did provide the estimate of the OFL contribution for the southern stock to the complex in which it is managed.
+
+<!-- This needs to be updated - we think that they are pretty close to attainment? Not well below anymore? still only reflective on 2017 -->
 
 Yellowtail Rockfish are currently managed with stock-specific harvest specifications north of $40^\circ 10^\prime$ N. latitude, and as part of the Southern Shelf Rockfish complex south of $40^\circ 10^\prime$ N. latitude. Total catch (including landings and discards) in  both areas has remained well below the management limits and harvest specifications in recent years (Tables \ref{tab:mnmgt_perform.N})
 
