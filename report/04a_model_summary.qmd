@@ -18,6 +18,15 @@ Is this required if there are no "deficiencies"? -->
 
 <!-- Description of new modeling approaches and changes made from the last assessment, with rationale. This should include bridging analyses that highlight the data and model changes that were most influential with respect to changes between the assessment being reviewed and the most recent adopted assessment.  -->
 
+TODO: expand on the bullets below
+
+* Extended data time series
+* New data sources: H&L index, recruitment index, etc.
+* Discards [Ian write this]
+* Rec WA in biomass not numbers [Kiva]
+* Rec fleets combined [Kiva]
+* Foreign fleets [Kiva]
+
 
 ### Modeling Platform and Structure
 
