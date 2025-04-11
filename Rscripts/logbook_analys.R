@@ -52,7 +52,7 @@ plot(yt_mesh)
 # this does not look like a st model is a good idea. very clear "hotspots" of fishing effort.
 # but we need it for sdmTMB to work (not actually used)
 
-mod_simple <- sdmTMB::sdmTMB(formula = cpue ~ fyear + s(depth_std) + s(month, bs = 'cc') + program + (1|fDRVID) + (1|fport) - 1 + area, family = sdmTMB::delta_lognormal(),
+mod_simple <- sdmTMB::sdmTMB(formula = cpue ~ fyear + s(depth_std) + s(month, bs = 'cc') + program + (1|fDRVID) - 1 + area, family = sdmTMB::delta_lognormal(),
                              data = all_hauls_yt, spatial = 'off', spatiotemporal = 'off', time = 'fyear', mesh = yt_mesh)
 
 summary(mod_simple)
@@ -71,7 +71,7 @@ preds <- predict(mod_simple,
                  newdata = tibble(fyear = factor(2012:2023), depth_std = 0, month = 6, program = 'obs', area = 'North', fDRVID = '546053', fport = 'NEWPORT'), 
                  return_tmb_object = TRUE, re_form = NA, re_form_iid = NA)
 
-ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68)
+ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68) 
 
 ind |> 
   ggplot(aes(x = as.numeric(fyear), y = est, ymin = lwr, ymax = upr)) +
@@ -79,6 +79,11 @@ ind |>
   geom_errorbar() +
   labs(x = 'Year', y = 'CPUE')
 
+ind_for_ss3 <- ind |>
+  select(year = fyear, obs = est, se_log = se) |>
+  mutate(index = 1, month = 7)
+
+write.csv(ind_for_ss3, file = 'data/processed/observer_index.csv', row.names = FALSE)
 
 all_hauls_yt |>
   ggplot() +

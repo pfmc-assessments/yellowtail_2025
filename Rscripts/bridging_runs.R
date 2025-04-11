@@ -316,15 +316,18 @@ out1 |>
                                      '+ discard'), 
                     png = TRUE, plotdir = 'report/figures/bridging', 
                     filenameprefix = 'bridging1')
+out2[[7]] <- out1[[1]]
+names(out2)[7] <- 'replist7'
 out2 |>
-  SSsummarize() |>
+  SSsummarize() |> SStableComparisons()
   SSplotComparisons(subplots = c(1,3), new = FALSE,
                     legendlabels = c('first steps',
                                      'reanalyze raw pacfin ages',
                                      'reanalyze exp pacfin ages',
                                      'raw pacfin lengths',
                                      'exp pacfin lengths',
-                                     'extend to 2024'), 
+                                     'extend to 2024',
+                                     '2017'), 
                     png = TRUE, plotdir = 'report/figures/bridging',
                     filenameprefix = 'bridging2')
 
@@ -448,7 +451,7 @@ model_settings <- nwfscDiag::get_settings(
 mod <- SS_read('model_runs/4.11_sex_selex_setup')
 
 # 99.9th percentile is 43 years
-mod$ctl$MG_parms['NatM_p_1_Fem_GP_1', c('INIT', 'PRIOR', 'PR_SD')] <- c(0.126, round(log(0.126), 2), 0.31)
+mod$ctl$MG_parms['NatM_p_1_Fem_GP_1', c('INIT', 'PRIOR', 'PR_SD')] <- c(0.126, round(log(0.126), 3), 0.31)
 
 # update ageing error
 mod$dat$N_ageerror_definitions <- 1

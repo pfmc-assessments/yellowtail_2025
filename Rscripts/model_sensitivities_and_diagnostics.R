@@ -1,8 +1,35 @@
 model_directory <- 'model_runs'
 base_model_name <- '4.12_age_and_M'
-exe_loc <- 'model_runs/ss3.exe'
+here('model_runs/ss3.exe')
 base_model <- SS_read(file.path(model_directory, base_model_name))
+base_out <- SS_output(file.path(model_directory, base_model_name))
 
+# M-I weighting -----------------------------------------------------------
+
+copy_SS_inputs(dir.old = file.path(model_directory, base_model_name), 
+               dir.new = file.path(model_directory, 'sensitivities', 'M_I_weighting'))
+file.copy(from = file.path(model_directory, base_model_name,
+                           c('Report.sso', 'CompReport.sso', 'warning.sso')), 
+          to = file.path(model_directory, 'sensitivities', 'M_I_weighting', 
+                         c('Report.sso', 'CompReport.sso', 'warning.sso')), 
+          overwrite = TRUE)
+tune_comps(option = 'MI', niters_tuning = 3, 
+           dir = file.path(model_directory, 'sensitivities', 'M_I_weighting'),
+           exe = exe_loc, extras = '-nohess')
+
+
+# D-M weighting -----------------------------------------------------------
+
+copy_SS_inputs(dir.old = file.path(model_directory, base_model_name), 
+               dir.new = file.path(model_directory, 'sensitivities', 'dirichlet_multinomial'))
+file.copy(from = file.path(model_directory, base_model_name,
+                           c('Report.sso', 'CompReport.sso', 'warning.sso')), 
+          to = file.path(model_directory, 'sensitivities', 'dirichlet_multinomial', 
+                         c('Report.sso', 'CompReport.sso', 'warning.sso')), 
+          overwrite = TRUE)
+tune_comps(option = 'DM', 
+           dir = file.path(model_directory, 'sensitivities', 'dirichlet_multinomial'),
+           exe = exe_loc, extras = '-nohess', niters_tuning = 1)
 
 # SMURFS ------------------------------------------------------------------
 
@@ -40,10 +67,10 @@ sensi_mod$ctl$max_bias_adj <- 0.8053
 
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'SMURF'))
 
-out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
-                              file.path(model_directory, 'sensitivities', 'SMURF')))
-SSsummarize(out) |>
-  SSplotComparisons(subplots = c(1,3), endyrvec = 2037, new = FALSE)
+# out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
+#                               file.path(model_directory, 'sensitivities', 'SMURF')))
+# SSsummarize(out) |>
+#   SSplotComparisons(subplots = c(1,3), endyrvec = 2037, new = FALSE)
 
 
 # ORBS --------------------------------------------------------------------
@@ -72,13 +99,13 @@ rownames(sensi_mod$ctl$Q_parms) <- rownames(sensi_mod$ctl$Q_parms) |>
 # try no extra SE
 
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'ORBS'))
-
-out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
-                              file.path(model_directory, 'sensitivities', 'ORBS')))
-SSsummarize(out) |>
-  SSplotComparisons(subplots = c(1,3), endyrvec = 2037, new = FALSE)
-SSplotIndices(out[[2]])
-
+# 
+# out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
+#                               file.path(model_directory, 'sensitivities', 'ORBS')))
+# SSsummarize(out) |>
+#   SSplotComparisons(subplots = c(1,3), endyrvec = 2037, new = FALSE)
+# SSplotIndices(out[[2]])
+# 
 
 # Oceanographic index -----------------------------------------------------
 
@@ -108,9 +135,9 @@ rownames(sensi_mod$ctl$Q_parms) <- rownames(sensi_mod$ctl$Q_parms) |>
   stringr::str_remove('\\.\\.\\.[:digit:]')
 
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'oceanographic_index_long'), overwrite = TRUE)
-
-out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
-                              file.path(model_directory, 'sensitivities', 'oceanographic_index')))
+# 
+# out <- SSgetoutput(dirvec = c(file.path(model_directory, base_model_name),
+#                               file.path(model_directory, 'sensitivities', 'oceanographic_index')))
 
 
 # hook and line survey ----------------------------------------------------
@@ -166,9 +193,9 @@ SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'hook_and_line')
 
 tune_comps(dir = file.path(model_directory, 'sensitivities', 'hook_and_line'), niters_tuning = 0)
 # miraculously, it is not bad.
-
-out <- SS_output(file.path(model_directory, 'sensitivities', 'hook_and_line'))
-SS_plots(out)
+# 
+# out <- SS_output(file.path(model_directory, 'sensitivities', 'hook_and_line'))
+# SS_plots(out)
 
 # surveys_only <- SS_read(file.path(model_directory, 'sensitivities', 'hook_and_line'), 
 #                         ss_new = TRUE)
@@ -199,6 +226,70 @@ SS_plots(out)
 # out_surveys <- SS_output(file.path(model_directory, 'sensitivities', 'surveys_only'))
 # SS_plots(out_surveys)
 
+# RREAS -------------------------------------------------------------------
+
+sensi_mod <- base_model
+
+rreas <- read.csv('Data/raw_not_confidential/RREAS/ytail_coastwide_indices.csv') |>
+  mutate(index = 4, month = 7) |>
+  rename(se_log = logse, year = YEAR, obs = est)
+
+sensi_mod$dat$fleetnames[4] <- 'RREAS'
+sensi_mod$dat$fleetinfo[sensi_mod$dat$fleetinfo$fleetname == 'PLACEHOLDER',] <- c(3, 1, 1, 2, 0, 'RREAS')
+rownames(sensi_mod$dat$CPUEinfo) <- sensi_mod$dat$fleetnames
+sensi_mod$dat$CPUEinfo['RREAS','units'] <- 33 # recruitment, age-0 recruits;
+
+sensi_mod$dat$CPUE <- bind_rows(sensi_mod$dat$CPUE,
+                                rreas)
+
+sensi_mod$ctl$Q_options <- rbind(sensi_mod$ctl$Q_options,
+                                 RREAS = c(4,1,0,0,0,1)) |>
+  slice(3,1,2) # reorder
+sensi_mod$ctl$Q_parms <- bind_rows(sensi_mod$ctl$Q_parms[1,], # copy triennial Q setup for RREAS
+                                   sensi_mod$ctl$Q_parms)
+rownames(sensi_mod$ctl$Q_parms) <- rownames(sensi_mod$ctl$Q_parms) |>
+  stringr::str_replace('Triennial\\(5\\)\\.\\.\\.1', 'RREAS(4)') |> # fix row names
+  stringr::str_remove('\\.\\.\\.[:digit:]')
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'RREAS'),
+         overwrite = TRUE)
+
+out <- SS_output(file.path(model_directory, 'sensitivities', 'RREAS'))
+SSplotIndices(out, fleets = 4)
+
+# remove trawl surveys ----------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$dat$CPUE$year <- -1*sensi_mod$dat$CPUE$year
+sensi_mod$ctl$Q_options <- sensi_mod$ctl$Q_parms <- NULL
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'no_surveys'),
+         overwrite = TRUE)
+
+
+# observer index ----------------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$dat$CPUEinfo
+sensi_mod$dat$CPUE <- bind_rows(sensi_mod$dat$CPUE,
+                                read.csv('data/processed/observer_index.csv'))
+
+sensi_mod$ctl$Q_options <- rbind(sensi_mod$ctl$Q_options,
+                                 Commercial = c(1,1,0,0,0,1)) |>
+  slice(3,1,2) # reorder
+sensi_mod$ctl$Q_parms <- bind_rows(sensi_mod$ctl$Q_parms[1,], # copy triennial Q setup for observer index
+                                   sensi_mod$ctl$Q_parms)
+sensi_mod$ctl$Q_parms[1, 'PHASE'] <- -99
+rownames(sensi_mod$ctl$Q_parms) <- rownames(sensi_mod$ctl$Q_parms) |>
+  stringr::str_replace('Triennial\\(5\\)\\.\\.\\.1', 'Commercial(1)') |> # fix row names
+  stringr::str_remove('\\.\\.\\.[:digit:]')
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'observer_index'),
+         overwrite = TRUE)
+# out <- SS_output(file.path(model_directory, 'sensitivities', 'observer_index'))
+# SSplotIndices(out, fleets = 1)
 
 # no fishery lengths ------------------------------------------------------
 
@@ -259,7 +350,56 @@ sensi_mod$ctl$size_selex_parms[grepl('Off_(1|2|5)', rownames(sensi_mod$ctl$size_
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'sex_selex'), 
          overwrite = TRUE)
 
+
+# No sex specific selectivity ---------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$ctl$size_selex_parms[grepl('Off', rownames(sensi_mod$ctl$size_selex_parms)), 'PHASE'] <- -99
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'no_sex_selex'), 
+         overwrite = TRUE)
+
 # no recdev constraint ----------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$ctl$do_recdev <- 2
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'recdev_option_2'), 
+         overwrite = TRUE)
+
+
+
+# Breakpoint M --------------------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$ctl$natM_type <- 1
+sensi_mod$ctl$N_natM <- sensi_mod$ctl$N_natMparms <- 2
+sensi_mod$ctl$M_ageBreakPoints <- 9:10 # age at 50% maturity is 10
+
+nat_m_ind <- grep('NatM', rownames(sensi_mod$ctl$MG_parms))
+
+mg_table <- SS_read(file.path(model_directory, '4.07_breakpoint_m'))$ctl$MG_parms
+mg_table['CV_old_Fem_GP_1', 'LO'] <- -0.99
+sensi_mod$ctl$MG_parms <- mg_table
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'breakpoint_m'),
+         overwrite = TRUE)  
+
+
+# Single M ----------------------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$ctl$MG_parms['NatM_p_1_Mal_GP_1', c('INIT', 'PHASE')] <- c(0, -99)
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'single_m'),
+         overwrite = TRUE)  
+
+# Time varying W-L --------------------------------------------------------
+
 
 
 # Run stuff ---------------------------------------------------------------
