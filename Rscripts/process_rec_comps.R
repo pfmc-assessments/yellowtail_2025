@@ -307,6 +307,7 @@ rec_bio_cleaned_with_mrfss <- rbind(
     mutate(year = YEAR, length_cm = LNGTH / 10) |> 
     mutate(state = stringr::str_to_upper(ST_NAME)) |> select(year, length_cm, state)
 )
+
 # length comps with MRFSS added
 rec_length_comps_with_mrfss <- nwfscSurvey::get_raw_comps(
   data = rec_bio_cleaned_with_mrfss |>
@@ -406,9 +407,9 @@ rec_ages_cleaned <- recfin_ages |>
   filter(!is.na(USE_THIS_AGE) & RECFIN_SEX_NAME != "UNKNOWN") |>
   mutate(
     state = case_when(
-      SAMPLING_AGENCY_NAME == "WASHINGTON" ~ "WA",
-      SAMPLING_AGENCY_NAME == "OREGON" ~ "OR",
-      SAMPLING_AGENCY_NAME == "CALIFORNIA" ~ "CA"
+      SAMPLING_AGENCY_NAME == "WDFW" ~ "WA",
+      SAMPLING_AGENCY_NAME == "ODFW" ~ "OR",
+      SAMPLING_AGENCY_NAME == "CDFW" ~ "CA"
     ),
     sex = case_when(
       RECFIN_SEX_NAME == "FEMALE" ~ "F",
@@ -440,6 +441,42 @@ rec_age_comps <- nwfscSurvey::get_raw_comps(
 )
 
 saveRDS(rec_age_comps$sexed, file = here::here("Data/Processed/ss3_rec_age_comps.rds"))
+
+
+###
+
+# table for report
+# table for report
+rec_len_sample_size_table <- rec_bio_cleaned_with_mrfss |>
+  dplyr::group_by(year, state) |>
+  dplyr::summarise(n_length = n()) |>
+  tidyr::pivot_wider(
+    names_from = state,
+    values_from = n_length,
+    values_fill = 0
+  ) |>
+  dplyr::select(year, WASHINGTON, OREGON, CALIFORNIA) |>
+  dplyr::rename_with(stringr::str_to_sentence)
+
+# confirm that all rec ages are from WA
+table(rec_ages_cleaned$state)
+#   WA
+# 9205
+
+rec_age_sample_size_table <- rec_ages_cleaned |>
+  dplyr::group_by(year) |>
+  dplyr::summarise("Washington ages" = n()) |> 
+  dplyr::rename(Year = year)
+
+rec_bio_sample_size_table <-
+  dplyr::full_join(rec_age_sample_size_table, rec_len_sample_size_table) |>
+  arrange(Year) # order by year
+rec_bio_sample_size_table[is.na(rec_bio_sample_size_table)] <- 0
+
+write.csv(rec_bio_sample_size_table, file = here::here("Data/Processed/rec_bio_sample_size_table.csv"),
+  row.names = FALSE)
+
+
 
 
 ### explorations with MRFSS
