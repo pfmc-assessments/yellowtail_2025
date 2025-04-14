@@ -43,6 +43,26 @@ California recreational catches came from Ralston et al. [-@ralston_documentatio
 ### Discards
 
 ### Biological data
+<!-- 
+# calculations for table below (could be made dynamic in the future): 
+
+# year range
+rec_bio_table |> dplyr::pull(Year) |> range()
+[1] 1980 2024
+
+# total lengths
+rec_bio_table |> dplyr::select(-Year, -Washington.ages) |> sum()
+# [1] 64637
+
+# percentages of lengths
+rec_bio_table |> dplyr::select(-Year, -Washington.ages) |> apply(2, sum) |> prop.table() |> round(2)
+Washington     Oregon California
+      0.26       0.71       0.03
+
+rec_bio_table |> dplyr::pull(Washington.ages) |> sum()
+# [1] 9205
+-->
+Recreational biological samples were available from the three coastal states covering the years 1980--2024 (Table \ref{tbl-rec-bio}). There were 64,637 length samples, of which 71% was from Oregon, 26% from Washington, and 3% from California (North of $40^{\circ} 10'$). There were 9,205 age samples, 100% of which were from Washington.
 
 ### Abundance indices
 

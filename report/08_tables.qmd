@@ -96,6 +96,23 @@ smurf_in_tab
 ```
 
 
+```{r, rec_bio}
+#| label: tbl-rec-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for age and length samples from the recreational fishery."
+
+rec_bio_table <- read.csv("../Data/Processed/rec_bio_sample_size_table.csv", check.names = FALSE)
+#rec_bio_table <- table_format(rec_bio_table, 1, 10)
+rec_bio_table |> 
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+
+```
 ## Model results
  
 ```{r}
