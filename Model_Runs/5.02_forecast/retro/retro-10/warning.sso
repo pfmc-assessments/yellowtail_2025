@@ -1,0 +1,11 @@
+Note 1 Information: Max data length bin: 56  < max pop len bins: 65; so will accumulate larger pop len bins
+Warning 1 : Block:1 1 ends in: 2016 after retroyr+1:  2015
+Warning 2 : Block:1 2 starts after retroyr+1; should not estimate 
+Warning 3 : Block:1 2 ends in: 2024 after retroyr+1:  2015
+Warning 4 : Block:2 1 ends in: 2024 after retroyr+1:  2015
+Warning 5 : At least one block pattern ends in endyr. Check the output parameter value time series to see if the values in forecast years are as intended.
+Warning 6 Adjustment:  recdev_end: 2018 > retro_yr: 2014 reset 
+Warning 7 : Final gradient: 0.000137382 is larger than final_conv: 1e-05
+Note 2 Information: A revised protocol for the Fcast_yr specification is available and recommended.
+Note 3 Information:  N parameters that are on or within 1% of min-max bound: 1; check results, variance may be suspect
+ 7 warnings  and 3 notes 

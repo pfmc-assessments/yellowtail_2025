@@ -463,7 +463,240 @@ run('model_runs/4.12_age_and_M', exe = exe_loc, skipfinished = FALSE)
 out <- SSgetoutput(dirvec = paste0('model_runs/4.1', c('1_sex_selex_setup', '2_age_and_M')))
 SSsummarize(out) |> SSplotComparisons(subplots = c(1,3), new = FALSE)
 
-# Update bias adjustment --------------------------------------------------
+# add H&L -----------------------------------------------------------------
+
+mod <- SS_read('model_runs/4.12_age_and_M')
+
+mod <- rename_fleets(mod, flt4_name = 'H&L_survey')
+
+hl_ind <- read.csv('Data/raw_not_confidential/Combined HL Index/index_forSS.csv') |>
+  mutate(fleet = 4) |>
+  select(year, month, index = fleet, obs, se_log = logse)
+
+mod$dat$fleetinfo[mod$dat$fleetnames == 'H&L_survey', 1:2] <- c(3, 1)
+mod$dat$CPUEinfo['H&L_survey', 'units'] <- 0 # numbers of fish
+
+mod$dat$CPUE <- bind_rows(mod$dat$CPUE,
+                          hl_ind)
+
+mod$ctl$Q_options <- rbind(mod$ctl$Q_options,
+                           `H&L_survey` = c(4,1,0,1,0,0)) |>
+  slice(3,1,2) # reorder
+mod$ctl$Q_parms <- bind_rows(mod$ctl$Q_parms[1:2,], # copy triennial Q setup
+                             mod$ctl$Q_parms)
+rownames(mod$ctl$Q_parms) <- rownames(mod$ctl$Q_parms) |>
+  stringr::str_replace('Triennial\\(5\\)\\.\\.\\.[1|2]', 'H&L_survey(4)') |> # fix row names
+  stringr::str_remove('\\.\\.\\.[:digit:]')
+
+# length comps
+hl_len <- read.csv('Data/raw_not_confidential/Combined HL Index/length_cm_unsexed_raw_20_56_yellowtail rockfish_combinedhl.csv') |>
+  mutate(month = 7, fleet = 4) |>
+  rename(Nsamp = input_n, part = partition) |>
+  rename_with(~stringr::str_replace(., pattern = 'u', replacement = 'f'), .cols = u20:u56) |>
+  mutate(across(.cols = f20:f56, .fns = ~0, .names = 'm{.col}')) |>
+  rename_with(~stringr::str_remove(., pattern = 'f'), mf20:mf56)
+mod$dat$lencomp <- bind_rows(mod$dat$lencomp, hl_len)
+
+# selectivity
+mod$ctl$size_selex_types['H&L_survey', c('Pattern', 'Male')] <- c(24, 3)
+
+new_selex <- mod$ctl$size_selex_parms[grepl('Recreational', rownames(mod$ctl$size_selex_parms)),]
+rownames(new_selex) <- stringr::str_replace(rownames(new_selex), 'Recreational\\(3\\)', 
+                                            'H&L_survey\\(4\\)')
+new_selex$Block <- new_selex$Block_Fxn <- 0
+
+last_rec_ind <- max(grep('Recreational', rownames(mod$ctl$size_selex_parms)))
+mod$ctl$size_selex_parms <- bind_rows(mod$ctl$size_selex_parms[1:last_rec_ind,],
+                                      new_selex,
+                                      mod$ctl$size_selex_parms[(last_rec_ind + 1):nrow(mod$ctl$size_selex_parms),])
+
+SS_write(mod, 'model_runs/5.1_hook_and_line', overwrite = TRUE)
+run('model_runs/5.1_hook_and_line', exe = exe_loc, skipfinished = FALSE, extras = '-nohess')
+# checked and it is close, one round should do it.
+tune_comps(dir = 'model_runs/5.1_hook_and_line', niters_tuning = 1, exe = exe_loc, 
+           extras = '-nohess')
+
+
+# forecast ---------------------------------------------------------------
+
+mod <- SS_read('model_runs/5.1_hook_and_line')
+mod$fore$Flimitfraction <- -1
+mod$fore$Flimitfraction_m <- PEPtools::get_buffer(2025:2036, sigma = 0.5, pstar = 0.45)
+mod$fore$FirstYear_for_caps_and_allocations <- 2027
+mod$fore$Ydecl <- 0
+mod$fore$Yinit <- 0
+mod$fore$ForeCatch <- data.frame(
+  year = rep(2025:2026, each = 3),
+  seas = 1,
+  fleet = rep(1:3, 2),
+  catch_or_F = c(3497, 360, 203.1, 3503, 360, 203.1) # Sent by K. Lockhart 4/11/25
+)
+
+# also some other cleanup:
+mod$ctl$N_lambdas <- 1
+mod$ctl$lambdas <- filter(mod$ctl$lambdas, phase != 1)
+
+SS_write(mod, 'model_runs/5.2_forecast', overwrite = TRUE)
+
+future::plan(future::multisession(workers = 6))
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.2_forecast', newsubdir = '5.2_forecast/retro',
+            years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
+future::plan(future::sequential)
+
+smurf_retro <- SSgetoutput(
+  dirvec = c('model_runs/5.2_forecast', 
+             paste0('model_runs/5.2_forecast/retro/retro-', c(1:5, 10)))
+) |>
+  SSsummarize()
+
+SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSummary = smurf_retro)
+
+
+# SMURF -------------------------------------------------------------------
+
+mod <- SS_read('model_runs/5.2_forecast')
+
+flt <- 7
+smurf <- read.csv('Data/raw_not_confidential/SMURF index/index_forSS.csv') |>
+  mutate(index = 7) |>
+  rename(se_log = logse) |>
+  select(-fleet)
+
+# data file updates
+mod$dat$Nfleets <- flt
+mod$dat$fleetnames[flt] <- 'SMURF'
+mod$dat$fleetinfo[flt,] <- c(3,1,1,2,0,'SMURF')
+mod$dat$CPUEinfo[flt,] <- c(flt,33,0,0)
+mod$dat$len_info[flt,] <- mod$dat$len_info[flt-1,]
+mod$dat$age_info[flt,] <- mod$dat$age_info[flt-1,]
+mod$dat$fleetinfo1$SMURF <- mod$dat$fleetinfo1$WCGBTS
+mod$dat$fleetinfo2$SMURF <- mod$dat$fleetinfo2$WCGBTS
+mod$dat$CPUE <- bind_rows(mod$dat$CPUE,
+                          smurf)
+
+# control file updates
+mod$ctl$size_selex_types[flt,] <- rep(0, 4)
+mod$ctl$age_selex_types[flt,] <- mod$ctl$age_selex_types[flt-1,]
+mod$ctl$Q_options <- rbind(mod$ctl$Q_options,
+                           SMURF = c(flt,1,0,1,0,0))
+mod$ctl$Q_parms <- bind_rows(mod$ctl$Q_parms,
+                             mod$ctl$Q_parms[1:2,])
+
+# bias adjustment (from an earlier model run with hessian)
+mod$ctl$last_early_yr_nobias_adj <- 1950.6250
+mod$ctl$first_yr_fullbias_adj <- 1975.0898
+mod$ctl$last_yr_fullbias_adj <- 2015.1215
+mod$ctl$first_recent_yr_nobias_adj <- 2024.9174
+mod$ctl$max_bias_adj <- 0.8053
+
+SS_write(mod, "Model_Runs/temp", overwrite = TRUE)
+# stopph -1 causes model to write ss_new files without running anything
+r4ss::run("Model_Runs/temp",
+          extras = "-nohess -stopph -1",
+          exe = exe_loc,
+          skipfinished = FALSE
+)
+mod <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
+
+SS_write(mod, "Model_Runs/5.3_smurf", overwrite = TRUE)
+
+future::plan(future::multisession(workers = 6))
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_smurf', newsubdir = '5.3_smurf/retro',
+            years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
+future::plan(future::sequential)
+
+smurf_retro <- SSgetoutput(
+  dirvec = c('model_runs/5.3_smurf', 
+             paste0('model_runs/5.3_smurf/retro/retro-', c(1:5, 10)))
+) |>
+  SSsummarize()
+
+SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSummary = smurf_retro)
+
+# oceanographic index -----------------------------------------------------
+
+mod <- SS_read('model_runs/5.3_smurf')
+
+# rename index
+mod$dat$fleetinfo$fleetname[7] <- 'ocean'
+SS_write(mod, "Model_Runs/temp", overwrite = TRUE)
+# stopph -1 causes model to write ss_new files without running anything
+r4ss::run("Model_Runs/temp",
+          extras = "-nohess -stopph -1",
+          exe = exe_loc,
+          skipfinished = FALSE
+)
+mod <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
+
+ocean <- read.csv('Data/raw_not_confidential/OceanographicIndex/OceanographicIndexV1.csv') |>
+  mutate(month = 7, index = 7,
+         index = ifelse(year >= 2015, 7, -7) # include 10 years of index
+  ) |>
+  select(year, month, index, obs = fit, se_log = se.p)
+
+# data file updates
+mod$dat$CPUEinfo['ocean',] <- c(7,36,-1,0)
+mod$dat$CPUE <- filter(mod$dat$CPUE, index != 7) |> # get rid of smurf
+  bind_rows(ocean)
+
+# bias adjustment (from an earlier model run with hessian)
+mod$ctl$last_early_yr_nobias_adj <- 1949.7   
+mod$ctl$first_yr_fullbias_adj <- 1974.8   
+mod$ctl$last_yr_fullbias_adj <- 2024.6   
+mod$ctl$first_recent_yr_nobias_adj <- 2024.8   
+mod$ctl$max_bias_adj <- 0.8383  
+
+SS_write(mod, "Model_Runs/5.4_ocean", overwrite = TRUE)
+
+future::plan(future::multisession(workers = 6))
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_ocean', newsubdir = '5.3_ocean/retro',
+            years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
+future::plan(future::sequential)
+
+
+ocean_retro <- SSgetoutput(
+  dirvec = c('model_runs/5.4_ocean', 
+             paste0('model_runs/5.4_ocean/retro/retro-', c(1:5, 10)))
+) |>
+  SSsummarize()
+
+SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSummary = ocean_retro)
+
+
+# RREAS -------------------------------------------------------------------
+
+
+mod <- SS_read('model_runs/5.3_smurf')
+
+# rename index
+mod$dat$fleetinfo$fleetname[7] <- 'RREAS'
+SS_write(mod, "Model_Runs/temp", overwrite = TRUE)
+# stopph -1 causes model to write ss_new files without running anything
+r4ss::run("Model_Runs/temp",
+          extras = "-nohess -stopph -1",
+          exe = exe_loc,
+          skipfinished = FALSE
+)
+mod <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
+
+rreas <- read.csv('Data/raw_not_confidential/RREAS/ytail_coastwide_indices.csv') |>
+  mutate(index = 7, month = 7) |>
+  rename(se_log = logse, year = YEAR, obs = est)
+
+# data file updates
+mod$dat$CPUE <- filter(mod$dat$CPUE, index != 7) |> # get rid of smurf
+  bind_rows(rreas)
+
+SS_write(mod, "Model_Runs/5.5_rreas", overwrite = TRUE)
+
+future::plan(future::multisession(workers = 6))
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_smurf', newsubdir = '5.3_smurf/retro',
+            years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
+future::plan(future::sequential)
+
+
+
+# Update # Update # Update bias adjustment --------------------------------------------------
 
 mod <- SS_read('model_runs/2.01_extend_2024')
 
