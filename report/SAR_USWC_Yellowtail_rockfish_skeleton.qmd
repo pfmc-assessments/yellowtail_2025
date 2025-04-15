@@ -78,6 +78,21 @@ csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 \renewcommand{\thetable}{\roman{table}}
 \renewcommand{\thefigure}{\roman{figure}}
 
+```{r}
+#| label: 'read_base_model'
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+
+library(here)
+base_mod <- '5.02_forecast'
+mod_in <- r4ss::SS_read(here('model_runs', base_mod))
+mod_out <- r4ss::SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
+
+```
+
+
 ```{r} 
 #| label: 'output_and_quantities'
 #| echo: false 

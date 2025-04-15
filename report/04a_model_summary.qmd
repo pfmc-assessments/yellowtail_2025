@@ -1,43 +1,77 @@
 # Assessment model
 
-
-
 ## History of modeling approaches
 
 <!-- Very brief text here for (IT will do) -->
 
 ## Response to most recent STAR panel and SSC recommendations
 
+-   Additional investigations that better quantify the male-skewed sex ratio at older ages, and evaluate potential mechanisms for the observed discontinuities, should be pursued
+    -   We have run a number of sensitivities involving different parameterizations of natural mortality and selectivity and included data plots that further explore this dynamic, as well.
+-   The draft northern yellowtail assessment models included indices of relative abundance based on fishery-dependent time series, including a trawl logbook CPUE index and an index of abundance based on yellowtail bycatch in the at-sea Pacific whiting fishery. During the STAR panel, these were removed from the final base model. However, as the indices were influential with respect to model results, greater exploration of the potential for these data to inform a relative abundance index, particularly for the trawl logbook cpue data, would benefit future assessment efforts.
+    -   As the 2017 review found, historical logbook data is extremely difficult to standardize in a reliable way. However, we have explored data from the current \gls{wcgop} program as an alternative fishery-dependent index from the trawl sector, covering a later subset of years.
+-   Consideration of alternative survey methods (e.g, acoustic surveys, midwater trawl surveys) and/or the means to account for changes in catchability that may be associated with environmental factors, could improve the ability of survey indices to track stock abundance. 
+    -   This remains a key research priority, made even more clear by the inability of the model to fit the peak and rapid decline in the trawl survey index since the 2017 assessment, given the population structure and dynamics indicated by the composition data. This issue cannot be addressed via assessment modeling, and needs targeted research between assessment cycles. In addition to possible environmental influences on catchability mentioned in the STAR panel report, density-dependent catchability may also be an important factor.
+-   Combined US/Canadian transboundary assessment
+    -   This remains an important research priority.
+-   Common documentation of data streams and sources to support fishery independent and fishery dependent indices and compositional data could reduce the burden on assessment analysts to provide details about each data source, and allow reviewers a robust source of information on the most important, common data sources for any given stock assessment cycle.
+    -   The stock assessment program at \gls{nwfsc} has made great strides in improving data processing since 2017 through a number of standardized R packages for commercial and survey data.
+
+```{=html}
 <!-- Response to the most recent previous STAR panel and SSC recommendations for remedying deficiencies in the most recent previous full assessment. This is not required for an update assessment.  
 Is this required if there are no "deficiencies"? -->
+```
 
 ## Model Structure and Assumptions
-
 
 ### Model Changes from the Last Assessment
 
 <!-- Description of new modeling approaches and changes made from the last assessment, with rationale. This should include bridging analyses that highlight the data and model changes that were most influential with respect to changes between the assessment being reviewed and the most recent adopted assessment.  -->
 
-TODO: expand on the bullets below
+The follow bullets list major changes from the 2017 benchmark assessment [@stephens_status_2017]:
 
-* Extended data time series
-* New data sources: H&L index, recruitment index, etc.
-* Discards [Ian write this]
-* Rec WA in biomass not numbers [Kiva]
-* Rec fleets combined [Kiva]
-* Foreign fleets [Kiva]
+-   All relevant data sources have been reanalyzed and extended through 2024.
 
+-   Early data exploration indicated that commercial fishery composition data was likely entered as "raw" in 2017, which is not the default approach recommended by the PFMC groundfish assessment best practices document. That is, each individual sample was equally weighted, rather than weighting samples based on catch amounts at the trip and state level. This assessment uses the \gls{nwfsc} R package {pacfintools} to summarize age and length composition data from the commercial fishery.
+
+-   New data sources: H&L index, recruitment index, etc.
+
+-   Discards \[Ian write this\]
+
+-   Aging error was updated.
+
+-   Most Washington recreational catch data is now available in biomass on \gls{recfin}. This facilitated combining recreational catches across all three states into a single model fleet with catch supplied in biomass. Different catch reporting units was the main reason listed for separating the recreational fleets in 2017. Historical Washington recreational catches (pre-1990) were converted from numbers to biomass using allometric relationships. Modeling catch in biomass makes forecasting catches more straightforward.
+
+-   Foreign trawl catches from 1966-1976 have been added to the commercial fleet.
+
+-   Recreational fishery selectivity is modeled as sex-specific, with different descending limbs for males and females and males having an overall lower likelihood of being selected. This greatly improved fits to recreational length and age composition data.
+
+-   Additional selectivity blocks were added for 1) recreational selectivity beginning in `r mod_in$ctl$Block_Design[[1]][3]`, when trips in both Oregon (longleader gear) and Washington (avoiding Black Rockfish) were reported to get deeper and 2) the at-sea hake fishery beginning in `r mod_in$ctl$Block_Design[[2]][1]`. The at-sea hake fishery is highly mobile and moves around to wherever hake are densest and bycatch species can be avoided. It has been occurring farther south in recent years.
+
+-   The fishery-dependent indices included as sensitivities in 2017 were not reproduced or extended.
 
 ### Modeling Platform and Structure
 
-The stock assessment is conducted in Stock Synthesis 
+The stock assessment is conducted in Stock Synthesis version 3.30.23.1 compiled December 5, 2024. The model is sex-specific and includes three fishery fleets (commercial, at-sea hake, recreational) and X surveys (an Oregon-Washington combined hook and line survey, the \gls{s-tri}, \gls{s-wcgbt}). There is a single model area from $40^{\circ} 10'$ to the Canadian border. The model begins in `r mod_in$dat$styr`, which is the earliest year of the commercial catch reconstruction. The population was assumed to be unfished and at an equilibrium age structure at this point. The first length composition data included in the model is in `r min(mod_in$dat$lencomp$year)`. Early recruitment deviations are estimated from `r mod_in$ctl$recdev_early_start` to `r mod_in$ctl$mod_in$ctl$MainRdevYrFirst - 1` to better match the age structure at the start of the composition data.
+
 <!-- Assessment program and its version used for the assessment (i.e., date executable program file was compiled), description of model structure, definitions of fleets and areas. Description of how the first year that is included in the model was selected and how the population state at the time is defined (e.g., B0, stable age structure). -->
 
-
 ### Model Parameters
+
+Due to the richness of age composition data, most life history parameters were estimable. Natural mortality and growth are both estimated separately for males and females with shared parameters for length at age 2 and CV of length-at-age for young fish. Separate values for small fish were not estimable, nor was the four-parameter Richards growth curve. Male values were estimated as an offset of female values. A prior was placed on female natural mortality, but the data overwhelmed it (CITE PROFILE). Unfished recruitment is estimated. Steepness of the stock-recruit relationship is fixed at `r mod_in$ctl$SR_parms['SR_BH_steep', 'INIT']` per the PFMC terms of reference for rockfish assessments. The standard deviation of log recruitment deviations is `r mod_in$ctl$SR_parms['SR_sigmaR', 'INIT']`, the same value used in 2017. Reevaluating the tuning of this parameter indicated no changes were necessary [@methot_adjusting_2011]. Recruitment deviations during the "main" period (from `r mod_in$ctl$MainRdevYrFirst` to `r mod_in$ctl$MainRdevYrLast`) were forced to sum to zero, though sensitivity to this was examined.
+
+Length, age, and age-at-length composition data weights were tuned using the Francis method [@francis_data_2011]. An additional standard error was estimated for the \gls{s-tri} and combined hook and line surveys. The former is an older survey with unrealistic inter-annual variability for a rockfish. The latter is a newer survey that combines hook and line data from two state sampling programs. While attempts were made to control for differences between the states, it is possible survey effort was not perfectly standardized. No additional standard error was estimated for the \gls{s-wcgbt}.
+
+All selectivity was assumed to be length-based and used a double-normal functional form. We explored age-based selectivity, but due to the sexual dimorphism of Yellowtail rockfish, fitting the composition data well would have required a more complex formulation with additional estimated parameters. Selectivity was estimated to be sex-specific and dome-shaped for the recreational fleet and the hook and line survey, with three base parameters (X) and two sex specific parameters (descending limb and X) being estimated. All other fleets had a single shared asymptotic selectivity for both sexes. Early explorations into dome-shaped selectivity for fleets using predominantly trawl gear indicated that few fish were actually observed at the lengths of the estimates for the descending limbs. Sex-specific selectivity for fleets using trawl gear did not visibly improve fits to composition data, so were not considered for the base model.
+
+Selectivity was constant across time for all but the recreational and at-sea hake fleets. Recreational selectivity is estimated across three time periods: start to `r mod_in$ctl$Block_Design[[1]][1]-1`, `r mod_in$ctl$Block_Design[[1]][1]` to `r mod_in$ctl$Block_Design[[1]][2]` when depth restrictions were in place to prevent catch of overfished rockfish, and `r mod_in$ctl$Block_Design[[1]][3]` to `r mod_in$ctl$Block_Design[[1]][4]` to account for the growing longleader fleet in Oregon and avoidance of Black rockfish in Washington, both of which led to recreational trips occurring farther offshore and catching larger fish. The sex-specific paramters were assumed to be constant. The at-sea hake fleet estimates selectivity across two time periods: the start to `r mod_in$ctl$Block_Design[[2]][1]-1` and `r mod_in$ctl$Block_Design[[2]][1]` to `r mod_in$ctl$Block_Design[[2]][2]`. While no particular management change warranted this block, the at-sea hake fleet is highly mobile from year to year and does not target Yellowtail rockfish, so changes in selectivity across time are likely. Length compositions became smaller than expected around the time of the block, particularly for females, a misfit that was not seen across other fleets. The hake fishery has occurred farther south in recent years, where Yellowtail do tend to be slightly smaller at age (CITE FIGURE).
 
 <!-- Model parameters: estimated and fixed parameters, constraints on parameters, selectivity assumptions, natural mortality, treatment of age reading bias and/or imprecision, and other fixed parameters, description of stock-recruitment constraints or components, critical assumptions, and consequences of assumption failures.  -->
 
 ### Key Assumptions and Structural Choices
 
-<!-- Evidence of search for balance between model realism and parsimony. Key model assumptions and structural choices (e.g., asymptotic vs. domed selectivities, constant vs. time-varying selectivities). Summary of alternate model configurations that were examined but rejected. This is not required for an update assessment.### Bridging analysis -->
+Modeling choices were made to seek balance between model realism and parsimony. See above sections for further details on these choices and alternatives considered.
+
+<!-- Evidence of search for balance between model realism and parsimony. Key model assumptions and structural choices (e.g., asymptotic vs. domed selectivities, constant vs. time-varying selectivities). Summary of alternate model configurations that were examined but rejected. This is not required for an update assessment. -->
+
+### Bridging analysis

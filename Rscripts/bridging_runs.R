@@ -510,16 +510,16 @@ mod$ctl$size_selex_parms <- bind_rows(mod$ctl$size_selex_parms[1:last_rec_ind,],
                                       new_selex,
                                       mod$ctl$size_selex_parms[(last_rec_ind + 1):nrow(mod$ctl$size_selex_parms),])
 
-SS_write(mod, 'model_runs/5.1_hook_and_line', overwrite = TRUE)
-run('model_runs/5.1_hook_and_line', exe = exe_loc, skipfinished = FALSE, extras = '-nohess')
+SS_write(mod, 'model_runs/5.01_hook_and_line', overwrite = TRUE)
+run('model_runs/5.01_hook_and_line', exe = exe_loc, skipfinished = FALSE, extras = '-nohess')
 # checked and it is close, one round should do it.
-tune_comps(dir = 'model_runs/5.1_hook_and_line', niters_tuning = 1, exe = exe_loc, 
+tune_comps(dir = 'model_runs/5.01_hook_and_line', niters_tuning = 1, exe = exe_loc, 
            extras = '-nohess')
 
 
 # forecast ---------------------------------------------------------------
 
-mod <- SS_read('model_runs/5.1_hook_and_line')
+mod <- SS_read('model_runs/5.01_hook_and_line')
 mod$fore$Flimitfraction <- -1
 mod$fore$Flimitfraction_m <- PEPtools::get_buffer(2025:2036, sigma = 0.5, pstar = 0.45)
 mod$fore$FirstYear_for_caps_and_allocations <- 2027
@@ -536,16 +536,16 @@ mod$fore$ForeCatch <- data.frame(
 mod$ctl$N_lambdas <- 1
 mod$ctl$lambdas <- filter(mod$ctl$lambdas, phase != 1)
 
-SS_write(mod, 'model_runs/5.2_forecast', overwrite = TRUE)
+SS_write(mod, 'model_runs/5.02_forecast', overwrite = TRUE)
 
 future::plan(future::multisession(workers = 6))
-r4ss::retro(dir = 'model_runs', oldsubdir = '5.2_forecast', newsubdir = '5.2_forecast/retro',
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.02_forecast', newsubdir = '5.02_forecast/retro',
             years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
 future::plan(future::sequential)
 
 smurf_retro <- SSgetoutput(
-  dirvec = c('model_runs/5.2_forecast', 
-             paste0('model_runs/5.2_forecast/retro/retro-', c(1:5, 10)))
+  dirvec = c('model_runs/5.02_forecast', 
+             paste0('model_runs/5.02_forecast/retro/retro-', c(1:5, 10)))
 ) |>
   SSsummarize()
 
@@ -554,7 +554,7 @@ SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSum
 
 # SMURF -------------------------------------------------------------------
 
-mod <- SS_read('model_runs/5.2_forecast')
+mod <- SS_read('model_runs/5.02_forecast')
 
 flt <- 7
 smurf <- read.csv('Data/raw_not_confidential/SMURF index/index_forSS.csv') |>
@@ -598,16 +598,16 @@ r4ss::run("Model_Runs/temp",
 )
 mod <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
 
-SS_write(mod, "Model_Runs/5.3_smurf", overwrite = TRUE)
+SS_write(mod, "Model_Runs/5.03_smurf", overwrite = TRUE)
 
 future::plan(future::multisession(workers = 6))
-r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_smurf', newsubdir = '5.3_smurf/retro',
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.03_smurf', newsubdir = '5.03_smurf/retro',
             years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
 future::plan(future::sequential)
 
 smurf_retro <- SSgetoutput(
-  dirvec = c('model_runs/5.3_smurf', 
-             paste0('model_runs/5.3_smurf/retro/retro-', c(1:5, 10)))
+  dirvec = c('model_runs/5.03_smurf', 
+             paste0('model_runs/5.03_smurf/retro/retro-', c(1:5, 10)))
 ) |>
   SSsummarize()
 
@@ -615,7 +615,7 @@ SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSum
 
 # oceanographic index -----------------------------------------------------
 
-mod <- SS_read('model_runs/5.3_smurf')
+mod <- SS_read('model_runs/5.03_smurf')
 
 # rename index
 mod$dat$fleetinfo$fleetname[7] <- 'ocean'
@@ -646,17 +646,17 @@ mod$ctl$last_yr_fullbias_adj <- 2024.6
 mod$ctl$first_recent_yr_nobias_adj <- 2024.8   
 mod$ctl$max_bias_adj <- 0.8383  
 
-SS_write(mod, "Model_Runs/5.4_ocean", overwrite = TRUE)
+SS_write(mod, "Model_Runs/5.04_ocean", overwrite = TRUE)
 
 future::plan(future::multisession(workers = 6))
-r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_ocean', newsubdir = '5.3_ocean/retro',
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.04_ocean', newsubdir = '5.04_ocean/retro',
             years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
 future::plan(future::sequential)
 
 
 ocean_retro <- SSgetoutput(
-  dirvec = c('model_runs/5.4_ocean', 
-             paste0('model_runs/5.4_ocean/retro/retro-', c(1:5, 10)))
+  dirvec = c('model_runs/5.04_ocean', 
+             paste0('model_runs/5.04_ocean/retro/retro-', c(1:5, 10)))
 ) |>
   SSsummarize()
 
@@ -666,7 +666,7 @@ SSplotRetroRecruits(endyrvec = c(2024:2019, 2014), cohorts = 2008:2018, retroSum
 # RREAS -------------------------------------------------------------------
 
 
-mod <- SS_read('model_runs/5.3_smurf')
+mod <- SS_read('model_runs/5.03_smurf')
 
 # rename index
 mod$dat$fleetinfo$fleetname[7] <- 'RREAS'
@@ -690,7 +690,55 @@ mod$dat$CPUE <- filter(mod$dat$CPUE, index != 7) |> # get rid of smurf
 SS_write(mod, "Model_Runs/5.5_rreas", overwrite = TRUE)
 
 future::plan(future::multisession(workers = 6))
-r4ss::retro(dir = 'model_runs', oldsubdir = '5.3_smurf', newsubdir = '5.3_smurf/retro',
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.5_rreas', newsubdir = '5.5_rreas/retro',
+            years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
+future::plan(future::sequential)
+
+
+# smurf ocean -------------------------------------------------------------
+
+
+mod <- r4ss::SS_read('model_runs/5.04_ocean')
+
+flt <- 8
+smurf <- read.csv('Data/raw_not_confidential/SMURF index/index_forSS.csv') |>
+  mutate(index = 8) |>
+  rename(se_log = logse) |>
+  select(-fleet)
+
+# data file updates
+mod$dat$Nfleets <- flt
+mod$dat$fleetnames[flt] <- 'SMURF'
+mod$dat$fleetinfo[flt,] <- c(3,1,1,2,0,'SMURF')
+mod$dat$CPUEinfo[flt,] <- c(flt,33,0,0)
+mod$dat$len_info[flt,] <- mod$dat$len_info[flt-1,]
+mod$dat$age_info[flt,] <- mod$dat$age_info[flt-1,]
+mod$dat$fleetinfo1$SMURF <- mod$dat$fleetinfo1$WCGBTS
+mod$dat$fleetinfo2$SMURF <- mod$dat$fleetinfo2$WCGBTS
+mod$dat$CPUE <- bind_rows(mod$dat$CPUE,
+                          smurf)
+
+# control file updates
+mod$ctl$size_selex_types[flt,] <- rep(0, 4)
+mod$ctl$age_selex_types[flt,] <- mod$ctl$age_selex_types[flt-1,]
+mod$ctl$Q_options <- rbind(mod$ctl$Q_options,
+                           SMURF = c(flt,1,0,1,0,0))
+mod$ctl$Q_parms <- bind_rows(mod$ctl$Q_parms,
+                             mod$ctl$Q_parms[1:2,])
+
+SS_write(mod, "Model_Runs/temp", overwrite = TRUE)
+# stopph -1 causes model to write ss_new files without running anything
+r4ss::run("Model_Runs/temp",
+          extras = "-nohess -stopph -1",
+          exe = exe_loc,
+          skipfinished = FALSE
+)
+mod <- r4ss::SS_read("Model_Runs/temp", ss_new = TRUE)
+
+SS_write(mod, "Model_Runs/5.06_smurf_ocean", overwrite = TRUE)
+
+future::plan(future::multisession(workers = 6))
+r4ss::retro(dir = 'model_runs', oldsubdir = '5.06_smurf_ocean', newsubdir = '5.06_smurf_ocean/retro',
             years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
 future::plan(future::sequential)
 
