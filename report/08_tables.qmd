@@ -103,7 +103,6 @@ smurf_in_tab
 #| tbl-cap: "Sample sizes for age and length samples from the recreational fishery."
 
 rec_bio_table <- read.csv("../Data/Processed/rec_bio_sample_size_table.csv", check.names = FALSE)
-#rec_bio_table <- table_format(rec_bio_table, 1, 10)
 rec_bio_table |> 
   gt() |>
   tab_options(
@@ -111,8 +110,59 @@ rec_bio_table |>
     latex.use_longtable = TRUE
   ) |>
   as_latex()
+```
+
+```{r, rec_bio}
+#| label: tbl-wcgbts-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for the age and length compositions from the WCGBTS. The ages are treated as conditioned on length and use the number of fish (within each length bin) as the input sample size."
+
+wcgbts_bio_table <- read.csv("../Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
+wcgbts_bio_table |> 
+  gt() |>
+  cols_label(
+    year = "Year",
+    n_ages = "N. ages",
+    n_tows = "N. tows",
+    n_lengths = "N. lengths",
+    input_n = "Input N."
+  ) |> 
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+
+```{r, rec_bio}
+#| label: tbl-tri-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for the marginal age and length compositions from the Triennial survey."
+
+tri_bio_table <- read.csv("../Data/Processed/input_n_tri.csv", check.names = FALSE)
+tri_bio_table |> 
+  gt() |>
+    cols_label(
+    year = "Year",
+    n_tows_ages = "N. tows with ages",
+    n_ages = "N. ages",
+    input_n_ages = "Input N. for ages",
+    n_tows_lengths = "N. tows with lengths",
+    n_lengths = "N. lengths",
+    input_n_lengths = "Input N. for lengths"
+  ) |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 
 ```
+
+
+
 ## Model results
  
 ```{r}

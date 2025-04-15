@@ -352,3 +352,61 @@ table(yt_n_tri_bio$age_data$Sex)
 table(yt_n_tri_bio$length_data$Sex)
 #    F    M
 # 6632 7643
+
+
+# tables for report
+table(yt_n_survey_bio$Sex)
+#    F    M    U
+# 7845 9462   22
+table(yt_n_tri_bio$Length_data$Sex)
+#    F    M
+# 6632 7643
+
+input_n_wcgbts_len <- nwfscSurvey::get_input_n(
+  data = yt_n_survey_bio,
+  species_group = "shelfrock"
+) |>
+  dplyr::filter(sex_grouped == "sexed") |>
+  dplyr::select(year, n_tows, n, input_n) |> 
+  dplyr::rename(n_lengths = n)
+
+
+input_n_wcgbts_age <- nwfscSurvey::get_input_n(
+  data = yt_n_survey_bio |> dplyr::filter(!is.na(Age)),
+  comp_column_name = "Age",
+  species_group = "shelfrock"
+) |>
+  dplyr::filter(sex_grouped == "sexed") |>
+  dplyr::select(year, n) |>
+  dplyr::rename(n_ages = n)
+
+input_n_wcgbts <- dplyr::full_join(
+  input_n_wcgbts_age,
+  input_n_wcgbts_len
+) |> dplyr::arrange(year)
+
+
+input_n_tri_len <- nwfscSurvey::get_input_n(
+  data = yt_n_tri_bio$length_data,
+  species_group = "shelfrock"
+) |>
+  dplyr::filter(sex_grouped == "sexed") |>
+  dplyr::select(year, n_tows, n, input_n) |> 
+  dplyr::rename(n_lengths = n, n_tows_lengths = n_tows, input_n_lengths = input_n)
+
+input_n_tri_age <- nwfscSurvey::get_input_n(
+  data = yt_n_tri_bio$age_data,
+  comp_column_name = "Age",
+  species_group = "shelfrock"
+) |>
+  dplyr::filter(sex_grouped == "sexed") |>
+  dplyr::select(year, n_tows, n, input_n) |>
+  dplyr::rename(n_ages = n, n_tows_ages = n_tows, input_n_ages = input_n)
+
+input_n_tri <- cbind(
+  input_n_tri_age,
+  input_n_tri_len |> dplyr::select(-year)
+)
+
+write.csv(input_n_wcgbts, file = "Data/Processed/input_n_wcgbts.csv", row.names = FALSE)
+write.csv(input_n_tri, file = "Data/Processed/input_n_tri.csv", row.names = FALSE)
