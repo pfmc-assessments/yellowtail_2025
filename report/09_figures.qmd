@@ -45,7 +45,9 @@ TODO: add plot of time-varying selectivity
 ![Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male.](r4ss_plots\sel01_multiple_fleets_length1.png){fig-alt='See the LEN\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-length}
 
 
-![Ending-year selectivity at age derived from selectivity at length (solid female, dashed male).](r4ss_plots\sel01_multiple_fleets_length1.png){fig-alt='See the AGE\_SELEX table (with Factor = "Asel2") in Report.sso file for values.' #fig-sel-age}
+![Ending-year selectivity at age derived from selectivity at length (solid female, dashed male).](r4ss_plots\sel02_multiple_fleets_age2.png){fig-alt='See the AGE\_SELEX table (with Factor = "Asel2") in Report.sso file for values.' #fig-sel-age}
+
+![Selectivity by time period for those fleets with time-varying selectivity.](Figures\selectivity_time-varying.png){fig-alt='See the AGE\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-tv}
 
 ## Fits to Data
 

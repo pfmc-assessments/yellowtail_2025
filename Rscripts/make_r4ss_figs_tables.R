@@ -19,3 +19,7 @@ r4ss::SS_plots(model, printfolder = "../../report/r4ss_plots", uncertainty = TRU
 # make new tables
 # TODO: add better fleetnames if desired
 table_all(replist = model, dir = here::here("report"))
+
+# make custom selectivity plot
+source("Rscripts/plot_selex.R")
+plot_yellowtail_tv_selex(model)
