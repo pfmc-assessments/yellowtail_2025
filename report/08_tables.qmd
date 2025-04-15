@@ -7,27 +7,11 @@
 #| warning: false
 #| eval: true
 #| include: false
-library(flextable)
 library(tidyr)
 library(gt)
 ``` 
 
-```{r, flextableprops}
-#| echo: false
-#| warning: false
-#| include: false
 
-table_format <- function(csv, width, size) {
-  rawtable <- flextable(csv)
-  table <- fontsize(rawtable, size = size) %>%
-    font(fontname = "Times New Roman") %>%
-    font(fontname = "Times New Roman", part = "header") %>%
-    height(height = 0) %>%
-    width(width = width) %>%
-    align(align = "center") %>%
-    align(align = "center", part = "header")
-}
-```
 <!-- Needs Alt text -->
 ```{r, orbs_perc_pos}
 #| label: tbl-percent_pos
@@ -36,9 +20,13 @@ table_format <- function(csv, width, size) {
 #| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
 
 
-percpos <- read.csv("Tables/yellowtail_percent_pos.csv")
-percpos <- table_format(percpos, 1, 10)
-percpos
+percpos <- read.csv("Tables/yellowtail_percent_pos.csv") |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 
 {{< pagebreak >}}
@@ -53,8 +41,13 @@ percpos
 
 orbs_modselect <- read.csv("Tables/yellowtail_model_selection.csv")[1:10, ]
 orbs_modselect[orbs_modselect == "Included"] <- "Incl."
-orbs_tab <- table_format(orbs_modselect, 0.6, 11)
-orbs_tab
+orbs_modselect |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 
 :::
@@ -67,9 +60,14 @@ orbs_tab
 #| warning: false
 #| tbl-cap: "Relative index of abundance from ORBS dockside sampling from ODFW."
 
-orbs_in <- read.csv("Tables/index_forreport_ORBS.csv")
-orbs_in_tab <- table_format(orbs_in, 1, 11)
-orbs_in_tab
+read.csv("Tables/index_forreport_ORBS.csv") |> 
+  dplyr::mutate(dplyr::across(-1, round, 3)) |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 <!-- Needs Alt text -->
 ```{r}
@@ -80,8 +78,13 @@ orbs_in_tab
 
 smurf_modselect <- read.csv("Tables/SMURF_model_selection.csv")
 smurf_modselect[smurf_modselect == "Included"] <- "Incl."
-smurf_tab <- table_format(smurf_modselect, 0.7, 11)
-smurf_tab
+smurf_modselect |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 <!-- Needs Alt text -->
 ```{r}
@@ -91,8 +94,13 @@ smurf_tab
 #| tbl-cap: "Relative index of abundance from SMURF YOY index."
 
 smurf_in <- read.csv("Tables/SMURF_index.csv")
-smurf_in_tab <- table_format(smurf_in, 1, 11)
-smurf_in_tab
+smurf_in |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 
 
