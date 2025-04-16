@@ -20,3 +20,7 @@ model_settings <- nwfscDiag::get_settings(
     )
 
 nwfscDiag::run_diagnostics(mydir = directory, model_settings = model_settings)
+
+directory <- here::here("Model_Runs")
+base_model_name <- "4.13_age_and_M_recdev2"
+nwfscDiag::run_mcmc_diagnostics(dir_wd = file.path(directory, base_model_name))

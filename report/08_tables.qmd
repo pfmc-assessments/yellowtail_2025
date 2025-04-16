@@ -177,7 +177,7 @@ tri_bio_table |>
 #| label: tbl-model-config
 #| warning: false
 #| echo: false
-#| tbl-cap: config_cap
+#| tbl-cap: !expr if(eval_tables) config_cap
 
 config_table |>
   gt() |>
@@ -193,7 +193,7 @@ config_table |>
 #| label: tbl-n-param
 #| warning: false
 #| echo: false
-#| tbl-cap: parcount_cap
+#| tbl-cap: !expr if(eval_tables) parcount_cap
 
 parcount_table |>
   dplyr::filter(Count > 0) |>
@@ -211,7 +211,7 @@ parcount_table |>
 #| label: tbl-n-pars
 #| warning: false
 #| echo: false
-#| tbl-cap: pars_cap
+#| tbl-cap: !expr if(eval_tables) pars_cap
 
 pars_table |>
   gt() |>
