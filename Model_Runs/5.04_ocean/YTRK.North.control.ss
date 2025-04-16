@@ -157,7 +157,7 @@
 10	0	0	0	#_4 H&L_survey  
 10	0	0	0	#_5 Triennial   
 10	0	0	0	#_6 WCGBTS      
-10	0	0	0	#_7 ocean       
+ 0	0	0	0	#_7 ocean       
 #
 #_SizeSelex
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
