@@ -8,7 +8,34 @@
 
 \clearpage
 
-\input{tex_tables/a_Catches_ES.tex}
+```{r, results = "asis"}
+#| label: tbl-es-catches
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) catches_es_cap 
+#| tbl-pos: H
+
+catches_es_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = 2:5, # depends on number of fleets with catch
+    decimals = 0
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    # if want to not have tables the width of the page include the below option:
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_align(
+    align = "center"
+  ) |>
+  #cols_width(
+  #  everything() ~ px(75)
+  #) |>
+  gt::as_latex()
+
+```
 
 ![Landings by fleet used in the base model where catches in metric tons by fleet are stacked](r4ss_plots/catch2_landings_stacked.png){fig-alt='See Table TODO for landings by fleet.' width=6in #fig-es-catch}
 
@@ -19,7 +46,38 @@
 ## Stock biomass and dynamics{-}
 
 \clearpage 
-\input{tex_tables/b_SSB_ES.tex}
+@tbl-es-sb
+
+```{r, results = "asis"}
+#| label: tbl-es-sb
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) ssb_es_cap 
+#| tbl-pos: H
+
+ssb_es_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = 2:4,
+    decimals = 2
+  ) |>
+  gt::fmt_number(
+    columns = 5:7,
+    decimals = 3
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_align(
+    align = "center"
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(75)
+  ) |>
+  gt::as_latex()
+```
 
 ![Estimated time series of spawning output for the base model](r4ss_plots/ts7_Spawning_output.png){fig-alt='See Table TODO for spawning output time series.' width=6in #fig-es-ssb}
 
@@ -29,7 +87,37 @@
 
 ## Recruitment{-}
 
-\input{tex_tables/c_Recr_ES.tex}
+```{r, results = "asis"}
+#| label: tbl-es-recr
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) recr_es_cap 
+#| tbl-pos: H
+
+recr_es_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = 2:4,
+    decimals = 0
+  ) |>
+  gt::fmt_number(
+    columns = 5:7,
+    decimals = 3
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_align(
+    align = "center"
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(75)
+  ) |>
+  gt::as_latex()
+
+```
 
 ![Estimated time series of age-0 recruits (1000s) for the base model](r4ss_plots/ts11_Age-0_recruits_(1000s).png){fig-alt='See Table TODO for recruitment time series.' width=6in #fig-es-frac-unfished}
 
@@ -39,7 +127,35 @@
 \clearpage
 ## Exploitation status{-}
 
-\input{tex_tables/d_SPR_ES.tex}
+
+```{r, results = "asis"}
+#| label: tbl-es-spr
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) spr_es_cap 
+#| tbl-pos: H
+
+spr_es_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = 2:7,
+    decimals = 3
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_align(
+    align = "center"
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(80)
+  ) |>
+  gt::as_latex()
+
+```
+
 
 ![Estimated time series of the fishing intensity (1 - SPR), where SPR is the spawning potential ratio, with approximate 95\% asymptotic intervals. The horizontal line at 0.6 corresponds to SPR = 0.4, the management reference point for yellowtail rockfish. The horizontal line at 1.0 corresponds to SPR = 0 (all spawning fish removed from the population).](r4ss_plots/SPR3_ratiointerval.png){fig-alt='See Table TODO for 1-SPR time series.' width=6in #fig-es-spr}
 
@@ -51,7 +167,46 @@
 
 \clearpage
 
-\input{tex_tables/e_ReferencePoints_ES.tex}
+```{r, results = "asis"}
+#| label: tbl-ref-points-es
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) reference_points_cap 
+#| tbl-pos: H
+
+reference_points_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = 2:4,
+    rows = c(1:4, 7, 10, 12, 15, 17, 20),
+    decimals = 0
+  ) |>
+  gt::fmt_number(
+    columns = 2:4,
+    rows = c(5, 8, 9, 13:14, 18:19),
+    decimals = 3
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>  
+  gt::tab_style(
+    style = list(
+      gt::cell_text(style = "italic")
+    ),
+    locations = gt::cells_body(
+      columns = "Reference Point",
+      rows = dplyr::starts_with("Reference")
+    )
+  ) |>
+  gt::sub_missing(
+    columns = tidyselect::everything(),
+    missing_text = "---"
+  ) |>
+  gt::as_latex()
+
+```
 
 ![Equilibrium yield curve for the base case model.](r4ss_plots/yield2_yield_curve_with_refpoints.png){fig-alt='See SPR/YPR\_Profile table in Report.sso for values.' width=6in #fig-es-yield}
 
