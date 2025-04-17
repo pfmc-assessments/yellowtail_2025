@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>introduction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="02_introduction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02_introduction_files/libs/quarto-html/quarto.js"></script>
+<script src="02_introduction_files/libs/quarto-html/popper.min.js"></script>
+<script src="02_introduction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="02_introduction_files/libs/quarto-html/anchor.min.js"></script>
+<link href="02_introduction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02_introduction_files/libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02_introduction_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="02_introduction_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="02_introduction_files/libs/bootstrap/bootstrap-c0367b04c37547644fece4185067e4a7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<!-- Scientific name, distribution, the basis for the choice of stock structure, including regional differences in life history or other biological characteristics that should form the basis of management units. A map showing the scope of the assessment and depicting boundaries for fisheries or data collection strata.  -->
+<p>Yellowtail Rockfish, <em>Sebastes flavidus</em>, occur off the West Coast of the United States from Baja California to the Aleutian Islands. Yellowtail is a major commercial species, captured mostly in trawls from Central California to British Columbia <span class="citation" data-cites="Love2011">[@Love2011]</span>. Because it is an aggregating, midwater species it is usually caught in the commercial midwater trawl fishery. In California there is a large recreational fishery as well. The center of Yellowtail Rockfish abundance is from southern Oregon through British Columbia <span class="citation" data-cites="Fraidenburg1980">[@Fraidenburg1980]</span>. We briefly summarize Yellowtail Rockfish life history, fisheries, assessment and management here, but in-depth, extensive background information on Yellowtail Rockfish and other managed species is available at <span class="citation" data-cites="PFMC2024">[@PFMC2024]</span>.</p>
+<p>A previous genetic study <span class="citation" data-cites="Hess2011">[@Hess2011]</span> indicates that there are in fact two stocks of Yellowtail Rockfish, with a genetic line at Cape Mendocino, California, roughly <span class="math inline">\(40^\circ 10^\prime\)</span> North Latitude. This study of 1013 fish from 21 sites along the West Coast from Mexico through Alaska examined two datasets, one of mitochondrial DNA, and one of nuclear DNA microsattelite loci. Findings in both datasets agreed, and also concur with the findings of Field and Ralston <span class="citation" data-cites="Field2005">[-@Field2005]</span> who looked at differences in recruitment trends related to physical forcing and coherence along the coast, and found the greatest differences among the U.S. and Canadian stocks to be defined by Cape Mendocino. Neither the genetic study nor the oceanographic studies definitively identify mechanisms of stock isolation; however, they suggest that a combination of physical forcing due to offshore advection and differences in available habitat across Cape Mendocino may together account for the differences observed.</p>
+<p>A map showing the scope of the assessment and depicting boundaries for fisheries or data collection strata is provided in <strong>?@fig-assessregionmap</strong>. The 2017 Yellowtail Rockfish assessment was the first full length and age integrated assessment south of Cape Mendocino, though the southern model was not accepted for use in management. Here we assess only the northern stock in <strong>?@fig-assessregionmap</strong>.</p>
+<section id="life-history" class="level2">
+<h2 class="anchored" data-anchor-id="life-history">Life History</h2>
+<!-- Important features of life history that affect management (e.g., migration, sexual dimorphism, bathymetric demography).   -->
+<p>Rockfish are in general long-lived and slow-growing; however, Yellowtail Rockfish have a high growth rate relative to other rockfish species, reaching a maximum size of about 55 cm in approximately 15 years <span class="citation" data-cites="Tagart1991">[@Tagart1991]</span>. Yellowtail are reported to live at least 64 years <span class="citation" data-cites="Love2011">[@Love2011]</span>, but no fish that old occur in data available for this assessment (the 95th percentile of age is 35 years for females and 45 years for males). The maximum age plausibly observed is 60. There were additional data we considered to be outliers. For example, three fish in the commercial data were reported to be 70, 99, and 101.</p>
+<p>Yellowtail Rockfish are among those that are fertilized internally and release live young. Spawning aggregations occur in the fall, and parturition in the winter and spring (January-May) <span class="citation" data-cites="Eldridge1991">[@Eldridge1991]</span>. Young-of-the-year recruit to nearshore waters from April through August, migrating to deeper water in the fall. Preferred habitat is the midwater over reefs and boulder fields. Young-of-the-year yellowtail rockfish settle to nearshore areas, and are known to utilize kelp bed habitat <span class="citation" data-cites="Love2011">[@Love2011]</span>. <span class="citation" data-cites="laidig2023distribution">@laidig2023distribution</span> note that young yellowtail are found in kelp beds but also in slightly deeper waters seaward of kelp beds.</p>
+<p>Yellowtail Rockfish are extremely motile, and make rapid and frequent ascents and descents of 40 meters; they also exhibit strong homing tendencies <span class="citation" data-cites="Love2011">[@Love2011]</span>. They are able to quickly release gas from their swim bladders, perhaps making them less susceptible to barotrauma than similar species <span class="citation" data-cites="Eldridge1991">[@Eldridge1991]</span>.</p>
+<p>Literature values for von Bertallanfy parameters are <span class="math inline">\(L_\infty = 52.2, k = 0.17, t_0 = -0.75\)</span> for females, <span class="math inline">\(L_\infty = 47.6, k=0.19, t_0 = -1.69\)</span> for males. Length-Weight parameters are <span class="math inline">\(W = 0.0287L^{2.822}\)</span> for females, <span class="math inline">\(W = 0.0359L^{2.745}\)</span> for males <span class="citation" data-cites="Love2011">[@Love2011]</span>. See Section <span class="math inline">\(\ref{bio-params}\)</span> for a discussion of the new analysis of the weight-length relationship. Fecundity is represented in the models as: <span class="math inline">\(1.1185^{-11}W^{4.59}\)</span>. This is a rescaling of the values provided in Dick et al. <span class="citation" data-cites="Dick2017">[-@Dick2017]</span>.</p>
+</section>
+<section id="ecosystem-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="ecosystem-considerations">Ecosystem considerations</h2>
+<!-- Ecosystem considerations that include relevant information on how environmental drivers, prey, competition, predation, and/or (habitat requirements/preferences may affect stock’s status, vital rates (growth, survival, productivity, recruitment), or range and distribution. Ecosystem considerations may also include how these factors, cross-FMP interactions with other fisheries and human social dynamics that may affect the stock (e.g., reliance and dependence by fishing communities, non-target species constraining harvest rates). The length and depth of this section will depend on availability of information from published studies and Integrated Ecosystem Assessment reports, expertise of the STAT, and whether ecosystem factors contribute quantitative information to the assessment. This is not required for an update assessment if a citation to the previous assessment is provided.  -->
+<p>A number of studies correlate environmental conditions to pelagic juvenile abundance and juvenile recruitment of rockfishes, including Yellowtail Rockfish. Year-class strength is particularly impacted during the early larval phase, and annual pelagic juvenile abundance is correlated with physical conditions, especially upwelling strength along the coast <span class="citation" data-cites="Field2005 Laidig2007 Laidig2010 Ralston2013">[e.g., @Field2005; @Laidig2007; @Laidig2010; @Ralston2013]</span>. Rockfish in general are sensitive to the strength and timing of the upwelling cycle in the Eastern Pacific, which affects where pelagic juveniles settle, and impacts the availability of the zooplankton which the young require.</p>
+<p>Yellowtail Rockfish feed mainly on pelagic animals, but are opportunistic, occasionally eating benthic animals as well. Large juveniles and adults eat fish (small Pacific Whiting, Pacific Herring, smelt, anchovies, lanternfishes, and others), along with squid, krill, and other planktonic organisms. <span class="citation" data-cites="Wippel2017">@Wippel2017</span> summarized diet data for Yellowtail Rockfish based on 1069 stomachs collected from 1982 - 1999. Ranked from most to least common, the dominant prey were <em>euphasiids</em> (krill), juvenile hake, gelatinous zooplankton (predominantly salps and ctenophores) and herring. For juvenile yellowtail, the dominant prey taxa were <em>euphasiids</em> and mesozooplankton such as copepods.</p>
+<p>Yellowtail Rockfish are prey for Chinook Salmon, Lingcod, Cormorants, Pigeon Guillemots and Rhinoceros Auklets <span class="citation" data-cites="Love2011">[@Love2011]</span>. Based on Ecopath foodweb modeling, seven predators are identified as high sources of predation mortality: California sea lions, lingcod, porpoises, fur seals, harbor seals, sablefish and skates.</p>
+</section>
+<section id="fishery-description" class="level2">
+<h2 class="anchored" data-anchor-id="fishery-description">Fishery description</h2>
+<!-- Important features of current fishery and relevant history of fishery.  -->
+<p>The rockfish fishery off the U.S. Pacific coast first developed off California in the late 19th century as a hook-and-line fishery <span class="citation" data-cites="Love2002">[@Love2002]</span>. The first record of Yellowtail in a catch reconstruction is commercial catch in Washington in 1889; Oregon has a record shortly thereafter in 1892. Records for recreational fishing begin in 1928. The rockfish trawl fishery was established in the early 1940s, when the United States became involved in World War II and wartime shortage of red meat created an increased demand for other sources of protein <span class="citation" data-cites="Alverson1964 Harry1961 Miller2014">[@Alverson1964; @Harry1961; @Miller2014]</span>.</p>
+<p>During the early development period of the rockfish fishery there was little attention paid to quantifying the species composition of the landings. It wasn’t until the early 1960s that coastal states began to report landings by species <span class="citation" data-cites="Niska1976 TagartKimura1982">[@Niska1976; @TagartKimura1982]</span>. Nonetheless, we do know that Yellowtail rockfish were a part of the fishery. For example, <span class="citation" data-cites="Phillips1964">@Phillips1964</span> reports that prior to the 1940s, Yellowtail rockfish were predominant in commercial catches in northern and central California. Similarly, <span class="citation" data-cites="AlversonWelander1952">@AlversonWelander1952</span> report Yellowtail rockfish among the primary species landed in Washington during World War II. Although we know Yellowtail rockfish were caught during this time, we have no substantive knowledge of the proportion of their contribution to the total landings.</p>
+<p>Between 1967 and 1974, there was a steady but low-level fishery in the Columbia area, primarily prosecuted by Oregon based fishermen. By 1975, an increasing number of U.S. fishermen had begun to prospect fishing grounds along the south central Washington coast. In 1977, the U.S. extended fisheries jurisdiction to 200 nautical miles offshore. Yellowtail rockfish off Oregon and Washington were an important target of the expanding fishery in the late 1970’s and 1980’s. The development of the Yellowtail rockfish fishery provoked improvements in fishing strategies and fishing gear, such as three-seam, triplebridle trawls to increase the vertical opening of the net, and improvements in roller gear needed to access rockfish habitat.</p>
+<!-- KLO: IMO having basically zero description of the fishery after WWII is unacceptable. However, I also don't feel like I have the resources or knowledge to fill this in... -->
+<p>DEVELOPMENT OF MIDWATER TRAWL FISHERY IN THE 1980S. Yellowtail Rockfish were harvested as part of a directed mid-water trawl fishery, with fairly high landings in the 1980s and 1990s. As a midwater species, it is also a commonly caught as bycatch in the hake fishery.</p>
+<p>Today, Yellowtail are predominantly caught with trawl gear, though a recreational fishery also exists. Yellowtail commonly co-occur with a number of rockfish species, especially Canary and Widow Rockfish <span class="citation" data-cites="Tagart1988 Rogers1992">[@Tagart1988; @Rogers1992]</span>. The overfished declarations of both species, and others, around 2000 substantially altered fishing opportunities for Yellowtail. In order to achieve the necessary reduction in the catch of Canary Rockfish, Widow Rockfish and other overfished species, stringent management measures were adopted, limiting harvest of Yellowtail Rockfish as well as other co-occurring species.</p>
+<p>Canary was declared rebuilt in 2015 <span class="citation" data-cites="thorson_status_2015">[@thorson_status_2015]</span>, and commercial and recreational Yellowtail catch increased substantially beginning when that assessment was first used for harvest specifications in 2017. Widow had already been declared rebuilt at that time.</p>
+</section>
+<section id="management-history" class="level2">
+<h2 class="anchored" data-anchor-id="management-history">Management History</h2>
+<!---
+Summary of management history (e.g., changes in mesh sizes, trip limits, or other management actions that may have significantly altered selection, catch rates, or discards). 
+--->
+<p>In 1999, Yellowtail rockfish bycatch in the whiting fishery closed the directed fishery for yellowtail rockfish for the last three months of the year in order to remain within the optimum yield. Yellowtail rockfish co-occur with canary, widow, and several other rockfishes <span class="citation" data-cites="Nagtegaal1983 Tagart1987 RogersPikitch1992">[@Nagtegaal1983; @Tagart1987; @RogersPikitch1992]</span>. Association with these and other rockfish species has substantially altered fishing opportunity for Yellowtail rockfish. Canary rockfish stocks were determined to be overfished in 2000. In order to achieve the necessary reduction in the canary rockfish catch, the Council adopted stringent management measures starting in 2000. Harvest of canary rockfish and their co-occurring species was limited.</p>
+<p>Beginning in 2000, shelf rockfish species could no longer be retained by vessels using bottom trawl footropes with a diameter greater than 8 inches. The use of small footrope gear increases the risk of gear loss in rocky areas. This restriction was intended to provide an incentive for fishers to avoid high-relief, rocky habitat, thus reducing the exposure of many depleted species to trawling. This was reinforced through reductions in landing limits for most shelf rockfish species.</p>
+<p>Since September 2002, trawl and non-trawl Rockfish Conservation Areas (RCAs, areas known to be critical habitat) have been closed to fishing. Alongside these closures, limits on landings were put in place that were designed so as to accommodate incidental bycatch only. These eliminated directed mid-water fishing opportunities for Yellowtail Rockfish in non-tribal trawl fisheries and increased discard rates (which had historically been low). A somewhat greater opportunity to target Yellowtail Rockfish in the trawl fishery became available in 2011 under the trawl rationalization program. However, quotas for Widow and Canary Rockfish generally constrained targeting of Yellowtail Rockfish. This changed with the rebuilding declaration of Canary Rockfish in 2015 (with increases in catch limits beginning in 2017), as well as new exempted fishing permits for midwater trawl gear in 2017-2018. In addition, a number of updates to regulations around trawl and non-trawl RCAs from 2019-2024 further expanded opportunities to fish in abundant Yellowtail habitat.</p>
+<p>While recreational fisheries have caught Yellowtail for many years, recent exempted fishing permits for Holloway longleader gear in Oregon and limited bag limits for Black Rockfish in Washington have pushed recreational fisheries farther offshore and increased the sizes and amount of Yellowtail caught in the recreational sector.</p>
+</section>
+<section id="management-performance" class="level2">
+<h2 class="anchored" data-anchor-id="management-performance">Management performance</h2>
+<!-- Management performance, including a table or tables comparing Overfishing Limit (OFL), Acceptable Biological Catch (ABC), Annual Catch Limit (ACL), landings, and catch (i.e., landings plus discard) for each area and year. Groundfish assessments that estimate dead discarded catch must include a disclaimer noting that total mortality estimates from the WCGOP and from the stock assessment may differ due to the use of different methods. Investigation into how these methods differ is beyond the scope of a benchmark assessment. The rationale for modeling discard mortality can also be provided. This should be included in all update assessments.  -->
+<!-- Marlene might have the info we need? Look at what Chantel has for sablefish -->
+<p>Yellowtail Rockfish are currently managed with stock-specific harvest specifications north of <span class="math inline">\(40^\circ 10^\prime\)</span> N. latitude, and as part of the Southern Shelf Rockfish complex south of <span class="math inline">\(40^\circ 10^\prime\)</span> N. latitude. Total catch (including landings and discards) in both areas has remained well below the management limits and harvest specifications in recent years (Tables <span class="math inline">\(\ref{tab:mnmgt_perform.N}\)</span>)</p>
+</section>
+<section id="fisheries-off-canada-and-alaska" class="level2">
+<h2 class="anchored" data-anchor-id="fisheries-off-canada-and-alaska">Fisheries off Canada and Alaska</h2>
+<!-- Description of fisheries for this species off Canada, Alaska and/or Mexico, including references to any recent assessments of those stocks extending beyond the Council’s jurisdiction. STATs are strongly encouraged to include a summary of catches and estimates of stock size and stock status for the most recent ten years if such information can be assembled without excessive difficulty. This is not required for an update assessment.    -->
+<!-- See if AK has a more up to date assessment (MF) and add updated information on the Canada Assessment (IT) -->
+<p>Yellowtail Rockfish are a target species in Canada with catches between 4000-6000 mt since the late 1980s. It has the second largest single-species Total Allowable Catch (TAC) among rockfish species under quota management for the Canadian Pacific Coast. In Canada it is caught in similar amounts by bottom and midwater trawl gear. A 2015 Stock Assessment conducted by the Fisheries and Oceans Canada found the stock to be at 50% of unfished spawning biomass, in the “healthy” range <span class="citation" data-cites="DFO2015">[@DFO2015]</span>.</p>
+<p>The Alaska Fisheries Science Center assesses Yellowtail Rockfish as one of 25 species in the “Other Rockfish” complex in the Gulf of Alaska. The 2015 full assessment of this complex found no evidence of overfishing, which is confirmed in the 2016 SAFE document <span class="citation" data-cites="AFSC2016">[@AFSC2016]</span>.</p>
+<p>Limited catches of Yellowtail are reported as far south as Baja California <span class="citation" data-cites="Love2011">[@Love2011]</span>.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
