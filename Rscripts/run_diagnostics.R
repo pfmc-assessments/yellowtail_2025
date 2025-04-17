@@ -1,7 +1,8 @@
 # first draft script to run diagnostics
-# TODO: add paralelization
 directory <- here::here("Model_Runs")
-base_model_name <- "4.12_age_and_M"
+base_model_name <- "5.07_smurf_fix_hake"
+
+exe_loc <- here(directory, 'ss3.exe')
 
 profile_info <- nwfscDiag::get_settings_profile( 
   parameters =  c("NatM_uniform_Fem_GP_1", "SR_BH_steep", "SR_LN(R0)"),
@@ -15,11 +16,19 @@ model_settings <- nwfscDiag::get_settings(
   mydir = file.path(directory),
   settings = list(
     base_name = base_model_name,
-      run = c("jitter", "profile", "retro"),
-      profile_details = profile_info )
-    )
+    run = c("jitter", "profile", "retro"),
+    profile_details = profile_info,
+    exe = exe_loc)
+)
+
+
+# run in parallel
+future::plan(future::multisession(workers = parallelly::availableCores(omit = 1)))
 
 nwfscDiag::run_diagnostics(mydir = directory, model_settings = model_settings)
+
+# back to sequential processing
+future::plan(future::sequential)
 
 directory <- here::here("Model_Runs")
 base_model_name <- "4.13_age_and_M_recdev2"

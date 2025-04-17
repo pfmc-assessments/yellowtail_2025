@@ -2,13 +2,12 @@
 
 ashop_lengths_old <- readxl::read_excel(
   here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
-  sheet = "YLT_Length data 1976-1989")
-ashop_lengths_new <- suppressWarnings(
-  readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
-                     sheet = "YLT_Length data1990-2023")
-)  # warning is about converting text to numeric for HAUL_JOIN, but values seems sensible, no NAs
-ashop_lengths_2024 <- readxl::read_excel('Data/Confidential/ASHOP/Oken_YLT_Length data_2024_020425.xlsx') |>
-  mutate(HAUL_JOIN = as.numeric(HAUL_JOIN))
+  sheet = "YLT_Length data 1976-1989",
+  col_types = c(rep('guess', 4), 'text', rep('guess', 11)))
+ashop_lengths_new <- readxl::read_excel(here("Data/Confidential/ASHOP/Oken_YLT_Length data_1976-2023_102824_ASHOP.xlsx"), 
+                                        sheet = "YLT_Length data1990-2023", 
+                                        col_types = c(rep('guess', 3), 'text', rep('guess', 10)))
+ashop_lengths_2024 <- readxl::read_excel('Data/Confidential/ASHOP/Oken_YLT_Length data_2024_020425.xlsx') 
 
 ashop_lengths <- bind_rows(
   select(ashop_lengths_old, Sex = SEX, Length_cm = SIZE_GROUP, FREQUENCY, Year = YEAR, HAUL_JOIN),
@@ -43,7 +42,7 @@ saveRDS(ss3_ashop_comps, file = 'Data/processed/ss3_ashop_comps_2023.rds')
 ashop_ages <- readxl::read_excel('Data/Confidential/ASHOP/Oken_YLT_Bio data_ages added_2019-2024_022125.xlsx')
 
 ashop_ages |>
-  filter(YEAR != 2020, !is.na(AGE)) |> # only one sample
+  filter(YEAR != 2020, !is.na(AGE)) |> # only one sample in 2020
   rename(trawl_id = HAUL_JOIN) |>
   as.data.frame() |>
   nwfscSurvey::get_raw_comps(comp_bins = age_bin, comp_column_name = 'AGE', input_n_method = 'tows', two_sex_comps = TRUE,

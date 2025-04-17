@@ -742,9 +742,67 @@ r4ss::retro(dir = 'model_runs', oldsubdir = '5.06_smurf_ocean', newsubdir = '5.0
             years = c(-(1:5), -10), exe = exe_loc, extras = '-nohess')
 future::plan(future::sequential)
 
+# Fix hake selectivity ----------------------------------------------------
 
+mod <- SS_read('model_runs/5.03_smurf')
+
+mod$ctl$size_selex_parms['SizeSel_P_1_At-Sea-Hake(2)', c('INIT', 'PHASE')] <- c(55, -99)
+
+SS_write(mod, dir = 'model_runs/5.07_smurf_fix_hake')
+
+out <- SS_output('model_runs/5.07_smurf_fix_hake')
+
+
+# Correct hake input N ----------------------------------------------------
+
+mod <- SS_read('model_runs/5.07_smurf_fix_hake')
+
+hake_len <- readRDS('data/processed/ss3_ashop_comps_2023.rds') |>
+  rename(part = partition)
+
+mod$dat$len_info$minsamplesize <- 0.01
+mod$dat$age_info$minsamplesize <- 0.01
+
+mod$dat$lencomp <- mod$dat$lencomp |>
+  filter(fleet != 2) |> # remove bad comps
+  bind_rows(hake_len)
+
+SS_write(mod, 'model_runs/5.08_correct_input_n')
+tune_comps(dir = 'model_runs/5.08_correct_input_n', niters_tuning = 0, 
+           exe = exe_loc, extras = '-nohess')
+
+out <- SSgetoutput(dirvec = c('model_runs/5.07_smurf_fix_hake', 'model_runs/5.08_correct_input_n'))
+
+out |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3))
+
+
+# No extra SE -------------------------------------------------------------
+
+mod <- SS_read('model_runs/5.08_correct_input_n')
+
+mod$ctl$Q_parms[grep('extra', rownames(mod$ctl$Q_parms)), 'INIT'] <- 0
+mod$ctl$Q_parms[grep('extra', rownames(mod$ctl$Q_parms)), 'PHASE'] <- -99
+
+mod$ctl$size_selex_parms[grepl('Mal', rownames(mod$ctl$size_selex_parms)) &
+                           grepl('H&L', rownames(mod$ctl$size_selex_parms)), 'PHASE'] <- -99
+
+mod$ctl$SR_parms['SR_sigmaR', 'INIT'] <- 0.5
+
+SS_write(mod, 'model_runs/5.09_no_extra_SE', overwrite = TRUE)
+
+out <- SSgetoutput(dirvec = c('model_runs/5.08_correct_input_n', 'model_runs/5.09_no_extra_SE'))
+
+out |>
+  SSsummarize() |> 
+  SSplotComparisons(subplots = c(1,3), new = FALSE)
+
+SS_plots(out[[2]])
 
 # Update # Update # Update bias adjustment --------------------------------------------------
+
+
 
 mod <- SS_read('model_runs/2.01_extend_2024')
 
