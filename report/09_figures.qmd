@@ -16,11 +16,17 @@ rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 uncertainty <- "r4ss_plots/recdevs2_withbars.png" %in% dir("r4ss_plots")
 ```
 
-![Map depicting the boundaries for the two genetic stocks of Yellowtail](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
+![Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone.](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
 
 {{< pagebreak >}}
 
 ## Data
+
+![Data presence by year for each fleet, where circle area is relative within a data type. Circles are proportional to total catch for catches; to precision for indices, discards, and mean body weight observations; and to total sample size for compositions and mean weight- or length-at-age observations. Observations excluded from the likelihood have equal size for all years.](r4ss_plots/data_plot2.png){fig-alt='Tabular information for this figure can be found in the data file.' #fig-data}
+
+[Landings (mt) by fleet used in the base model.](){fig-alt="See Table TODO for landings by fleet." #fig-catch}
+
+### Indices
 
 ![Q-Q plot diagnostics for ORBS index](Figures/ORBSqq.png){fig-alt='A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-orbsqq}
 
@@ -30,7 +36,24 @@ uncertainty <- "r4ss_plots/recdevs2_withbars.png" %in% dir("r4ss_plots")
 
 ![Time series of the relative index of abundance from SMURF YOY index](Figures/SMURFIndex.png){fig-alt='An annual relative index of abundance plotted from 2014 to 2024 with error bars' #fig-smurfindex}
 
-TODO: add plot of time-varying selectivity
+### Composition data
+![Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed).](r4ss_plots/comp_lenfit__aggregated_across_time.png){fig-alt="Aggregated length comps are fit reasonably well." #fig-len-agg-fit}
+
+![Length composition data for all fleets (red female, blue male, grey unsexed).](r4ss_plots/comp_lendat__multi-fleet_comparison.png){fig-alt="See 'Obs' column in CompReport.sso for values." #fig-len-all-bubbles}
+
+![Pearson residuals for fit to length composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected).](r4ss_plots/comp_lenfit__multi-fleet_comparison.png){fig-alt="See 'Pearson' column in CompReport.sso for values." #fig-len-all-pearson}
+
+![Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agefit__aggregated_across_time.png){fig-alt="Aggregated age comps are fit reasonably well." #fig-age-agg-fit}
+
+![Marginal age composition data for all fleets (red female, blue male, grey unsexed). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agedat__multi-fleet_comparison.png){fig-alt="See 'Obs' column in CompReport.sso for values." #fig-age-all-bubbles}
+
+![Pearson residuals for fit to marginal age composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agefit__multi-fleet_comparison.png){fig-alt="See 'Pearson' column in CompReport.sso for values." #fig-age-all-pearson}
+
+![Prior distributions and parameter estimates for natural mortality. Black lines show prior distributions, blue lines show maximum likelihood estimate and associated uncertainty.](Figures/parameter_distributions.png){fig-alt="TODO" #fig-param-dist}
+
+TODO: add mean length and age plots?
+
+TODO: add CAAL plots?
 
 {{< pagebreak >}}
 
@@ -38,19 +61,22 @@ TODO: add plot of time-varying selectivity
 
 ## Biology
 
-![Model estimated length-at-age in the beginning of the year. Shaded area indicates 95 percent distribution of length-at-age around the estimated growth curve.](r4ss_plots\bio1_sizeatage.png){fig-alt='Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters.' #fig-growth1}
+![Model estimated length-at-age in the beginning of the year. Shaded area indicates 95 percent distribution of length-at-age around the estimated growth curve.](r4ss_plots/bio1_sizeatage.png){fig-alt='Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters.' #fig-growth1}
+
+![Relationship between growth, maturity, and weight. Length at age is in the top-left panel with weight (thick lines) and maturity (thin lines) shown in top-right and lower-left panels.](r4ss_plots/bio3_sizeatage_plus_WT_and_MAT.png){fig-alt="See biology at age and biology at length tables in Report.sso for information on the relationship between growth maturity and weight." #fig-growth2}
+
+TODO: add fit to weight-length data?
 
 ## Selectivity
 
-![Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male.](r4ss_plots\sel01_multiple_fleets_length1.png){fig-alt='See the LEN\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-length}
+![Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male.](r4ss_plots/sel01_multiple_fleets_length1.png){fig-alt='See the LEN\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-length}
 
 
-![Ending-year selectivity at age derived from selectivity at length (solid female, dashed male).](r4ss_plots\sel02_multiple_fleets_age2.png){fig-alt='See the AGE\_SELEX table (with Factor = "Asel2") in Report.sso file for values.' #fig-sel-age}
+![Ending-year selectivity at age derived from selectivity at length (solid female, dashed male).](r4ss_plots/sel02_multiple_fleets_age2.png){fig-alt='See the AGE\_SELEX table (with Factor = "Asel2") in Report.sso file for values.' #fig-sel-age}
 
 ![Selectivity by time period for those fleets with time-varying selectivity.](Figures\selectivity_time-varying.png){fig-alt='See the AGE\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-tv}
 
 ## Fits to Data
-
 
 ## Time-series
 

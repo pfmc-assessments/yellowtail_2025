@@ -23,3 +23,6 @@ table_all(replist = model, dir = here::here("report"))
 # make custom selectivity plot
 source("Rscripts/plot_selex.R")
 plot_yellowtail_tv_selex(model)
+
+# make custom parameter prior/est plot TODO: modify to exclude male M?
+SSplotPars(model, strings = "NatM", ncols = 1, nrows = 2, plot = FALSE, print = TRUE, plotdir = "report/Figures")

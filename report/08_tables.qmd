@@ -208,7 +208,7 @@ parcount_table |>
 ::: {.landscape}
 
 ```{r}
-#| label: tbl-n-pars
+#| label: tbl-pars
 #| warning: false
 #| echo: false
 #| tbl-cap: !expr if(eval_tables) pars_cap
