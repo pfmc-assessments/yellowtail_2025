@@ -24,6 +24,16 @@ table_all(replist = model, dir = here::here("report"))
 source("Rscripts/plot_selex.R")
 plot_yellowtail_tv_selex(model)
 
+# make custom index plot
+source("Rscripts/plot_indices.R")
+plot_indices(
+  model,
+  dir = "report/Figures",
+  fit = TRUE,
+  log = FALSE,
+  fleets = c(6, 5, 4, 7)
+)
+
 # make custom parameter prior/est plot TODO: modify to exclude male M?
 SSplotPars(
   model,
@@ -36,3 +46,7 @@ SSplotPars(
   pheight = 3.5,
   newheaders = "Female natural mortality (M)"
 )
+
+# NOTE: manually update comparisons with Canada via script:
+# Rscripts\explore_Canadian_comparisons.R
+
