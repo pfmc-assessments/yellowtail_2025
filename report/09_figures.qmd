@@ -13,7 +13,7 @@ rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 #| echo: false 
 #| warning: false 
 #| eval: true 
-uncertainty <- "r4ss_plots/recdevs2_withbars.png" %in% dir("r4ss_plots")
+uncertainty <- "recdevs2_withbars.png" %in% dir("r4ss_plots")
 ```
 
 ```{r}

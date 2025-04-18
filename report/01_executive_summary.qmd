@@ -37,8 +37,17 @@ catches_es_table |>
 
 ```
 
-![Landings by fleet used in the base model where catches in metric tons by fleet are stacked](r4ss_plots/catch2_landings_stacked.png){fig-alt='See Table TODO for landings by fleet.' width=6in #fig-es-catch}
+```{r} 
+#| label: fig-es-landings
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Landings in metric tons (mt) by year for each fleet."
+#| fig-alt: "See Table TODO for values."
 
+knitr::include_graphics("r4ss_plots/catch2_landings_stacked.png")
+
+```
 \clearpage
 
 ## Data and assessment{-}
@@ -79,11 +88,31 @@ ssb_es_table |>
   gt::as_latex()
 ```
 
-![Estimated time series of spawning output for the base model](r4ss_plots/ts7_Spawning_output.png){fig-alt='See Table TODO for spawning output time series.' width=6in #fig-es-ssb}
+```{r} 
+#| label: fig-es-sb
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated time series of spawning biomass for the base model."
+#| fig-alt: "See table TODO for values."
+#| fig-pos: H
 
-![Estimated time series of fraction of unfished spawning output for the base model](r4ss_plots/ts9_Relative_spawning_output.png){fig-alt='See Table TODO for spawning output time series.' width=6in #fig-es-frac-unfished}
+knitr::include_graphics("r4ss_plots/ts7_Spawning_output_with_95_intervals.png")
 
-\clearpage
+```
+
+```{r} 
+#| label: fig-es-depl
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated time series of fraction of unfished spawning biomass for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+knitr::include_graphics("r4ss_plots/ts9_Relative_spawning_output_intervals.png")
+
+```
 
 ## Recruitment{-}
 
@@ -119,10 +148,33 @@ recr_es_table |>
 
 ```
 
-![Estimated time series of age-0 recruits (1000s) for the base model](r4ss_plots/ts11_Age-0_recruits_(1000s).png){fig-alt='See Table TODO for recruitment time series.' width=6in #fig-es-frac-unfished}
+```{r} 
+#| label: fig-es-recruits
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated time series of age-0 recruits for the base model."
+#| fig-alt: ""
+#| fig-pos: H
 
-![Estimated time series of recruitment deviations for the base model](r4ss_plots/recdevs1_points.png){fig-alt='See Table TODO for estimates of recruitment deviation parameters.' width=6in #fig-es-rec-devs}
+knitr::include_graphics("r4ss_plots/ts11_Age-0_recruits_(1000s)_with_95_asymptotic_intervals.png")
 
+```
+
+<!-- 
+```{r} 
+#| label: fig-es-recdevs
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated time series of recruitment deviations for the base model."
+#| fig-alt: ""
+#| fig-pos: H
+
+knitr::include_graphics("r4ss_plots/recdevs2_withbars.png")
+
+```
+-->
 
 \clearpage
 ## Exploitation status{-}
@@ -156,8 +208,18 @@ spr_es_table |>
 
 ```
 
+```{r} 
+#| label: fig-es-spr
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: "Estimated time series of relative fishing intensity for the base model."
+#| fig-alt: ""
+#| fig-pos: H
 
-![Estimated time series of the fishing intensity (1 - SPR), where SPR is the spawning potential ratio, with approximate 95\% asymptotic intervals. The horizontal line at 0.6 corresponds to SPR = 0.4, the management reference point for yellowtail rockfish. The horizontal line at 1.0 corresponds to SPR = 0 (all spawning fish removed from the population).](r4ss_plots/SPR3_ratiointerval.png){fig-alt='See Table TODO for 1-SPR time series.' width=6in #fig-es-spr}
+knitr::include_graphics("r4ss_plots/SPR3_ratiointerval.png")
+
+```
 
 \clearpage
 
@@ -207,10 +269,6 @@ reference_points_table |>
   gt::as_latex()
 
 ```
-
-![Equilibrium yield curve for the base case model.](r4ss_plots/yield2_yield_curve_with_refpoints.png){fig-alt='See SPR/YPR\_Profile table in Report.sso for values.' width=6in #fig-es-yield}
-
-\clearpage
 
 ## Management performance{-}
 
