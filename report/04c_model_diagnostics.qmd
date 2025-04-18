@@ -4,8 +4,16 @@
 If possible, ranges depicting uncertainty should include at least three runs: (a) one judged most probable; (b) at least one that depicts the range of uncertainty in the direction of lower current biomass levels; and (c) one that depicts the range of uncertainty in the direction of higher current biomass levels. The entire range of uncertainty should be carried through stock projections and decision table analyses.  -->
 
 ### Convergence
+```{r} 
+#| label: 'jitter'
+#| echo: false 
+#| eval: true 
+jit <- read.csv(here::here("report/diagnostics/jitter_results.csv"))
+jit_good <- sum(jit$Lowest.NLL == "Best Fit")
+jit_total <- nrow(jit)
+```
 
-<!-- Convergence status and convergence criteria for the base-run model (or proposed base run). Randomization of starting parameter value run (e.g., jitter) results or other evidence of search for global best estimates.  -->
+The maximum parameter gradient was `r signif(mod_out$maximum_gradient_component, 2)` and the jitter analysis showed that `r jit_good` out of `r jit_total` model runs with jittered initial values converged to the same model estimate.
 
 ### Sensitivity Analyses
 
@@ -15,13 +23,18 @@ If possible, ranges depicting uncertainty should include at least three runs: (a
  
 ### Retrospective Analysis
 
+The retrospective analysis showed little change in the population trajectory (@fig-retro1).
 <!-- Retrospective analysis, where the model is fitted to a series of shortened input data sets, with the most recent years of input data being dropped.  -->
  
 <!-- Historical analysis (plot of actual estimates from current and previous assessments).  -->
+TODO: add text about historical analysis: @fig-historical
 
 ### Likelihood Profiles
 
 <!-- Evaluation of model parameters. Likelihood profile for the base model over key parameters (typically natural morality, stock-recruit steepness, and equilibrium recruitment, or R0). The profile should indicate all likelihood values for individual components (e.g., indices by survey, compositional data for each type and fleet).   -->
+TODO: add text here
+Profiles are illustrated in figures @fig-r0-profile to @fig-h-profile-pars.
+Specific figures are @fig-r0-profile, @fig-r0-profile-pars, @fig-m-profile, @fig-m-profile-pars, @fig-h-profile, @fig-h-profile-pars.
 
 ## Unresolved Problems and Major Uncertainties
 
