@@ -21,6 +21,7 @@ uncertainty <- "recdevs2_withbars.png" %in% dir("r4ss_plots")
 #| echo: false
 #| warning: false
 #| eval: true
+#| fit-cap: "Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone."
 #| fig-alt: "A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary."
 
 knitr::include_graphics(
@@ -37,6 +38,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Data presence by year for each fleet, where circle area is relative within a data type. Circles are proportional to total catch for catches; to precision for indices, discards, and mean body weight observations; and to total sample size for compositions and mean weight- or length-at-age observations. Observations excluded from the likelihood have equal size for all years."
 #| fig-alt: "Tabular information for this figure can be found in the data file."
 
 knitr::include_graphics(
@@ -65,6 +67,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Q-Q plot diagnostics for ORBS index."
 #| fig-alt: "A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
@@ -77,6 +80,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Time series of the relative index of abundance from ORBS dockside sampling from ODFW."
 #| fig-alt: "An annual relative index of abundance plotted from 2001 to 2024 with error bars."
 
 knitr::include_graphics(
@@ -89,6 +93,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Q-Q plot diagnostics for SMURF YOY index."
 #| fig-alt: "A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
@@ -101,6 +106,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Time series of the relative index of abundance from SMURF YOY index."
 #| fig-alt: "An annual relative index of abundance plotted from 2014 to 2024 with error bars."
 
 knitr::include_graphics(
@@ -128,6 +134,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed)"
 #| fig-alt: "Aggregated length comps are fit reasonably well."
 
 knitr::include_graphics(
@@ -140,6 +147,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Length composition data for all fleets (red female, blue male, grey unsexed)."
 #| fig-alt: "See 'Obs' column in CompReport.sso for values."
 
 knitr::include_graphics(
@@ -152,6 +160,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Pearson residuals for fit to length composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected)."
 #| fig-alt: "See 'Pearson' column in CompReport.sso for values."
 
 knitr::include_graphics(
@@ -164,6 +173,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fit-cap: "Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length."
 #| fig-alt: "Aggregated age comps are fit reasonably well."
 
 knitr::include_graphics(
@@ -176,6 +186,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Marginal age composition data for all fleets (red female, blue male, grey unsexed). The WCGBTS ages are not included as they are conditioned on length."
 #| fig-alt: "See 'Obs' column in CompReport.sso for values."
 
 knitr::include_graphics(
@@ -188,6 +199,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Pearson residuals for fit to marginal age composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
 #| fig-alt: "See 'Pearson' column in CompReport.sso for values."
 
 knitr::include_graphics(
@@ -200,6 +212,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Prior distributions and parameter estimates for female natural mortality. Black lines show prior distributions, blue lines show maximum likelihood estimate and associated uncertainty. Male natural mortality is represented as an offset from females and does have an associated prior distribution."
 #| fig-alt: "TODO"
 
 knitr::include_graphics(
@@ -222,6 +235,7 @@ TODO: add CAAL plots?
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Model estimated length-at-age in the beginning of the year. Shaded area indicates 95 percent distribution of length-at-age around the estimated growth curve."
 #| fig-alt: "Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters."
 
 knitr::include_graphics(
@@ -234,6 +248,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Relationship between growth, maturity, and weight. Length at age is in the top-left panel with weight (thick lines) and maturity (thin lines) shown in top-right and lower-left panels."
 #| fig-alt: "See biology at age and biology at length tables in Report.sso for information on the relationship between growth maturity and weight."
 
 knitr::include_graphics(
@@ -248,6 +263,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male."
 #| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
 knitr::include_graphics(
@@ -260,6 +276,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Ending-year selectivity at age derived from selectivity at length (solid female, dashed male)."
 #| fig-alt: "See the AGE_SELEX table (with Factor = 'Asel2') in Report.sso file for values."
 
 knitr::include_graphics(
@@ -272,7 +289,8 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-alt: "See the AGE_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
+#| fit-cap: "Selectivity by time period for those fleets with time-varying selectivity."
+#| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
 knitr::include_graphics(
     "Figures/selectivity_time-varying.png"
@@ -289,7 +307,7 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Estimated time series of spawning output for the base model."
-#| fig-alt: ""
+#| fig-alt: "See table @tbl-ts"
 #| fig-pos: H
 
 if (uncertainty) {
@@ -309,7 +327,7 @@ if (uncertainty) {
 #| warning: false
 #| eval: true
 #| fig-cap: "Estimated time series of fraction of unfished spawning output for the base model."
-#| fig-alt: "See table TODO"
+#| fig-alt: "See table @tbl-ts"
 #| fig-pos: H
 
 if (uncertainty) {
@@ -329,7 +347,7 @@ if (uncertainty) {
 #| warning: false
 #| eval: true
 #| fig-cap: "Estimated time series of age-0 recruits for the base model."
-#| fig-alt: ""
+#| fig-alt: "See table @tbl-ts"
 #| fig-pos: H
 
 if (uncertainty) {
@@ -351,7 +369,7 @@ if (uncertainty) {
 #| warning: false
 #| eval: true
 #| fig-cap: "Estimated time series of recruitment deviations for the base model."
-#| fig-alt: ""
+#| fig-alt: "See table @tbl-ts"
 #| fig-pos: H
 
 if (uncertainty) {
@@ -372,7 +390,7 @@ if (uncertainty) {
 #| warning: false
 #| eval: true
 #| fig-cap: "Estimated time series of fishing intensity for the base model."
-#| fig-alt: ""
+#| fig-alt: "See table @tbl-ts"
 #| fig-pos: H
 
 if (uncertainty) {
@@ -392,7 +410,7 @@ if (uncertainty) {
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Phase plot of fishing intensity versus fraction unfished for the base model."
-#| fig-alt: ""
+#| fig-alt: "See table @tbl-ts for the values of the fraction unfished and fishing intensity which are related in this figure."
 #| fig-pos: H
 
 knitr::include_graphics(
@@ -407,7 +425,7 @@ knitr::include_graphics(
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated yield curve with reference points for the base model."
-#| fig-alt: ""
+#| fig-alt: "Yield curve shows equilibrium yield as a domed function of fraction unfished, with a peak slightly above 0.2, a target at 0.4, and a current estimate around 0.6."
 #| fig-pos: H
 
 knitr::include_graphics(
