@@ -44,7 +44,7 @@ ggsave("report/Figures/Canada_vs_US_recdevs.png", width = 7, height = 7)
 
 r4ss::plot_twopanel_comparison(
   mods = list(model, can2024),
-  subplot1 = 18,
+  subplot1 = 4,
   subplot2 = 11,
   legendlabels = c("U.S. base model", "Canadian model from 2024"),
   file = "Canada_vs_US_timeseries.png",

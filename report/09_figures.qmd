@@ -544,3 +544,31 @@ knitr::include_graphics(
     "diagnostics/parameter_panel_SR_BH_steep.png"
 )
 ```
+
+
+```{r}
+#| label: fig-can-timeseries
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Time series of fraction of unfished spawning output (top) and recruitment deviations (bottom) for the current base model and the 2024 Canadian stock assessment. The Canadian model estimates are based on MLE estimates and associated uncertainty rather than the posterior distributions used in the production assessment."
+#| fig-alt: "Canadian and U.S. models show similar declines over the 1960s, stability in the 1980s, and increases in the 2000s."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "Figures/Canada_vs_US_timeseries.png"
+)
+```
+
+```{r}
+#| label: fig-can-recdevs
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Recruitment deviations from the current base model and the 2024 Canadian stock assessment. The Canadian model estimates are based on MLE estimates rather than the posterior distributions used in the production assessment. The black line represents the 1-to-1 relationship while the blue line and gray interval show the results of a linear model fit to the estimates."
+#| fig-alt: "Recruitment deviations showing significant correlation, with 1990, 2000, and 2008 as some of the biggest recruitment deviations in both models."
+#| fig-pos: H
+knitr::include_graphics(
+    "Figures/Canada_vs_US_recdevs.png"
+)
+```
