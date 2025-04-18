@@ -1,5 +1,5 @@
-# Figures 
- 
+# Figures
+
 ```{r} 
 #| label: 'set-rda-dir-figs'
 #| echo: false 
@@ -16,40 +16,183 @@ rda_dir <- 'C:/Users/kiva.oken/Desktop/yellowtail_2025/report/rda_files'
 uncertainty <- "r4ss_plots/recdevs2_withbars.png" %in% dir("r4ss_plots")
 ```
 
-![Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone.](Figures/assess_region_map_v2.png){fig-alt='A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.' #fig-assessregionmap}
+```{r}
+#| label: fig-assessregionmap
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary."
+
+knitr::include_graphics(
+    "Figures/assess_region_map_v2.png"
+)
+```
 
 {{< pagebreak >}}
 
 ## Data
 
-![Data presence by year for each fleet, where circle area is relative within a data type. Circles are proportional to total catch for catches; to precision for indices, discards, and mean body weight observations; and to total sample size for compositions and mean weight- or length-at-age observations. Observations excluded from the likelihood have equal size for all years.](r4ss_plots/data_plot2.png){fig-alt='Tabular information for this figure can be found in the data file.' #fig-data}
+```{r}
+#| label: fig-data
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "Tabular information for this figure can be found in the data file."
 
-[Landings (mt) by fleet used in the base model.](){fig-alt="See Table TODO for landings by fleet." #fig-catch}
+knitr::include_graphics(
+    "r4ss_plots/data_plot2.png"
+)
+```
+
+```{r}
+#| label: fig-catch
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Total catch (mt) by fleet (including discards) used in the base model."
+#| fig-alt: "See Table TODO for landings by fleet."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "r4ss_plots/catch2_landings_stacked.png"
+)
+```
 
 ### Indices
 
-![Q-Q plot diagnostics for ORBS index](Figures/ORBSqq.png){fig-alt='A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-orbsqq}
+```{r}
+#| label: fig-orbsqq
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
-![Time series of the relative index of abundance from ORBS dockside sampling from ODFW](Figures/ORBSIndex.png){fig-alt='An annual relative index of abundance plotted from 2001 to 2024 with error bars' #fig-orbsindex}
+knitr::include_graphics(
+    "Figures/ORBSqq.png"
+)
+```
 
-![Q-Q plot diagnostics for SMURF YOY index](Figures/SMURFqq.png){fig-alt='A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theorhetical quantiles on the x-axis. Data fit the one to one line well' #fig-smurfqq}
+```{r}
+#| label: fig-orbsindex
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "An annual relative index of abundance plotted from 2001 to 2024 with error bars."
 
-![Time series of the relative index of abundance from SMURF YOY index](Figures/SMURFIndex.png){fig-alt='An annual relative index of abundance plotted from 2014 to 2024 with error bars' #fig-smurfindex}
+knitr::include_graphics(
+    "Figures/ORBSIndex.png"
+)
+```
+
+```{r}
+#| label: fig-smurfqq
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
+
+knitr::include_graphics(
+    "Figures/SMURFqq.png"
+)
+```
+
+```{r}
+#| label: fig-smurfindex
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "An annual relative index of abundance plotted from 2014 to 2024 with error bars."
+
+knitr::include_graphics(
+    "Figures/SMURFIndex.png"
+)
+```
 
 ### Composition data
-![Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed).](r4ss_plots/comp_lenfit__aggregated_across_time.png){fig-alt="Aggregated length comps are fit reasonably well." #fig-len-agg-fit}
 
-![Length composition data for all fleets (red female, blue male, grey unsexed).](r4ss_plots/comp_lendat__multi-fleet_comparison.png){fig-alt="See 'Obs' column in CompReport.sso for values." #fig-len-all-bubbles}
+```{r}
+#| label: fig-len-agg-fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "Aggregated length comps are fit reasonably well."
 
-![Pearson residuals for fit to length composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected).](r4ss_plots/comp_lenfit__multi-fleet_comparison.png){fig-alt="See 'Pearson' column in CompReport.sso for values." #fig-len-all-pearson}
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit__aggregated_across_time.png"
+)
+```
 
-![Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agefit__aggregated_across_time.png){fig-alt="Aggregated age comps are fit reasonably well." #fig-age-agg-fit}
+```{r}
+#| label: fig-len-all-bubbles
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See 'Obs' column in CompReport.sso for values."
 
-![Marginal age composition data for all fleets (red female, blue male, grey unsexed). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agedat__multi-fleet_comparison.png){fig-alt="See 'Obs' column in CompReport.sso for values." #fig-age-all-bubbles}
+knitr::include_graphics(
+    "r4ss_plots/comp_lendat__multi-fleet_comparison.png"
+)
+```
 
-![Pearson residuals for fit to marginal age composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length.](r4ss_plots/comp_agefit__multi-fleet_comparison.png){fig-alt="See 'Pearson' column in CompReport.sso for values." #fig-age-all-pearson}
+```{r}
+#| label: fig-len-all-pearson
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
 
-![Prior distributions and parameter estimates for natural mortality. Black lines show prior distributions, blue lines show maximum likelihood estimate and associated uncertainty.](Figures/parameter_distributions.png){fig-alt="TODO" #fig-param-dist}
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit__multi-fleet_comparison.png"
+)
+```
+
+```{r}
+#| label: fig-age-agg-fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "Aggregated age comps are fit reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_agefit__aggregated_across_time.png"
+)
+```
+
+```{r}
+#| label: fig-age-all-bubbles
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See 'Obs' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_agedat__multi-fleet_comparison.png"
+)
+```
+
+```{r}
+#| label: fig-age-all-pearson
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_agefit__multi-fleet_comparison.png"
+)
+```
+
+```{r}
+#| label: fig-param-dist
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "TODO"
+
+knitr::include_graphics(
+    "Figures/parameter_distributions.png"
+)
+```
 
 TODO: add mean length and age plots?
 
@@ -61,27 +204,83 @@ TODO: add CAAL plots?
 
 ## Biology
 
-![Model estimated length-at-age in the beginning of the year. Shaded area indicates 95 percent distribution of length-at-age around the estimated growth curve.](r4ss_plots/bio1_sizeatage.png){fig-alt='Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters.' #fig-growth1}
+```{r}
+#| label: fig-growth1
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters."
 
-![Relationship between growth, maturity, and weight. Length at age is in the top-left panel with weight (thick lines) and maturity (thin lines) shown in top-right and lower-left panels.](r4ss_plots/bio3_sizeatage_plus_WT_and_MAT.png){fig-alt="See biology at age and biology at length tables in Report.sso for information on the relationship between growth maturity and weight." #fig-growth2}
+knitr::include_graphics(
+    "r4ss_plots/bio1_sizeatage.png"
+)
+```
 
-TODO: add fit to weight-length data?
+```{r}
+#| label: fig-growth2
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See biology at age and biology at length tables in Report.sso for information on the relationship between growth maturity and weight."
+
+knitr::include_graphics(
+    "r4ss_plots/bio3_sizeatage_plus_WT_and_MAT.png"
+)
+```
 
 ## Selectivity
 
-![Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male.](r4ss_plots/sel01_multiple_fleets_length1.png){fig-alt='See the LEN\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-length}
+```{r}
+#| label: fig-sel-length
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
+knitr::include_graphics(
+    "r4ss_plots/sel01_multiple_fleets_length1.png"
+)
+```
 
-![Ending-year selectivity at age derived from selectivity at length (solid female, dashed male).](r4ss_plots/sel02_multiple_fleets_age2.png){fig-alt='See the AGE\_SELEX table (with Factor = "Asel2") in Report.sso file for values.' #fig-sel-age}
+```{r}
+#| label: fig-sel-age
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See the AGE_SELEX table (with Factor = 'Asel2') in Report.sso file for values."
 
-![Selectivity by time period for those fleets with time-varying selectivity.](Figures\selectivity_time-varying.png){fig-alt='See the AGE\_SELEX table (with Factor = "Lsel") in Report.sso file for values.' #fig-sel-tv}
+knitr::include_graphics(
+    "r4ss_plots/sel02_multiple_fleets_age2.png"
+)
+```
+
+```{r}
+#| label: fig-sel-tv
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "See the AGE_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
+
+knitr::include_graphics(
+    "Figures/selectivity_time-varying.png"
+)
+```
 
 ## Fits to Data
 
 ## Time-series
 
-![Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40°10', but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling](Figures\historical_assessment_timeseries.png){fig-alt='A time series of 13 colored lines showing estimates from 9 different assessment. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment.' #fig-historical}
+```{r}
+#| label: fig-historical
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
 
+knitr::include_graphics(
+    "Figures/historical_assessment_timeseries.png"
+)
+```
 
 ```{r} 
 #| label: fig-sb
@@ -103,7 +302,6 @@ if (uncertainty) {
 }
 ```
 
-
 ```{r} 
 #| label: fig-depl
 #| echo: false
@@ -123,7 +321,6 @@ if (uncertainty) {
     )
 }
 ```
-
 
 ```{r} 
 #| label: fig-recruits
@@ -146,7 +343,6 @@ if (uncertainty) {
 ```
 
 \pagebreak
-
 
 ```{r} 
 #| label: fig-recdevs
@@ -189,7 +385,6 @@ if (uncertainty) {
 }
 ```
 
-
 ```{r} 
 #| label: fig-spr-phase
 #| echo: false 
@@ -204,7 +399,6 @@ knitr::include_graphics(
 )
 
 ```
-
 
 ```{r} 
 #| label: fig-yield
@@ -221,8 +415,6 @@ knitr::include_graphics(
 
 ```
 
-
-
 ```{r} 
 #| label: fig-dyn-b0
 #| echo: false 
@@ -236,4 +428,106 @@ knitr::include_graphics(
   "r4ss_plots/ts_DynamicB0.png"
 )
 
+```
+
+## Sensitivity analyses
+
+## Retrospectives and likelihood profiles
+
+```{r}
+#| label: fig-retro1
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Retrospective results: change in the estimate of spawning output when the most recent 5 years of data area removed sequentially."
+#| fig-alt: "Time series is similar for all models."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/compare1_spawnbio.png"
+)
+```
+
+```{r}
+#| label: fig-r0-profile
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Change in the negative log-likelihood across a range of log(R0) values."
+#| fig-alt: "U-shaped profiles show consistent support for similar log-R0 values with some minor differences among data types and fleets."
+#| fig-pos: H
+
+knitr::include_graphics(
+  "diagnostics/piner_panel_SR_LN(R0).png"
+)
+```
+
+```{r}
+#| label: fig-r0-profile-pars
+#| echo: false
+#| warning: false
+#| eval: true
+#| #| fig-cap: "Change in quantities of interest related to spawning output across a range of log(R0) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
+#| fig-alt: "The spawning output at initial remains more stable over the range of log-R0 values than the final spawning output so at low log-R0 the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low log-R0 values are not supported by the data."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/parameter_panel_SR_LN(R0).png"
+)
+```
+
+```{r}
+#| label: fig-m-profile
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Change in the negative log-likelihood across a range of female natural mortality (M) values"
+#| fig-alt: "U-shaped profiles show some differences among data types and fleets over M values explored with the age and length data supporting a higher M while the indices and recruitment penalties support a lower M."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/piner_panel_NatM_uniform_Fem_GP_1.png"
+)
+```
+
+```{r}
+#| label: fig-m-profile-pars
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Change in quantities of interest related to spawning output across a range of female natural mortality (M) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
+#| fig-alt: "At low M values, the final spawning output decreases while the initial remains stable, leading to a smaller fraction of unfished. However, the change in likelihood at those values is large, indicating that low M is not supported by the data."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/parameter_panel_NatM_uniform_Fem_GP_1.png"
+)
+```
+
+```{r}
+#| label: fig-h-profile
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Change in the negative log-likelihood across a range of steepness (h) values"
+#| fig-alt: "All data sources with the exception of the commercial length comps support a high steepness value (close to 1.0)."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/piner_panel_SR_BH_steep.png"
+)
+```
+
+```{r}
+#| label: fig-h-profile-pars
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Change in quantities of interest related to spawning output across a range of steepness (h) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
+#| fig-alt: "At low steepness values, the initial spawning output increases and the final spawning output decreases, leading to a smaller fraction of unfished. However, the change in likelihood at those values is large, indicating that low steepness is not supported by the data."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "diagnostics/parameter_panel_SR_BH_steep.png"
+)
 ```
