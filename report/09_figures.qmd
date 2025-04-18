@@ -270,18 +270,6 @@ knitr::include_graphics(
 
 ## Time-series
 
-```{r}
-#| label: fig-historical
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-alt: "A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
-
-knitr::include_graphics(
-    "Figures/historical_assessment_timeseries.png"
-)
-```
-
 ```{r} 
 #| label: fig-sb
 #| echo: false
@@ -433,6 +421,18 @@ knitr::include_graphics(
 ## Sensitivity analyses
 
 ## Retrospectives and likelihood profiles
+
+```{r}
+#| label: fig-historical
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-alt: "A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
+
+knitr::include_graphics(
+    "Figures/historical_assessment_timeseries.png"
+)
+```
 
 ```{r}
 #| label: fig-retro1
