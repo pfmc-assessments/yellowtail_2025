@@ -108,6 +108,19 @@ knitr::include_graphics(
 )
 ```
 
+```{r}
+#| label: fig-YOY
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Indices of recruitment and age-0 abundance standardized by subtracting the mean anddividing by the standard deviation for the 2016 - 2024 time period"
+#| fig-alt: "sill"
+
+knitr::include_graphics(
+    "Figures/YOYindices.png"
+)
+```
+
 ### Composition data
 
 ```{r}
