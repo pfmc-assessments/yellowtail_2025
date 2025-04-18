@@ -1,5 +1,5 @@
 #C file created using an r4ss function
-#C file write time: 2025-04-01  15:51:17
+#C file write time: 2025-04-18  13:57:12
 #
 0 # 0 means do not read wtatage.ss; 1 means read and usewtatage.ss and also read and use growth parameters
 1 #_N_Growth_Patterns
@@ -49,28 +49,28 @@
 #
 #_growth_parms
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env_var&link	dev_link	dev_minyr	dev_maxyr	dev_PH	Block	Block_Fxn
- 0.02	 0.25	   0.145109	-2.12	0.438	3	  2	0	0	0	0	0	0	0	#_NatM_p_1_Fem_GP_1  
-    1	   25	    15.0337	   22	   99	0	  3	0	0	0	0	0	0	0	#_L_at_Amin_Fem_GP_1 
-   35	   70	    53.8936	   55	   99	0	  2	0	0	0	0	0	0	0	#_L_at_Amax_Fem_GP_1 
-  0.1	  0.4	    0.13556	  0.1	   99	0	  3	0	0	0	0	0	0	0	#_VonBert_K_Fem_GP_1 
- 0.03	 0.16	     0.0989	  0.1	   99	0	  5	0	0	0	0	0	0	0	#_CV_young_Fem_GP_1  
- 0.03	 0.16	    0.04357	  0.1	   99	0	  5	0	0	0	0	0	0	0	#_CV_old_Fem_GP_1    
-    0	    3	1.38743e-05	   99	   99	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Fem_GP_1   
-    2	    4	    3.02201	   99	   99	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Fem_GP_1   
-    1	   30	         10	   99	   99	0	-50	0	0	0	0	0	0	0	#_Mat50%_Fem_GP_1    
-   -2	    1	      -0.67	   99	   99	0	-50	0	0	0	0	0	0	0	#_Mat_slope_Fem_GP_1 
-    0	    6	 1.1185e-11	   99	   99	0	-50	0	0	0	0	0	0	0	#_Eggs_alpha_Fem_GP_1
-    2	    7	       4.59	   99	   99	0	-50	0	0	0	0	0	0	0	#_Eggs_beta_Fem_GP_1 
-   -3	    3	    -0.1386	    0	   99	0	  2	0	0	0	0	0	0	0	#_NatM_p_1_Mal_GP_1  
-   -1	    1	          0	    0	   99	0	 -2	0	0	0	0	0	0	0	#_L_at_Amin_Mal_GP_1 
-   -1	    1	     -0.149	    0	   99	0	  2	0	0	0	0	0	0	0	#_L_at_Amax_Mal_GP_1 
-   -1	    1	     0.3779	    0	   99	0	  3	0	0	0	0	0	0	0	#_VonBert_K_Mal_GP_1 
-   -1	    1	          0	    0	   99	0	 -5	0	0	0	0	0	0	0	#_CV_young_Mal_GP_1  
-   -1	    1	    0.16921	    0	   99	0	  5	0	0	0	0	0	0	0	#_CV_old_Mal_GP_1    
-    0	    3	1.18399e-05	   99	   99	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Mal_GP_1   
-    2	    4	    3.06734	   99	   99	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Mal_GP_1   
-    0	    2	          1	   99	   99	0	-50	0	0	0	0	0	0	0	#_CohortGrowDev      
-0.001	0.999	        0.5	   99	  0.5	0	-99	0	0	0	0	0	0	0	#_FracFemale_GP_1    
+ 0.02	 0.25	      0.126	-2.07	0.31	3	  2	0	0	0	0	0	0	0	#_NatM_p_1_Fem_GP_1  
+    1	   25	    15.0337	   22	  99	0	  3	0	0	0	0	0	0	0	#_L_at_Amin_Fem_GP_1 
+   35	   70	    53.8936	   55	  99	0	  2	0	0	0	0	0	0	0	#_L_at_Amax_Fem_GP_1 
+  0.1	  0.4	    0.13556	  0.1	  99	0	  3	0	0	0	0	0	0	0	#_VonBert_K_Fem_GP_1 
+ 0.03	 0.16	     0.0989	  0.1	  99	0	  5	0	0	0	0	0	0	0	#_CV_young_Fem_GP_1  
+ 0.03	 0.16	    0.04357	  0.1	  99	0	  5	0	0	0	0	0	0	0	#_CV_old_Fem_GP_1    
+    0	    3	1.38743e-05	   99	  99	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Fem_GP_1   
+    2	    4	    3.02201	   99	  99	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Fem_GP_1   
+    1	   30	         10	   99	  99	0	-50	0	0	0	0	0	0	0	#_Mat50%_Fem_GP_1    
+   -2	    1	      -0.67	   99	  99	0	-50	0	0	0	0	0	0	0	#_Mat_slope_Fem_GP_1 
+    0	    6	 1.1185e-11	   99	  99	0	-50	0	0	0	0	0	0	0	#_Eggs_alpha_Fem_GP_1
+    2	    7	       4.59	   99	  99	0	-50	0	0	0	0	0	0	0	#_Eggs_beta_Fem_GP_1 
+   -3	    3	    -0.1386	    0	  99	0	  2	0	0	0	0	0	0	0	#_NatM_p_1_Mal_GP_1  
+   -1	    1	          0	    0	  99	0	 -2	0	0	0	0	0	0	0	#_L_at_Amin_Mal_GP_1 
+   -1	    1	     -0.149	    0	  99	0	  2	0	0	0	0	0	0	0	#_L_at_Amax_Mal_GP_1 
+   -1	    1	     0.3779	    0	  99	0	  3	0	0	0	0	0	0	0	#_VonBert_K_Mal_GP_1 
+   -1	    1	          0	    0	  99	0	 -5	0	0	0	0	0	0	0	#_CV_young_Mal_GP_1  
+   -1	    1	    0.16921	    0	  99	0	  5	0	0	0	0	0	0	0	#_CV_old_Mal_GP_1    
+    0	    3	1.18399e-05	   99	  99	0	-50	0	0	0	0	0	0	0	#_Wtlen_1_Mal_GP_1   
+    2	    4	    3.06734	   99	  99	0	-50	0	0	0	0	0	0	0	#_Wtlen_2_Mal_GP_1   
+    0	    2	          1	   99	  99	0	-50	0	0	0	0	0	0	0	#_CohortGrowDev      
+0.001	0.999	        0.5	   99	 0.5	0	-99	0	0	0	0	0	0	0	#_FracFemale_GP_1    
 #_no timevary MG parameters
 #
 #_seasonal_effects_on_biology_parms
@@ -82,11 +82,11 @@
 0 # 0/1 to use steepness in initial equ recruitment calculation
 0 # future feature: 0/1 to make realized sigmaR a function of SR curvature
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn # parm_name
-  5	 20	    12	   10	    5	0	  1	0	0	0	0	0	0	0	#_SR_LN(R0)  
-0.2	  1	 0.718	0.718	0.158	0	 -6	0	0	0	0	0	0	0	#_SR_BH_steep
-0.4	1.2	0.4997	 0.67	   99	0	 -6	0	0	0	0	0	0	0	#_SR_sigmaR  
- -5	  5	     0	    0	   99	0	-50	0	0	0	0	0	0	0	#_SR_regime  
-  0	  2	     0	    1	   99	0	-50	0	0	0	0	0	0	0	#_SR_autocorr
+  5	 20	   12	   10	    5	0	  1	0	0	0	0	0	0	0	#_SR_LN(R0)  
+0.2	  1	0.718	0.718	0.158	0	 -6	0	0	0	0	0	0	0	#_SR_BH_steep
+0.4	1.2	  0.5	 0.67	   99	0	 -6	0	0	0	0	0	0	0	#_SR_sigmaR  
+ -5	  5	    0	    0	   99	0	-50	0	0	0	0	0	0	0	#_SR_regime  
+  0	  2	    0	    1	   99	0	-50	0	0	0	0	0	0	0	#_SR_autocorr
 #_no timevary SR parameters
 1 #do_recdev:  0=none; 1=devvector (R=F(SSB)+dev); 2=deviations (R=F(SSB)+dev); 3=deviations (R=R0*dev; dev2=R-f(SSB)); 4=like 3 with sum(dev2) adding penalty
 1962 # first year of main recr_devs; early devs can preceed this era
@@ -97,11 +97,11 @@
 5 #_recdev_early_phase
 5 #_forecast_recruitment phase (incl. late recr) (0 value resets to maxphase+1)
 1 #_lambda for Fcast_recr_like occurring before endyr+1
-1950.5 #_last_yr_nobias_adj_in_MPD; begin of ramp
-1976.9 #_first_yr_fullbias_adj_in_MPD; begin of plateau
-2016.5 #_last_yr_fullbias_adj_in_MPD
-2021.6 #_end_yr_for_ramp_in_MPD (can be in forecast to shape ramp, but SS sets bias_adj to 0.0 for fcast yrs)
-0.7855 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
+1950.62 #_last_yr_nobias_adj_in_MPD; begin of ramp
+1975.09 #_first_yr_fullbias_adj_in_MPD; begin of plateau
+2015.12 #_last_yr_fullbias_adj_in_MPD
+2024.92 #_end_yr_for_ramp_in_MPD (can be in forecast to shape ramp, but SS sets bias_adj to 0.0 for fcast yrs)
+0.8053 #_max_bias_adj_in_MPD (-1 to override ramp and set biasadj=1.0 for all estimated recdevs)
 0 #_period of cycles in recruitment (N parms read below)
 -6 #min rec_dev
 6 #max rec_dev
@@ -122,18 +122,23 @@
 #
 #_Q_setup for fleets with cpue or survey data
 #_fleet	link	link_info	extra_se	biasadj	float  #  fleetname
-    3	1	0	1	0	0	#_Recreational
+    3	1	0	0	0	0	#_Recreational
+    4	1	0	1	0	0	#_H&L_survey  
     5	1	0	1	0	0	#_Triennial   
     6	1	0	1	0	0	#_WCGBTS      
+    7	1	0	1	0	0	#_SMURF       
 -9999	0	0	0	0	0	#_terminator  
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
--30	 15	  -1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_Recreational(3) 
-  0	0.5	0.01	0	1	0	  2	0	0	0	0	0	0	0	#_Q_extraSD_Recreational(3)
--30	 15	  -1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)    
-  0	0.5	0.01	0	1	0	  2	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5)   
--30	 15	  -1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_WCGBTS(6)       
-  0	0.5	   0	0	1	0	-99	0	0	0	0	0	0	0	#_Q_extraSD_WCGBTS(6)      
+-30	 15	-1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_Recreational(3)
+-30	 15	-1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_H&L_survey(4)  
+  0	0.5	 0	0	1	0	-99	0	0	0	0	0	0	0	#_Q_extraSD_H&L_survey(4) 
+-30	 15	-1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_Triennial(5)   
+  0	0.5	 0	0	1	0	-99	0	0	0	0	0	0	0	#_Q_extraSD_Triennial(5)  
+-30	 15	-1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_WCGBTS(6)      
+  0	0.5	 0	0	1	0	-99	0	0	0	0	0	0	0	#_Q_extraSD_WCGBTS(6)     
+-30	 15	-1	0	1	0	  2	0	0	0	0	0	0	0	#_LnQ_base_SMURF(7)       
+  0	0.5	 0	0	1	0	-99	0	0	0	0	0	0	0	#_Q_extraSD_SMURF(7)      
 #_no timevary Q parameters
 #
 #_size_selex_patterns
@@ -141,18 +146,20 @@
 24	0	3	0	#_1 Commercial  
 24	0	3	0	#_2 At-Sea-Hake 
 24	0	3	0	#_3 Recreational
- 0	0	0	0	#_4 PLACEHOLDER 
+24	0	3	0	#_4 H&L_survey  
 24	0	3	0	#_5 Triennial   
 24	0	3	0	#_6 WCGBTS      
+ 0	0	0	0	#_7 SMURF       
 #
 #_age_selex_patterns
 #_Pattern	Discard	Male	Special
 10	0	0	0	#_1 Commercial  
 10	0	0	0	#_2 At-Sea-Hake 
 10	0	0	0	#_3 Recreational
-10	0	0	0	#_4 PLACEHOLDER 
+10	0	0	0	#_4 H&L_survey  
 10	0	0	0	#_5 Triennial   
 10	0	0	0	#_6 WCGBTS      
+10	0	0	0	#_7 SMURF       
 #
 #_SizeSelex
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
@@ -167,7 +174,7 @@
  -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_3_Commercial(1)  
  -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_4_Commercial(1)  
    0	 2	      1	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_5_Commercial(1)  
-  20	55	52.2551	0	99	0	  1	0	0	0	0	0	2	2	#_SizeSel_P_1_At-Sea-Hake(2)       
+  20	55	     55	0	99	0	-99	0	0	0	0	0	2	2	#_SizeSel_P_1_At-Sea-Hake(2)       
  -20	70	     70	0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_2_At-Sea-Hake(2)       
   -5	20	 4.2846	0	99	0	  3	0	0	0	0	0	2	2	#_SizeSel_P_3_At-Sea-Hake(2)       
   -5	70	     70	0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_4_At-Sea-Hake(2)       
@@ -189,6 +196,17 @@
  -10	10	      0	0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_PMalOff_3_Recreational(3)
  -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_4_Recreational(3)
    0	 2	      1	0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_PMalOff_5_Recreational(3)
+  20	55	 30.811	0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_P_1_H&L_survey(4)        
+ -20	70	    -20	0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_2_H&L_survey(4)        
+  -5	20	  3.173	0	99	0	  6	0	0	0	0	0	0	0	#_SizeSel_P_3_H&L_survey(4)        
+  -5	20	      7	0	99	0	  4	0	0	0	0	0	0	0	#_SizeSel_P_4_H&L_survey(4)        
+-999	25	   -999	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_5_H&L_survey(4)        
+-999	25	   -999	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_P_6_H&L_survey(4)        
+ -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_1_H&L_survey(4)  
+ -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_2_H&L_survey(4)  
+ -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_3_H&L_survey(4)  
+ -10	10	      0	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_4_H&L_survey(4)  
+   0	 2	      1	0	99	0	-99	0	0	0	0	0	0	0	#_SizeSel_PMalOff_5_H&L_survey(4)  
   20	55	     55	0	99	0	 -1	0	0	0	0	0	0	0	#_SizeSel_P_1_Triennial(5)         
  -20	70	     70	0	99	0	 -4	0	0	0	0	0	0	0	#_SizeSel_P_2_Triennial(5)         
   -5	20	5.11635	0	99	0	  3	0	0	0	0	0	0	0	#_SizeSel_P_3_Triennial(5)         
@@ -231,26 +249,24 @@
 #
 # Input variance adjustments factors: 
 #_factor	fleet	value
-    4	1	0.054993	#_Variance_adjustment_list1 
-    4	2	0.298971	#_Variance_adjustment_list2 
-    4	3	0.019019	#_Variance_adjustment_list3 
-    4	4	0.030608	#_Variance_adjustment_list4 
-    4	5	  0.0759	#_Variance_adjustment_list5 
-    4	6	0.093722	#_Variance_adjustment_list6 
-    5	1	0.235248	#_Variance_adjustment_list7 
+    4	1	0.056408	#_Variance_adjustment_list1 
+    4	2	0.166351	#_Variance_adjustment_list2 
+    4	3	0.020013	#_Variance_adjustment_list3 
+    4	4	0.051835	#_Variance_adjustment_list4 
+    4	5	0.075715	#_Variance_adjustment_list5 
+    4	6	0.095639	#_Variance_adjustment_list6 
+    5	1	0.238724	#_Variance_adjustment_list7 
     5	4	0.021984	#_Variance_adjustment_list8 
-    5	5	0.144456	#_Variance_adjustment_list9 
-    5	6	0.125232	#_Variance_adjustment_list10
-    5	3	0.018193	#_Variance_adjustment_list11
-    5	2	0.122649	#_Variance_adjustment_list12
+    5	5	  0.1366	#_Variance_adjustment_list9 
+    5	6	0.140055	#_Variance_adjustment_list10
+    5	3	0.018235	#_Variance_adjustment_list11
+    5	2	0.129856	#_Variance_adjustment_list12
 -9999	0	       0	#_terminator                
 #
 5 #_maxlambdaphase
 1 #_sd_offset; must be 1 if any growthCV, sigmaR, or survey extraSD is an estimated parameter
-# read 3 changes to default Lambdas (default value is 1.0)
+# read 1 changes to default Lambdas (default value is 1.0)
 #_like_comp	fleet	phase	value	sizefreq_method
-    1	1	1	0	0	#_Surv_Commercial_Phz1      
-    1	2	1	0	0	#_Surv_At-Sea-Hake_Phz1     
    17	1	5	0	0	#_F-ballpark_Commercial_Phz5
 -9999	0	0	0	0	#_terminator                
 #
