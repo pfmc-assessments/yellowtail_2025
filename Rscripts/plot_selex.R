@@ -81,11 +81,11 @@ plot_yellowtail_tv_selex <- function(mod) {
 
   # plot selectivity
   plot_sel_ret(mod, Factor = "Lsel", fleet = 2, sex = 1)
-  mtext(glue::glue("Selectivity for {mod$FleetNames[2]}"), side = 3, line = 0.5)
+  mtext(glue::glue("Selectivity for {mod$FleetNames[2]} (females and males)"), side = 3, line = 0.5)
   plot_sel_ret(mod, Factor = "Lsel", fleet = 3, sex = 1)
-  mtext(glue::glue("Selectivity for {mod$FleetNames[3]} females"), side = 3, line = 0.5)
+  mtext(glue::glue("Selectivity for {mod$FleetNames[3]} (females)"), side = 3, line = 0.5)
   plot_sel_ret(mod, Factor = "Lsel", fleet = 3, sex = 2)
-  mtext(glue::glue("Selectivity for {mod$FleetNames[3]} males"), side = 3, line = 0.5)
+  mtext(glue::glue("Selectivity for {mod$FleetNames[3]} (males)"), side = 3, line = 0.5)
 
   mtext("Selectivity", side = 2, line = 0.5, las = 0, outer = TRUE)
   mtext("Length (cm)", side = 1, line = 0.5, las = 0, outer = TRUE)
