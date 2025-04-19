@@ -1,12 +1,7 @@
-
-
 model_name <- "5.03_smurf"
 model_dir <- here::here("Model_Runs",model_name)
 inputs<- SS_read('model_runs/2.02_bias_adjust')
-#' inputs2 <- add_discard_catch(inputs)
-#' SS_write(inputs2)
-#' }
-inputs$dat$catch%>%filter(fleet==1)%>%select(catch)
+modcatch <-inputs$dat$catch%>%filter(fleet==1)%>%select(catch)
 catch_tab <-
   data.frame(Yr = sort(unique(inputs$dat$catch$year[inputs$dat$catch$year>=inputs[["dat"]][["styr"]]])),
              ComWA=NA,
@@ -14,7 +9,7 @@ catch_tab <-
              ComCA=NA,
              ComDiscards=NA,
              ComTotal=NA,
-             ComModelTotal=inputs$dat$catch%>%filter(fleet==1)%>%select(catch),
+             ComModelTotal=modcatch,
              ASHOP=NA,
              RecWA=NA,
              RecOR=NA,
