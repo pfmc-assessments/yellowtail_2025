@@ -1,7 +1,7 @@
 model_directory <- 'model_runs'
 base_model_name <- '5.09_no_extra_se'
 exe_loc <- here('model_runs/ss3.exe')
-base_model <- SS_read(file.path(model_directory, base_model_name))
+base_model <- SS_read(file.path(model_directory, base_model_name), ss_new = TRUE)
 base_out <- SS_output(file.path(model_directory, base_model_name))
 
 # Write sensitivities -----------------------------------------------------
@@ -355,6 +355,9 @@ future::plan(future::sequential)
 
 # Plot stuff --------------------------------------------------------------
 
+
+# function ----------------------------------------------------------------
+
 make_detailed_sensitivites <- function(biglist, mods, 
                                        outdir, grp_name) {
   
@@ -385,6 +388,10 @@ make_detailed_sensitivites <- function(biglist, mods,
               row.names = FALSE, )
   
 }
+
+
+
+# grouped plots -----------------------------------------------------------
 
 sex_ratios <- data.frame(dir = c('breakpoint_m', 
                                  'no_sex_selex',
@@ -459,6 +466,9 @@ purrr::imap(sens_names_ls, \(sens_df, grp_name)
                                        outdir = outdir, 
                                        grp_name = grp_name))
 
+
+
+# big plot ----------------------------------------------------------------
 
 current.year <- 2025
 CI <- 0.95
