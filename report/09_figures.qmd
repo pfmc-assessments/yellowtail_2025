@@ -21,7 +21,7 @@ uncertainty <- "recdevs2_withbars.png" %in% dir("r4ss_plots")
 #| echo: false
 #| warning: false
 #| eval: true
-#| fit-cap: "Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone."
+#| fig-cap: "Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone."
 #| fig-alt: "A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary."
 
 knitr::include_graphics(
@@ -61,6 +61,35 @@ knitr::include_graphics(
 ```
 
 ### Indices
+
+```{r}
+#| label: fig-indices
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Indices used in the model, each of which is scaled to have mean 1.0."
+#| fig-alt: "Index observations can be found in the data file."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "r4ss_plots/index9_standcpueall.png"
+)
+```
+
+```{r}
+#| label: fig-indices_fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
+#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "Figures/index_fits_all_fleets.png"
+)
+```
+
 
 ```{r}
 #| label: fig-orbsqq
