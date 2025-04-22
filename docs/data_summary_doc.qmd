@@ -295,7 +295,7 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
     }
   ) |>
   arrange(RECFIN_YEAR) |>
-  mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^
+  mutate(`WA (mt)` = (W_L_pars_unsexed$A * 10^(-3) * wa_hist_avg_len$avg_len ^
                         W_L_pars_unsexed$B) * `WA (num)`
   )
 
