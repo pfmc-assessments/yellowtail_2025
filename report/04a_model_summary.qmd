@@ -18,7 +18,7 @@ A data-moderate assessment of Yellowtail Rockfish south of $40^\circ 10^\prime$ 
     -   We have run a number of sensitivities involving different parameterizations of natural mortality and selectivity and included data plots that further explore this dynamic, as well.
 -   The draft northern yellowtail assessment models included indices of relative abundance based on fishery-dependent time series, including a trawl logbook CPUE index and an index of abundance based on yellowtail bycatch in the at-sea Pacific whiting fishery. During the STAR panel, these were removed from the final base model. However, as the indices were influential with respect to model results, greater exploration of the potential for these data to inform a relative abundance index, particularly for the trawl logbook cpue data, would benefit future assessment efforts.
     -   As the 2017 review found, historical logbook data is extremely difficult to standardize in a reliable way. However, we have explored data from the current \gls{wcgop} program as an alternative fishery-dependent index from the trawl sector, covering a later subset of years.
--   Consideration of alternative survey methods (e.g, acoustic surveys, midwater trawl surveys) and/or the means to account for changes in catchability that may be associated with environmental factors, could improve the ability of survey indices to track stock abundance. 
+-   Consideration of alternative survey methods (e.g, acoustic surveys, midwater trawl surveys) and/or the means to account for changes in catchability that may be associated with environmental factors, could improve the ability of survey indices to track stock abundance.
     -   This remains a key research priority, made even more clear by the inability of the model to fit the peak and rapid decline in the trawl survey index since the 2017 assessment, given the population structure and dynamics indicated by the composition data. This issue cannot be addressed via assessment modeling, and needs targeted research between assessment cycles. In addition to possible environmental influences on catchability mentioned in the STAR panel report, density-dependent catchability may also be an important factor.
 -   Combined US/Canadian transboundary assessment
     -   This remains an important research priority.
@@ -38,23 +38,25 @@ Is this required if there are no "deficiencies"? -->
 
 The follow bullets list major changes from the 2017 benchmark assessment [@stephens_status_2017]:
 
--   All relevant data sources have been reanalyzed and extended through 2024.
+-   Reanalyzed and extended all relevant data sources through 2024.
 
 -   Early data exploration indicated that commercial fishery composition data was likely entered as "raw" in 2017, which is not the default approach recommended by the PFMC groundfish assessment best practices document. That is, each individual sample was equally weighted, rather than weighting samples based on catch amounts at the trip and state level. This assessment uses the \gls{nwfsc} R package {pacfintools} to summarize age and length composition data from the commercial fishery.
 
--   New data sources: H&L index, recruitment index, etc.
+-   Added combined hook and line index as a CPUE index in units of number of fish
+
+-   Added SMURF index as a index of absolute recruitment
 
 -   Discards \[Ian write this\]
 
--   Aging error was updated.
+-   Updated Aging error.
 
 -   Most Washington recreational catch data is now available in biomass on \gls{recfin}. This facilitated combining recreational catches across all three states into a single model fleet with catch supplied in biomass. Different catch reporting units was the main reason listed for separating the recreational fleets in 2017. Historical Washington recreational catches (pre-1990) were converted from numbers to biomass using allometric relationships. Modeling catch in biomass makes forecasting catches more straightforward.
 
--   Foreign trawl catches from 1966-1976 have been added to the commercial fleet.
+-   Added foreign trawl catches from 1966-1976 to the commercial fleet.
 
 -   Recreational fishery selectivity is modeled as sex-specific, with different descending limbs for males and females and males having an overall lower likelihood of being selected. This greatly improved fits to recreational length and age composition data.
 
--   Additional selectivity blocks were added for 1) recreational selectivity beginning in `r mod_in$ctl$Block_Design[[1]][3]`, when trips in both Oregon (longleader gear) and Washington (avoiding Black Rockfish) were reported to get deeper and 2) the at-sea hake fishery beginning in `r mod_in$ctl$Block_Design[[2]][1]`. The at-sea hake fishery is highly mobile and moves around to wherever hake are densest and bycatch species can be avoided. It has been occurring farther south in recent years.
+-   Added additional selectivity blocks for 1) recreational selectivity beginning in `r mod_in$ctl$Block_Design[[1]][3]`, when trips in both Oregon (longleader gear) and Washington (avoiding Black Rockfish) were reported to get deeper and 2) the at-sea hake fishery beginning in `r mod_in$ctl$Block_Design[[2]][1]`. The at-sea hake fishery is highly mobile and moves around to wherever hake are densest and bycatch species can be avoided. It has been occurring farther south in recent years.
 
 -   The fishery-dependent indices included as sensitivities in 2017 were not reproduced or extended.
 
@@ -68,7 +70,7 @@ The stock assessment is conducted in Stock Synthesis version 3.30.23.1 compiled 
 
 ### Model Parameters
 
-Due to the richness of age composition data, most life history parameters were estimable. Natural mortality and growth are both estimated separately for males and females with shared parameters for length at age 2 and CV of length-at-age for young fish. Separate values for small fish were not estimable, nor was the four-parameter Richards growth curve. Male values were estimated as an offset of female values. A prior was placed on female natural mortality, but the data overwhelmed it (CITE PROFILE). Unfished recruitment is estimated. Steepness of the stock-recruit relationship is fixed at `r mod_in$ctl$SR_parms['SR_BH_steep', 'INIT']` per the PFMC terms of reference for rockfish assessments. The standard deviation of log recruitment deviations is `r mod_in$ctl$SR_parms['SR_sigmaR', 'INIT']`, similar to the value used in 2017. Reevaluating the tuning of this parameter indicated no changes were necessary [@methot_adjusting_2011]. Recruitment deviations during the "main" period (from `r mod_in$ctl$MainRdevYrFirst` to `r mod_in$ctl$MainRdevYrLast`) were forced to sum to zero. Relaxing this assumption led to no visible changes in the model, and the constraint allows for clearer interpretation of management reference points.
+Due to the richness of age composition data, most life history parameters were estimable. Natural mortality and growth are both estimated separately for males and females with shared parameters for length at age 2 and CV of length-at-age for young fish. Separate values for small fish were not estimable, nor was the four-parameter Richards growth curve. Male values were estimated as an offset of female values. A prior was placed on female natural mortality, but the data overwhelmed it (Fig. @fig-m-profile). Unfished recruitment is estimated. Steepness of the stock-recruit relationship is fixed at `r mod_in$ctl$SR_parms['SR_BH_steep', 'INIT']` per the PFMC terms of reference for rockfish assessments. The standard deviation of log recruitment deviations is `r mod_in$ctl$SR_parms['SR_sigmaR', 'INIT']`, similar to the value used in 2017. Reevaluating the tuning of this parameter indicated no changes were necessary [@methot_adjusting_2011]. Recruitment deviations during the "main" period (from `r mod_in$ctl$MainRdevYrFirst` to `r mod_in$ctl$MainRdevYrLast`) were forced to sum to zero. Relaxing this assumption led to no visible changes in the model, and the constraint allows for clearer interpretation of management reference points.
 
 Length, age, and age-at-length composition data weights were tuned using the Francis method [@francis_data_2011]. All selectivity was assumed to be length-based and used a double-normal functional form. We explored age-based selectivity, but due to sexual dimorphism, fitting the composition data well would have required a more complex formulation with additional estimated parameters. Selectivity was estimated to be sex-specific and dome-shaped for the recreational fleet with three base parameters (ascending and descending limbs and length at peak selectivity) and two sex-specific parameters (descending limb and scaling factor for males) being estimated. Selectivity for the hook and line fleet was dome-shaped, but male parameters were not well-estimated, likely because the the length composition data is not sex-specific, so selectivity was shared for the two sexes. All other fleets had a single shared asymptotic selectivity for both sexes. Early explorations into dome-shaped selectivity for fleets using predominantly trawl gear indicated that few fish were actually observed at the lengths where the descending limbs were estimated to occur. Sex-specific selectivity for fleets using trawl gear did not visibly improve fits to composition data, so were not considered for the base model, though a sensitivity is shown. The length at peak selectivity consistently hit the upper bound for the triennial and at-sea hake fleets, so was fixed at 55cm, near the maximum data length bin.
 

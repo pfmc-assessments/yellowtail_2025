@@ -86,6 +86,7 @@ csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 #| warning: false
 
 library(here)
+library(dplyr)
 base_mod <- '5.09_no_extra_se'
 mod_in <- r4ss::SS_read(here('model_runs', base_mod))
 mod_out <- r4ss::SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
