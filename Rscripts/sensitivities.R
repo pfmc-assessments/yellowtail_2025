@@ -1,3 +1,6 @@
+library(here)
+library(r4ss)
+library(dplyr)
 model_directory <- 'model_runs'
 base_model_name <- '5.09_no_extra_se'
 exe_loc <- here('model_runs/ss3.exe')
@@ -190,6 +193,16 @@ SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'no_indices'),
          overwrite = TRUE)
 
 
+## upweight wcbts ----------------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$dat$CPUE <- sensi_mod$dat$CPUE |>
+  mutate(se_log = ifelse(index == 6, 0.05, se_log))
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'upweight_wcgbts'),
+         overwrite = TRUE)
+
 ## observer index ----------------------------------------------------------
 
 sensi_mod <- base_model
@@ -278,15 +291,6 @@ sensi_mod$ctl$size_selex_parms[grepl('Off', rownames(sensi_mod$ctl$size_selex_pa
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'no_sex_selex'), 
          overwrite = TRUE)
 
-## no recdev constraint ----------------------------------------------------
-
-sensi_mod <- base_model
-
-sensi_mod$ctl$do_recdev <- 2
-
-SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'recdev_option_2'), 
-         overwrite = TRUE)
-
 
 ## Breakpoint M --------------------------------------------------------------
 
@@ -314,6 +318,7 @@ sensi_mod$ctl$MG_parms['NatM_p_1_Mal_GP_1', c('INIT', 'PHASE')] <- c(0, -99)
 
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'single_m'),
          overwrite = TRUE)  
+
 
 ## Time varying W-L --------------------------------------------------------
 
@@ -356,7 +361,7 @@ future::plan(future::sequential)
 # Plot stuff --------------------------------------------------------------
 
 
-# function ----------------------------------------------------------------
+## function ----------------------------------------------------------------
 
 make_detailed_sensitivites <- function(biglist, mods, 
                                        outdir, grp_name) {
@@ -391,7 +396,7 @@ make_detailed_sensitivites <- function(biglist, mods,
 
 
 
-# grouped plots -----------------------------------------------------------
+## grouped plots -----------------------------------------------------------
 
 sex_ratios <- data.frame(dir = c('breakpoint_m', 
                                  'no_sex_selex',
@@ -468,7 +473,7 @@ purrr::imap(sens_names_ls, \(sens_df, grp_name)
 
 
 
-# big plot ----------------------------------------------------------------
+## big plot ----------------------------------------------------------------
 
 current.year <- 2025
 CI <- 0.95
