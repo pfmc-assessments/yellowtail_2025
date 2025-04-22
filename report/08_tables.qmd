@@ -9,8 +9,43 @@
 #| include: false
 library(tidyr)
 library(gt)
-``` 
+```
 
+
+
+::: {.landscape}
+```{r}
+#| label: tbl-all_removals
+#| echo: false
+#| warning: false
+#| tbl-cap: "Total removals (mt) of yellowtail rockfish for the commercial (Com.), foreign (For.), at-sea hake (ASHOP), and recreational (Rec.) fleets used in the assessment model."
+
+
+CatchTable <- read.csv("Tables/CatchTable.csv")%>%
+select(-ComModelTotal)
+CatchTable[is.na(CatchTable)] <- 0
+CatchTable |>
+  gt() |>
+ cols_label(
+    year = "Year",
+    ComWA = "Com. WA",
+    ComOR = "Com. OR",
+    ComCA = "Com. CA",
+    ComDiscards = "Com. Discards",
+    Foreign = "For.",
+    RecWA = "Rec. WA",
+    RecOR = "Rec. OR",
+    RecCA = "Rec. CA",
+  ) |> 
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+
+```
+:::
+{{< pagebreak >}}
 
 <!-- Needs Alt text -->
 ```{r, orbs_perc_pos}

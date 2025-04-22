@@ -1,6 +1,7 @@
 # Data
 
 <!--- Provide temporal and spatial resolutions or sample size where appropriate for each of the subsections, below.--->
+A summary of total removals are provided in @tbl-all_removals.
 
 ## Fishery-dependent data
 
