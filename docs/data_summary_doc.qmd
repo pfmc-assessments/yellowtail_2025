@@ -252,6 +252,10 @@ ashop_catch |>
 ashop_catch |>
   select(YEAR, catch_mt) |>
   knitr::kable(align = 'l', digits = 1)
+
+#ashop_catch |>
+#   saveRDS(file = here('Data/Confidential/ASHOP/ashop_catch.rds'))
+
 ```
 
 ### Recreational landings
@@ -449,6 +453,9 @@ rec_landings |>
   rename(YEAR = 'RECFIN_YEAR') |>
   arrange(YEAR) |>
   knitr::kable(align = 'l', digits = 1)
+
+#rec_landings |>
+#    saveRDS(file = here('Data/Confidential/rec/rec_wide.rds'))
 
 ```
 
