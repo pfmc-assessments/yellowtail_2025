@@ -87,3 +87,11 @@ Model_Runs/temp
 *.upa
 *.upb
 report/*.pdf
+*.aux
+*.log
+*.toc
+
+# random stuff on Ian's computer
+Data/Processed/ageing_error/run*
+!Data/Processed/ageing_error/run1_simple
+
