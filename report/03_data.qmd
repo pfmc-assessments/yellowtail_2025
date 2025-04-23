@@ -89,9 +89,56 @@ Covariates evaluated included year, month, port, the open depths to fishing (all
 
 ## Fishery-independent data
 
+Geostatistical models of biomass density were fit to survey data from the 
+\gls{s-wcgbt} and \gls{s-tri} using
+\gls{tmb} [@kristensen_tmb:_2016]  via the R package \gls{sdmtmb}
+[@Anderson:2022:SRP]. as configured within the {indexwc} R package 
+[@johnson_indexwc_2025]. Code to reproduce the
+analysis is available at https://github.com/pfmc-assessments/indexwc.
+These models can account for latent spatial
+factors with a constant spatial Gaussian random field and spatiotemporal
+deviations to evolve as a random walk Guassian random field 
+[@thorson_geostatistical_2015]. Tweedie, delta-binomial, delta-gamma, and mixture
+distributions, which allow for extreme catch events, were investigated.
+Results are only shown for the distribution that led to the best model
+diagnostics, e.g., similar distributions of theoretical normal quantiles
+and model quantiles, high precision, lack of extreme predictions that
+are incompatible with the life history, and low \gls{aic}. Estimates of
+biomass from this best model were predicted using a grid based on
+available survey locations.
+
 ### \acrlong{s-wcgbt}
 
 The \gls{s-wcgbt} is based on a random-grid design; covering the coastal waters from a depth of 55-1,280 m [@bradburn_2003_2011]. This design generally uses four industry-chartered vessels per year assigned to a roughly equal number of randomly selected grid cells and divided into two 'passes' of the coast. Two vessels fish from north to south during each pass between late May to early October. This design therefore incorporates both vessel-to-vessel differences in catchability, as well as variance associated with selecting a relatively small number (approximately 700) of possible cells from a very large set of possible cells spread from the Mexican to the Canadian borders.
+
+The index was estimated for the area north of $40^{\circ}10'$ but data from south of that point were included in the analysis to better inform densities near that boundary. The annual proportion north and south of that point (Cape Mendocino) was estimated to offset the influence of changes in abundance of the southern stock from the estimates for the north.
+
+The data were truncated to depths less than 425 m prior to modeling
+given that there were zero positive encounters in depths deeper than 425
+m. The prediction grid was also truncated to only include available
+survey locations in depths between 55--425 m to limit extrapolating
+beyond the data and edge effects. 
+
+The model used a delta model with a lognormal distribution for the
+catch-rate component. A logit-link was used for encounter probability
+and a log-link for positive catch rates. The response variable was catch
+(mt) with an offset of area (km^2) to account for differences in
+effort. Fixed effects were estimated for each year. The following
+additional covariates were included: annual proportion north and south
+of Cape Mendocino, pass. Vessel-year effects, which have traditionally
+been included in index standardization for this survey, were not
+included as the estimated variance for the random effect was close to
+zero. Vessel-year effects were more prominent when models did not
+include spatial effects and were included for each unique combination of
+vessel and year in the data to account for the random selection of
+commercial vessels used during sampling 
+[@helser_generalized_2004; @thorson_accounting_2014].
+
+Spatial and spatiotemporal variation was included in the encounter
+probability but not the positive catch rate model. Spatial variation was
+approximated using 400 knots, where more knots led to non-estimable
+standard errors because the positive encounters are too sparse to
+support the dense spatiotemporal structure.
 
 ### \acrlong{s-tri}
 
@@ -99,8 +146,9 @@ The \gls{s-tri} was first conducted by the \gls{afsc} in 1977, and the survey co
 
 Due to haul performance issues and truncated sampling with respect to depth, the data from 1977 were omitted. The surveys from 1980 through 1992 covered a depth range of 55-366 m. From 1995 through 2004, the surveys covered the depth range 55-500 m. In 2004, the final year of the \gls{s-tri} series, the \gls{nwfsc} \gls{fram} conducted the survey following similar protocols to earlier years.
 
-Index standardization followed a similar procedure to the \gls{s-wcgbt}.
+The data processessing and index standardization followed a similar procedure to the \gls{s-wcgbt}, including the depth truncation, the distributional assumptions, and the number of knots. No pass covariate was included due to differences in survey design.
 
+We included the \gls{s-tri} as a single time series following the assumption used in the 2017 assessment.
 <!-- We included the \gls{s-tri} as a single time series. To account for the changes in survey depths in 1995, we did not include hauls deeper than 350m, where canary rockfish are rarely found. Canary rockfish are not known to undertake seasonal migrations, so the change in survey timing should not be a major concern.  -->
 
 ### Combined OR-WA Hook and Line Survey

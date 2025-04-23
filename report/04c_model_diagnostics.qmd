@@ -51,7 +51,7 @@ We conducted a number of model runs exploring sensitivity of the model to decisi
     
     -   Time-varying weight-length relationship for years with WCGBTS data
     
-    -   Hybrid F method (SHORT DESCRIPTION)
+    -   Hybrid F method (an alternative approach to internal calculations of fishing mortality which treats F as a continuous rate rather than using Pope's approximation)
     
     -   Estimate a density-dependent parameter for WCGBTS catchability
     
