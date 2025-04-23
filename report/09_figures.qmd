@@ -76,7 +76,49 @@ knitr::include_graphics(
 )
 ```
 
+<!-- H&L Figures -->
 
+
+```{r}
+#| label: fig-hllength
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington surveys"
+#| fig-alt: "A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
+
+knitr::include_graphics(
+    "Figures/HL_LengthbySurvey.png"
+)
+```
+
+```{r}
+#| label: fig-hlqq
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Q-Q plot diagnostics for the combined Oregon and Washington hook and line surveys"
+#| fig-alt: "A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
+
+knitr::include_graphics(
+    "Figures/HL_qq.png"
+)
+```
+
+```{r}
+#| label: fig-hlindex
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Time series of the relative index of abundance from the combined Oregon and Washington hook and line surveys"
+#| fig-alt: "An annual relative index of abundance plotted from 2010 to 2024 with error bars."
+
+knitr::include_graphics(
+    "Figures/HL_Index.png"
+)
+```
+
+<!-- ORBS Figures -->
 ```{r}
 #| label: fig-orbsqq
 #| echo: false
