@@ -11,7 +11,7 @@ library(tidyr)
 library(gt)
 ```
 
-
+<!-- Fishery Dependent Data -->
 
 ::: {.landscape}
 ```{r}
@@ -47,7 +47,147 @@ CatchTable |>
 :::
 {{< pagebreak >}}
 
-<!-- Needs Alt text -->
+```{r}
+#| label: tbl-comm_lengths
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of the number of length samples and trips for  for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
+
+
+commlengths <- read.csv("Tables/pacfin_lengths.csv") 
+commlengths|>
+  gt() |>
+  tab_options(
+    table.font.size = 11,
+    latex.use_longtable = TRUE
+  ) |>
+cols_label(
+    year = "Year",
+    CA.n_fish = "N Lengths \n (CA)",
+    CA.n_trip = "N Trips \n (CA)",
+    OR.n_fish = "N Lengths \n (OR)",
+    OR.n_trip = "N Trips \n (OR)",
+    WA.n_fish = "N Lengths \n (WA)",
+    WA.n_trip = "N Trips \n (WA)",
+    input_n = "N Input"
+  ) |>
+  as_latex()
+```
+
+```{r}
+#| label: tbl-comm_ages
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of the number of age samples and trips for  for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
+
+
+commages <-read.csv("Tables/pacfin_ages.csv") 
+commages|>
+  gt() |>
+  tab_options(
+    table.font.size = 11,
+    latex.use_longtable = TRUE
+  ) |>
+ cols_label(
+    year = "Year",
+    CA.n_fish = "N Ages \n (CA)",
+    CA.n_trip = "N Trips \n (CA)",
+    OR.n_fish = "N Ages \n (OR)",
+    OR.n_trip = "N Trips \n (OR)",
+    WA.n_fish = "N Ages \n (WA)",
+    WA.n_trip = "N Trips \n (WA)",
+    input_n = "N Input"
+  ) |>
+  as_latex()
+```
+
+```{r}
+#| label: tbl-ashop_comps
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of the number of age  and length samples and trips for the at-sea hake fishery"
+
+ashop_comp <- read.csv("Tables/ashop_comps.csv") 
+ashop_comp |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  cols_label(
+    ntow.length = "Lengths (n tows)",
+    nfish.length = "Lengths (n fish)",
+    ntow.age = "Ages (n tows)",
+    nfish.age = "Ages (n fish)",
+  ) |>
+  as_latex()
+```
+
+```{r, rec_bio}
+#| label: tbl-rec-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for age and length samples from the recreational fishery."
+
+rec_bio_table <- read.csv("../Data/Processed/rec_bio_sample_size_table.csv", check.names = FALSE)
+rec_bio_table |> 
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+
+```{r, rec_bio}
+#| label: tbl-tri-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for the marginal age and length compositions from the Triennial survey."
+
+tri_bio_table <- read.csv("../Data/Processed/input_n_tri.csv", check.names = FALSE)
+tri_bio_table |> 
+  gt() |>
+    cols_label(
+    year = "Year",
+    n_tows_ages = "N. tows with ages",
+    n_ages = "N. ages",
+    input_n_ages = "Input N. for ages",
+    n_tows_lengths = "N. tows with lengths",
+    n_lengths = "N. lengths",
+    input_n_lengths = "Input N. for lengths"
+  ) |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+
+```
+
+```{r, rec_bio}
+#| label: tbl-wcgbts-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for the age and length compositions from the WCGBTS. The ages are treated as conditioned on length and use the number of fish (within each length bin) as the input sample size."
+
+wcgbts_bio_table <- read.csv("../Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
+wcgbts_bio_table |> 
+  gt() |>
+  cols_label(
+    year = "Year",
+    n_ages = "N. ages",
+    n_tows = "N. tows",
+    n_lengths = "N. lengths",
+    input_n = "Input N."
+  ) |> 
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+<!--Indices tables -->
 ```{r, orbs_perc_pos}
 #| label: tbl-percent_pos
 #| echo: false
@@ -139,70 +279,7 @@ smurf_in |>
 ```
 
 
-```{r, rec_bio}
-#| label: tbl-rec-bio
-#| echo: false
-#| warning: false
-#| tbl-cap: "Sample sizes for age and length samples from the recreational fishery."
 
-rec_bio_table <- read.csv("../Data/Processed/rec_bio_sample_size_table.csv", check.names = FALSE)
-rec_bio_table |> 
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-```{r, rec_bio}
-#| label: tbl-wcgbts-bio
-#| echo: false
-#| warning: false
-#| tbl-cap: "Sample sizes for the age and length compositions from the WCGBTS. The ages are treated as conditioned on length and use the number of fish (within each length bin) as the input sample size."
-
-wcgbts_bio_table <- read.csv("../Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
-wcgbts_bio_table |> 
-  gt() |>
-  cols_label(
-    year = "Year",
-    n_ages = "N. ages",
-    n_tows = "N. tows",
-    n_lengths = "N. lengths",
-    input_n = "Input N."
-  ) |> 
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-```{r, rec_bio}
-#| label: tbl-tri-bio
-#| echo: false
-#| warning: false
-#| tbl-cap: "Sample sizes for the marginal age and length compositions from the Triennial survey."
-
-tri_bio_table <- read.csv("../Data/Processed/input_n_tri.csv", check.names = FALSE)
-tri_bio_table |> 
-  gt() |>
-    cols_label(
-    year = "Year",
-    n_tows_ages = "N. tows with ages",
-    n_ages = "N. ages",
-    input_n_ages = "Input N. for ages",
-    n_tows_lengths = "N. tows with lengths",
-    n_lengths = "N. lengths",
-    input_n_lengths = "Input N. for lengths"
-  ) |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-
-```
 
 
 
