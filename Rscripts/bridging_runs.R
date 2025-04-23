@@ -102,15 +102,6 @@ run('model_runs/3.04_discards',
     exe = exe_loc, extras = '-nohess', verbose = TRUE, 
     skipfinished = FALSE, show_in_console = TRUE)
 
-out <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
-                       glue::glue('model_runs/3.0{mod}', 
-                                  mod = c('1_reanalyze_catch', 
-                                          '2_surveys', 
-                                          '3_biology', 
-                                          '4_discards')))) |>
-  SSsummarize()
-
-SSplotComparisons(out, subplots = c(1,3), legendlabels = c('2017', 'catch', '+survey', '+biology', '+discard'), new = FALSE)
 
 # update ages -------------------------------------------------------------
 
@@ -291,45 +282,7 @@ run('model_runs/3.10_exp_comps_2024',
 tune_comps(dir = 'model_runs/3.10_exp_comps_2024', 
            niters_tuning = 2, exe = exe_loc, extras = '-nohess')
 
-out1 <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
-                              glue::glue('model_runs/3.{mod}',
-                                         mod = c('01_reanalyze_catch',
-                                                 '02_surveys',
-                                                 '03_biology',
-                                                 '04_discards'))))
-out2 <- SSgetoutput(dirvec = glue::glue('model_runs/3.{mod}',
-                                        mod = c('04_discards',
-                                                '05_ages_raw_pacfin',
-                                                '06_ages_exp_pacfin',
-                                                '07_lengths_raw_pacfin',
-                                                '08_lengths_exp_pacfin',
-                                                '10_exp_comps_2024')))
 
-
-out1 |>
-  SSsummarize() |>
-  SSplotComparisons(subplots = c(1,3), new = FALSE,
-                    legendlabels = c('2017',
-                                     'Reanalyze catch', 
-                                     '+ index', 
-                                     '+ bio', 
-                                     '+ discard'), 
-                    png = TRUE, plotdir = 'report/figures/bridging', 
-                    filenameprefix = 'bridging1')
-out2[[7]] <- out1[[1]]
-names(out2)[7] <- 'replist7'
-out2 |>
-  SSsummarize() |> SStableComparisons()
-  SSplotComparisons(subplots = c(1,3), new = FALSE,
-                    legendlabels = c('first steps',
-                                     'reanalyze raw pacfin ages',
-                                     'reanalyze exp pacfin ages',
-                                     'raw pacfin lengths',
-                                     'exp pacfin lengths',
-                                     'extend to 2024',
-                                     '2017'), 
-                    png = TRUE, plotdir = 'report/figures/bridging',
-                    filenameprefix = 'bridging2')
 
 # Selectivity changes -----------------------------------------------------
 
@@ -799,6 +752,52 @@ out |>
   SSplotComparisons(subplots = c(1,3), new = FALSE)
 
 SS_plots(out[[2]])
+
+
+
+# bridging figures --------------------------------------------------------
+
+out1 <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
+                               glue::glue('model_runs/{mod}',
+                                          mod = c('3.01_reanalyze_catch',
+                                                  '3.02_surveys',
+                                                  '3.03_biology',
+                                                  '3.04_discards'))))
+out2 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
+                                        mod = c('3.04_discards',
+                                                '3.05_ages_raw_pacfin',
+                                                '3.06_ages_exp_pacfin',
+                                                '3.07_lengths_raw_pacfin',
+                                                '3.08_lengths_exp_pacfin',
+                                                '3.10_exp_comps_2024',
+                                                '5.09_no_extra_SE')))
+
+
+out1 |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3), new = FALSE,
+                    legendlabels = c('2017',
+                                     'Reanalyze catch', 
+                                     '+ index', 
+                                     '+ bio', 
+                                     '+ discard'), 
+                    png = TRUE, plotdir = 'report/figures/bridging', 
+                    filenameprefix = 'bridging1')
+out2[[8]] <- out1[[1]]
+names(out2)[8] <- 'replist8'
+out2 |>
+  SSsummarize() |>
+SSplotComparisons(subplots = c(1,3), new = FALSE,
+                  legendlabels = c('first steps',
+                                   'reanalyze raw pacfin ages',
+                                   'reanalyze exp pacfin ages',
+                                   'raw pacfin lengths',
+                                   'exp pacfin lengths',
+                                   'extend to 2024',
+                                   'modeling changes',
+                                   '2017'), 
+                  png = TRUE, plotdir = 'report/figures/bridging',
+                  filenameprefix = 'bridging2')
 
 # Update # Update # Update bias adjustment --------------------------------------------------
 

@@ -76,20 +76,6 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-indices_fit
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
-#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
-#| fig-pos: H
-
-knitr::include_graphics(
-    "Figures/index_fits_all_fleets.png"
-)
-```
-
 
 ```{r}
 #| label: fig-orbsqq
@@ -284,6 +270,21 @@ knitr::include_graphics(
 ```
 
 ## Fits to Data
+
+
+```{r}
+#| label: fig-indices_fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
+#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "Figures/index_fits_all_fleets.png"
+)
+```
 
 ```{r}
 #| label: fig-len-agg-fit
@@ -489,6 +490,18 @@ knitr::include_graphics(
 ```
 
 ## Sensitivity analyses
+
+![Spawning output for index sensitivities](figures/sensitivities/indicescompare2_spawnbio_uncertainty.png){#fig-index-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for index sensitivities](figures/sensitivities/indicescompare4_Bratio_uncertainty.png){#fig-index-sens-depl fig-alt='TODO'}
+
+![Spawning output for modeling sensitivities](figures/sensitivities/modelingcompare2_spawnbio_uncertainty.png){#fig-model-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for modeling sensitivities](figures/sensitivities/modelingcompare4_Bratio_uncertainty.png){#fig-model-sens-depl fig-alt='TODO'}
+
+![Spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare2_spawnbio_uncertainty.png){#fig-comp-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare4_Bratio_uncertainty.png){#fig-comp-sens-depl fig-alt='TODO'}
 
 ## Retrospectives and likelihood profiles
 

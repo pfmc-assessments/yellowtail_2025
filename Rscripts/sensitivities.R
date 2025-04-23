@@ -291,7 +291,7 @@ sensi_mod$ctl$size_selex_parms[grepl('Off', rownames(sensi_mod$ctl$size_selex_pa
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'no_sex_selex'), 
          overwrite = TRUE)
 
-
+8
 ## Breakpoint M --------------------------------------------------------------
 
 sensi_mod <- base_model
@@ -370,7 +370,7 @@ make_detailed_sensitivites <- function(biglist, mods,
     r4ss::SSsummarize() 
   
   r4ss::SSplotComparisons(shortlist,
-                          subplots = c(2,4), 
+                          subplots = c(2,4, 18), 
                           print = TRUE,  
                           plot = FALSE,
                           plotdir = outdir, 
@@ -398,14 +398,20 @@ make_detailed_sensitivites <- function(biglist, mods,
 
 ## grouped plots -----------------------------------------------------------
 
-sex_ratios <- data.frame(dir = c('breakpoint_m', 
-                                 'no_sex_selex',
-                                 'sex_selex',
-                                 'single_m'),
-                         pretty = c('Breakpoint M',
-                                    'No sex selectivity',
-                                    'Sex selectivity all fleets',
-                                    'Single M')
+modeling <- data.frame(dir = c('breakpoint_m', 
+                               'no_sex_selex',
+                               'sex_selex',
+                               'single_m',
+                               'tv_wl',
+                               'hybrid_f',
+                               'nonlinear_q'),
+                       pretty = c('Breakpoint M',
+                                  'No sex selectivity',
+                                  'Sex selectivity all fleets',
+                                  'Single M',
+                                  'Time-vary weight-length',
+                                  'Hybrid F method',
+                                  'Nonlinear WCGBTS Q')
 )
 
 indices <- data.frame(dir = c('no_indices',
@@ -414,25 +420,18 @@ indices <- data.frame(dir = c('no_indices',
                               'oceanographic_index',
                               'ORBS',
                               'ORBS_SE',
-                              'RREAS'),
+                              'RREAS',
+                              'upweight_wcgbts'),
                       pretty = c('No indices',
                                  '- SMURF index',
                                  '+ WCGOP index',
                                  '+ Oceanographic index',
                                  '+ ORBS index',
                                  '+ ORBS w/added SE',
-                                 '+ RREAS index')
+                                 '+ RREAS index',
+                                 'Decrease WCGBTS CV')
 )
 
-model_choice <- data.frame(dir = c('tv_wl',
-                                   'recdev_option_2',
-                                   'hybrid_f',
-                                   'nonlinear_q'),
-                           pretty = c('Time-vary weight-length',
-                                      'No recdev sum to 0',
-                                      'Hybrid F method',
-                                      'Nonlinear WCGBTS Q')
-)
 
 comp_data <- data.frame(dir = c('M_I_weighting',
                                 'no_fishery_len',
@@ -442,9 +441,8 @@ comp_data <- data.frame(dir = c('M_I_weighting',
                                    '+ Unsexed commercial lengths')
 )
 
-sens_names <- bind_rows(sex_ratios,
+sens_names <- bind_rows(modeling,
                         indices,
-                        model_choice,
                         comp_data)
 
 big_sensitivity_output <- SSgetoutput(dirvec = file.path(model_directory,
@@ -458,9 +456,8 @@ big_sensitivity_output <- SSgetoutput(dirvec = file.path(model_directory,
 # test to make sure they all read correctly:
 which(sapply(big_sensitivity_output, length) < 180) # all lengths should be >180
 
-sens_names_ls <- list(sex_ratios = sex_ratios,
+sens_names_ls <- list(modeling = modeling,
                       indices = indices,
-                      model_choice = model_choice,
                       comp_data = comp_data)
 
 outdir <- 'report/figures/sensitivities'
