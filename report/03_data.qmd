@@ -127,7 +127,7 @@ Length and age data were available from the \gls{s-wcgbt} and \gls{s-tri} (Table
 
 SUMMARY OF SOME OF THE PATTERNS WE SEE IN THE DATA.
 
-## Ageing error
+## Ageing error {#sec-ageing}
 
 <!-- see Rscripts\process_double_reads.R for the data processing and analysis -->
 

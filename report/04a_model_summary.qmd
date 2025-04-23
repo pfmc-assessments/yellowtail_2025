@@ -46,9 +46,13 @@ The follow bullets list major changes from the 2017 benchmark assessment [@steph
 
 -   Added SMURF index as a index of absolute recruitment
 
--   Discards \[Ian write this\]
+-   Discarded catch estimated from the \gls{gemm} report was added to landings rather than modeled separately through a parametric retention in the commercial fleet as used in 2017. For the years prior to 2002 when the \gls{wcgop} program began, landings were multiplied by 1.0451 based on an estimated discard ratio of 4.51% in the Pikitch study. Explorations using the 2017 assessment showed that the alternative treatments in the model had neglible impact on point estimates and uncertainty. The change simplifies the model by removing 13 estimated parameters. It also corrects an issue which led to overestimation of discard amounts in the 2017 assessment. Comparing discard estimates between the \gls{gemm} and the 2017 model revealed large discrepencies which were found to be related to differences between tribal and non-tribal discards. The discard rates estimated by \gls{wcgop} during the years 2004--2010 were estimated to be high (above 50% in some years) but only represent the non-tribal catch. During this same period, the tribal catch represented the majority of the commercial catch and the tribal fishery had full retention of Yellowtail. Modeling retention appropriately would have required separating the tribal and non-tribal catch into separate fleets.
+<!-- 
+# counting 13 retention parameters in 2017 model
+model$parameters |> dplyr::filter(Phase > 0 & grepl("Ret", Label)) |> dplyr::pull(Label) 
+-->
 
--   Updated Aging error.
+-   Updated ageing error as described in @sec-ageing.
 
 -   Most Washington recreational catch data is now available in biomass on \gls{recfin}. This facilitated combining recreational catches across all three states into a single model fleet with catch supplied in biomass. Different catch reporting units was the main reason listed for separating the recreational fleets in 2017. Historical Washington recreational catches (pre-1990) were converted from numbers to biomass using allometric relationships. Modeling catch in biomass makes forecasting catches more straightforward.
 
