@@ -172,10 +172,6 @@ knitr::include_graphics(
 ```
 
 
-TODO: add mean length and age plots? KLO: include model fits and put these in fits to data
-
-TODO: add CAAL plots? KLO: Yes because otherwise there is no figure of 
-
 {{< pagebreak >}}
 
 ### Biological data
@@ -313,6 +309,83 @@ knitr::include_graphics(
 ```
 
 ```{r}
+#| label: fig-mean-len-1
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for Commercial with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "observed mean length declines from the 1970s to the 1990s and then increases to about 2010 and declines after that. The expectation mostly fits this pattern but does not capture the peak in 2010 very well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Commercial.png"
+)
+```
+
+```{r}
+#| label: fig-mean-len-2
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for At-Sea Hake with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "Mean length has been relatively stable is fit well by the model."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_At-Sea-Hake.png"
+)
+```
+
+```{r}
+#| label: fig-mean-len-3
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for the Recreational fleet with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "TODO"
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Recreational.png"
+)
+```
+
+```{r}
+#| label: fig-mean-len-4
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for the Hook and Line Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The mean length is uncertain due to low sample sizes and shows little change over the 2010 to 2024 period with data. The model expectation fits reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_H&L_survey.png"
+)
+```
+
+```{r}
+#| label: fig-mean-len-5
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for the Triennial Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The observed and expected show relatively little change over the years of the triennial survey, but the model fits the changes reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Triennial.png"
+)
+```
+
+```{r}
+#| label: fig-mean-len-6
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean length for the WCGBTS with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The observed and expected show relatively little change over the 2003-2024 time series, with the exception of an anomolously low observed mean length in 2013 that was not fit well by the model."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_WCGBTS.png"
+)
+```
+
+```{r}
 #| label: fig-age-agg-fit
 #| echo: false
 #| warning: false
@@ -336,6 +409,124 @@ knitr::include_graphics(
 
 knitr::include_graphics(
     "r4ss_plots/comp_agefit__multi-fleet_comparison.png"
+)
+```
+
+```{r}
+#| label: fig-caal-page1
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Residuals (page 1 of 3) for fit to conditional-age-at-length data for the WCGBTS (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_condAALfit_residsflt6mkt0_page1.png"
+)
+```
+
+```{r}
+#| label: fig-caal-page2
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Residuals (page 2 of 3) for fit to conditional-age-at-length data for the WCGBTS (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_condAALfit_residsflt6mkt0_page2.png"
+)
+```
+
+```{r}
+#| label: fig-caal-page3
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Residuals (page 3 of 3) for fit to conditional-age-at-length data for the WCGBTS (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_condAALfit_residsflt6mkt0_page3.png"
+)
+```
+
+
+```{r}
+#| label: fig-mean-age-1
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age for Commercial with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "Observed mean age declines from the 1970s to the 1990s and then increases to about 2010 and is somewhat stable after. The expectation mostly fit this pattern well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Commercial.png"
+)
+```
+
+```{r}
+#| label: fig-mean-age-2
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age for At-Sea Hake with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "There are only two years of observations. The observations are slightly different but the expectation is the same for these two years."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_At-Sea-Hake.png"
+)
+```
+
+```{r}
+#| label: fig-mean-age-3
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age for the Recreational fleet with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "TODO"
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Recreational.png"
+)
+```
+
+```{r}
+#| label: fig-mean-age-4
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age for the Hook and Line Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The Mean age is uncertain due to low sample sizes and shows little change over the 2010 to 2024 period with data. The model expectation fits reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_H&L_survey.png"
+)
+```
+
+```{r}
+#| label: fig-mean-age-5
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age for the Triennial Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The observed and expected decline in mean age from 1980 to 1983 and an increase from 1995 to 2004 but are noisy and fit less well in the middle period."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Triennial.png"
+)
+```
+
+```{r}
+#| label: fig-mean-age-6
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Mean age from conditional data (aggregated across length bins) for the WCGBTS with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-alt: "The observed and expected show relatively little change over the 2003-2024 time series, with the exception of an anomolously low observed Mean age in 2013 that was not fit well by the model."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_condAALfit_data_weighting_TA1-8_condAgeWCGBTS.png"
 )
 ```
 
