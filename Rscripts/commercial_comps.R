@@ -58,6 +58,8 @@ pacfin_exp |>
 ggsave('Data/Processed/pacfin_expansions/expansion_factor_1_L_hist.png')
 
 
+
+
 # create length comps for SS3
 length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
   pacfintools::getComps(
@@ -83,6 +85,37 @@ age_comps_ss3 <- filter(pacfin_exp, !is.na(Age),
     comp_bins = age_bin # sourced above
   )
 
+# tables for document
+
+pacfin_exp |>
+  filter(SEX != 'U') |>
+  group_by(state, year) |>
+  summarise(n_fish = sum(!is.na(lengthcm)),
+            n_trip = length(unique(SAMPLE_NO))) |>
+  tidyr::pivot_longer(cols = n_fish:n_trip, values_to = 'val', names_to = 'quant') |>
+  mutate(quant = paste(state, quant, sep = ' ')) |>
+  ungroup() |>
+  select(-state) |>
+  tidyr::pivot_wider(names_from = quant, values_from = val) |>
+  left_join(select(length_comps_ss3, year, input_n)) |>
+  arrange(year) |>
+  mutate(across(everything(), ~tidyr::replace_na(., replace = 0))) |>
+  write.csv('report/tables/pacfin_lengths.csv', row.names = FALSE)
+
+pacfin_exp |>
+  filter(!is.na(Age), SEX != 'U') |>
+  group_by(state, year) |>
+  summarise(n_fish = n(),
+            n_trip = length(unique(SAMPLE_NO))) |>
+  tidyr::pivot_longer(cols = n_fish:n_trip, values_to = 'val', names_to = 'quant') |>
+  mutate(quant = paste(state, quant, sep = ' ')) |>
+  ungroup() |>
+  select(-state) |>
+  tidyr::pivot_wider(names_from = quant, values_from = val) |>
+  left_join(select(age_comps_ss3, year, input_n)) |> 
+  arrange(year) |>
+  mutate(across(everything(), ~tidyr::replace_na(., replace = 0))) |>
+  write.csv('report/tables/pacfin_ages', row.names = FALSE)
 
 # unexpanded (consistency w/2017) -----------------------------------------
 

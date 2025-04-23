@@ -76,20 +76,6 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-indices_fit
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
-#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
-#| fig-pos: H
-
-knitr::include_graphics(
-    "Figures/index_fits_all_fleets.png"
-)
-```
-
 
 ```{r}
 #| label: fig-orbsqq
@@ -159,19 +145,6 @@ knitr::include_graphics(
 ### Composition data
 
 ```{r}
-#| label: fig-len-agg-fit
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed)"
-#| fig-alt: "Aggregated length comps are fit reasonably well."
-
-knitr::include_graphics(
-    "r4ss_plots/comp_lenfit__aggregated_across_time.png"
-)
-```
-
-```{r}
 #| label: fig-len-all-bubbles
 #| echo: false
 #| warning: false
@@ -184,31 +157,6 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-len-all-pearson
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Pearson residuals for fit to length composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected)."
-#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
-
-knitr::include_graphics(
-    "r4ss_plots/comp_lenfit__multi-fleet_comparison.png"
-)
-```
-
-```{r}
-#| label: fig-age-agg-fit
-#| echo: false
-#| warning: false
-#| eval: true
-#| fit-cap: "Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length."
-#| fig-alt: "Aggregated age comps are fit reasonably well."
-
-knitr::include_graphics(
-    "r4ss_plots/comp_agefit__aggregated_across_time.png"
-)
-```
 
 ```{r}
 #| label: fig-age-all-bubbles
@@ -223,18 +171,23 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-age-all-pearson
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Pearson residuals for fit to marginal age composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
-#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
 
-knitr::include_graphics(
-    "r4ss_plots/comp_agefit__multi-fleet_comparison.png"
-)
-```
+TODO: add mean length and age plots? KLO: include model fits and put these in fits to data
+
+TODO: add CAAL plots? KLO: Yes because otherwise there is no figure of 
+
+{{< pagebreak >}}
+
+### Biological data
+
+![Length-weight relationship used with data](figures/length_weight_with_data.png){#fig-length-weight fig-alt="figure illustrated a well-fitting length-weight relationship with similar curve for males and females but females have a larger length"}
+
+![Fitted maturity curve with data](figures/maturity_with_data.png){#fig-maturity fig-alt='figure illustrating maturity as described in WHERE'}
+
+## Model Bridging
+
+
+## Biology
 
 ```{r}
 #| label: fig-param-dist
@@ -248,16 +201,6 @@ knitr::include_graphics(
     "Figures/parameter_distributions.png"
 )
 ```
-
-TODO: add mean length and age plots?
-
-TODO: add CAAL plots?
-
-{{< pagebreak >}}
-
-## Model Bridging
-
-## Biology
 
 ```{r}
 #| label: fig-growth1
@@ -327,6 +270,74 @@ knitr::include_graphics(
 ```
 
 ## Fits to Data
+
+
+```{r}
+#| label: fig-indices_fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
+#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "Figures/index_fits_all_fleets.png"
+)
+```
+
+```{r}
+#| label: fig-len-agg-fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed)"
+#| fig-alt: "Aggregated length comps are fit reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit__aggregated_across_time.png"
+)
+```
+
+```{r}
+#| label: fig-len-all-pearson
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Pearson residuals for fit to length composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected)."
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_lenfit__multi-fleet_comparison.png"
+)
+```
+
+```{r}
+#| label: fig-age-agg-fit
+#| echo: false
+#| warning: false
+#| eval: true
+#| fit-cap: "Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-alt: "Aggregated age comps are fit reasonably well."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_agefit__aggregated_across_time.png"
+)
+```
+
+
+```{r}
+#| label: fig-age-all-pearson
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Residuals for fit to marginal age composition data for all fleets (red female, blue male, grey unsexed). Closed bubbles are positive residuals (observed > expected) and open bubbles are negative residuals (observed < expected). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-alt: "See 'Pearson' column in CompReport.sso for values."
+
+knitr::include_graphics(
+    "r4ss_plots/comp_agefit__multi-fleet_comparison.png"
+)
+```
 
 ## Time-series
 
@@ -479,6 +490,18 @@ knitr::include_graphics(
 ```
 
 ## Sensitivity analyses
+
+![Spawning output for index sensitivities](figures/sensitivities/indicescompare2_spawnbio_uncertainty.png){#fig-index-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for index sensitivities](figures/sensitivities/indicescompare4_Bratio_uncertainty.png){#fig-index-sens-depl fig-alt='TODO'}
+
+![Spawning output for modeling sensitivities](figures/sensitivities/modelingcompare2_spawnbio_uncertainty.png){#fig-model-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for modeling sensitivities](figures/sensitivities/modelingcompare4_Bratio_uncertainty.png){#fig-model-sens-depl fig-alt='TODO'}
+
+![Spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare2_spawnbio_uncertainty.png){#fig-comp-sens-ssb fig-alt='TODO'}
+
+![Relative spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare4_Bratio_uncertainty.png){#fig-comp-sens-depl fig-alt='TODO'}
 
 ## Retrospectives and likelihood profiles
 

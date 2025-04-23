@@ -84,6 +84,7 @@ Model_Runs/temp
 
 # quarto files
 *.tex
+!sa4ss_glossaries.tex
 *.upa
 *.upb
 report/*.pdf

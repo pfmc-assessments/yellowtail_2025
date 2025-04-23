@@ -252,6 +252,10 @@ ashop_catch |>
 ashop_catch |>
   select(YEAR, catch_mt) |>
   knitr::kable(align = 'l', digits = 1)
+
+#ashop_catch |>
+#   saveRDS(file = here('Data/Confidential/ASHOP/ashop_catch.rds'))
+
 ```
 
 ### Recreational landings
@@ -295,7 +299,7 @@ wa_historical <- read.csv(here('Data/Raw_not_confidential/WA_historical_rec.csv'
     }
   ) |>
   arrange(RECFIN_YEAR) |>
-  mutate(`WA (mt)` = (W_L_pars_unsexed$A * wa_hist_avg_len$avg_len ^
+  mutate(`WA (mt)` = (W_L_pars_unsexed$A * 10^(-3) * wa_hist_avg_len$avg_len ^
                         W_L_pars_unsexed$B) * `WA (num)`
   )
 
@@ -449,6 +453,9 @@ rec_landings |>
   rename(YEAR = 'RECFIN_YEAR') |>
   arrange(YEAR) |>
   knitr::kable(align = 'l', digits = 1)
+
+#rec_landings |>
+#    saveRDS(file = here('Data/Confidential/rec/rec_wide.rds'))
 
 ```
 

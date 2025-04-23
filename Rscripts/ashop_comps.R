@@ -49,3 +49,21 @@ ashop_ages |>
                              month = 7, fleet = 2, partition = 0, ageerr = 1) |>
   purrr::pluck(1) |>
   saveRDS('Data/processed/ss3_ashop_ages.rds')
+
+# tables for report
+length_tab <- ashop_lengths |>
+  group_by(Year) |>
+  summarise(`ntow length` = length(unique(HAUL_JOIN)),
+            `nfish length` = sum(FREQUENCY)) 
+
+age_tab <- ashop_ages |>
+  filter(!is.na(AGE), YEAR != 2020) |>
+  rename(Year = YEAR) |>
+  group_by(Year) |>
+  summarise(`ntow age` = length(unique(HAUL_JOIN)),
+            `nfish age` = n()) 
+
+left_join(length_tab, age_tab) |>
+  mutate(across(everything(), ~tidyr::replace_na(., replace = 0))) |>
+  write.csv('report/tables/ashop_comps.csv', row.names = FALSE)
+  
