@@ -1,0 +1,17 @@
+"Depth_bin","Gear_bi","Month","Survey","Year","Effort Offset","Df","Log-Likelihood","AICc","Delta"
+"Included",NA,"Included","Included","Included","Included",21,-1545.9,3134.3,0
+"Included","+","Included","Included","Included","Included",22,-1545.6,3135.7,1.4
+"Included","+","Included",NA,"Included","Included",21,-1569.1,3180.6,46.2
+"Included",NA,"Included",NA,"Included","Included",20,-1571.8,3184,49.6
+"Included",NA,NA,"Included","Included","Included",18,-1587.5,3211.3,77
+"Included","+",NA,"Included","Included","Included",19,-1587.2,3212.8,78.5
+"Included","+",NA,NA,"Included","Included",18,-1598,3232.4,98
+"Included",NA,NA,NA,"Included","Included",17,-1603.4,3241.1,106.8
+NA,NA,"Included","Included","Included","Included",19,-1653.6,3345.7,211.3
+NA,"+","Included","Included","Included","Included",20,-1653.4,3347.2,212.9
+NA,NA,"Included",NA,"Included","Included",18,-1669.2,3374.8,240.5
+NA,"+","Included",NA,"Included","Included",19,-1669,3376.3,242
+NA,NA,NA,"Included","Included","Included",16,-1680.8,3393.8,259.5
+NA,"+",NA,"Included","Included","Included",17,-1680.7,3395.8,261.4
+NA,"+",NA,NA,"Included","Included",16,-1689.2,3410.8,276.4
+NA,NA,NA,NA,"Included","Included",15,-1691.1,3412.4,278.1
