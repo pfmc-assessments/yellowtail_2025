@@ -76,20 +76,6 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-indices_fit
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Fit to all indices used in the model. Blue line is expected value, black circles are point estimates and whiskers show 95% intervals based on input uncertainty. No extra standard error was estimated for any of the indices."
-#| fig-alt: "See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
-#| fig-pos: H
-
-knitr::include_graphics(
-    "Figures/index_fits_all_fleets.png"
-)
-```
-
 <!-- H&L Figures -->
 
 
