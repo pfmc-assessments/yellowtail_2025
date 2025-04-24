@@ -4,13 +4,13 @@
 
 <!-- Very brief text here for (IT will do) -->
 
-Early studies of Yellowtail Rockfish stocks on the U.S. West Coast north of $40^\circ 10^\prime$ N. latitude (Cape Mendocino, northern California) began in the 1980s with observational surveys. Statistical assessments of Yellowtail Rockfish were conducted in 1982 [@Tagart1982], 1988 [@Tagart1988], 1996 [@Tagart1997], and 1997 [@Tagart1997] to determine harvest specifications for the stock. These early assessments employed a variety of statistical methods, for example, the 1997 assessment used cohort analysis and dynamic pool modeling. Figure \ref{fig:assessment_history} shows the timeseries of age 4+ biomass for Yellowtail Rockfish across past assessments.
+Early studies of Yellowtail Rockfish stocks on the U.S. West Coast north of $40^\circ 10^\prime$ N. latitude (Cape Mendocino, northern California) began in the 1980s with observational surveys. Statistical assessments of Yellowtail Rockfish were conducted in 1982 [@Tagart1982], 1988 [@Tagart1988], 1996 [@Tagart1997], and 1997 [@Tagart1997] to determine harvest specifications for the stock. These early assessments employed a variety of statistical methods, for example, the 1997 assessment used cohort analysis and dynamic pool modeling. @fig-historical shows the timeseries of age 4+ biomass for Yellowtail Rockfish across past assessments.
 
 The Yellowtail Rockfish assessment in 2000 [@Tagart2000] was the first that estimated stock status, with an estimated depletion of 60.5 percent at the start of 2000. Lai et al. [@Lai2003] updated the 2000 assessment and estimated that stock depletion was 46 percent at the start of 2003. A second assessment update was prepared in 2005 [@Wallace2005] with an estimated depletion of 55 percent at the start of 2005. The 2000 assessment and updates were age-structured assessments conducted using AD Model Builder as the software platform for nonlinear optimization [@Fournier2012].
 
-A data-moderate assessment of Yellowtail Rockfish south of $40^\circ 10^\prime$ N. latitude was conducted in 2013 [@Cope2013]. This assessment estimated depletion at the start of 2013 at 67 percent, and estimated the spawning biomass at 50,043 mt. This was a large biomass increase relative to previous estimates and may be attributed to the low removals over the previous decade.
+A data-moderate assessment of Yellowtail Rockfish north of $40^\circ 10^\prime$ N. latitude was conducted in 2013 [@Cope2013]. The data-moderate approach included only catch and indicies of abundance with no age or length composition data included.
 
-<!-- copied text from 2017, may want to try to slim down (though it is not as excessive as some assessments) -->
+The most recent assessment was conducted in 2017 [@stephens_status_2017] which returned to the benchmark approach and included age and length comopsition data as well as modeling discards through a parametric retention function fit to discard length comps and discard rates. In 2017 an assessment for the stock of Yellowtail Rockfish south of $40^\circ 10^\prime$ was attempted, but the data were not adequate to provide reliable estimates and the assessment was withdrawn having been found to be too uncertain for management [@stephens_status_2017].
 
 ## Response to most recent STAR panel and SSC recommendations
 
