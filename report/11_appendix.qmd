@@ -1,1 +1,77 @@
-## Appendices {#sec-appendix}
+# Appendix A: Oceanographic index
+
+  The correlation between groundfish recruitment strength and environmental conditions in the California Current has been the topic of extensive research [@Tolimieri2020; @Haltuch2020; @vestfals2023stage]. For recent assessments the environmental-recruitment relationship has been modeled as an index of recruitment deviations [@Taylor_petrale_2023; @Johnson2023], which allows for error in the environmental time series, as well as for tuning of the uncertainty so that forecast uncertainty is consistent with the degree of correspondence observed within the time-series and ensures the appropriate degree of recruitment variability for the deviations themselves [@Schirripa2007].
+  
+  A process for evaluating oceanographic drivers of groundfish recruitment has been established for sablefish [@Tolimieri2018; @Johnson2023], petrale sole [@Haltuch2020; @Taylor_petrale_2023], and Pacific hake [@vestfals2023stage; @grandin_status_2024]. This process involves first, the development of a conceptual life history model which links hypothesized oceanographic conditions with specific lifestages that influence recruitment based on established literature and expert opinion. These oceanographic conditions are then characterized using ocean model products (e.g. ROMs or GLORYS) during the appropriate season and spatial domain to align with each species life history. The oceanographic conditions that are most important for recruitment are then identified through a model selection process and used to develop an index. 
+  
+  A team of ecosystem and stock assessment scientists at NWFSC identified northern Yellowtail as a species that is suitable for evaluation of an oceanographic index. Northern Yellowtail have extensive age composition data but are not well sampled in the NMFS Bottom Trawl Survey until they reach seven years old. As a result, main recruitment deviations are well informed but late recruitment deviations, which start in 2019, have very little information and would benefit from an index to inform recent recruitment and the forecast period. It was also identified that the methods applied in previous studies and assessments could be improved upon by:
+  
+1) Modeling flexible non-linear relationships between recruitment deviations and oceanographic conditions using Generalized Additive Models
+2) Using CMEMS-based environmental times series when available to avoid temporal discontinuities of ROMS identified in the 2023 petrale sole stock assessment [@Taylor_petrale_2023]]
+3) Evaluate predictive capacity of oceanographic models in addition to model fit
+
+## Conceptual Life History Model
+
+  A literature-based, conceptual life-history model for northern yellowtail was developed that included seven lifestages from preconditioning through benthic recruitment (@tbl-LH) [@Darby]. To summarize the methods of Darby et al. in prep, each life-history stage that could contribute to the size of each yellowtail year class was identified, starting with female condition prior to the start of the spawning season (@tbl-LH). Typically, larger, older mothers invest more resources into larval quality, promoting larval survival and contributing significantly to recruitment [@Beyer2015]. Nutritional stores in these females, which are gained during the summer upwelling season, are activated for ovarian development during the late fall and winter [@Macfarlane1993]. Therefore, the summer through the winter prior to spawning (July – March) may be important for female preconditioning. Copulation (spawning) occurs from August to October in the same year, with fertilization of the eggs occurring approximately 30 days after copulation (November – December). Rockfish carry developing embryos enclosed in egg envelopes for most of gestation but the larvae hatch several days prior to parturition [@Macfarlane1995]. Parturition occurs from January to April with a peak in February of the following year. Birth of live larvae takes place at depths shallower than 180 meters [@Stephens2017]. Larvae are often distributed below the surface in the mixed portion of the water column between 20 and 70 meters [@Petersen2010]. Pelagic juveniles recruit to nearshore waters throughout the summer months before migrating to deeper waters (up to ~550 meters deep) in the fall where their preferred habitat is the midwater over reefs and boulder fields [@Stephens2017]. The timing of reproduction corresponds to the larval lifestage aligning with upwelling-induced food production [@Barnett2015]. The importance of this phenological alignment between lifestage and recruitment was illustrated in 2005 when a long delay in the spring transition to upwelling-favorable conditions contributed to large-scale recruitment failures that were observed in many marine species [@Barth2007].
+  
+  Twenty-seven a priori hypotheses (specific to life-stage, time of year, and depth distribution) for oceanographic covariates that may drive variation in northern Yellowtail rockfish recruitment were developed. For each hypothesis, the time and depth range for the potential predictor were specified, for example, mixed layer depth between February and March at 0 – 90 m depth may affect where larvae are distributed in the water column (@tbl-LH). In some cases, the literature suggested multiple (or overlapping) time periods or depth ranges over which environmental or biological variables might influence recruitment. When this occurred, the broader time periods and depth ranges were included in our analyses to reduce the number of predictors considered. The resulting testable hypotheses fall into four general categories (@tbl-LH): temperature, transport, upwelling indices, and basin-scale processes (i.e., El Niño Southern Oscillation).
+  
+## Oceanographic Time Series
+
+  For each hypothesized relationship between northern Yellowtail recruitment and physical oceanographic parameters, a time series was derived from the Global Ocean Reanalysis products [@Cabanes2010]. These models provide a higher global ocean eddy permitting resolution (1/4°) reanalysis system, with the objective of describing the mean and time-varying state of ocean circulation over the past several decades. This approach produces a comprehensive record of how ocean properties, such as temperature and mixed layer depth, are changing over time [@Cabanes2010].
+  
+  We followed the same methods for accessing CMEMS products as the 2023 Petrale Sole stock assessment [@Taylor_petrale_2023]. Briefly, we combined two CMEMS products: the Global Ocean Reanalysis and Simulation (GLORYS12V1:GLOBAL_MULTIYEAR_PHY_001_030, [https://doi.org/10.48670/moi-000211]( https://doi.org/10.48670/moi-000211)) [@Fernandez2018; @Drevillon2022] and the Copernicus Marine global analysis and forecast (CMGAF, GLOBAL_ANALYSISFORECAST_PHY_001_024; [https://doi.org/10.48670/moi-00016](https://doi.org/10.48670/moi-00016)) [@LeGalloudec2022]. The data are served by the Copernicus Marine Service ([https://marine.copernicus.eu/](https://marine.copernicus.eu/)). When downloaded the data covered: GLORYS: 1993-01-01 to 2020-11-01 and CMGAF: 2020-11-01 to 2025-01-01. Note both the reanalysis and the analysis and forecast walk forward in time. For the CMGAF, time series are updated at regular intervals beginning with a daily forecast and hindcast simulation, and a weekly ‘hindcast-best analysis’ with data assimilation through -15 days [@LeGalloudec2022]. We use “GLORYS” below to refer to the combined data set.
+  
+  Overall the GLORYS analysis followed @Tolimieri2018 and @Haltuch2020 modified for the life history of Yellowtail rockfish. More specifically, data for water column temperature, and bottom temperature were downloaded as daily values for 40-48 °N and processed as follows for each life-history-stage predictor:
+
+1) Subsetted data by depth (@tbl-LH) 
+2) Calculated the daily average
+3) Subsetted #2 by the relevant time periods [@Tolimieri2018]
+4) Calculated the annual average (or sum for degree days) for 1993-2024 for that potential predictor
+
+  For transport variables and mixed-layer depth, monthly means from the GLORYS models were used to reduce processing time but followed the same overall model selection process as as above. All output data for each physical oceanographic parameter was either summed or averaged over the appropriate period (as defined in @tbl-LH) over a 31 year period, 1994 - 2024 and standardized by subtracting the mean and dividing by the standard deviation such that the standardized time series had a mean of 0 and standard deviation of 1.
+  
+  For upwelling variables we used two ecologically important characterizations of upwelling conditions. The Coastal Upwelling Transport Index (CUTI) provides estimates of vertical transport near the coast (i.e., upwelling/downwelling). It was developed as a more accurate alternative to the previously available ‘Bakun Index’ [@Jacox2018]. The Biologically Effective Upwelling Transport Index (BEUTI) provides estimates of vertical nitrate flux near the coast (i.e., the amount of nitrate upwelled/downwelled), which may be more relevant than upwelling strength when considering some biological responses [@Jacox2018]. CUTI and BEUTI are calculated from ocean state estimates and surface wind forcing obtained from historical reanalyses of the CCS produced using the Regional Ocean Modeling System (ROMS) with 4-dimensional variational data assimilation described by @Jacox2018. CUTI and BEUTI have not been developed for the 1994 - 2024 time period from GLORYS so ROMS was used as an alternative. Notably, the ROMS data from which CUTI and BEUTI are calculated is consistent across the 2010/2011 time period and these datasets do not have the major sensitivities reported in Taylor et al. 2023 (Mike Jacox, NOAA SWFSC, personal communication, November 1 2024), which were particularly apparent for temperature and mixed layer depth. 
+  
+  Spring transition index (STI; date at which the minimum value of cumulative upwelling is achieved thus representing the onset of the upwelling season) and total upwelling magnitude (TUMI; measures the total intensity of coastal upwelling over the entire length of the upwelling season) are two important characterizations of upwelling phenology [@Bograd2009] that have been linked to rockfish recruitment [@Barnett2015]. Therefore, we used used both STI and TUMI calculated from CUTI (CutiSTI, CutiTUMI) and BEUTI (BeutiSTI, BeutiTUMI) following the methods of [@Liesing2024] and which we updated through 2024.
+  
+  Climate indices are designed to represent large-scale environmental patterns and often explain a higher proportion of ecological variance than a single local predictor [@Hallett2004]. We considered two climate indices for their influence on Yellowtail rockfish recruitment, the Oceanic Niño Index and the Pacific Decadal Oscillation. The Oceanic Niño Index (ONI) describes the equatorial El Niño Southern Oscillation (ENSO). An ONI above 0.5°C indicates El Niño conditions, which often lead to lower primary production, weaker upwelling, poleward transport of equatorial waters and species, and more southerly storm tracks in the CCE. An ONI below -0.5°C means La Niña conditions, which influence atmospheric pressure conditions that lead to upwelling-favorable winds that drive productivity in the California Current Ecosystem [@Liesing2024]. The Oceanic Niño Index data are from the NOAA Climate Prediction Center [https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php](https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php).
+
+  The Pacific Decadal Oscillation (PDO) describes North Pacific sea surface temperature (SSTa) anomalies that may persist for many years. Positive PDOs are associated with warmer SSTa and lower productivity in the California Current Ecosystem, while negative PDOs indicate cooler SSTa and are associated with higher productivity. There is evidence that the ecological meaning of the PDO has been changing through time [@Litzow2018; @Malick2020] particularly in the Gulf of Alaska and in relation to Pacific salmon. However the evidence of nonstationary relationships between the PDO and local physical conditions in the CCS are less conclusive, with relatively stable relationships between the PDO and regional sea surface height, temperature, bifurcation index, and sea level pressure (SLP) through time [@Litzow2018]. Recent research has shown that PDO has not changed in pattern or strength, and a pattern of pan-basin warming now overwhelms SSTa changes, producing periods that diverge from what is expected from classic PDO expression [@Cluett]. Altogether, this indicates that the PDO may still be an important climate index for non-salmon species in the CCS as the PDO still represents basin-scale patterns in SSTa warranting its inclusion, although any interpretations of PDO relationships should consider the pan-basin warming pattern which has been the dominant expression of SSTa since 2014 [@Cluett]. PDO data included here are from N. Mantua, NMFS/SWFSC, and are served on the CCIEA ERDDAP server [https://oceanview.pfeg.noaa.gov/erddap/tabledap/cciea_OC_PDO.html](https://oceanview.pfeg.noaa.gov/erddap/tabledap/cciea_OC_PDO.html).
+  
+## Index Development
+
+{{< pagebreak >}}
+::: {.landscape}  
+```{r}
+#| label: tbl-LH
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of oceanographic conditions influencing yellowtail rockfish life history"
+library(readxl)
+
+LH <-readxl::read_excel("Tables/ConceptualLifeHistory.xls") 
+LH[is.na(LH)] <- " "
+LH|>
+  gt::gt() |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+ # gt::cols_label(
+ #   Ecosystem.and.environmental.conditions = "Ecosystem and environmental conditions",
+ #   Assessment.data.inputs = "Assessment data inputs",
+ #   Assessment.model.fits.and.structural.uncertainty = "Assessment model fits and #structural uncertainty"
+ # ) |>
+  gt::cols_width(
+    Hypothesis ~ px(200),
+    'Life-history stage' ~ px(100),
+    'Time period' ~ px(75),
+    'Data Source' ~ px(75),
+    Covariates ~ px(75),
+    Depth ~ px(75),
+    Stage ~ px(75)
+  ) |>
+  gt::as_latex()
+```
+:::
