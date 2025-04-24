@@ -2,7 +2,7 @@ library(r4ss)
 library(here)
 library(dplyr)
 
-exe_loc <- here('model_runs/ss3.exe')
+exe_loc <- here::here('model_runs/ss3.exe')
 source('Rscripts/bins.R')
 source('Rscripts/model_rename_fleets.R')
 source('Rscripts/model_remove_retention.R')
@@ -750,6 +750,38 @@ out <- SSgetoutput(dirvec = c('model_runs/5.08_correct_input_n', 'model_runs/5.0
 out |>
   SSsummarize() |> 
   SSplotComparisons(subplots = c(1,3), new = FALSE)
+
+SS_plots(out[[2]])
+
+# add 2024 discards
+mod <- SS_read('model_runs/5.09_no_extra_SE')
+# get GEMM discards (copied from Rscripts/model_remove_retention.R)
+(avg_discards <- readRDS("Data/Processed/gemm_discards_by_fleet.rds") |>
+  dplyr::filter(year %in% 2019:2023, fleet == "Commercial") |>
+  dplyr::pull(catch) |>
+  mean())
+# [1] 5.31276
+mod$dat$catch[mod$dat$catch$fleet == 1 & mod$dat$catch$year == 2024, "catch"]
+# [1] 2663.91
+# add GEMM discards to 2024 catch
+mod$dat$catch[mod$dat$catch$fleet == 1 & mod$dat$catch$year == 2024, 'catch'] <- 
+  avg_discards + mod$dat$catch[mod$dat$catch$fleet == 1 & mod$dat$catch$year == 2024, 'catch']
+
+SS_write(mod, 'model_runs/5.10_add_2024_discards', overwrite = TRUE)
+run('model_runs/5.10_add_2024_discards', extras = '-nohess', exe = exe_loc)
+
+out <- SSgetoutput(dirvec = c('model_runs/5.09_no_extra_SE', 'model_runs/5.10_add_2024_discards'))
+
+out |>
+  SSsummarize() |> 
+  SSplotComparisons(subplots = c(1,3), new = FALSE)
+out |>
+  SSsummarize(verbose = FALSE) |>
+  SStableComparisons(
+    names = c("SSB_2025", "Bratio_2025", "ForeCatch_2027"),
+    likenames = NULL,
+    verbose = FALSE
+  )
 
 SS_plots(out[[2]])
 
