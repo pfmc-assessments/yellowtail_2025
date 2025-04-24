@@ -77,13 +77,15 @@ All other sensitivities to index data led to only minor changes during the estim
 
 #### Modeling
 
-Sensitivity to modeling assumptions is in figures @fig-model-sens-ssb and @fig-model-sens-depl and table Z.
+Sensitivity to modeling assumptions is in @fig-model-sens-ssb and @fig-model-sens-depl and table Z.
 
-A breakpoint natural mortality near the age at maturity and a shared natural mortality between males and females resulted in similar model results, with lower unfished recruitment, higher unfished spawning output, lower terminal year spawning output, and a relative terminal year spawning output below the management target.
+A breakpoint natural mortality near the age at maturity and a shared natural mortality between males and females resulted in similar model results, with lower unfished recruitment, higher unfished spawning output, lower terminal year spawning output, and a relative terminal year spawning output below the management target. The likelihood for breakpoint natural mortality is 56 units worse than the base model with a similar number of parameters. The likelihood for a model with shared natural mortality is 59 likelihood units worse with one less parameter.
 
 The model with time-varying weight length does not lead to changes in spawning output because spawning output is modeled as a function of length, not weight, but the time series of summary biomass does vary from the base model. Unfished summary biomass is lower than the base model and summary biomass also has more high-frequency variability during WCGBTS years when the weight-length relationship is changing. 
 
 The model with non-linear density-dependent catchability for the WCGBTS improves the survey likelihood by about four units, worsens the age likelihood by about one unit, and improves the length likelihood by less than one unit. While the WCGBTS index fit is slightly better, the model still misses the overall pattern, indicating time-invariant density-dependent catchability alone cannot explain the conflict between composition and index data.
+
+No other modeling sensitivities led to notable changes in population trajectories. However, we do note that estimating two sex-specific selectivity parameters for the recreational fleet improved the likelihood by 18 units. Estimating sex-specific selectivity for all fleets with sex data does improve the likelihood by an additional 28 units. However, this involves estimating 12 additional parameters, many of which seemed poorly estimated during earlier explorations.
 
 <!-- Sensitivity to assumptions about model structure, i.e., model specification uncertainty.  -->
 
