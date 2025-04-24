@@ -199,7 +199,7 @@ We used a total of 232 individual histological samples of aged female yellowtail
 
 ### Fecundity
 
-Fecundity is based on @dick_meta-analysis_2017 and is unchanged from the 2017 assessment. The relationship for spawning output for an individual is `r mod_in$ctl$MG_parms['Eggs_alpha_Fem_GP_1', 'INIT']`\*length^`r mod_in$ctl$MG_parms['Eggs_alpha_Fem_GP_2', 'INIT']`^.
+Fecundity is based on @dick_meta-analysis_2017 and is unchanged from the 2017 assessment. The relationship for spawning output for an individual is `r mod_in$ctl$MG_parms['Eggs_alpha_Fem_GP_1', 'INIT']`\*length^`r mod_in$ctl$MG_parms['Eggs_beta_Fem_GP_1', 'INIT']`^.
 
 ## Environmental and ecosystem data
 
