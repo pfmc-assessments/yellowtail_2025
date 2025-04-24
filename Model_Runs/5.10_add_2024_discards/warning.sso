@@ -1,0 +1,6 @@
+Note 1 Information: Max data length bin: 56  < max pop len bins: 65; so will accumulate larger pop len bins
+Warning 1 : At least one block pattern ends in endyr. Check the output parameter value time series to see if the values in forecast years are as intended.
+Note 2 Information: Max harvest rate typically is >1.0 for F_method 2, 3 or 4 0.95
+Warning 2 : Final gradient: 9.09481e-05 is larger than final_conv: 1e-05
+Note 3 Information: A revised protocol for the Fcast_yr specification is available and recommended.
+ 2 warnings  and 3 notes 

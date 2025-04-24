@@ -770,11 +770,10 @@ mod$dat$catch[mod$dat$catch$fleet == 1 & mod$dat$catch$year == 2024, 'catch'] <-
 SS_write(mod, 'model_runs/5.10_add_2024_discards', overwrite = TRUE)
 run('model_runs/5.10_add_2024_discards', extras = '-nohess', exe = exe_loc)
 
-out <- SSgetoutput(dirvec = c('model_runs/5.09_no_extra_SE', 'model_runs/5.10_add_2024_discards'))
-
-out |>
-  SSsummarize() |> 
-  SSplotComparisons(subplots = c(1,3), new = FALSE)
+out <- SSgetoutput(
+  dirvec = c('model_runs/5.09_no_extra_SE', 'model_runs/5.10_add_2024_discards'),
+  verbose = FALSE
+)
 out |>
   SSsummarize(verbose = FALSE) |>
   SStableComparisons(
@@ -782,10 +781,6 @@ out |>
     likenames = NULL,
     verbose = FALSE
   )
-
-SS_plots(out[[2]])
-
-
 
 # bridging figures --------------------------------------------------------
 
