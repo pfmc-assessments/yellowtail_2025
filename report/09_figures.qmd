@@ -239,6 +239,17 @@ knitr::include_graphics(
 
 ## Model Bridging
 
+![Spawning output from first steps in model bridging. Catches from recreational fleets are combined when catch is updated.](figures/bridging/bridging1compare2_spawnbio_uncertainty.png){#fig-bridge1-ssb fig-alt="TODO"}
+
+![Relative spawning output from first steps in model bridging. Catches from recreational fleets are combined when catch is updated.](figures/bridging/bridging1compare4_Bratio_uncertainty.png){#fig-bridge1-depl fig-alt="TODO"}
+
+![Spawning output from second steps (updating composition data) in model bridging. "Exp" is expanded PacFIN data. Composition data from recreational fleets are combined as length and age data are renanalyzed. Every model run includes two rounds of Francis tuning of composition data. Bias adjustment ramp is updated when data are extended.](figures/bridging/bridging2compare2_spawnbio_uncertainty.png){#fig-bridge2-ssb fig-alt="TODO"}
+
+![Relative spawning output from second steps (updating composition data) in model bridging. "Exp" is expanded PacFIN data. Composition data from recreational fleets are combined as length and age data are renanalyzed. Every model run includes two rounds of Francis tuning of composition data. Bias adjustment ramp is updated when data are extended.](figures/bridging/bridging2compare4_Bratio_uncertainty.png){#fig-bridge2-depl fig-alt="TODO"}
+
+![Spawning output from third steps (model changes) in model bridging.](figures/bridging/bridging3compare2_spawnbio_uncertainty.png){#fig-bridge3-ssb fig-alt="TODO"}
+
+![Spawning output from third steps (model changes) in model bridging.](figures/bridging/bridging3compare4_Bratio_uncertainty.png){#fig-bridge3-depl fig-alt="TODO"}
 
 ## Biology
 

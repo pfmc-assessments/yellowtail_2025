@@ -766,16 +766,20 @@ out1 <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
 out2 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
                                         mod = c('3.04_discards',
                                                 '3.05_ages_raw_pacfin',
-                                                '3.06_ages_exp_pacfin',
                                                 '3.07_lengths_raw_pacfin',
+                                                '3.06_ages_exp_pacfin',
                                                 '3.08_lengths_exp_pacfin',
-                                                '3.10_exp_comps_2024',
-                                                '5.09_no_extra_SE')))
+                                                '3.10_exp_comps_2024')))
 
+out3 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
+                                        mod = c('3.10_exp_comps_2024',
+                                                '4.15_rec_blocks_only',
+                                                '4.11_sex_selex_setup',
+                                                '5.09_no_extra_se')))
 
 out1 |>
   SSsummarize() |>
-  SSplotComparisons(subplots = c(1,3), new = FALSE,
+  SSplotComparisons(subplots = c(2,4), new = FALSE,
                     legendlabels = c('2017',
                                      'Reanalyze catch', 
                                      '+ index', 
@@ -783,21 +787,35 @@ out1 |>
                                      '+ discard'), 
                     png = TRUE, plotdir = 'report/figures/bridging', 
                     filenameprefix = 'bridging1')
-out2[[8]] <- out1[[1]]
-names(out2)[8] <- 'replist8'
-out2 |>
+
+c(list(base2017 = out1[[1]]), out2) |> 
   SSsummarize() |>
-SSplotComparisons(subplots = c(1,3), new = FALSE,
-                  legendlabels = c('first steps',
-                                   'reanalyze raw pacfin ages',
-                                   'reanalyze exp pacfin ages',
-                                   'raw pacfin lengths',
-                                   'exp pacfin lengths',
-                                   'extend to 2024',
-                                   'modeling changes',
-                                   '2017'), 
-                  png = TRUE, plotdir = 'report/figures/bridging',
-                  filenameprefix = 'bridging2')
+  SSplotComparisons(subplots = c(2,4), new = FALSE,
+                    legendlabels = c('2017',
+                                     'first steps',
+                                     'reanalyze raw pacfin ages',
+                                     'raw pacfin ages + lengths',
+                                     'exp pacfin ages',
+                                     'exp pacfin ages + lengths',
+                                     'extend to 2024'), 
+                    png = TRUE, plotdir = 'report/figures/bridging',
+                    filenameprefix = 'bridging2')
+
+out3_smry <- c(list(base2017 = out1[[1]]), out3) |> 
+  SSsummarize() 
+
+out3_smry$SpawnBioLower$replist3 <- out3_smry$SpawnBioUpper$replist3 <- out3_smry$SpawnBio$replist3
+out3_smry$BratioLower$replist3 <- out3_smry$BratioUpper$replist3 <- out3_smry$Bratio$replist3
+
+out3_smry |>
+  SSplotComparisons(subplots = c(2,4), new = FALSE,
+                    legendlabels = c('2017',
+                                     'reanalyze and extend data',
+                                     'selectivity: rec blocks',
+                                     'selectivity: hake block, sex-specific rec',
+                                     'add H&L, SMURF, various other updates'), 
+                    png = TRUE, plotdir = 'report/figures/bridging',
+                    filenameprefix = 'bridging3')
 
 # Update # Update # Update bias adjustment --------------------------------------------------
 
