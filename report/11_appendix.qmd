@@ -22,7 +22,7 @@
   
   We followed the same methods for accessing CMEMS products as the 2023 Petrale Sole stock assessment [@Taylor_petrale_2023]. Briefly, we combined two CMEMS products: the Global Ocean Reanalysis and Simulation (GLORYS12V1:GLOBAL_MULTIYEAR_PHY_001_030, [https://doi.org/10.48670/moi-000211]( https://doi.org/10.48670/moi-000211)) [@Fernandez2018; @Drevillon2022] and the Copernicus Marine global analysis and forecast (CMGAF, GLOBAL_ANALYSISFORECAST_PHY_001_024; [https://doi.org/10.48670/moi-00016](https://doi.org/10.48670/moi-00016)) [@LeGalloudec2022]. The data are served by the Copernicus Marine Service ([https://marine.copernicus.eu/](https://marine.copernicus.eu/)). When downloaded the data covered: GLORYS: 1993-01-01 to 2020-11-01 and CMGAF: 2020-11-01 to 2025-01-01. Note both the reanalysis and the analysis and forecast walk forward in time. For the CMGAF, time series are updated at regular intervals beginning with a daily forecast and hindcast simulation, and a weekly ‘hindcast-best analysis’ with data assimilation through -15 days [@LeGalloudec2022]. We use “GLORYS” below to refer to the combined data set.
   
-  Overall the GLORYS analysis followed @tolimieri_oceanographic_2018 and @Haltuch2020 modified for the life history of Yellowtail rockfish. More specifically, data for water column temperature, and bottom temperature were downloaded as daily values for 40-48 °N and processed as follows for each life-history-stage predictor:
+  Overall the GLORYS analysis followed @tolimieri_oceanographic_2018 and @haltuch_oceanographic_2020; modified for the life history of Yellowtail rockfish. More specifically, data for water column temperature, and bottom temperature were downloaded as daily values for 40-48 °N and processed as follows for each life-history-stage predictor:
 
 1) Subsetted data by depth (@tbl-LH) 
 2) Calculated the daily average
@@ -41,6 +41,26 @@
   
 ## Index Development
 
+  Generalized Additive Models (GAM) were used to fit the relationship between oceanographic conditions and recruitment deviations of the base model. GAMs offer a potential  improvement over linear models used for oceanographic indices in previous stock assessments by providing additional flexibility for the shape of the relationship between recruitment and oceanographic conditions by fitting non-linear smoothed terms. In order to ensure that the relationship between driver (oceanographic time series) and response variables (recruitment deviations) were ecologically realistic, each smoothed term was only allowed to have up to three knots (k = 3). As such, the relationship could represent linear, threshold, or dome-shaped relationships, but relationships were not permitted to be more “wiggly” than a parabola. 
+  
+  Physical ocean conditions are often correlated due to shared atmospheric forcing, interrelated physics driving variability, and a high degree of both spatial and temporal autocorrelation. As such, many conditions identified in the conceptual life history model are described by highly or moderately correlated time series. In order to prevent multicollinearity and overfitting of the oceanographic index correlations between each individual time series were evaluated. Only time series with a Pearson’s correlation coefficient of less than 0.3 (weak correlation) were considered for inclusion in the same model. Up to four oceanographic conditions were included in a single model and all possible combinations of oceanographic conditions were tested for a total of 660 models. 
+  
+  There is a tradeoff between using model fit and predictive capacity when evaluating the performance of environmental-ecological relationships. Models that have a good fit to the entirety of the time period do not necessarily have strong predictive capacity for a specified time period compared to other models. As a result, selecting a model that has a good fit to the data may not have good out of sample predictive capacity. Similarly, a model that fits the data well during the early time period may not fit or predict a more recent time period. This is especially important when considering nonstationarity of environmental conditions [@Litzow2018] and the associated implications for ecological relationships; not all relationships hold up through time [@Myers1998]. In addition, the benefit of including an oceanographic index of recruitment particularly for northern Yellowtail is that it is most useful for recent years when recruitment deviations are only weakly informed by age composition data or unable to be estimated. Models that perform well based on classic information criteria such as AIC should therefore be assessed for their predictive performance as well. 
+  
+  LFO-CV uses a training dataset to fit the model while omitting the last 5 - 10 years of data. The performance of the model is then evaluated by predicting one year ahead for each year of the omitted data, and seeing how well the predicted values compare to the observed values. However, selecting a model exclusively based on five years of recent data can be prone to selecting a model with shorter-term relationships between recruitment deviations and oceanographic conditions that may not offer robust predictions through time, this is particularly relevant when evaluating models fit to short time series or using a large number of candidate model. It can also select models that may be highly sensitive to leverage years. Therefore the model selected in this process may be highly sensitive to which years are in training and prediction time periods.
+  
+  Model diagnostics and testing followed a similar evaluation to @tolimieri_oceanographic_2018 and @haltuch_oceanographic_2020, but only a subset of test results is shown here. Model testing was carried out to determine how stable the best-fit model was to both individual years and the precision of the estimates of recruitment deviations. Diagnostics were evaluated for the best performing models based on LOO-CV and LFO-CV. Tests included:
+  
+1) Individual years were iteratively removed, the model was fit to the remaining data and then used to predict the omitted observations. These predicted observations were compared to model predictions using the full 1994 - 2019 time period to fit the model 
+2) Individual years were iteratively removed and the model fit (R2 ) was re-evaluated
+3) Visual inspection of model fits, with particular attention to the last 5 years of main recruitment deviations
+
+For the final selected model, residual plots were visually inspected.
+
+## Model Comparison and Selection
+
+
+
 {{< pagebreak >}}
 ::: {.landscape}  
 ```{r}
@@ -58,11 +78,6 @@ LH|>
     table.font.size = 12,
     latex.use_longtable = TRUE
   ) |>
- # gt::cols_label(
- #   Ecosystem.and.environmental.conditions = "Ecosystem and environmental conditions",
- #   Assessment.data.inputs = "Assessment data inputs",
- #   Assessment.model.fits.and.structural.uncertainty = "Assessment model fits and #structural uncertainty"
- # ) |>
   gt::cols_width(
     Hypothesis ~ px(200),
     'Life-history stage' ~ px(100),
@@ -74,4 +89,41 @@ LH|>
   ) |>
   gt::as_latex()
 ```
+
+ {{< pagebreak >}} 
+ 
+```{r}
+#| label: tbl-MC
+#| echo: false
+#| warning: false
+#| tbl-cap: "Results of model selection showing the top 5 ranked models based on LOO-CV. Model 6 is the highest ranked model based on LFO-CV. The null model had an RMSE of 0.46."
+library(readxl)
+
+MC <-readxl::read_excel("Tables/ModelCompOceanographic.xlsx") 
+MC[is.na(MC)] <- " "
+MC|>
+  gt::gt() |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE) |>
+ gt::cols_width(everything() ~ px(65))|>
+  gt::as_latex()
+```
 :::
+
+```{r}
+#| label: tbl-coefOC
+#| echo: false
+#| warning: false
+#| tbl-cap: "Coefficients for best-fit model (Model 1 from Table 2)"
+library(readxl)
+
+coef <-readxl::read_excel("Tables/Coefs_Oceanographic.xlsx") 
+
+coef|>
+  gt::gt() |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE) |>
+  gt::as_latex()
+```
