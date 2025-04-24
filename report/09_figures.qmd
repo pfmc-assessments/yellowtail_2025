@@ -76,6 +76,21 @@ knitr::include_graphics(
 )
 ```
 
+<!-- WCGBTS Figures -->
+```{r}
+#| label: fig-wcgbts-map
+#| echo: false
+#| warning: false
+#| eval: true
+#| fig-cap: "Distribution of catch by year in the WCGBTS."
+#| fig-alt: "Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State). There is a lot of variability among years with the biggest bubbles in 2016, 2017, and 2019."
+#| fig-pos: H
+
+knitr::include_graphics(
+    "../Data/Raw_not_confidential/wcgbts/plots/cpue_by_year_map.png"
+)
+```
+
 <!-- H&L Figures -->
 
 

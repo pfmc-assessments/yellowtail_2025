@@ -109,7 +109,10 @@ available survey locations.
 
 ### \acrlong{s-wcgbt}
 
-The \gls{s-wcgbt} is based on a random-grid design; covering the coastal waters from a depth of 55-1,280 m [@bradburn_2003_2011]. This design generally uses four industry-chartered vessels per year assigned to a roughly equal number of randomly selected grid cells and divided into two 'passes' of the coast. Two vessels fish from north to south during each pass between late May to early October. This design therefore incorporates both vessel-to-vessel differences in catchability, as well as variance associated with selecting a relatively small number (approximately 700) of possible cells from a very large set of possible cells spread from the Mexican to the Canadian borders.
+The \gls{s-wcgbt} is based on a random-grid design; covering the coastal waters from a depth of 55-1,280 m [@bradburn_2003_2011]. This design generally uses four industry-chartered vessels per year assigned to a roughly equal number of randomly selected grid cells and divided into two 'passes' of the coast. Two vessels fish from north to south during each pass between late May to early October. This design therefore incorporates both vessel-to-vessel differences in catchability, as well as variance associated with selecting a relatively small number (approximately 700) of possible cells from a very large set of possible cells spread from the Mexican to the Canadian borders. 
+
+<!-- numerical values calculated in Rscripts\process_survey_comps.R -->
+The catches in the \gls{s-wcgbt} are highest in the northern part of the coast (north of $46^{\circ}$), with some of the largest hauls close to the U.S.--Canada border (@fig-wcgbts-map). Yellowtail occur in 13% of the hauls north of $40^{\circ}10'$ and 27% of the hauls north of $46^{\circ}$. Within the 100--200 m depth range north of $46^{\circ}$, they occur in 55% of the hauls.
 
 The index was estimated for the area north of $40^{\circ}10'$ but data from south of that point were included in the analysis to better inform densities near that boundary. The annual proportion north and south of that point (Cape Mendocino) was estimated to offset the influence of changes in abundance of the southern stock from the estimates for the north.
 
