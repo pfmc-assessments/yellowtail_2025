@@ -231,6 +231,8 @@ knitr::include_graphics(
 
 ## Biology
 
+![Stock-recruit curve with labels on first, last, and years with (log) deviations > 0.5. Point colors indicate year, with warmer colors indicating earlier years and cooler colors in showing later years.](r4ss_plots/SR_curve2.png){#fig-s-r}
+
 ```{r}
 #| label: fig-param-dist
 #| echo: false

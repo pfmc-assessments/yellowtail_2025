@@ -1,15 +1,16 @@
 ## Base Model Results
 
-
 ### Parameter Estimates
 
-<!-- Table listing all explicit parameters in the stock assessment model used for base model, their purpose (e.g., recruitment parameter, selectivity parameter) and whether or not the parameter was actually estimated in the stock assessment model. Include the associated asymptotic standard error estimates.  -->
+Parameters were estimated using maximum likelihood estimation and uncertainty is based on the assumption of asymptotic multi-variate normality of the maximum likelihood estimate, where the variance-covariance matrix is the inverse of the hessian matrix. Exploratory MCMC runs indicated that posterior distributions largely matched these asymptotic distributions, but took much longer to produce. A list of fixed and estimated parameters in the model and asymptotic standard error estimates for estimated parameters is available in @tbl-pars. 
 
 <!-- Population numbers and biomass at age × year × sex (if sex-specific M, growth, or selectivity) (may be provided as a text, csv, or spreadsheet file). This is not required while undergoing review. Can be included in electronic appendices (SS report files), should be provided as supplementary material for assessments developed with alternative assessment platforms.  -->
 
-<!-- 4. Selectivity estimates (if not included elsewhere). 5. Stock-recruitment relationship. 6. Clear description of units for all outputs.  -->
+Selectivity curves by length and age indicate that all trawl-based gears have fairly similar selectivities (@fig-sel-length, @fig-sel-age). Time-varying selectivity for the at-sea hake and recreational fleets is in @fig-sel-tv.
 
-<!-- Parameter uncertainty (variance estimation conditioned on a given model, estimation framework, data set choice, and weighting scheme). This element for evaluating uncertainty includes expressing uncertainty in derived outputs of the model and estimating CVs using appropriate methods (e.g., bootstrap, asymptotic methods, Bayesian approaches, such as MCMC).   -->
+The expected stock recruit relationship with estimated recruitment indicates a weak stock-recruit relationship over the observed range of spawning output (@fig-s-r). Recruitment was highest in 2008. This strong year class was apparent across all sources of age data, and also supported by both the hook and line and bottom trawl surveys. 
+
+The estimated length-age relationship is in @fig-growth1, and the relationship between growth (estimated internally), maturity (estimated externally) and weight (estimated externally) is in @fig-growth2.
 
 ### Fits to the Data
 
@@ -17,5 +18,7 @@
 
 ### Population Trajectory
 
-<!-- Time-series of total biomass, summary biomass, and spawning biomass (and/or spawning output), depletion relative to B0, recruitment and fishing mortality (1-SPR) (or exploitation rate estimates if fishing mortality not available) (table and figures).  -->
+The estimated population trajectory indicates the population declined slowly with the initial onset of fishing, and then declined steeply with the onset of the midwater trawl fishery around 1980 and was near the minimum stock size threshold throughout the 1980s and 90s; it then increased beginning around 2000, peaked around 2012, and has been declining in recent years, but is currently estimated to be well above the management target (@tbl-ts, @fig-es-sb, @fig-es-depl, @fig-es-recruits, @fig-es-spr).
+
+<!-- Time-series of total biomass, summary biomass.  -->
 

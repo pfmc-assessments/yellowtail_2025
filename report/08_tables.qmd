@@ -407,7 +407,9 @@ parcount_table |>
 #| tbl-cap: !expr if(eval_tables) pars_cap
 
 pars_table |>
+  mutate(SD = ifelse(Status == 'fixed', NA, SD)) |>
   gt() |>
+  sub_missing(missing_text = '') |>
   tab_options(
     table.font.size = 12,
     latex.use_longtable = TRUE
