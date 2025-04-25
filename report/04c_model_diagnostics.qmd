@@ -105,7 +105,7 @@ The retrospective analysis showed little change in the population trajectory (@f
 
 Age 4+ abundance is used to compare among historical assessments (@fig-historical) due to different assumptions about maturity and fecundity that make spawning output and fraction unfished difficult to compare. Similar patterns of decline throughout the 1970s and 1980s are estimated among all previous among assessments although there were differences in estimated scale. The models conducted in 2005 and more recently have all estimated increases in the 2000s, but the timing of when the increase began has differed among assessments. The differences in age 4+ biomass between this assessment and that from 2017 are a low scale in the current assessment and a later recent peak in biomass (2019 rather than 2005). 
 
-### Likelihood Profiles
+### Likelihood Profiles {#sec-profiles}
 
 ```{r}
 #| label: 'profiles'
