@@ -292,8 +292,8 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('04c_model_diagnostics.qmd', quiet = TRUE)
-cat(a, sep = '\n')
+#a <- knitr::knit_child('04c_model_diagnostics.qmd', quiet = TRUE)
+#cat(a, sep = '\n')
 ```
 
  {{< pagebreak >}} 
