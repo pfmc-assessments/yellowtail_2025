@@ -87,6 +87,14 @@ csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 
 library(here)
 library(dplyr)
+
+# TODO list of things to update when changing the base model:
+# - [ ] run Rscripts/make_r4ss_figs_tables.R
+# - [ ] run Rscripts/run_diagnostics.R
+# - [ ] run Rscripts/sensitivities.R
+# - [ ] update any hardwired values in the text (or make them dynamic)
+#   - [ ] text on 2024 discards "inadvertently left out of the base model"
+#   - [ ] 
 base_mod <- '5.09_no_extra_se'
 mod_in <- r4ss::SS_read(here('model_runs', base_mod))
 mod_out <- r4ss::SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
