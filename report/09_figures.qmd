@@ -82,12 +82,12 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Distribution of catch by year in the WCGBTS."
-#| fig-alt: "Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State). There is a lot of variability among years with the biggest bubbles in 2016, 2017, and 2019."
+#| fig-cap: "Distribution of catch in the WCGBTS."
+#| fig-alt: "Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State)."
 #| fig-pos: H
 
 knitr::include_graphics(
-    "../Data/Raw_not_confidential/wcgbts/plots/cpue_by_year_map.png"
+    "figures/plots/cpue_map.png"
 )
 ```
 
@@ -99,7 +99,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington surveys"
+#| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington hook and line surveys"
 #| fig-alt: "A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
 
 knitr::include_graphics(
@@ -132,6 +132,8 @@ knitr::include_graphics(
     "Figures/HL_Index.png"
 )
 ```
+
+![Time series of the observer program (WCGOP) index overlaid with the bottom trawl survey (WCGBTS) index, standardized to be on the same scale.](figures/wcgop.png){#fig-wcgop}
 
 <!-- ORBS Figures -->
 ```{r}
@@ -173,18 +175,7 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-smurfindex
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Time series of the relative index of abundance from SMURF YOY index."
-#| fig-alt: "An annual relative index of abundance plotted from 2014 to 2024 with error bars."
-
-knitr::include_graphics(
-    "Figures/SMURFIndex.png"
-)
-```
+![Plots of biological patterns in the data. Smoothed lines are loess smoothers. Data in panels (a)-(c) are from the WCGBTS, and points in those panels are jittered to avoid overplotting. Ranges in panel (d) are 95% confidence intervals, and the horizontal line is at 0.5.](figures/biology.png){#fig-biology}
 
 ```{r}
 #| label: fig-YOY

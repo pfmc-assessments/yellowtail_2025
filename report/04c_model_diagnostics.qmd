@@ -18,7 +18,7 @@ jit_total <- nrow(jit)
 
 The maximum parameter gradient was `r signif(mod_out$maximum_gradient_component, 2)` and the jitter analysis showed that `r jit_good` out of `r jit_total` model runs with jittered initial values converged to the same model estimate.
 
-### Sensitivity Analyses
+### Sensitivity Analyses{#sec-sensitivities}
 
 We conducted a number of model runs exploring sensitivity of the model to decisions regarding data and model structure. They are briefly described below:
 
