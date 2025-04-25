@@ -84,7 +84,7 @@ bind_rows(list(WCGOP = ind,
   mutate(lwr = (lwr - mean(est)) / sd(est),
          upr = (upr - mean(est)) / sd(est),
          est = (est - mean(est)) / sd(est),
-         year = ifelse(index == 'wcgop', year + 0.25, year)) |>
+         year = ifelse(index == 'WCGOP', year + 0.25, year)) |>
   ggplot(aes(x = year, y = est, ymin = lwr, ymax = upr, col = index, group = index)) +
   geom_line() +
   geom_linerange(alpha = 0.25) +
