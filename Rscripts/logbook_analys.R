@@ -71,13 +71,27 @@ preds <- predict(mod_simple,
                  newdata = tibble(fyear = factor(2012:2023), depth_std = 0, month = 6, program = 'obs', area = 'North', fDRVID = '546053', fport = 'NEWPORT'), 
                  return_tmb_object = TRUE, re_form = NA, re_form_iid = NA)
 
-ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68) 
+ind <- sdmTMB::get_index(preds, bias_correct = TRUE, level = 0.68) |>
+  rename(year = fyear) |>
+  mutate(year = as.numeric(year))
 
-ind |> 
-  ggplot(aes(x = as.numeric(fyear), y = est, ymin = lwr, ymax = upr)) +
+load("data/confidential/wcgbts_updated/interaction/delta_lognormal/index/sdmTMB_save.RData")
+
+bind_rows(list(WCGOP = ind,
+               WCGBTS = results_by_area$`North of Cape Mendocino`$index), 
+          .id = 'index') |>
+  group_by(index) |>
+  mutate(lwr = (lwr - mean(est)) / sd(est),
+         upr = (upr - mean(est)) / sd(est),
+         est = (est - mean(est)) / sd(est),
+         year = ifelse(index == 'WCGOP', year + 0.25, year)) |>
+  ggplot(aes(x = year, y = est, ymin = lwr, ymax = upr, col = index, group = index)) +
   geom_line() +
-  geom_errorbar() +
-  labs(x = 'Year', y = 'CPUE')
+  geom_linerange(alpha = 0.25) +
+  geom_point() +
+  labs(x = 'Year', y = 'Standardized CPUE', col = 'Index source') +
+  scale_color_manual(values = viridis::viridis(n = 3)[1:2])
+ggsave('report/figures/wcgop.png', device = 'png')
 
 ind_for_ss3 <- ind |>
   select(year = fyear, obs = est, se_log = se) |>
