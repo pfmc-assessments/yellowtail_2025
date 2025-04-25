@@ -1,15 +1,17 @@
 # Data
 
 <!--- Provide temporal and spatial resolutions or sample size where appropriate for each of the subsections, below.--->
-A summary of total removals are provided in @tbl-all_removals.
+A summary of available data by type and fleet is available in @fig-data.
 
 ## Fishery-dependent data
 
 <!-- Commercial fisheries landings by state, year, and gear (PacFIN is the standard source for recent domestic commercial landings), historical catch estimates, discards, recreational fisheries catches, foreign removals; sample size information for length- and age-composition data by state, year and gear, including both the number of trips and fish sampled. Description of methods to estimate abundance indices, sample size information by survey and year. Include complete tables and figures and date of data extraction. -->
 
-Fishery-dependent data were split into three fleets: a shoreside commercial fleet ("Commercial"), an at-sea commercial fleet ("At-sea"), and a recreational fleet ("Recreational"). The vast majority of catches across all years has come from trawl gear in the shoreside commercial sector.
+Fishery-dependent data were split into three fleets: a shoreside commercial fleet ("Commercial"), an at-sea commercial fleet ("At-sea"), and a recreational fleet ("Recreational"). The vast majority of catches across all years has come from trawl gear in the shoreside commercial sector. 
 
 ### Landings
+
+A summary of total removals are provided in @tbl-all_removals and @fig-catch.
 
 #### Commercial
 
@@ -75,11 +77,11 @@ rec_bio_table |> dplyr::pull(Washington.ages) |> sum()
 -->
 ```
 
-Commercial biological samples were available from the three coastal states covering the years 1972--2024 (@tbl-comm_lengths and @tbl-comm_ages). There were 197,400 length samples, of which 49% were from Washington, 47% from Oregon, and 4% from California (Humboldt and Crescent City port area groups only). There were 161,697 age samples, of which 49% were from Washington, 48% were from Oregon, and 2% were from California. Because most commercial length and age data was sexed, unsexed commercial biological samples were excluded. Sensitivity to excluding unsexed lengths (where most of the unsexed data existed) was explored. Input sample size was calculated based on a combination of the number of trips and number of individuals [@stewart_bootstrapping_2014]. Any year with less than 100 length samples was excluded to avoid the influence of sparse data. Commericial composition data were filtered ("expanded") using the \{pacfintools\} package maintained at the NWFSC, where expansions weighted individual samples based on the trip-level and state-level catches.
+Commercial biological samples were available from the three coastal states covering the years 1972--2024 (@tbl-comm_lengths, @tbl-comm_ages, @fig-len-all-bubbles, @fig-age-all-bubbles, first row). There were 197,400 length samples, of which 49% were from Washington, 47% from Oregon, and 4% from California (Humboldt and Crescent City port area groups only). There were 161,697 age samples, of which 49% were from Washington, 48% were from Oregon, and 2% were from California. Because most commercial length and age data was sexed, unsexed commercial biological samples were excluded. Sensitivity to excluding unsexed lengths (where most of the unsexed data existed) was explored. Input sample size was calculated based on a combination of the number of trips and number of individuals [@stewart_bootstrapping_2014]. Any year with less than 100 length samples was excluded to avoid the influence of sparse data. Commericial composition data were filtered ("expanded") using the \{pacfintools\} package maintained at the NWFSC, where expansions weighted individual samples based on the trip-level and state-level catches.
 
-At-sea biological samples were available from 1976--2024 (@tbl-ashop_comps). This includes 112,708 length samples across all years and 643 age samples from 2019 and 2023 (two recent years with particularly high Yellowtail catches in the at-sea fishery). Virtually all data were sexed, so unsexed data were excluded. Input sample size was number of hauls ("tows").
+At-sea biological samples were available from 1976--2024 (@tbl-ashop_comps, @fig-len-all-bubbles, @fig-age-all-bubbles, second row). This includes 112,708 length samples across all years and 643 age samples from 2019 and 2023 (two recent years with particularly high Yellowtail catches in the at-sea fishery). Virtually all data were sexed, so unsexed data were excluded. Input sample size was number of hauls ("tows").
 
-Recreational biological samples were available from the three coastal states covering the years 1980--2024 (Table @tbl-rec-bio). There were 64,637 length samples, of which 71% was from Oregon, 26% from Washington, and 3% from California (North of $40^{\circ} 10'$). There were 9,205 age samples, 100% of which were from Washington. Input sample size was number of fish.
+Recreational biological samples were available from the three coastal states covering the years 1980--2024 (Table @tbl-rec-bio, @fig-len-all-bubbles, @fig-age-all-bubbles, third row). There were 64,637 length samples, of which 71% was from Oregon, 26% from Washington, and 3% from California (North of $40^{\circ} 10'$). There were 9,205 age samples, 100% of which were from Washington. Input sample size was number of fish.
 
 ### Abundance indices
 
@@ -149,7 +151,9 @@ Spatial and spatiotemporal variation was included in the encounter
 probability but not the positive catch rate model. Spatial variation was
 approximated using 400 knots, where more knots led to non-estimable
 standard errors because the positive encounters are too sparse to
-support the dense spatiotemporal structure.
+support the dense spatiotemporal structure. 
+
+The index is relatively flat except for 2014-2019 where there is a sharp increase in estimated biomass (@fig-indices).
 
 ### \acrlong{s-tri}
 
@@ -159,8 +163,8 @@ Due to haul performance issues and truncated sampling with respect to depth, the
 
 The data processessing and index standardization followed a similar procedure to the \gls{s-wcgbt}, including the depth truncation, the distributional assumptions, and the number of knots. No pass covariate was included due to differences in survey design.
 
-We included the \gls{s-tri} as a single time series following the assumption used in the 2017 assessment.
-<!-- We included the \gls{s-tri} as a single time series. To account for the changes in survey depths in 1995, we did not include hauls deeper than 350m, where canary rockfish are rarely found. Canary rockfish are not known to undertake seasonal migrations, so the change in survey timing should not be a major concern.  -->
+Because yellowtail are rarely found deeper than 366 m and are not known to undertake seasonal migrations, We included the \gls{s-tri} as a single time series following the assumption used in the 2017 assessment (@fig-indices).
+
 
 ### Combined OR-WA Hook and Line Survey
 
@@ -170,7 +174,7 @@ The WDFW survey includes fixed standardized stations within three regional marin
 
 Covariates evaluated include year, month, region, treatment (reserve or comparison area), a binned average drift depth, and multiple different gear categorizations. These included two different categorizations (n = 5 or n = 3) and a binomial covariate based on whether or not shrimp flies were used. Years with limited observations were removed (2009 and 2020). CPUE data analysis used sdmTMB with a negative binomial model to fit the yellowtail catch in numbers, applying a log effort offset for angler hours. Treatment was not found to be a significant factor influencing CPUE in model selection, so this covariate was not included in the modeled index. None of the gear covariate variations were found to be significant factors in model selection, or the strata-specific sample sizes were limited, which did not allow for model convergence; therefore, a gear covariate was not included either. The final dataset contained 1,972 observations (@tbl-hl_percent_pos).
 
-Two full model series were considered, one including all the potential covariates with a regional covariate and one with a survey (or state) covariate substituted for region. In the time series with region, the gear covariate (binary) was not significant; thus, the best fit model according to AIC included year, region, drift depth (binned), and month. However, the QQ plot for this model was not ideal, so a second model series with survey was developed. In this second series, the gear categorizations were re-evaluated and again, the gear covariates were either non-significant or did not allow for model convergence. Thus, the best fit model according to AIC included year, survey, drift depth (binned), and month (@tbl-hl_mod_slx). Acceptable diagnostics were achieved when this model was fitted via MLE using the sdmTMB R package (Version 0.6.0) @fig-hlqq. The final index of abundance is shown in @tbl-hl_index and @fig-hlindex.
+Two full model series were considered, one including all the potential covariates with a regional covariate and one with a survey (or state) covariate substituted for region. In the time series with region, the gear covariate (binary) was not significant; thus, the best fit model according to AIC included year, region, drift depth (binned), and month. However, the QQ plot for this model was not ideal, so a second model series with survey was developed. In this second series, the gear categorizations were re-evaluated and again, the gear covariates were either non-significant or did not allow for model convergence. Thus, the best fit model according to AIC included year, survey, drift depth (binned), and month (@tbl-hl_mod_slx). Acceptable diagnostics were achieved when this model was fitted via MLE using the sdmTMB R package (Version 0.6.0) @fig-hlqq. The final index of abundance is shown in @tbl-hl_index and @fig-index.
 
 ### SMURF YOY Index
 
@@ -182,7 +186,8 @@ Covariates that were evaluated included year, month, region (Redfish Rocks or Ot
 
 ### Biological data
 
-Length and age data were available from the \gls{s-wcgbt} and \gls{s-tri} (Tables \ref{tbl-wcgbts-bio} and \ref{tbl-tri-bio}). There were 17,329 length observations in the \gls{s-wcgbt} data set, of which only 22 were unsexed, so the unsexed samples were excluded. There were 14,275 lengths in the \gls{s-tri}, none of which were unsexed. Composition data were processed using the {nwfscSurvey} R package [@Wetzel2025]. Ages from the \gls{s-wcgbt} were conditioned on length while the age data from the \gls{s-tri} were processed as marginal distributions. For the conditional age-at-length data, the number of fish within each length bin within each sex is used as the input sample size. The input sample sizes for the marginal distributions are based on the formula of Stewart and Hamel [-@Stewart2014] as $\text{Input N}_{y} = 2.43*N_{tow}$ where the scalar was estimated for a group of 17 slope rockfish, including Yellowtail Rockfish. Unsexed length compositions from the combined ODFW/WDFW survey are also included without any expansions, using number of fish as the input sample size. Length compositions were filtered to reflect those included in the final filtered CPUE index (n = 1,658 fish).
+Length and age data were available from the \gls{s-wcgbt} and \gls{s-tri} (Tables \ref{tbl-wcgbts-bio}, \ref{tbl-tri-bio}, @fig-len-all-bubbles,
+@fig-age-all-bubbles, last two rows). There were 17,329 length observations in the \gls{s-wcgbt} data set, of which only 22 were unsexed, so the unsexed samples were excluded. There were 14,275 lengths in the \gls{s-tri}, none of which were unsexed. Composition data were processed using the {nwfscSurvey} R package [@Wetzel2025]. Ages from the \gls{s-wcgbt} were conditioned on length while the age data from the \gls{s-tri} were processed as marginal distributions. For the conditional age-at-length data, the number of fish within each length bin within each sex is used as the input sample size. The input sample sizes for the marginal distributions are based on the formula of Stewart and Hamel [-@Stewart2014] as $\text{Input N}_{y} = 2.43*N_{tow}$ where the scalar was estimated for a group of 17 slope rockfish, including Yellowtail Rockfish. Unsexed length compositions from the combined ODFW/WDFW survey are also included without any expansions, using number of fish as the input sample size. Length compositions were filtered to reflect those included in the final filtered CPUE index (n = 1,658 fish, @fig-len-all-bubbles, fourth row).
 
 Surveys collect data in a standardized way with recorded locations that can be helpful for exploring empirical patterns in species biology that may inform modeling practices. There is a slight pattern where length-at-age decreased around 2014 (@fig-biology b), coincident with the increase in CPUE (@fig-indices). Length-at-age appears fairly consistent along the coast within the model area (@fig-biology a), though average age increases north along the coast (@fig-biology c).
 

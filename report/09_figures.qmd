@@ -120,19 +120,6 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-hlindex
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Time series of the relative index of abundance from the combined Oregon and Washington hook and line surveys"
-#| fig-alt: "An annual relative index of abundance plotted from 2010 to 2024 with error bars."
-
-knitr::include_graphics(
-    "Figures/HL_Index.png"
-)
-```
-
 ![Time series of the observer program (WCGOP) index overlaid with the bottom trawl survey (WCGBTS) index, standardized to be on the same scale.](figures/wcgop.png){#fig-wcgop}
 
 <!-- ORBS Figures -->
