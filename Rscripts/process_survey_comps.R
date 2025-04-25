@@ -51,6 +51,16 @@ yt_n_tri_bio <- purrr::map(yt_tri_bio, \(dat) filter(dat, Latitude_dd > 40 + 1 /
 yt_n_survey_catch <- filter(yt_survey_catch, Latitude_dd > 40 + 1 / 6)
 yt_n_tri_catch <- filter(yt_tri_catch, Latitude_dd > 40 + 1 / 6 & Year > 1977)
 
+# summary statistics for presence/absence
+mean(yt_survey_catch$cpue_kg_km2 > 0)
+# [1] 0.07304087
+mean(yt_n_survey_catch$cpue_kg_km2 > 0)
+# [1] 0.125381
+mean(filter(yt_survey_catch, Latitude_dd > 46)$cpue_kg_km2 > 0)
+# [1] 0.2737276
+mean(filter(yt_survey_catch, Latitude_dd > 46, Depth_m > 100, Depth_m < 200)$cpue_kg_km2 > 0)
+# [1] 0.5509761
+
 # shared strata across WCGBTS and Triennial because S. California is excluded
 # and Yellowtail rarely go beyond 366m:
 # note 99.9% of fish in WCGBTS are less than 253m

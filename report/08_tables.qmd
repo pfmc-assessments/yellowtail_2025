@@ -501,6 +501,44 @@ projections_table |>
 
 ```
 
-:::
-
 \pagebreak
+
+
+```{r}
+#| label: tbl-sens-indices
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/indices_table.csv"))
+``` 
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-sens-modeling
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/modeling_table.csv"))
+
+``` 
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: tbl-sens-comp_data
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/comp_data_table.csv"))
+
+``` 
+
+:::

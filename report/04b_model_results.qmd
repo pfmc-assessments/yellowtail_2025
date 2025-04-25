@@ -14,7 +14,19 @@ The estimated length-age relationship is in @fig-growth1, and the relationship b
 
 ### Fits to the Data
 
-<!-- Residual analysis for the base-run configuration, e.g., residual plots, time series plots of observed and predicted values, etc.   -->
+The model fits all indicies reasonably well with the exception of the \gls{s-wcgbt} index which has a group of large observations (4 out of the 6 years in 2014-2019) which are not fit well (@fig-indices_fit). The challenge of fitting these points is discussed in @sec-unresolved. The \gls{s-tri} shows changes among the years 1995, 1998, and 2001 which are too large to represent population dynamics and are also not fit will by the model. The fit to the SMURF index is achieved through estimates of recruitment devations during the period covered (2014--2024) but the penalty on deviations away from zero associated with the sigmaR parameter leads to less good fits to the low observation in 2015 and the high observations in 2021 and 2023.
+
+TODO: fit to length composition data
+@fig-len-agg-fit, @fig-len-all-bubbles, @fig-len-all-pearson,
+
+Mean length in @fig-mean-age-1 to @fig-mean-age-6.
+
+TODO: fit to age composition data
+@fig-age-agg-fit, @fig-age-all-bubbles, @fig-age-all-pearson
+
+@fig-caal-page1, @fig-caal-page2, @fig-caal-page3
+
+Mean age in @fig-mean-age-1 to @fig-mean-age-6
 
 ### Population Trajectory
 
@@ -22,3 +34,4 @@ The estimated population trajectory indicates the population declined slowly wit
 
 <!-- Time-series of total biomass, summary biomass.  -->
 
+TODO: Time series in @tbl-ts
