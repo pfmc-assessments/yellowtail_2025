@@ -339,7 +339,28 @@ smurf_in |>
 ```
 
 
+```{r}
+#| label: tbl-consider
+#| echo: false
+#| warning: false
+#| tbl-cap: "Comparison of potential age-0 abundance and recruitment indices by data sourse"
 
+
+comp <-read.csv("Tables/YOYComparison.csv") 
+comp|>
+  gt::gt() |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  gt::cols_label(
+    Recruitment...Age.0.abundance.index = "Recruitment / Age-0 abundance index"
+  )|>
+  gt::cols_width(
+    everything() ~ px(200)
+  ) |>
+  gt::as_latex()
+```
 
 
 
