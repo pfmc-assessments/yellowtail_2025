@@ -2,21 +2,19 @@
 
 ## Reference Points
 
-<!-- 1. Unfished spawning stock biomass, summary age biomass, and recruitment, along with unfished spawning stock output.  -->
-
-<!-- 2. Reference points based on B40% for rockfish and round fish and on B25% for flatfish (spawning biomass and/or output, SPR, exploitation rate, equilibrium yield).  -->
-
-<!-- 3.   Reference points based on default SPR proxy (spawning biomass and/or output, SPR, exploitation rate, equilibrium yield).  -->
-
-<!-- 4. Reference points based on MSY (if estimated) (spawning biomass and/or output, SPR, exploitation rate, equilibrium yield).  -->
-
-<!-- 5. Equilibrium yield curve showing various BMSY proxies.   -->
+Reference points based on the biomass target of 40% of unfished spawning output, the spawners-per-recruit (SPR) target of 0.5, and the internal model estimate of maximum sustainable yield are shown in @tbl-ref-points-es and @fig-yield. 
 
 ## Harvest Projections and Decision Tables
 
+Harvest projections for the candidate base model assuming a P* of 45\% are in @tbl-projections The decision table will be completed after the STAR panel.
+
 ## Evaluation of Scientific Uncertainty
 
+The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$derived_quants['OFLCatch_2025', 'StdDev'] / mod_out$derived_quants['OFLCatch_2025', 'Value'], 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment. 
+
 ## Regional management considerations
+
+To be completed after the STAR panel.
 
 ## Research and Data Needs
 
@@ -30,23 +28,19 @@
     -   In years where midwater and bottom trawl gear are differentiated in PacFIN, exploratory data analysis indicated there is essentially no difference in the age and size compositions of fish caught. Thus, combining midwater and trawl gear into a single model fleet seemed appropriate, and there is no need to reconstruct the historical ratio of catches between the two gears. We agree they should continue to be differentiated in ongoing sampling programs.
 -   A commercial index in the North. This is by far the largest segment of the fishery, and the introduction of the trawl rationalization program should mean that an index can be developed for the current fishery when the next full assessment is performed.
     -   This was explored as a sensitivity
--   Further investigation into an index for the commercial logbook dataset from earlier periods. 
+-   Further investigation into an index for the commercial logbook dataset from earlier periods.
     -   This was not done. A new fishery-independent hook and line index and a number of indices of recruitment were explored instead.
--   Further analysis of growth patterns along the Northern coast. The previous full assessment subdivided the Northern stock based on research showing differential growth along the coast, and although data for the assessment is no longer available along the INPFC areas used in that analysis, there may be some evidence of growth variability that would be useful to include in a future assessment. 
-    -   NO GOOD ANSWER YET.
-
-<!-- 1. Describe progress on Research and Data Needs items identified in the most recent previous stock assessment document and associated STAR panel report.  -->
-
-<!-- 2. Describe new research and data needs and specify their priority (high, medium, low).  -->
+-   Further analysis of growth patterns along the Northern coast. The previous full assessment subdivided the Northern stock based on research showing differential growth along the coast, and although data for the assessment is no longer available along the INPFC areas used in that analysis, there may be some evidence of growth variability that would be useful to include in a future assessment.
+    -   While growth may be different above and below Point Mendocino, we found no evidence for spatial variability in size-at-age in the area north of $40^\circ 10'$.
 
 ### New recommendations
 
 1.  Exploring catchability and selectivity of the bottom trawl survey using existing data streams, given that no new midwater surveys have begun in the last eight years, and the likelihood of new surveys in future years is low. The STAT understands that the WCGBTS has collected echosounder data over the years which has not been analyzed to date. Analyzing this data and exploring the relationship between acoustic data and sampled biomass from the bottom trawl gear will help understand potential variability in catchability. Identifying drivers of bottom trawl catchability (e.g., environmental drivers, density-dependence and/or schooling behavior) would be useful for all midwater species, not just Yellowtail rockfish (e.g., Canary and Widow rockfish). More sophisticated comparisons between CPUE in the catch share commercial midwater trawl sector and the bottom trawl survey could also be fruitful. (high)
 
-2.  Oceanographic index-- circularity + inability to determine correct scaling for a 10-year index prevented its inclusion in base model. A process that uses raw oceanographic data directly in the assessment, instead of predictions from a regression on historical recruitment deviations, could avoid this. Such an exercise is likely easier in an assessment platform that permits estimation of random effects (e.g., WHAM)
+2.  The oceanographic index is an externally estimated regression trained on estimated recruitment deviations from a near-to-final base model. Therefore, using the index to predict recruitment deviations in years that it was trained on is circular and ill-advised. We only included the oceanographic index for years *not* included in the training data, but this meant that the years for which it *was* included in the sensitivity model had no other data informing recruitment that could help estimate the scaling factor for the index (i.e., catchability). We fixed catchability at one in the sensitivity, since in theory the index should predict absolute recruitment deviations, but this is a strong assumption. A process that uses raw oceanographic data directly in the assessment, instead of predictions from a regression on historical recruitment deviations, could avoid this. Such an exercise is likely easier in an assessment platform that permits estimation of random effects (e.g., WHAM).
 
 3.  The combined hook and line survey catches smaller, and presumably younger fish, than the trawl surveys and fishing fleets, so can provide leading information about incoming year class strength. However, the fits to the length data are not very good. The recreational length composition data have a similarly shaped distribution, and adding sex-specific selectivity greatly improved the fit to recreational data. However, sex-specific selectivity was not estimable for the hook and line survey, likely because there is no sex data. Collecting sex and age data from the hook and line survey could allow for better estimation of selectivity and a more informative survey. (low)
 
-4.  The biological population extends into British Columbia, but no data from Canada is included in this model. Better understanding transboundary population dynamics is important. (medium)
+4.  The biological population extends into British Columbia, but no data from Canada is included in this model. Better understanding of transboundary population dynamics would improve management. (medium)
 
-5.  Age data is the only source of sex-specific recreational composition data, and it provided important information about selectivity of the fleet and patterns of sex ratio by age. Continued collection of recreational age data from Washington, and new collections from Oregon should be prioritized, and could support a transition to an empirical weight-at-age model in the future.
+5.  Age data is the only source of sex-specific recreational composition data, and it provided important information about selectivity of the fleet and patterns of sex ratio by age. Continued collection of recreational age data from Washington and new collections from Oregon should be prioritized, and could support a transition to an empirical weight-at-age model in the future.
