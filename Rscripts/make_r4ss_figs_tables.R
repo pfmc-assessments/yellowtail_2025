@@ -2,11 +2,17 @@
 
 # location of base model (TODO: change as needed)
 # path is relative to /report/
-mod_loc <- "Model_Runs/5.09_no_extra_SE"
+# base_mod should match what's set in /report/SAR_USWC_Yellowtail_rockfish_skeleton.qmd
+# so is not set here to avoid accidental mismatch
+if (!exists("base_mod")) {
+  cli::cli_abort(
+    "base_mod not set. Please set base_mod to match what's set in /report/SAR_USWC_Yellowtail_rockfish_skeleton.qmd."
+  )
+}
 
 # read model output using r4ss
 model <- r4ss::SS_output(
-  dir = mod_loc,
+  dir = file.path("Model_Runs", base_mod),
   SpawnOutputLabel = "Spawning output (trillions of eggs)",
   printstats = FALSE,
   verbose = FALSE

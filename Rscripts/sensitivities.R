@@ -380,15 +380,20 @@ make_detailed_sensitivites <- function(biglist, mods,
   
   SStableComparisons(shortlist, 
                      modelnames = c('Base', mods$pretty),
-                     names =c("Recr_Virgin", "R0", "steep", "NatM", "L_at_Amax", "VonBert_K", "SSB_Virg",
-                              "Bratio_2023", "SPRratio_2022")) |>
-    dplyr::filter(!(Label %in% c('NatM_break_1_Fem_GP_1',
-                                 'NatM_break_1_Mal_GP_1', 'NatM_break_2_Mal_GP_1')),
-                  Label != 'NatM_uniform_Mal_GP_1' | any(grep('break', Label)),
-                  Label != 'SR_BH_steep' | any(grep('break', Label))) |>
-    dplyr::mutate(dplyr::across(-Label, ~ sapply(., format, digits = 3, scientific = FALSE) |>
-                                  stringr::str_replace('NA', ''))) |>
-    `names<-`(c(' ', 'Base', mods$pretty)) |>
+                     names =c("Recr_Virgin", "R0", "NatM", "L_at_Amax", "VonBert_K", "SmryBio_unfished", "SSB_Virg",
+                              "SSB_2025", "Bratio_2025", "SPRratio_2024", "LnQ_base_WCGBTS"),
+                     likenames = c(
+                              "TOTAL", "Survey", "Length_comp", "Age_comp",
+                              "Discard", "Mean_body_wt", "Recruitment", "priors"
+                            )
+                          ) |>
+    # dplyr::filter(!(Label %in% c('NatM_break_1_Fem_GP_1',
+    #                              'NatM_break_1_Mal_GP_1', 'NatM_break_2_Mal_GP_1')),
+    #               Label != 'NatM_uniform_Mal_GP_1' | any(grep('break', Label)),
+    #               Label != 'SR_BH_steep' | any(grep('break', Label))) |>
+    # dplyr::mutate(dplyr::across(-Label, ~ sapply(., format, digits = 3, scientific = FALSE) |>
+    #                               stringr::str_replace('NA', ''))) |>
+    `names<-`(c('Label', 'Base', mods$pretty)) |>
     write.csv(file.path(outdir, paste0(grp_name, '_table.csv')), 
               row.names = FALSE, )
   
