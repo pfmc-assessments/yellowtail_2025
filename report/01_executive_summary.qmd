@@ -1,12 +1,16 @@
 # Executive Summary{-}
 
-<!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
-
 ## Stock{-}
+
+Yellowtail rockfish (*Sebastes flavidus*) is a midwater rockfish distributed mainly from Point Conception in California to the Gulf of Alaska, with the highest density around Washington state and British Columbia. Yellowtail are relatively fast-growing and short-lived for a rockfish species, with a maximum size around 55 cm reached around age 15, and few fish observed older than 40. They move farther offshore as they grow older, and are found most consistently from MIN DEPTH to 250 m. There is a genetic break in the population at Cape Mendocino. This assessment is for the northern portion of the stock in U.S. waters, from $40^\circ 10'$ (near Cape Mendocino) to the U.S.-Canada border.
+
+<!-- Species/area, including an evaluation of any potential biological basis for regional management -->
 
 ## Catches{-}
 
-\clearpage
+Catches have averaged over 3000 mt in recent years, and are mainly from a commercial trawl fishery (@tbl-es-catches, @fig-es-landings). Catches increased substantially with the rebuilding of other midwater rockfish species and coincident reopening of the midwater trawl fishery in 2017. Recreational catches are a minority of the landings, but have also increased in recent years as trips in both Washington and Oregon have moved farther offshore. Yellowtail is frequently caught as a bycatch species in the at-sea hake fishery, though this also represents a minority of catches.
+
+<!-- \clearpage -->
 
 ```{r, results = "asis"}
 #| label: tbl-es-catches
@@ -48,14 +52,21 @@ catches_es_table |>
 knitr::include_graphics("r4ss_plots/catch2_landings_stacked.png")
 
 ```
-\clearpage
+<!-- \clearpage -->
 
 ## Data and assessment{-}
 
+The last assessment for the northern stock of Yellowtail rockfish occurred in 2017. The current assessment builds off of that model. It includes catch, length, and age data from three fishery fleets (commercial shoreside, at-sea, recreational),  age, length, and index data for one survey (Triennial), conditional age-at-length, length, and index data for one survey (West Coast Groundfish Bottom Trawl Survey). The assessment also includes two new fishery-independent indices: a combined hook and line survey from Oregon and Washington, which also includes associated length data, and a recruitment survey from Oregon. The assessment is relatively data-rich, but continued collection of all of these data sources is important for the continued ability to conduct assessments.
+
+<!-- Date of last assessment, type of assessment model, data available, new information, and information lacking. -->
+
 ## Stock biomass and dynamics{-}
 
-\clearpage 
-@tbl-es-sb
+<!-- Trends and current levels relative to virgin or historic levels, description of uncertainty-include table for last 10 years and graph with long term estimates. -->
+
+<!-- \clearpage  -->
+
+The model estimates that the population was near the minimum stock size threshold throughout the 1980s and 1990s, but increased through the 2000s to mid 2010s (@fig-es-sb, @fig-es-depl). Since 2017 (coincident with the increase in catches), spawning output has been gradually declining, but is still well above the management target (@tbl-es-sb). 
 
 ```{r, results = "asis"}
 #| label: tbl-es-sb
@@ -115,6 +126,10 @@ knitr::include_graphics("r4ss_plots/ts9_Relative_spawning_output_intervals.png")
 ```
 
 ## Recruitment{-}
+
+The largest recruitment event throughout the time series was estimated in 2008, which supported an increase in the population leading up to 2017 (@tbl-es-recr, @fig-es-recruits). Recruitment is estimated to be relatively low in the later 2010s, but the model estimates that 2021 and 2023 may support large year classes in the future, with the estimate driven by the new recruitment index.
+
+<!-- Trends and current levels relative to virgin or historic levels-include table for last 10 years and graph with long term estimates. -->
 
 ```{r, results = "asis"}
 #| label: tbl-es-recr
@@ -176,9 +191,12 @@ knitr::include_graphics("r4ss_plots/recdevs2_withbars.png")
 ```
 -->
 
-\clearpage
+<!-- \clearpage -->
 ## Exploitation status{-}
 
+Exploitation rates were above the management target throughout the 1980s and 1990s. They decreased and were close to zero in the early 2000s due to strong trip limits. Like catches, exploitation rates increased substantially in 2017 and have remained stable since then, but are still well below the management target (@tbl-es-spr, @fig-es-spr).
+
+<!-- Exploitation rates (i.e., total catch divided by exploitable biomass, or the annual SPR harvest rate) - include a table with the last 10 years of data and a graph showing the trend in fishing mortality relative to the target (y-axis) plotted against the trend in biomass relative to the target (x-axis). -->
 
 ```{r, results = "asis"}
 #| label: tbl-es-spr
@@ -221,11 +239,17 @@ knitr::include_graphics("r4ss_plots/SPR3_ratiointerval.png")
 
 ```
 
-\clearpage
+<!-- \clearpage -->
 
 ## Ecosystem considerations{-}
 
+The assessment includes a sensitivity model with an oceanographic recruitment index. See risk table for further detail on ecosystem considerations.
+
 ## Reference points{-}
+
+A list of estimates of the current population state, as well as reference points based on 1) a target unfished spawning output of 40%, 2) an SPR of 0.5, and 3) the model estimate of maximum sustainable yield, are all listed in @tbl-ref-points-es.
+
+<!-- Management targets and definitions of overfishing, including the harvest rate that brings the stock to equilibrium at B24% for flatfishes and B40% for all other groundfish stocks (BMSY proxies) and the equilibrium stock size that results from fishing at the default harvest rate (the FMSY proxy). Include a summary table that compares estimated reference points for SSB, SPR, Exploitation Rate and Yield based on SSB proxy for MSY, SPR proxy for MSY, and estimated MSY values. -->
 
 \clearpage
 
@@ -272,6 +296,8 @@ reference_points_table |>
 
 ## Management performance{-}
 
+Although catch increased substantially in 2017, it has still been well below the overfishing limit, allowable biological catch, and annual catch limit (@tbl-es-management). Attainment has averaged around 50\% since the increase in landings, and was even lower in prior years.
+<!-- Catches in comparison to OFL, ABC, HG, and OY/ACL values for the most recent 10 years (when available), overfishing levels, actual catch and discard. Include OFL (encountered), OFL (retained) and OFL (dead) if different due to discard and discard mortality. -->
 
 ```{r, results = "asis"}
 #| label: tbl-es-management
@@ -296,7 +322,15 @@ recent_management_table |>
 
 ## Unresolved problems and major uncertainties{-}
 
+The largest uncertainty in this model is the inability to fit a marked increase in the bottom trawl survey from 2014-2019. This coincides with an increase in catch-per-unit-effort from the midwater trawl fishery (which accounts for the majority of landings). The increase is likely due to the record 2008 year class, but the estimated size of the year class does not lead to a large enough increase to fit the survey index, and it is especially hard to fit the sudden decrease and then flattening of the index, given that catches were relatively stable from 2017-2024. The current assessment estimates that the stock is more depleted than it was in 2017, which is likely the case. The magnitude of that difference is more uncertain.
+
+<!-- Any special issues that complicate scientific assessment, questions about the best model scenario, etc. -->
+
 ## Decision table and projections{-}
+
+Projections of the overfishing limit, allowable biological catch, and annual catch limit, all based on a P* of 0.45 and uncertainty in the overfishing limit of 0.5 are included in @tbl-es-projections. Assumed catches for 2025 and 2026 for this projection were provided by the Groundfish Management Team, and catches from 2027 onward assume full attainment of the allowable biological catch.
+
+<!-- Projected yields (OFL, ABC and ACL), spawning biomass / output, and stock depletion levels for each year. OFL calculations should be based on the assumption that future catches equal ABCs and not OFLs. -->
 
 ::: {.landscape}
 
@@ -340,7 +374,11 @@ projections_table |>
 
 ## Scientific uncertainty{-}
 
+The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$derived_quants['OFLCatch_2025', 'StdDev'] / mod_out$derived_quants['OFLCatch_2025', 'Value'], 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5, and an increase of 0.075 per year.
+
 ## Research and data needs{-}
+
+The most important future research need to better understand catchability of the trawl survey and its drivers. This could help to resolve the mismatch between the survey index and composition data. Continued collection of age and other biological samples across gear types and fleets is also critical.
 
 {{< pagebreak >}}
 

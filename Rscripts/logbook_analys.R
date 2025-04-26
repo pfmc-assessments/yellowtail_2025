@@ -102,8 +102,8 @@ write.csv(ind_for_ss3, file = 'data/processed/observer_index.csv', row.names = F
 all_hauls_yt |>
   ggplot() +
   geom_point(aes(x = HAUL_DURATION, y = MT))
-  geom_density(aes(x = HAUL_DURATION, col = YEAR, group = YEAR))
-  
+geom_density(aes(x = HAUL_DURATION, col = YEAR, group = YEAR))
+
 ### general observation: as I have added terms to the model, the signal in the index went from well-defined to noisy and meaningless.
 ### the port (8 levels) and vessel (46 levels) effects really did it in. should think more carefully about what terms to include.
 ### note 3962 hauls, 2762 positive hauls over 12 years. ~330 hauls/yr, 230 positive hauls/yr. # of hauls varies a lot by year.

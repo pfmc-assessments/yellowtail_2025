@@ -1,1 +1,3 @@
 # Acknowledgements {#sec-acknowledgements}
+
+The STAT thanks Eric Ward and Melissa Head for assistance with maturity data, and Eric Ward for assistance with bottom trawl index standardization. Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. 

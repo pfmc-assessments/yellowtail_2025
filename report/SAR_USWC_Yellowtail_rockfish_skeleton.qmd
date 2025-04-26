@@ -89,7 +89,7 @@ csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 library(here)
 library(dplyr)
 
-knitr::opts_chunk$set(fig.pos = 'H', out.extra = '')
+source(here('Rscripts/table_sens.R'))
 
 # TODO list of things to update when changing the base model:
 # - [ ] run Rscripts/make_r4ss_figs_tables.R
@@ -295,8 +295,8 @@ cat(a, sep = '\n')
 #| eval: true
 #| echo: false
 #| warning: false
-#a <- knitr::knit_child('04c_model_diagnostics.qmd', quiet = TRUE)
-#cat(a, sep = '\n')
+a <- knitr::knit_child('04c_model_diagnostics.qmd', quiet = TRUE) 
+cat(a, sep = '\n') 
 ```
 
  {{< pagebreak >}} 
