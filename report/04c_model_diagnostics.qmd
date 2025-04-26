@@ -16,7 +16,7 @@ jit_good <- sum(jit$Lowest.NLL == "Best Fit")
 jit_total <- nrow(jit)
 ```
 
-The maximum parameter gradient was `r signif(mod_out$maximum_gradient_component, 2)` and the jitter analysis showed that `r jit_good` out of `r jit_total` model runs with jittered initial values converged to the same model estimate.
+The maximum parameter gradient was `r signif(mod_out$maximum_gradient_component, 2)` and the jitter analysis showed that `r jit_good` out of `r jit_total` model runs with jittered initial values converged to the same model estimate. Exploratory MCMC runs indicated that posterior distributions largely matched these asymptotic distributions.
 
 ### Sensitivity Analyses{#sec-sensitivities}
 
