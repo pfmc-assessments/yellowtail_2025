@@ -254,7 +254,7 @@ HLindex|>
 #| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
 
 
-percpos <- read.csv("Tables/yellowtail_percent_pos.csv") |>
+read.csv("Tables/yellowtail_percent_pos.csv") |> 
   gt() |>
   tab_options(
     table.font.size = 12,
