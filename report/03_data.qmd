@@ -135,7 +135,7 @@ beyond the data and edge effects.
 The model used a delta model with a lognormal distribution for the
 catch-rate component. A logit-link was used for encounter probability
 and a log-link for positive catch rates. The response variable was catch
-(mt) with an offset of area (km^2) to account for differences in
+(mt) with an offset of area (km^2^) to account for differences in
 effort. Fixed effects were estimated for each year. The following
 additional covariates were included: annual proportion north and south
 of Cape Mendocino, pass. Vessel-year effects, which have traditionally
