@@ -2,9 +2,9 @@
 
 ### Parameter Estimates
 
-Parameters were estimated using maximum likelihood estimation and uncertainty is based on the assumption of asymptotic multi-variate normality of the maximum likelihood estimate, where the variance-covariance matrix is the inverse of the hessian matrix. . A list of fixed and estimated parameters in the model and asymptotic standard error estimates for estimated parameters is available in @tbl-pars.
+Parameters were estimated using maximum likelihood estimation and uncertainty is based on the assumption of asymptotic multi-variate normality of the maximum likelihood estimate, where the variance-covariance matrix is the inverse of the hessian matrix. A list of fixed and estimated parameters in the model and asymptotic standard error estimates for estimated parameters is available in @tbl-pars.
 
-Exploratory MCMC runs indicated that posterior distributions largely matched these asymptotic distributions, but took much longer to produce. The parameter where the posterior distribution diverged the most from the maximum likelihood was the descending slope of the recreational selectivity, where the MLE corresponded to a gently declining selectivity. The posterior mode matched the MLE, but a large fraction of the posterior samples were from higher values corresponding to asymptotic selectivity. 
+Exploratory MCMC runs indicated that posterior distributions largely matched these asymptotic distributions, but took much longer to produce. The parameter where the posterior distribution diverged the most from the maximum likelihood was the descending slope of the recent recreational selectivity, where the MLE corresponded to a gently declining selectivity. The posterior mode matched the MLE, but a large fraction of the posterior samples were from higher values corresponding to asymptotic selectivity. 
 
 <!-- Population numbers and biomass at age × year × sex (if sex-specific M, growth, or selectivity) (may be provided as a text, csv, or spreadsheet file). This is not required while undergoing review. Can be included in electronic appendices (SS report files), should be provided as supplementary material for assessments developed with alternative assessment platforms.  -->
 
