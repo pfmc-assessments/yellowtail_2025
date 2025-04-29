@@ -73,7 +73,7 @@ cols_label(
   ) |>
   as_latex()
 ```
-
+{{< pagebreak >}}
 ```{r}
 #| label: tbl-comm_ages
 #| echo: false
@@ -100,7 +100,7 @@ commages|>
   ) |>
   as_latex()
 ```
-
+{{< pagebreak >}}
 ```{r}
 #| label: tbl-ashop_comps
 #| echo: false
@@ -122,7 +122,7 @@ ashop_comp |>
   ) |>
   as_latex()
 ```
-
+{{< pagebreak >}}
 ```{r, rec_bio}
 #| label: tbl-rec-bio
 #| echo: false
@@ -139,7 +139,88 @@ rec_bio_table |>
   as_latex()
 ```
 
-```{r, rec_bio}
+{{< pagebreak >}}
+
+```{r, tbl-wcgbts-index}
+#| label: tbl-wcgbts-index
+#| echo: false
+#| warning: false
+#| tbl-cap: "Index of abundance and log-scale standard errors for the WCGBTS."
+
+mod_out$cpue |>
+    dplyr::filter(grepl("WCGBTS", Fleet_name)) |>
+    dplyr::select(Yr, Obs, SE_input) |>
+    dplyr::mutate(
+        Obs = round(Obs),
+        SE_input = round(SE_input, 3)
+    ) |>
+    gt() |>
+    cols_label(
+        Yr = "Year",
+        Obs = "Observed",
+        SE_input = "Std. Error"
+    ) |>
+    tab_options(
+        table.font.size = 12,
+        latex.use_longtable = TRUE
+    ) |>
+    as_latex()
+
+```
+
+```{r, tbl-tri-index}
+#| label: tbl-tri-index
+#| echo: false
+#| warning: false
+#| tbl-cap: "Index of abundance and log-scale standard errors for the Triennial survey."
+
+mod_out$cpue |>
+    dplyr::filter(grepl("Tri", Fleet_name)) |>
+    dplyr::select(Yr, Obs, SE_input) |>
+    dplyr::mutate(
+        Obs = round(Obs),
+        SE_input = round(SE_input, 3)
+    ) |>
+    gt() |>
+    cols_label(
+        Yr = "Year",
+        Obs = "Observed",
+        SE_input = "Std. Error"
+    ) |>
+    tab_options(
+        table.font.size = 12,
+        latex.use_longtable = TRUE
+    ) |>
+    as_latex()
+    
+```
+
+{{< pagebreak >}}
+
+```{r, tbl-wcgbts-bio}
+#| label: tbl-wcgbts-bio
+#| echo: false
+#| warning: false
+#| tbl-cap: "Sample sizes for the age and length compositions from the WCGBTS. The ages are treated as conditioned on length and use the number of fish (within each length bin) as the input sample size."
+
+wcgbts_bio_table <- read.csv("../Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
+wcgbts_bio_table |> 
+  gt() |>
+  cols_label(
+    year = "Year",
+    n_ages = "N. ages",
+    n_tows = "N. tows",
+    n_lengths = "N. lengths",
+    input_n = "Input N."
+  ) |> 
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+
+```{r, tbl-tri-bio}
 #| label: tbl-tri-bio
 #| echo: false
 #| warning: false
@@ -166,30 +247,9 @@ tri_bio_table |>
 
 ```
 
-```{r, rec_bio}
-#| label: tbl-wcgbts-bio
-#| echo: false
-#| warning: false
-#| tbl-cap: "Sample sizes for the age and length compositions from the WCGBTS. The ages are treated as conditioned on length and use the number of fish (within each length bin) as the input sample size."
-
-wcgbts_bio_table <- read.csv("../Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
-wcgbts_bio_table |> 
-  gt() |>
-  cols_label(
-    year = "Year",
-    n_ages = "N. ages",
-    n_tows = "N. tows",
-    n_lengths = "N. lengths",
-    input_n = "Input N."
-  ) |> 
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
 <!--Indices tables -->
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-hl_percent_pos
@@ -321,6 +381,8 @@ smurf_modselect |>
   ) |>
   as_latex()
 ```
+
+{{< pagebreak >}}
 <!-- Needs Alt text -->
 ```{r}
 #| label: tbl-smurf_index
