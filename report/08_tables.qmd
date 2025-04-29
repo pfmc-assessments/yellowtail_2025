@@ -150,6 +150,10 @@ rec_bio_table |>
 mod_out$cpue |>
     dplyr::filter(grepl("WCGBTS", Fleet_name)) |>
     dplyr::select(Yr, Obs, SE_input) |>
+    dplyr::mutate(
+        Obs = round(Obs),
+        SE_input = round(SE_input, 3)
+    ) |>
     gt() |>
     cols_label(
         Yr = "Year",
@@ -173,6 +177,10 @@ mod_out$cpue |>
 mod_out$cpue |>
     dplyr::filter(grepl("Tri", Fleet_name)) |>
     dplyr::select(Yr, Obs, SE_input) |>
+    dplyr::mutate(
+        Obs = round(Obs),
+        SE_input = round(SE_input, 3)
+    ) |>
     gt() |>
     cols_label(
         Yr = "Year",
@@ -184,9 +192,11 @@ mod_out$cpue |>
         latex.use_longtable = TRUE
     ) |>
     as_latex()
-
+    
 ```
+
 {{< pagebreak >}}
+
 ```{r, tbl-wcgbts-bio}
 #| label: tbl-wcgbts-bio
 #| echo: false
@@ -238,6 +248,8 @@ tri_bio_table |>
 ```
 
 <!--Indices tables -->
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: tbl-hl_percent_pos
@@ -369,6 +381,8 @@ smurf_modselect |>
   ) |>
   as_latex()
 ```
+
+{{< pagebreak >}}
 <!-- Needs Alt text -->
 ```{r}
 #| label: tbl-smurf_index
