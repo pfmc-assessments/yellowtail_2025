@@ -63,6 +63,8 @@ We conducted a number of model runs exploring sensitivity of the model to decisi
     
     -   Add unsexed commercial lengths
     
+A figure summarizing various key management quantities across all sensitivity models is included in @fig-sens-summary.
+
 #### Indices
 
 Model sensitivity to index data is in Figures [-@fig-index-sens-ssb] and [-@fig-index-sens-depl] and @tbl-sens-indices.

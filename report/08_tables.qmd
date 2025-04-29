@@ -1,6 +1,9 @@
 # Tables 
 
 ## Data
+
+### Fishery-dependent data
+
 ```{r} 
 #| label: 'set-rda-dir-tbls'
 #| echo: false
@@ -18,7 +21,7 @@ library(gt)
 #| label: tbl-all_removals
 #| echo: false
 #| warning: false
-#| tbl-cap: "Total removals (mt) of yellowtail rockfish for the commercial (Com.), foreign (For.), at-sea hake (ASHOP), and recreational (Rec.) fleets used in the assessment model."
+#| tbl-cap: "Total removals (mt) of yellowtail rockfish for the commercial (Com.), foreign (For.), at-sea hake (ASHOP), and recreational (Rec.) fleets used in the assessment model. Foreign catches are included in the commercial fleet."
 
 
 CatchTable <- read.csv("Tables/CatchTable.csv")%>%
@@ -139,60 +142,105 @@ rec_bio_table |>
   as_latex()
 ```
 
-{{< pagebreak >}}
-
-```{r, tbl-wcgbts-index}
-#| label: tbl-wcgbts-index
+```{r, orbs_perc_pos}
+#| label: tbl-percent_pos
 #| echo: false
 #| warning: false
-#| tbl-cap: "Index of abundance and log-scale standard errors for the WCGBTS."
+#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
 
-mod_out$cpue |>
-    dplyr::filter(grepl("WCGBTS", Fleet_name)) |>
-    dplyr::select(Yr, Obs, SE_input) |>
-    dplyr::mutate(
-        Obs = round(Obs),
-        SE_input = round(SE_input, 3)
-    ) |>
-    gt() |>
-    cols_label(
-        Yr = "Year",
-        Obs = "Observed",
-        SE_input = "Std. Error"
-    ) |>
-    tab_options(
-        table.font.size = 12,
-        latex.use_longtable = TRUE
-    ) |>
-    as_latex()
 
+read.csv("Tables/yellowtail_percent_pos.csv") |> 
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 
-```{r, tbl-tri-index}
-#| label: tbl-tri-index
+{{< pagebreak >}}
+
+::: {.landscape}
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-orbs_mod_select
 #| echo: false
 #| warning: false
-#| tbl-cap: "Index of abundance and log-scale standard errors for the Triennial survey."
+#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
 
-mod_out$cpue |>
-    dplyr::filter(grepl("Tri", Fleet_name)) |>
-    dplyr::select(Yr, Obs, SE_input) |>
-    dplyr::mutate(
-        Obs = round(Obs),
-        SE_input = round(SE_input, 3)
-    ) |>
-    gt() |>
-    cols_label(
-        Yr = "Year",
-        Obs = "Observed",
-        SE_input = "Std. Error"
-    ) |>
-    tab_options(
-        table.font.size = 12,
-        latex.use_longtable = TRUE
-    ) |>
-    as_latex()
-    
+orbs_modselect <- read.csv("Tables/yellowtail_model_selection.csv")[1:10, ]
+orbs_modselect[orbs_modselect == "Included"] <- "Incl."
+orbs_modselect[is.na(orbs_modselect)] <- '-'
+orbs_modselect |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+
+:::
+
+{{< pagebreak >}}
+
+### Fishery-independent data
+
+```{r}
+#| label: tbl-hl_percent_pos
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey"
+
+
+percposHL <- read.csv("Tables/HL_yellowtail_percent_pos.csv") 
+percposHL|>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+
+{{< pagebreak >}}
+:::{.landscape}
+```{r, hl_mod_slx}
+#| label: tbl-hl_mod_slx
+#| echo: false
+#| warning: false
+#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey"
+
+
+modslxHL <- read.csv("Tables/HL_yellowtail_model_selection.csv") 
+modslxHL[is.na(modslxHL)] <- '-'
+modslxHL|>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
+```
+:::
+{{< pagebreak >}}
+
+<!-- Needs Alt text -->
+```{r}
+#| label: tbl-smurf_mod_select
+#| echo: false
+#| warning: false
+#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index"
+
+smurf_modselect <- read.csv("Tables/SMURF_model_selection.csv")
+smurf_modselect[smurf_modselect == "Included"] <- "Incl."
+smurf_modselect |>
+  gt() |>
+  tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  as_latex()
 ```
 
 {{< pagebreak >}}
@@ -247,159 +295,7 @@ tri_bio_table |>
 
 ```
 
-<!--Indices tables -->
-
 {{< pagebreak >}}
-
-```{r}
-#| label: tbl-hl_percent_pos
-#| echo: false
-#| warning: false
-#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey"
-
-
-percposHL <- read.csv("Tables/HL_yellowtail_percent_pos.csv") 
-percposHL|>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-{{< pagebreak >}}
-:::{.landscape}
-```{r, hl_mod_slx}
-#| label: tbl-hl_mod_slx
-#| echo: false
-#| warning: false
-#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey"
-
-
-modslxHL <- read.csv("Tables/HL_yellowtail_model_selection.csv") 
-modslxHL[is.na(modslxHL)] <- '-'
-modslxHL|>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-:::
-{{< pagebreak >}}
-
-```{r}
-#| label: tbl-hl_index
-#| echo: false
-#| warning: false
-#| tbl-cap: "The final index for the combined OR-WA hook and line survey"
-
-
-HLindex <- read.csv("Tables/HL_index_forSS.csv")%>%select(-c(month, fleet)) 
-HLindex|>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-```{r, orbs_perc_pos}
-#| label: tbl-percent_pos
-#| echo: false
-#| warning: false
-#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
-
-
-read.csv("Tables/yellowtail_percent_pos.csv") |> 
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-{{< pagebreak >}}
-
-::: {.landscape}
-<!-- Needs Alt text -->
-```{r}
-#| label: tbl-orbs_mod_select
-#| echo: false
-#| warning: false
-#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
-
-orbs_modselect <- read.csv("Tables/yellowtail_model_selection.csv")[1:10, ]
-orbs_modselect[orbs_modselect == "Included"] <- "Incl."
-orbs_modselect[is.na(orbs_modselect)] <- '-'
-orbs_modselect |>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-:::
-
-{{< pagebreak >}}
-<!-- Needs Alt text -->
-```{r}
-#| label: tbl-orbs_index
-#| echo: false
-#| warning: false
-#| tbl-cap: "Relative index of abundance from ORBS dockside sampling from ODFW."
-
-read.csv("Tables/index_forreport_ORBS.csv") |> 
-  dplyr::mutate(dplyr::across(-1, round, 3)) |>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-<!-- Needs Alt text -->
-```{r}
-#| label: tbl-smurf_mod_select
-#| echo: false
-#| warning: false
-#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index"
-
-smurf_modselect <- read.csv("Tables/SMURF_model_selection.csv")
-smurf_modselect[smurf_modselect == "Included"] <- "Incl."
-smurf_modselect |>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
-{{< pagebreak >}}
-<!-- Needs Alt text -->
-```{r}
-#| label: tbl-smurf_index
-#| echo: false
-#| warning: false
-#| tbl-cap: "Relative index of abundance from SMURF YOY index."
-
-smurf_in <- read.csv("Tables/SMURF_index.csv")
-smurf_in |>
-  gt() |>
-  tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE
-  ) |>
-  as_latex()
-```
-
 
 ```{r}
 #| label: tbl-consider

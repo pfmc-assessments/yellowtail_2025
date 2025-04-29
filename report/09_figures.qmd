@@ -215,7 +215,9 @@ knitr::include_graphics(
 
 ![Fitted maturity curve with data](figures/maturity_with_data.png){#fig-maturity fig-alt='figure illustrating maturity as described in WHERE'}
 
-## Model Bridging
+## Model
+
+### Bridging
 
 ![Spawning output from first steps in model bridging. Catches from recreational fleets are combined when catch is updated.](figures/bridging/bridging1compare2_spawnbio_uncertainty.png){#fig-bridge1-ssb fig-alt="TODO"}
 
@@ -229,7 +231,7 @@ knitr::include_graphics(
 
 ![Spawning output from third steps (model changes) in model bridging.](figures/bridging/bridging3compare4_Bratio_uncertainty.png){#fig-bridge3-depl fig-alt="TODO"}
 
-## Biology
+### Biology
 
 ![Stock-recruit curve with labels on first, last, and years with (log) deviations > 0.5. Point colors indicate year, with warmer colors indicating earlier years and cooler colors in showing later years.](r4ss_plots/SR_curve2.png){#fig-s-r}
 
@@ -272,7 +274,7 @@ knitr::include_graphics(
 )
 ```
 
-## Selectivity
+### Selectivity
 
 ```{r}
 #| label: fig-sel-length
@@ -305,7 +307,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Selectivity by time period for those fleets with time-varying selectivity."
+#| fit-cap: "Selectivity by time period for those fleets with time-varying selectivity."
 #| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
 knitr::include_graphics(
@@ -313,7 +315,7 @@ knitr::include_graphics(
 )
 ```
 
-## Fits to Data
+### Fits to Data
 
 
 ```{r}
@@ -578,7 +580,7 @@ knitr::include_graphics(
 )
 ```
 
-## Time-series
+### Time-series
 
 ```{r} 
 #| label: fig-sb
@@ -728,7 +730,11 @@ knitr::include_graphics(
 
 ```
 
-## Sensitivity analyses
+## Model diagnostics 
+
+### Sensitivity analyses
+
+![Comparison of various management quantities across all sensitivities. Metrics are terminal year relative spawning output, fishing mortality rate at SPR = 0.5, yield at SPR = 0.5, unfished spawning output, and terminal year spawning output. Bars at the top of the figure represent 95% confidence intervals for the metrics in the base model. See legend for which metric each color represents](figures/sensitivities/sens_summary.png){#fig-sens-summary}
 
 ![Spawning output for index sensitivities](figures/sensitivities/indicescompare2_spawnbio_uncertainty.png){#fig-index-sens-ssb fig-alt='TODO'}
 
@@ -742,7 +748,7 @@ knitr::include_graphics(
 
 ![Relative spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare4_Bratio_uncertainty.png){#fig-comp-sens-depl fig-alt='TODO'}
 
-## Retrospectives and likelihood profiles
+### Retrospectives and likelihood profiles
 
 ```{r}
 #| label: fig-retro1

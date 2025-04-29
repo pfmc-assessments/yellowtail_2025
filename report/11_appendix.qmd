@@ -1,4 +1,4 @@
-# Appendix A: Oceanographic index{.appendix, #sec-AppendixA}
+# Appendix A: Oceanographic index {.appendix, #sec-AppendixA}
 
 Contributed by: Megan Feddern and Nick Tolimieri
 
