@@ -26,6 +26,17 @@ r4ss::SS_plots(model, printfolder = "../../report/r4ss_plots", uncertainty = TRU
 # TODO: add better fleetnames if desired
 table_all(replist = model, dir = here::here("report"))
 
+# standard selectivity plots but with smurfs removed because 
+# the use of index units 33 bypasses selectivity
+SSplotSelex(
+  model,
+  subplots = c(1, 2),
+  fleets = which(!grepl("SMURF", model$FleetNames)),
+  plotdir = "report/Figures",
+  plot = FALSE,
+  print = TRUE
+)
+
 # make custom selectivity plot
 source("Rscripts/plot_selex.R")
 plot_yellowtail_tv_selex(model)

@@ -279,11 +279,11 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male."
+#| fig-cap: "Ending-year selectivity at length for multiple fleets. Solid lines are female selectivity, dashed are male. The SMURF fleet is not shown because the recruitment index bypasses the selectivity dynamics in SS3."
 #| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
 knitr::include_graphics(
-    "r4ss_plots/sel01_multiple_fleets_length1.png"
+    "Figures/sel01_multiple_fleets_length1.png"
 )
 ```
 
@@ -292,11 +292,11 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Ending-year selectivity at age derived from selectivity at length (solid female, dashed male)."
+#| fig-cap: "Ending-year selectivity at age derived from selectivity at length (solid female, dashed male). The SMURF fleet is not shown because the recruitment index bypasses the selectivity dynamics in SS3."
 #| fig-alt: "See the AGE_SELEX table (with Factor = 'Asel2') in Report.sso file for values."
 
 knitr::include_graphics(
-    "r4ss_plots/sel02_multiple_fleets_age2.png"
+    "Figures/sel02_multiple_fleets_age2.png"
 )
 ```
 
