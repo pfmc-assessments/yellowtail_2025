@@ -21,11 +21,11 @@ To be completed after the STAR panel.
 ### Response to recommendations in previous assessment
 
 -   A problem common to assessments of all stocks caught in the midwater is the lack of a targeting survey
-    -   This is still an outstanding issue.
+    -   This is still an outstanding issue. This assessment explores inclusion of a new hook and line survey.
 -   Research to determine whether old females of a variety of rockfish species actually have a mortality rate different than that of younger females. Assessments variously treat the discrepancies seen in sex ratios of older fish as either mortality-related or due unavailability to the fishery (e.g., ontogenetic movement offshore, or to rockier habitats). As these assumptions impact model outcomes very differently, resolving this issue would greatly improve confidence in the assessments.
     -   This assessment includes a number of sensitivities related to this, as well as deeper exploration of data patterns outside of the assessment model to support modeling choices.
 -   A hindrance to analysis of the commercial fishery is the inability to distinguish between midwater and trawl gear, particularly in data from the 1980s-1990s. Reliable recording of gear type will ensure that this does not continue to be problematic for future assessments.
-    -   In years where midwater and bottom trawl gear are differentiated in PacFIN, exploratory data analysis indicated there is essentially no difference in the age and size compositions of fish caught. Thus, combining midwater and trawl gear into a single model fleet seemed appropriate, and there is no need to reconstruct the historical ratio of catches between the two gears. We agree they should continue to be differentiated in ongoing sampling programs.
+    -   In years where midwater and bottom trawl gear are differentiated in PacFIN, exploratory data analysis indicated there is essentially no difference in the age and size compositions of fish caught. Thus, combining midwater and bottom trawl gear into a single model fleet seemed appropriate, and there is no need to reconstruct the historical ratio of catches between the two gears. We agree they should continue to be differentiated in ongoing sampling programs.
 -   A commercial index in the North. This is by far the largest segment of the fishery, and the introduction of the trawl rationalization program should mean that an index can be developed for the current fishery when the next full assessment is performed.
     -   This was explored as a sensitivity
 -   Further investigation into an index for the commercial logbook dataset from earlier periods.

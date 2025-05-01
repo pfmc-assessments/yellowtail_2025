@@ -544,4 +544,4 @@ ggplot(dev.quants, aes(x = relErr, y = mod_num, col = Metric, pch = Metric)) +
   xlab("Relative change") +
   viridis::scale_color_viridis(discrete = TRUE, labels = metric.labs)
 ggsave(file.path(outdir, 'sens_summary.png'),  dpi = 300,  
-       width = 6, height = 6.5, units = "in")
+       width = 6, height = 7, units = "in")
