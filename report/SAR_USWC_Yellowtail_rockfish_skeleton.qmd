@@ -244,8 +244,6 @@ cat(a, sep = '\n')
 \setcounter{section}{0}
 \renewcommand{\thefigure}{\arabic{figure}}
 \renewcommand{\thetable}{\arabic{table}}
-\setcounter{table}{0}
-\setcounter{figure}{0}
 
 
 ```{r, results='asis'}
@@ -355,6 +353,8 @@ cat(a, sep = '\n')
 ```
 
  {{< pagebreak >}} 
+
+\appendix
 
 ```{r, results='asis'}
 #| label: 'appendix'
