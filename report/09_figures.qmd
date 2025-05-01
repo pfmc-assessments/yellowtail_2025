@@ -511,7 +511,7 @@ knitr::include_graphics(
 #| fig-alt: "Observed mean age declines from the 1970s to the 1990s and then increases to about 2010 and is somewhat stable after. The expectation mostly fit this pattern well."
 
 knitr::include_graphics(
-    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Commercial.png"
+    "r4ss_plots/comp_agefit_data_weighting_TA1-8_Commercial.png"
 )
 ```
 
@@ -524,7 +524,7 @@ knitr::include_graphics(
 #| fig-alt: "There are only two years of observations. The observations are slightly different but the expectation is the same for these two years."
 
 knitr::include_graphics(
-    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_At-Sea-Hake.png"
+    "r4ss_plots/comp_agefit_data_weighting_TA1-8_At-Sea-Hake.png"
 )
 ```
 
@@ -537,25 +537,12 @@ knitr::include_graphics(
 #| fig-alt: "TODO"
 
 knitr::include_graphics(
-    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Recreational.png"
+    "r4ss_plots/comp_agefit_data_weighting_TA1-8_Recreational.png"
 )
 ```
 
 ```{r}
 #| label: fig-mean-age-4
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Mean age for the Hook and Line Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
-#| fig-alt: "The Mean age is uncertain due to low sample sizes and shows little change over the 2010 to 2024 period with data. The model expectation fits reasonably well."
-
-knitr::include_graphics(
-    "r4ss_plots/comp_lenfit_data_weighting_TA1-8_H&L_survey.png"
-)
-```
-
-```{r}
-#| label: fig-mean-age-5
 #| echo: false
 #| warning: false
 #| eval: true
@@ -568,7 +555,7 @@ knitr::include_graphics(
 ```
 
 ```{r}
-#| label: fig-mean-age-6
+#| label: fig-mean-age-5
 #| echo: false
 #| warning: false
 #| eval: true

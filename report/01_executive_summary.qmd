@@ -380,7 +380,7 @@ projections_table |>
 
 ## Scientific uncertainty{-}
 
-The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$derived_quants['OFLCatch_2025', 'StdDev'] / mod_out$derived_quants['OFLCatch_2025', 'Value'], 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5.
+The model estimate of the log-scale standard deviation of the overfishing limit (OFL) in 2025 is `r round(mod_out$OFL_sigma, 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5.
 
 ## Research and data needs{-}
 
