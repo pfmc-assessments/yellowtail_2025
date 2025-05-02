@@ -1,5 +1,5 @@
 # Acknowledgements {#sec-acknowledgements}
 
-The STAT thanks Eric Ward and Melissa Head for assistance with maturity data, and Eric Ward for assistance with bottom trawl index standardization. Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmnetal conditions for the risk table.
+The STAT thanks Eric Ward and Melissa Head for assistance with maturity data, and Eric Ward for assistance with bottom trawl index standardization. Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmnetal conditions for the risk table. Cameron Royer (OSU) processed SMURF samples for this assessment and we thank Su Sponaugle (OSU) and Kirsten Grorud-Colvert (OSU) for their expertise. Ryan Fields (ODFW) and Moritz Schmid (ODFW) provided mooring data for the SMURF index.
 
 More to come.
