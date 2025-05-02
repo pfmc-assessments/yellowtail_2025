@@ -26,6 +26,18 @@ r4ss::SS_plots(model, printfolder = "../../report/r4ss_plots", uncertainty = TRU
 # TODO: add better fleetnames if desired
 r4ss::table_all(replist = model, dir = here::here("report"))
 
+# custom calls to r4ss functions
+
+# taller biology plot to be easier to see and 
+r4ss::SSplotBiology(
+  model,
+  subplots = 3,
+  plotdir = "report/r4ss_plots",
+  plot = FALSE,
+  print = TRUE,
+  pheight = 5.5,
+  pwidth = 6.5)
+
 # standard selectivity plots but with smurfs removed because 
 # the use of index units 33 bypasses selectivity
 r4ss::SSplotSelex(

@@ -363,7 +363,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for Commercial with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for Commercial with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "observed mean length declines from the 1970s to the 1990s and then increases to about 2010 and declines after that. The expectation mostly fits this pattern but does not capture the peak in 2010 very well."
 
 knitr::include_graphics(
@@ -376,7 +376,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for At-Sea Hake with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for At-Sea Hake with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "Mean length has been relatively stable is fit well by the model."
 
 knitr::include_graphics(
@@ -389,7 +389,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for the Recreational fleet with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for the Recreational fleet with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "TODO"
 knitr::include_graphics(
     "r4ss_plots/comp_lenfit_data_weighting_TA1-8_Recreational.png"
@@ -401,7 +401,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for the Hook and Line Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for the Hook and Line Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "The mean length is uncertain due to low sample sizes and shows little change over the 2010 to 2024 period with data. The model expectation fits reasonably well."
 
 knitr::include_graphics(
@@ -414,7 +414,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for the Triennial Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for the Triennial Survey with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "The observed and expected show relatively little change over the years of the triennial survey, but the model fits the changes reasonably well."
 
 knitr::include_graphics(
@@ -427,7 +427,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Mean length for the WCGBTS with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
+#| fig-cap: "Mean length (cm) for the WCGBTS with 95% confidence intervals based on adjusted input sample sizes. The blue line is the model expectation."
 #| fig-alt: "The observed and expected show relatively little change over the 2003-2024 time series, with the exception of an anomolously low observed mean length in 2013 that was not fit well by the model."
 
 knitr::include_graphics(
@@ -677,8 +677,8 @@ if (uncertainty) {
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| fig-cap: "Phase plot of fishing intensity versus fraction unfished for the base model."
-#| fig-alt: "See table @tbl-ts for the values of the fraction unfished and fishing intensity which are related in this figure."
+#| fig-cap: "Phase plot of fishing intensity versus fraction of unfished spawning output for the base model."
+#| fig-alt: "See table @tbl-ts for the values of the fraction of unfished spawning output and fishing intensity which are related in this figure."
 #| fig-pos: H
 
 knitr::include_graphics(
@@ -693,7 +693,7 @@ knitr::include_graphics(
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated yield curve with reference points for the base model."
-#| fig-alt: "Yield curve shows equilibrium yield as a domed function of fraction unfished, with a peak slightly above 0.2, a target at 0.4, and a current estimate around 0.6."
+#| fig-alt: "Yield curve shows equilibrium yield as a domed function of fraction of unfished spawning output, with a peak slightly above 0.2, a target at 0.4, and a current estimate around 0.6."
 #| fig-pos: H
 
 knitr::include_graphics(
