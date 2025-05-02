@@ -307,13 +307,14 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fit-cap: "Selectivity by time period for those fleets with time-varying selectivity."
+#| fig-cap: "Selectivity by time period for those fleets with time-varying selectivity."
 #| fig-alt: "See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values."
 
 knitr::include_graphics(
     "Figures/selectivity_time-varying.png"
 )
 ```
+
 
 ### Fits to Data
 
