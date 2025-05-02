@@ -14,12 +14,12 @@ The model estimate of the coefficient of variation of the overfishing limit (OFL
 {{< pagebreak >}}
 ### Risk Table
 
-```{r, tbl-risk2, results = "asis"}
-#| label: tbl-risk2
+‘Risk Table’ for northern yellowtail rockfish to document ecosystem and environmental factors potentially affecting stock productivity and uncertainty or other concerns arising from the stock assessment (see text). Level 1 is a favorable ranking, Level 2 neutral, and Level 3 unfavorable
+
+```{r, results = "asis"}
+#| label: 
 #| echo: false
 #| warning: false
-#| tbl-cap: "‘Risk Table’ for northern yellowtail rockfish to document ecosystem and environmental factors potentially affecting stock productivity and uncertainty or other concerns arising from the stock assessment (see text). Level 1 is a favorable ranking, Level 2 neutral, and Level 3 unfavorable"
-
 
 risk <-read.csv("Tables/RiskTable.csv") 
 risk|>
@@ -37,12 +37,13 @@ risk|>
     everything() ~ px(200)
   ) |>
   gt::as_latex()
+
 ```
 
 #### Ecosystem and Environmental Conditions{}
-Contributed by: Megan Feddern, Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri
 
-To identify ecosystem and environmental processes impacting northern yellowtail rockfish we evaluated recent trends in environmental drivers, focusing on the years after main recruitment deviations are estimated (2019 - 2025). We considered trends in environmental drivers of yellowtail recruitment, habitat and distribution, prey, competitors and predators, and the climate vulnerability assessment (CVA) by @mcclure2023. We did not consider non-fisheries human activities as none were identified to be applicable to yellowtail. Overall we consider ecosystem and environmental conditions to be neutral (Level 2) with medium to high confidence based on agreement between a majority of indicators, robust but uncertain evidence, and no apparent concerns. We use this, plus information related to the stock assessment, to fill out the ‘risk table’ in @tbl-risk, based on the framework outlined by the California Current Integrated Ecosystem Assessment (CCIEA) team [@Golden2024].
+To identify ecosystem and environmental processes impacting northern yellowtail rockfish we evaluated recent trends in environmental drivers, focusing on the years after main recruitment deviations are estimated (2019 - 2025). We considered trends in environmental drivers of yellowtail recruitment, habitat and distribution, prey, competitors and predators, and the climate vulnerability assessment (CVA) by @mcclure2023. We did not consider non-fisheries human activities as none were identified to be applicable to yellowtail. Overall we consider ecosystem and environmental conditions to be neutral (Level 2) with medium to high confidence based on agreement between a majority of indicators, robust but uncertain evidence, and no apparent concerns. We use this, plus information related to the stock assessment, to fill out the ‘risk table’ in @tbl-risk, based on the framework outlined by the California Current Integrated Ecosystem Assessment (CCIEA) team [@Golden2024]. The ecosystem and environmnetal conditions discussed here were contributed by Megan Feddern, Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri.
+
 
 ##### Recruitment{}
 La Niña conditions persisted from 2020 - 2022 but were followed by a strong El Niño in 2023 - 24, which caused warmer than average ocean temperatures that were particularly pronounced during the pelagic juvenile lifestage and which are negatively associated with yellowtail recruitment. Spring transition was substantially earlier than optimal for northern yellowtail in 2020 and later than optimal in 2022, but close to optimal in 2021, 2023 and 2024 based on the relationships described in CITE OCEANOGRAPHIC APPENDIX. Temperature exposure during egg incubation was above average in 2021 and 2023, indicating poor conditions, but average in 2024. Since 2019, longshore transport has been substantially above average during the pelagic juvenile lifestage indicating poor conditions for recruitment. 
