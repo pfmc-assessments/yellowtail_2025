@@ -11,6 +11,61 @@ Harvest projections for the candidate base model assuming a P* of 0.45 are in @t
 ## Evaluation of Scientific Uncertainty
 
 The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$OFL_sigma, 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5, and increase at a rate of 0.075 per year.
+{{< pagebreak >}}
+### Risk Table
+
+```{r, tbl-risk2, results = "asis"}
+#| label: tbl-risk2
+#| echo: false
+#| warning: false
+#| tbl-cap: "‘Risk Table’ for northern yellowtail rockfish to document ecosystem and environmental factors potentially affecting stock productivity and uncertainty or other concerns arising from the stock assessment (see text). Level 1 is a favorable ranking, Level 2 neutral, and Level 3 unfavorable"
+
+
+risk <-read.csv("Tables/RiskTable.csv") 
+risk|>
+  gt::gt() |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE
+  ) |>
+  gt::cols_label(
+    Ecosystem.and.environmental.conditions = "Ecosystem and environmental conditions",
+    Assessment.data.inputs = "Assessment data inputs",
+    Assessment.model.fits.and.structural.uncertainty = "Assessment model fits and structural uncertainty"
+  ) |>
+  gt::cols_width(
+    everything() ~ px(200)
+  ) |>
+  gt::as_latex()
+```
+
+#### Ecosystem and Environmental Conditions{}
+Contributed by: Megan Feddern, Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri
+
+To identify ecosystem and environmental processes impacting northern yellowtail rockfish we evaluated recent trends in environmental drivers, focusing on the years after main recruitment deviations are estimated (2019 - 2025). We considered trends in environmental drivers of yellowtail recruitment, habitat and distribution, prey, competitors and predators, and the climate vulnerability assessment (CVA) by @mcclure2023. We did not consider non-fisheries human activities as none were identified to be applicable to yellowtail. Overall we consider ecosystem and environmental conditions to be neutral (Level 2) with medium to high confidence based on agreement between a majority of indicators, robust but uncertain evidence, and no apparent concerns. We use this, plus information related to the stock assessment, to fill out the ‘risk table’ in @tbl-risk, based on the framework outlined by the California Current Integrated Ecosystem Assessment (CCIEA) team [@Golden2024].
+
+##### Recruitment{}
+La Niña conditions persisted from 2020 - 2022 but were followed by a strong El Niño in 2023 - 24, which caused warmer than average ocean temperatures that were particularly pronounced during the pelagic juvenile lifestage and which are negatively associated with yellowtail recruitment. Spring transition was substantially earlier than optimal for northern yellowtail in 2020 and later than optimal in 2022, but close to optimal in 2021, 2023 and 2024 based on the relationships described in CITE OCEANOGRAPHIC APPENDIX. Temperature exposure during egg incubation was above average in 2021 and 2023, indicating poor conditions, but average in 2024. Since 2019, longshore transport has been substantially above average during the pelagic juvenile lifestage indicating poor conditions for recruitment. 
+
+The Washington nearshore rockfish survey in OCNMS [@Tolimieri2023; @Cope2023wa], which was updated through 2024 for this assessment, indicated an increase in the Black-yellowtail species complex from 2019 - 2021, low abundance in 2022 - 2023, and an increase in 2024. Similar patterns were observed based on the northern YOY rockfish index from the RREAS survey [@Gasbarro2025], with a more optimistic outlook of abundance in 2023. The coastwide RREAS index for yellowtail also indicated a strong YOY class in 2024 [@Field2021; @santora2021], but had less interannual variability from 2021 - 2023 (@fig-YOY). The collective evidence across oceanographic indices of recruitment and indices of juvenile abundance indicates recruitment was average or below the long-term average over the last 5 years with the exception of 2021.
+
+Overall, based on the collective evidence recruitment is characterized as neutral to unfavorable conditions with robust evidence. 
+
+##### Distribution and Habitat{}
+Young of the year yellowtail rockfish settle to nearshore areas and are known to utilize kelp bed habitat. Giant and bull kelp abundance based on the Kelp Watch Report Card remain close to the historical average in Washington [@Bell2023]. However, Oregon bull kelp cover is low, and is estimated to be at only 39% of historical levels, and over the last five years cover has been at only 19% of historical levels. Kelp abundance in California regions is also low relative to the historical mean. @Tolimieri2020 and @Taylor_petrale_2023 used spatio-temporal models to examine the distribution and abundance of groundfish along the West Coast. We considered updated spatio-temporal models for young (less than 4.5 years) and adult yellowtail rockfish, separately. These models indicate no changes in distribution. Collectively, habitat and distribution information indicate neutral to somewhat unfavorable conditions due to low kelp cover in Oregon. 
+
+##### Prey{}
+
+Overall, most available evidence suggests adequate forage for yellowtail in 2024 and recent years and is characterized as neutral to favorable. The CCIEA RREAS euphausiid (krill) indicator shows an increasing trend in the central Central California Current over the last five years, including 2024 (@Leising2025; see Figure I.2). RREAS data for 42 - 46 degrees N indicates no strong trend over the last five years, and krill abundance and size from the Trinidad Head Line were near average for most of 2024. Herring abundance sampled by JSOES  in the Northern California Current has been stable in recent years, although the 2023 acoustic survey estimates of coastwide herring abundance suggest a decline from 2019 levels  [@stierhoff2024distribution]. Production of juvenile hake was estimated in the stock assessment to be above average in 2020 and 2021, though there is high uncertainty in the stock assessment estimates of recruitment for more recent years [@Johnson2025]. Copepods are found in diets of juvenile yellowtail, and sampling at the Newport Hydrographic Line (@Leising2025; see Figure 3.1) suggested average feeding conditions over the last 5 years, with improvements once El Niño conditions waned in early 2024. We note that the coastwide krill abundance index, derived from acoustic data, was not available in 2024, but the 2023 values for this index were the 2nd lowest since the beginning of sampling in 2007.
+
+##### Predators and Competitors{}
+
+Predators that impose the largest amounts of predation mortality on yellowtail rockfish were identified from Ecopath food web modeling. The Ecopath models of @field2006top and @koehn2016 were recently revised (C.  Best-Otubu, P.Y. Hernvann, N. Lezama Ochoa, I. Kaplan). The highest sources of predation mortality on yellowtail rockfish, from greatest to least, derive from seven predators: California sea lions, lingcod, porpoises, fur seals, harbor seals, sablefish and skates. Based on changes in abundance over the last 5 years, six of the seven main predators are unlikely to drive any changes in predation over the last 5 years [@Caretta2024; @Taylor2019; @Gertseva2019; @Taylor2021]. One predator, sablefish, may have imposed some increased predation pressure on the ecosystem [@Johnson2023], but the linkage to yellowtail specifically is very uncertain. Similarly, we considered hake as a potential competitor for krill, however the lack of evidence of krill being a limiting prey source for yellowtail and lack of direct evidence of competition makes this link highly uncertain. Overall, we scored predation and competition effects  as neutral, with some uncertainty.
+
+##### Climate Vulnerability Assessment{}
+
+@mcclure2023 found that yellowtail rockfish had a climate vulnerability of moderate/high and an overall climate exposure of high, due largely to potential impacts from ocean acidification on prey (ranked very high) and mean sea surface temperature (ranked high). We consider the effects of temperature and prey availability to be well informed in other sections of this risk table and the assessment and as a result the CVA ranking was not included in our final scoring of the ecosystem and environmental considerations.
+
 
 ## Regional management considerations
 
