@@ -24,11 +24,11 @@ r4ss::SS_plots(model, printfolder = "../../report/r4ss_plots", uncertainty = TRU
 
 # make new tables
 # TODO: add better fleetnames if desired
-table_all(replist = model, dir = here::here("report"))
+r4ss::table_all(replist = model, dir = here::here("report"))
 
 # standard selectivity plots but with smurfs removed because 
 # the use of index units 33 bypasses selectivity
-SSplotSelex(
+r4ss::SSplotSelex(
   model,
   subplots = c(1, 2),
   fleets = which(!grepl("SMURF", model$FleetNames)),
@@ -52,7 +52,7 @@ plot_indices(
 )
 
 # make custom parameter prior/est plot TODO: modify to exclude male M?
-SSplotPars(
+r4ss::SSplotPars(
   model,
   strings = "NatM_uniform_Fem_GP_1",
   ncols = 1,

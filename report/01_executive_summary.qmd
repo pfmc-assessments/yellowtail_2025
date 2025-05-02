@@ -12,7 +12,7 @@ Catches have averaged over 3,000 mt in recent years, and are mainly from a comme
 
 <!-- \clearpage -->
 
-```{r, results = "asis"}
+```{r, tbl-es-catches, results = "asis"}
 #| label: tbl-es-catches
 #| warning: false
 #| echo: false
@@ -41,7 +41,7 @@ catches_es_table |>
 
 ```
 
-```{r} 
+```{r, fig-es-landings} 
 #| label: fig-es-landings
 #| echo: false 
 #| warning: false 
@@ -68,7 +68,7 @@ The last assessment for the northern stock of yellowtail rockfish (defined ident
 
 The model estimates that the population was near the minimum stock size threshold throughout the 1980s and 1990s, but increased through the 2000s to mid 2010s (@fig-es-sb, @fig-es-depl). Since 2017 (coincident with the increase in catches), spawning output has been gradually declining, but is still well above the management target of 40% of unfished spawning depletion (@tbl-es-sb). 
 
-```{r, results = "asis"}
+```{r, tbl-es-sb, results = "asis"}
 #| label: tbl-es-sb
 #| warning: false
 #| echo: false
@@ -131,7 +131,7 @@ The estimated largest recruitment event throughout the time series was in 2008, 
 
 <!-- Trends and current levels relative to virgin or historic levels-include table for last 10 years and graph with long term estimates. -->
 
-```{r, results = "asis"}
+```{r, tbl-es-recr, results = "asis"}
 #| label: tbl-es-recr
 #| warning: false
 #| echo: false
@@ -198,7 +198,7 @@ Exploitation rates were above the management target of a fishing intensity that 
 
 <!-- Exploitation rates (i.e., total catch divided by exploitable biomass, or the annual SPR harvest rate) - include a table with the last 10 years of data and a graph showing the trend in fishing mortality relative to the target (y-axis) plotted against the trend in biomass relative to the target (x-axis). -->
 
-```{r, results = "asis"}
+```{r, tbl-es-spr, results = "asis"}
 #| label: tbl-es-spr
 #| warning: false
 #| echo: false
@@ -253,7 +253,7 @@ A list of estimates of the current state of the population, as well as reference
 
 \clearpage
 
-```{r, results = "asis"}
+```{r, tbl-ref-points-es, results = "asis"}
 #| label: tbl-ref-points-es
 #| warning: false
 #| echo: false
@@ -304,7 +304,7 @@ reference_points_table |>
 Although catch increased substantially in 2017, it has still been well below the overfishing limit, allowable biological catch, and annual catch limit (@tbl-es-management). Attainment of the OFL has averaged around 50\% since the increase in landings, and was even lower in prior years.
 <!-- Catches in comparison to OFL, ABC, HG, and OY/ACL values for the most recent 10 years (when available), overfishing levels, actual catch and discard. Include OFL (encountered), OFL (retained) and OFL (dead) if different due to discard and discard mortality. -->
 
-```{r, results = "asis"}
+```{r, tbl-es-management, results = "asis"}
 #| label: tbl-es-management
 #| warning: false
 #| echo: false
@@ -313,7 +313,7 @@ Although catch increased substantially in 2017, it has still been well below the
 #| tbl-pos: H
 
 recent_management_table |>
-  rename(`Total dead catch (mt)` = `Catch (mt)`)
+  rename(`Total dead catch (mt)` = `Catch (mt)`) |>
   gt::gt() |>
   gt::tab_options(
     table.font.size = 12,
@@ -340,7 +340,7 @@ Projections of the overfishing limit, acceptable biological catch, and annual ca
 
 ::: {.landscape}
 
-```{r, results = "asis"}
+```{r, tbl-es-projections, results = "asis"}
 #| label: tbl-es-projections
 #| warning: false
 #| echo: false
@@ -389,7 +389,7 @@ The most important future research need is to better understand the catchability
 {{< pagebreak >}}
 
 ## Risk Table{-}
-```{r}
+```{r, tbl-risk, results = "asis"}
 #| label: tbl-risk
 #| echo: false
 #| warning: false
