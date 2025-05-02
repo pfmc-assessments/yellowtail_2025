@@ -15,6 +15,7 @@ if (file.exists(here::here("report/Tables"))) {
   
   ssb_es_table <- ssb_es$table
   ssb_es_cap <- ssb_es$cap
+  ssb_es_cap <- gsub("fraction unfished", "fraction of unfished spawning output", ssb_es_cap)
   rm(ssb_es)
   
   spr_es_table <- spr_es$table
@@ -35,6 +36,7 @@ if (file.exists(here::here("report/Tables"))) {
     
   projections_table <- projections$table
   projections_cap <- projections$cap
+  projections_cap <- gsub("fraction unfished", "fraction of unfished spawning output", projections_cap)
   rm(projections)
   
   compweight_table <- table_compweight$table

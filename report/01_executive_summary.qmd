@@ -47,7 +47,7 @@ catches_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Landings in metric tons (mt) by year for each fleet."
-#| fig-alt: "See Table TODO for values."
+#| fig-alt: "See Table 9 for values."
 
 knitr::include_graphics("r4ss_plots/catch2_landings_stacked.png")
 
@@ -105,7 +105,7 @@ ssb_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated time series of spawning output (trillions of eggs) for the base model."
-#| fig-alt: "See table TODO for values."
+#| fig-alt: "See table 26 for values."
 #| fig-pos: H
 
 knitr::include_graphics("r4ss_plots/ts7_Spawning_output_with_95_intervals.png")
@@ -117,7 +117,7 @@ knitr::include_graphics("r4ss_plots/ts7_Spawning_output_with_95_intervals.png")
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| fig-cap: "Estimated time series of fraction of unfished spawning biomass for the base model."
+#| fig-cap: "Estimated time series of fraction of unfished spawning output for the base model."
 #| fig-alt: ""
 #| fig-pos: H
 
