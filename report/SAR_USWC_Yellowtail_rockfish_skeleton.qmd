@@ -97,6 +97,7 @@ source(here('Rscripts/table_sens.R'))
 # - [ ] run Rscripts/sensitivities.R
 # - [ ] update any hardwired values in the text (or make them dynamic)
 #   - [ ] text on 2024 discards "inadvertently left out of the base model"
+#   - [ ] if changing selectivity, try freeing up triennial peak selectivity (fixed at 55cm)
 #   - [ ] 
 base_mod <- '5.09_no_extra_se'
 mod_in <- r4ss::SS_read(here('model_runs', base_mod))
