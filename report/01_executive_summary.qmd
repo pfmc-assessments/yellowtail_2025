@@ -194,7 +194,7 @@ knitr::include_graphics("r4ss_plots/recdevs2_withbars.png")
 <!-- \clearpage -->
 ## Exploitation status{-}
 
-Exploitation rates were above the management target of a fishing intensity that leads to a spawning potential ratio of 0.5 throughout the 1980s and 1990s. They decreased and were close to zero in the early 2000s due to restrictive trip limits. As with catches, exploitation rates increased substantially in 2017, have remained stable since then, and are still well below the management target (@tbl-es-spr, @fig-es-spr).
+Exploitation rates were above the management target of a fishing intensity that leads to a spawning potential ratio of 0.5 throughout the 1980s and 1990s. They decreased and were close to zero in the early 2000s due to restrictive trip limits. As with catches, exploitation rates increased substantially in 2017, have remained stable since then, and are still well below the management target (@tbl-es-spr, @fig-es-kobe).
 
 <!-- Exploitation rates (i.e., total catch divided by exploitable biomass, or the annual SPR harvest rate) - include a table with the last 10 years of data and a graph showing the trend in fishing mortality relative to the target (y-axis) plotted against the trend in biomass relative to the target (x-axis). -->
 
@@ -227,15 +227,15 @@ spr_es_table |>
 ```
 
 ```{r} 
-#| label: fig-es-spr
+#| label: fig-es-kobe
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| fig-cap: "Estimated time series of relative fishing intensity for the base model."
-#| fig-alt: ""
+#| fig-cap: "Phase plot of fishing intensity versus fraction unfished."
+#| fig-alt: "See table @tbl-ts for the values of the fraction unfished and fishing intensity which are related in this figure."
 #| fig-pos: H
 
-knitr::include_graphics("r4ss_plots/SPR3_ratiointerval.png")
+knitr::include_graphics("r4ss_plots/SPR4_phase.png")
 
 ```
 
