@@ -98,7 +98,7 @@ source(here('Rscripts/table_sens.R'))
 # - [ ] update any hardwired values in the text (or make them dynamic)
 #   - [ ] text on 2024 discards "inadvertently left out of the base model"
 #   - [ ] if changing selectivity, try freeing up triennial peak selectivity (fixed at 55cm)
-#   - [ ] 
+#   - [ ] if changing selectivity, try freeing up hake peak selectivity (fixed at 55cm)
 base_mod <- '5.09_no_extra_se'
 mod_in <- r4ss::SS_read(here('model_runs', base_mod))
 mod_out <- r4ss::SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
@@ -215,7 +215,7 @@ cat(a, sep = '\n')
 
 Please cite this publication as: 
 
-Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the Yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Managment Council, Portland, Oregon. [XX] p.
+Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Managment Council, Portland, Oregon. [XX] p.
 
  {{< pagebreak >}} 
 
