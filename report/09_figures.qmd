@@ -723,17 +723,11 @@ knitr::include_graphics(
 
 ![Comparison of various management quantities across all sensitivities. Metrics are terminal year relative spawning output, fishing mortality rate at SPR = 0.5, yield at SPR = 0.5, unfished spawning output, and terminal year spawning output. Bars at the top of the figure represent 95% confidence intervals for the metrics in the base model. See legend for which metric each color represents](figures/sensitivities/sens_summary.png){#fig-sens-summary}
 
-![Spawning output for index sensitivities](figures/sensitivities/indicescompare2_spawnbio_uncertainty.png){#fig-index-sens-ssb fig-alt='TODO'}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for index sensitivities](figures/sensitivities/indices_comparison.png){#fig-indices-comparison fig-alt='TODO'}
 
-![Relative spawning output for index sensitivities](figures/sensitivities/indicescompare4_Bratio_uncertainty.png){#fig-index-sens-depl fig-alt='TODO'}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for modeling sensitivities](figures/sensitivities/indices_comparison.png){#fig-modeling-comparison fig-alt='TODO'}
 
-![Spawning output for modeling sensitivities](figures/sensitivities/modelingcompare2_spawnbio_uncertainty.png){#fig-model-sens-ssb fig-alt='TODO'}
-
-![Relative spawning output for modeling sensitivities](figures/sensitivities/modelingcompare4_Bratio_uncertainty.png){#fig-model-sens-depl fig-alt='TODO'}
-
-![Spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare2_spawnbio_uncertainty.png){#fig-comp-sens-ssb fig-alt='TODO'}
-
-![Relative spawning output for composition data sensitivities](figures/sensitivities/comp_datacompare4_Bratio_uncertainty.png){#fig-comp-sens-depl fig-alt='TODO'}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for composition data sensitivities](figures/sensitivities/comp_data_comparison.png){#fig-comp_data-comparison fig-alt='TODO'}
 
 ### Retrospectives and likelihood profiles
 

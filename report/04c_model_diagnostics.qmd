@@ -67,7 +67,7 @@ A figure summarizing various key management quantities across all sensitivity mo
 
 #### Indices
 
-Model sensitivity to index data is in Figures [-@fig-index-sens-ssb] and [-@fig-index-sens-depl] and @tbl-sens-indices.
+Model sensitivity to index data is in @fig-indices-comparison and @tbl-sens-indices.
 
 The ORBS index suggests a higher unfished population scale and lower terminal year depletion below the management target. Unfished recruitment is actually lower, but natural mortality is also lower, and the growth curves differ (lower L$_\infty$, higher K, more similar growth for males and females in model with ORBS index). Overall these differences result in a higher unfished spawning output, similar terminal year spawning output, and therefore lower terminal year relative spawning output. However, the input standard errors on the ORBS index are lower than for any of the fishery-independent indices, which is likely unrealistic. When the model is given the freedom to downweight the index by estimating an additional standard error, the model trajectory is very similar to the base model.
 
@@ -77,7 +77,7 @@ All other sensitivities to index data led to only minor changes during the estim
 
 #### Modeling
 
-Sensitivity to modeling assumptions is in Figures [-@fig-model-sens-ssb] and [-@fig-model-sens-depl] and @tbl-sens-modeling.
+Sensitivity to modeling assumptions is in @fig-modeling-comparison and @tbl-sens-modeling.
 
 A breakpoint natural mortality near the age at maturity and a shared natural mortality between males and females resulted in similar model results, with lower unfished recruitment, higher unfished spawning output, lower terminal year spawning output, and a relative terminal year spawning output below the management target. The likelihood for breakpoint natural mortality is 56 units worse than the base model with a similar number of parameters. The likelihood for a model with shared natural mortality is 59 likelihood units worse with one less parameter.
 
@@ -93,7 +93,7 @@ No other modeling sensitivities led to notable changes in population trajectorie
 
 #### Composition data
 
-Sensitivity to use and treatment of composition data is in Figures [-@fig-comp-sens-ssb] and [-@fig-comp-sens-depl] and @tbl-sens-modeling.
+Sensitivity to use and treatment of composition data is in @fig-comp_data-comparison and @tbl-sens-comp_data.
 
 The McAllister \& Ianelli data weight method leads to a higher unfished recruitment, higher natural mortality, and higher somatic growth rate. This results in a higher unfished spawning output, much higher population peak in the 2000s, and a higher terminal year spawning output and relative spawning output. The lowpoint of the population in the 1980s and 1990s is also estimated to be larger.
 
