@@ -789,21 +789,26 @@ out1 <- SSgetoutput(dirvec = c('model_runs/1.02_base_2017_3.30.23',
                                           mod = c('3.01_reanalyze_catch',
                                                   '3.02_surveys',
                                                   '3.03_biology',
-                                                  '3.04_discards'))))
+                                                  '3.04_discards'))),
+                    SpawnOutputLabel = 'Spawning Output (trillions of eggs)')
+
 out2 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
                                         mod = c('3.04_discards',
                                                 '3.05_ages_raw_pacfin',
                                                 '3.07_lengths_raw_pacfin',
                                                 '3.06_ages_exp_pacfin',
                                                 '3.08_lengths_exp_pacfin',
-                                                '3.10_exp_comps_2024')))
+                                                '3.10_exp_comps_2024')),
+                    SpawnOutputLabel = 'Spawning Output (trillions of eggs)')
 
 out3 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
                                         mod = c('3.10_exp_comps_2024',
                                                 '4.15_rec_blocks_only',
                                                 '4.11_sex_selex_setup',
-                                                '5.09_no_extra_se')))
+                                                '5.09_no_extra_se')),
+                    SpawnOutputLabel = 'Spawning Output (trillions of eggs)')
 
+# bridging plots for group 1
 out1 |>
   SSsummarize() |>
   SSplotComparisons(subplots = c(2,4), new = FALSE,
@@ -815,6 +820,23 @@ out1 |>
                     png = TRUE, plotdir = 'report/figures/bridging', 
                     filenameprefix = 'bridging1')
 
+
+out1 |>
+  r4ss::plot_twopanel_comparison(
+    dir = 'report/figures/bridging',
+    filename = 'bridging1_comparison.png',
+    legendlabels = c(
+      '2017',
+      'Reanalyze catch',
+      '+ index',
+      '+ bio',
+      '+ discard'
+    ),
+    legendloc = 'bottomleft',
+    endyrvec = 2017
+  )
+
+# bridging plots for group 2
 c(list(base2017 = out1[[1]]), out2) |> 
   SSsummarize() |>
   SSplotComparisons(subplots = c(2,4), new = FALSE,
@@ -828,6 +850,25 @@ c(list(base2017 = out1[[1]]), out2) |>
                     png = TRUE, plotdir = 'report/figures/bridging',
                     filenameprefix = 'bridging2')
 
+c(list(base2017 = out1[[1]]), out2) |>
+  r4ss::plot_twopanel_comparison(
+    dir = 'report/figures/bridging',
+    filename = 'bridging2_comparison.png',
+    legendlabels = c(
+      '2017',
+      'first steps',
+      'reanalyze raw pacfin ages',
+      'raw pacfin ages + lengths',
+      'exp pacfin ages',
+      'exp pacfin ages + lengths',
+      'extend to 2024'
+    ),
+    legendloc = 'bottomleft',
+    endyrvec = c(rep(2017, 6), 2025),
+    shadeForecast = FALSE
+  )
+
+# bridging plots for group 3
 out3_smry <- c(list(base2017 = out1[[1]]), out3) |> 
   SSsummarize() 
 
@@ -843,6 +884,24 @@ out3_smry |>
                                      'add H&L, SMURF, various other updates'), 
                     png = TRUE, plotdir = 'report/figures/bridging',
                     filenameprefix = 'bridging3')
+
+c(list(base2017 = out1[[1]]), out3) |>
+  r4ss::plot_twopanel_comparison(
+    dir = 'report/figures/bridging',
+    filename = 'bridging3_comparison.png',
+    legendlabels = c(
+      '2017',
+      'reanalyze and extend data',
+      'selectivity: rec blocks',
+      'selectivity: hake block, sex-specific rec',
+      'add H&L, SMURF, various other updates'
+    ),
+    legendloc = 'bottomleft',
+    uncertainty = c(TRUE, FALSE, FALSE, FALSE, TRUE),
+    endyrvec = c(2017, rep(2025, 4)),
+    shadeForecast = FALSE
+  )
+
 
 # Update # Update # Update bias adjustment --------------------------------------------------
 
