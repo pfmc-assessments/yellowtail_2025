@@ -5,7 +5,12 @@ model_directory <- 'model_runs'
 base_model_name <- '5.09_no_extra_se'
 exe_loc <- here('model_runs/ss3.exe')
 base_model <- SS_read(file.path(model_directory, base_model_name), ss_new = TRUE)
-base_out <- SS_output(file.path(model_directory, base_model_name))
+base_out <- SS_output(
+  file.path(model_directory, base_model_name),
+  SpawnOutputLabel = "Spawning output (trillions of eggs)",
+  printstats = FALSE,
+  verbose = FALSE
+)
 
 # Write sensitivities -----------------------------------------------------
 
@@ -309,6 +314,16 @@ sensi_mod$ctl$MG_parms <- mg_table
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'breakpoint_m'),
          overwrite = TRUE)  
 
+## Lorenzen M --------------------------------------------------------------
+
+sensi_mod <- base_model
+
+sensi_mod$ctl$natM_type <- 2 # lorenzen M
+sensi_mod$ctl$Lorenzen_refage <- 10 # age to which the M parameter & prior applies
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'lorenzen_m'),
+         overwrite = TRUE)  
+
 
 ## Single M ----------------------------------------------------------------
 
@@ -376,6 +391,13 @@ make_detailed_sensitivites <- function(biglist, mods,
                           plotdir = outdir, 
                           filenameprefix = grp_name,
                           legendlabels = c('Base', mods$pretty), 
+                          endyrvec = 2036)
+
+  r4ss::plot_twopanel_comparison(big_sensitivity_output[c('base', mods$dir)],
+                          dir = outdir, 
+                          filename = paste0(grp_name, '_comparison.png'),
+                          legendlabels = c('Base', mods$pretty), 
+                          legendloc = 'bottomleft',
                           endyrvec = 2036)
   
   SStableComparisons(shortlist, 
@@ -450,10 +472,16 @@ sens_names <- bind_rows(modeling,
                         indices,
                         comp_data)
 
-big_sensitivity_output <- SSgetoutput(dirvec = file.path(model_directory,
-                                                         c(base_model_name,
-                                                           glue::glue("sensitivities/{subdir}", 
-                                                                      subdir = sens_names$dir)))) |>
+big_sensitivity_output <- SSgetoutput(
+  dirvec = file.path(
+    model_directory,
+    c(
+      base_model_name,
+      glue::glue("sensitivities/{subdir}", subdir = sens_names$dir)
+    )
+  ),
+  SpawnOutputLabel = "Spawning output (trillions of eggs)"
+) |>
   `names<-`(c('base', sens_names$dir))
 
 
