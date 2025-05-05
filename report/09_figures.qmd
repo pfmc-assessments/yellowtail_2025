@@ -223,7 +223,7 @@ knitr::include_graphics(
 
 ![Spawning output (trillions of eggs, top), and relative spawning output (bottom) from second steps (updating composition data) in model bridging. "Exp" is expanded PacFIN data. Composition data from recreational fleets are combined as length and age data are renanalyzed. Every model run includes two rounds of Francis tuning of composition data. Bias adjustment ramp is updated when data are extended. Uncertainty is only shown for the 2017 model.](figures/bridging/bridging2_comparison.png){#fig-bridge2 fig-alt="TODO"}
 
-![Spawning output (trillions of eggs, top), and relative spawning output (bottom) from third steps (model changes) in model bridging. Uncertainty is shown for the 2017 model and the final bridging step (the 2025 model).](figures/bridging/bridging3_comparison.png){#fig-bridge3 fig-alt="TODO"}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) from third steps (model changes) in model bridging. Uncertainty is shown for the 2017 model and the final bridging step (the 2025 base model).](figures/bridging/bridging3_comparison.png){#fig-bridge3 fig-alt="TODO"}
 
 ### Biology
 

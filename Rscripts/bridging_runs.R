@@ -894,7 +894,7 @@ c(list(base2017 = out1[[1]]), out3) |>
       'reanalyze and extend data',
       'selectivity: rec blocks',
       'selectivity: hake block, sex-specific rec',
-      'add H&L, SMURF, various other updates'
+      'add H&L, SMURF, various other updates (2025 base model)'
     ),
     legendloc = 'bottomleft',
     uncertainty = c(TRUE, FALSE, FALSE, FALSE, TRUE),
