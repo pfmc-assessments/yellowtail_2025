@@ -1,5 +1,30 @@
 # Acknowledgements {#sec-acknowledgements}
 
-The STAT thanks Eric Ward and Melissa Head for assistance with maturity data, and Eric Ward for assistance with bottom trawl index standardization. Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmnetal conditions for the risk table. Cameron Royer (OSU) processed SMURF samples for this assessment and we thank Su Sponaugle (OSU) and Kirsten Grorud-Colvert (OSU) for their expertise. Ryan Fields (ODFW) and Moritz Schmid (ODFW) provided mooring data for the SMURF index.
+A number of people produced, managed, and analyzed data and code that went into this assessment as well as provided assistance and review with the document. 
 
-More to come.
+Owen Hamel, Marlene Bellman, and John Budrick provided constructive comments on an earlier version of the document.
+
+Sam Schiano developed the \{asar\} package used to produce this document and provided assistance with document structure and formatting questions. 
+
+Chantel Wetzel manages a number of NWFSC R packages used for analyzing commercial and NWFSC survey data and formatting it for stock synthesis. 
+
+Eric Ward and Melissa Head worked extensively on the maturity ogive. 
+
+Eric Ward, Chantel Wetzel, and Claire Rosemond assisted with bottom trawl index standardization. 
+
+Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. 
+
+Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmnetal conditions for the risk table. 
+
+Cameron Royer (OSU) processed SMURF samples for this assessment and Su Sponaugle (OSU) and Kirsten Grorud-Colvert (OSU) provided additional expertise. Ryan Fields (ODFW) and Moritz Schmid (ODFW) provided mooring data for the SMURF index. 
+
+Tanya Rogers produced the RREAS index. 
+
+E.J. Dick provided catch histories for California and context for how to separate historical data at the relevant biogeographic break, and Theresa Tsou provided assistance with the Washington catch history.
+
+John Wallace provided discard rates from the Pikitch study.
+
+The population ecology program at NWFSC and its SWFSC collaborators are some of the sharpest, kindest, and most dedicated minds in stock assessment today. They were constantly available to answer questions, brainstorm, and provide any other manner of assistance we needed.
+
+Finally, a stock assessment is useless without high quality data over long time horizons to inform models, and we are eternally gratefully to have enormous amounts of data available for this assessment. Hundreds of people have contributed to this assessment as observers, port samplers, survey staff, and survey volunteers. Agers at WDFW and the CAP lab over many decades produced enormous volumes of ages that were critical. In particular, Emily Wallingford and Liz Ortiz at the CAP lab and Sandra Rosenfield and Jennifer Topping at WDFW read all otoliths since the 2017 assessment, and Patrick McDonald provided additional coordination.
+
