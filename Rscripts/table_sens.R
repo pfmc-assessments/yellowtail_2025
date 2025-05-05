@@ -181,7 +181,9 @@ table_sens <- function(file_csv,
     digits = 3 # ,
     # caption = caption,
     # label = label
-  )
+  ) |> 
+  kableExtra::kable_styling(font_size = 9)
+
   # decrease column width for tables with lots of columns
   if (NCOL(data) <= 7) {
     tt <- tt |>
@@ -189,7 +191,7 @@ table_sens <- function(file_csv,
   }
   if (NCOL(data) > 7) {
     tt <- tt |>
-      kableExtra::column_spec(3:NCOL(data), width = "3.8em")
+      kableExtra::column_spec(3:NCOL(data), width = "4em")
   }
 
   # add subsection to improve readability

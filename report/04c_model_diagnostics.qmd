@@ -87,6 +87,8 @@ The model with non-linear density-dependent catchability for the WCGBTS improves
 
 No other modeling sensitivities led to notable changes in population trajectories. However, we do note that estimating two sex-specific selectivity parameters for the recreational fleet improved the likelihood by 18 units. Estimating sex-specific selectivity for all fleets with sex data improves the likelihood by an additional 28 units. However, this involves estimating 12 additional parameters, many of which seemed poorly estimated during earlier explorations.
 
+An additional modeling sensitivity (not shown in the figure and table) explored the use of a Lorenzen natural mortality relationship [@lorenzen1996relationship] with age. This resulted in much higher estimates of $M$ up to about age 5, but the impact on the model results was small because these ages are mostly immature and are rarely selected, so higher $M$ at young ages is confounded with the estimated unfished equilibrium recruitment. The fit to the age composition data was worse with the Lorenzen $M$ but there was little change in the likelihood for other data types, including the fit to the \gls{s-wcgbt} index.
+
 <!-- Sensitivity to assumptions about model structure, i.e., model specification uncertainty.  -->
 
 <!-- Sensitivity to data set choice (e.g., using emphasis factors to selectively remove data sources) and weighting schemes (e.g., MacAllister & Ianelli weighting versus Francis weighting vs. Dirichlet weighting for compositional data), which may also include a consideration of recent patterns in recruitment.  -->
