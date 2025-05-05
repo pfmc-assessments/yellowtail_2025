@@ -114,13 +114,28 @@ Age 4+ abundance is used to compare among historical assessments (@fig-historica
 #| echo: false 
 #| eval: true 
 m_quants <- read.csv(here::here("report/diagnostics/NatM_uniform_Fem_GP_1_quant_table.csv"))
+# likelihood for model with female M close to median of the prior
 m_like_prior <- m_quants |> 
   dplyr::filter(X == "totlikelihood") |>  
-  dplyr::select(M_f.0.125) |> 
+  dplyr::select(which(m_quants[which(m_quants$X == "mfem"), ] == 0.125)) |> 
   as.numeric()
+# which male M is closest to the mean of the prior (accounting for label in column 1)?
+mmale_vec <- m_quants[which(m_quants$X == "mfem"), -1] * exp(m_quants[which(m_quants$X == "mmale"), -1])
+mmale_column <- 1 + which(abs(mmale_vec - 0.126) == min(abs(mmale_vec - 0.126)))
+mfem_at_mmale_column <- m_quants[which(m_quants$X == "mfem"), mmale_column]
+mmale_at_mmale_column <- (mfem_at_mmale_column * exp(m_quants[which(m_quants$X == "mmale"), mmale_column])) |> round(3)
+
+# likelihood for model with male M close to median of the prior
+m_like_prior_males <- m_quants |> 
+  dplyr::filter(X == "totlikelihood") |>  
+  dplyr::pull(mmale_column) |> 
+  as.numeric()
+# base model likelihood and difference for models where female and male M match prior median
 base_like <- mod_out$likelihoods_used["TOTAL","values"]
+m_prior_base <- mod_out$likelihoods_used["Parm_priors","values"] |> round(2)
 m_like_diff <- abs(round(base_like - m_like_prior, 2))
-m_base <- mod_out$likelihoods_used["Parm_priors","values"] |> round(2)
+m_like_diff_male <- abs(round(base_like - m_like_prior_males, 2))
+
 
 h_quants <- read.csv(here::here("report/diagnostics/SR_BH_steep_quant_table.csv"))
 h_like_1 <- h_quants |> 
@@ -136,7 +151,7 @@ The profile over $\log(R_0)$ shows relatively consistent support for similar val
 
 The spawning output at initial equilibrium is relatively insensitive to the changes in $\log(R_0)$ while the final spawning output is more strongly correlated with that parameter (@fig-r0-profile-pars). Therefore, at low $\log(R_0)$, the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low $\log(R_0)$ values are not supported by the data.
 
-There is somewhat conflicting information about $M$ among data types and fleets (@fig-m-profile). The age and length data support a higher $M$ while the indices and recruitment penalties support a lower M. The likelihood contribution of the $M$ prior is small compared to the other data sources. The profile includes a model with $M = 0.125$, which is similar to the median of the prior ($M = 0.126$). The difference in negative-log-likelihood between the estimated $M$ = `r mod_out$parameters["NatM_uniform_Fem_GP_1", "Value"] |> round(3)` and the $M = 0.125$ model was `r m_like_diff` units of log-likelihood compared to the prior likelihood contribution of the base model $M$ value of `r m_base` indicating signficant support in the data for the higher $M$ value.
+There is somewhat conflicting information about $M$ among data types and fleets (@fig-m-profile). The age and length data support a higher $M$ while the indices and recruitment penalties support a lower $M$. The likelihood contribution of the $M$ prior is small compared to the other data sources. The profile includes a model with female $M = 0.125$, which is similar to the median of the prior ($M = 0.126$). The difference in negative-log-likelihood between the estimated $M$ = `r mod_out$parameters["NatM_uniform_Fem_GP_1", "Value"] |> round(3)` and the $M = 0.125$ model was `r m_like_diff` units of log-likelihood compared to the prior likelihood contribution of `r m_prior_base` in the base model, indicating signficant support in the data for the higher $M$ value. There was a step in the profile in which the male $M$ (calculated as an offset from female $M$) was equal to the median of the prior (when rounded to 3 significant digits). The corresponding female $M$ was `r mfem_at_mmale_column`, which is relatively close to the base model estimate, with only `r m_like_diff_male` units of negative-log-likelihood difference from the base model.
 
 At low $M$ values, the final spawning output decreases while the initial equilibrium remains stable, leading to a smaller fraction of unfished (@fig-m-profile-pars). However, the change in likelihood at those values is large, indicating that low $M$ is not supported by the data.
 
