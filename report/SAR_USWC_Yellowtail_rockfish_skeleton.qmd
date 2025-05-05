@@ -5,36 +5,31 @@ author:
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
-        state: 'WA'
+        city: 'Seattle, WA'
         postal-code: '98112-2097'
   - name: 'Ian G. Taylor'
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
-        state: 'WA'
+        city: 'Seattle, WA'
         postal-code: '98112-2097'
   - name: 'Megan L. Feddern'
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
-        state: 'WA'
+        city: 'Seattle, WA'
         postal-code: '98112-2097'
   - name: 'Alison D. Whitman'
     affiliations:
       - name: 'Oregon Department of Fish and Wildlife'
         address: '2040 Southeast Marine Science Drive'
-        city: 'Newport'
-        state: 'OR'
+        city: 'Newport, OR'
         postal-code: '97365'
   - name: 'Fabio P. Caltabellotta'
     affiliations:
       - name: 'Washington Department of Fish and Wildlife'
         address: '600 Capital Way North'
-        city: 'Olympia'
-        state: 'WA'
+        city: 'Olympia, WA'
         postal-code: '98501'
 date: today
 lang: en 
