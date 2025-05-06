@@ -84,7 +84,8 @@ csl: 'canadian-journal-of-fisheries-and-aquatic-sciences.csl'
 library(here)
 library(dplyr)
 
-source(here('Rscripts/table_sens.R'))
+source(here::here('Rscripts/table_sens.R'))
+source(here::here('Rscripts/table_decision.R'))
 
 # TODO list of things to update when changing the base model:
 # - [ ] run Rscripts/make_r4ss_figs_tables.R
