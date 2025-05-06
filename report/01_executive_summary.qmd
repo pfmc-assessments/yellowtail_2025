@@ -2,13 +2,13 @@
 
 ## Stock{-}
 
-Yellowtail rockfish (*Sebastes flavidus*) is a midwater rockfish distributed mainly from Point Conception in California to the Gulf of Alaska, with the highest density around Washington state and British ColumbiaYellowtail are relatively fast-growing and short-lived for a rockfish species, with a maximum size around 55 cm reached around age 15, and few fish observed older than 40. They move farther offshore and northward as they grow older, and are found most consistently up to 250 m depth. There is a genetic break in the population at Cape Mendocino. This assessment is for the northern portion of the stock in U.S. waters, from $40^\circ 10'$ N latitude (near Cape Mendocino) to the U.S.-Canada border.
+Yellowtail rockfish (*Sebastes flavidus*) is a midwater rockfish distributed mainly from Point Conception in California to the Gulf of Alaska, with the highest density around Washington state and British Columbia. Yellowtail are relatively fast-growing and short-lived for a rockfish species, with a maximum size around 55 cm reached around age 15, and few fish observed older than 40. They move farther offshore and northward as they grow older, and are found most consistently up to 250 m depth. There is a genetic break in the population at Cape Mendocino. This assessment is for the northern portion of the stock in U.S. waters, from $40^\circ 10'$ N latitude (near Cape Mendocino) to the U.S.-Canada border.
 
 <!-- Species/area, including an evaluation of any potential biological basis for regional management -->
 
 ## Catches{-}
 
-Catches have averaged over 3,000 mt in recent years, and are mainly from a commercial trawl fishery (@tbl-es-catches, @fig-es-landings). Catches increased substantially with the rebuilding of other midwater rockfish species and coincident reopening of the midwater trawl fishery in 2017. Recreational catches are a minority of the landings, but have also increased in recent years as trips in both Washington and Oregon have moved farther offshoreYellowtail is frequently caught as a bycatch species in the at-sea hake fishery, though this also represents a minority of catches.
+Catches have averaged over 3,000 mt in recent years, and are mainly from a commercial trawl fishery (@tbl-es-catches, @fig-es-landings). Catches increased substantially with the rebuilding of other midwater rockfish species and coincident reopening of the midwater trawl fishery in 2017. Recreational catches are a minority of the landings, but have also increased in recent years as trips in both Washington and Oregon have moved farther offshore. Yellowtail is frequently caught as a bycatch species in the at-sea hake fishery, though this also represents a minority of catches.
 
 <!-- \clearpage -->
 
@@ -243,7 +243,7 @@ knitr::include_graphics("r4ss_plots/SPR4_phase.png")
 
 ## Ecosystem considerations{-}
 
-The assessment includes a sensitivity model with an oceanographic recruitment index. A number of ecosystem and environmental conditions were compiled by a team of ecosystem scientists at the NWFSC specific to the life history and distribution of northern Yellowtail. These conditions included an evaluation of oceanographic conditions impacting recruitment, habitat change, prey availability, predator and competitor abundance, and climate vulnerability. 
+The assessment includes a sensitivity model with an oceanographic recruitment index. A number of ecosystem and environmental conditions were compiled by a team of ecosystem scientists at the NWFSC specific to the life history and distribution of northern yellowtail. These conditions included an evaluation of oceanographic conditions impacting recruitment, habitat change, prey availability, predator and competitor abundance, and climate vulnerability. 
 
 ## Reference points{-}
 
