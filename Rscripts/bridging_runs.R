@@ -7,6 +7,25 @@ source('Rscripts/bins.R')
 source('Rscripts/model_rename_fleets.R')
 source('Rscripts/model_remove_retention.R')
 
+# compare old vs. new SS3 versions applied to 2017 inputs
+m1.01 <- SS_output("model_runs/1.01_base_2017", printstats = FALSE, verbose = FALSE)
+m1.02 <- SS_output("model_runs/1.02_base_2017_3.30.23", printstats = FALSE, verbose = FALSE)
+SStableComparisons(
+  SSsummarize(list(m1.01, m1.02)),
+  names = c("NatM", "SSB_Virgin", "SSB_2017", "Bratio_2017"),
+  likenames = NULL,
+  modelnames = c("3.30.03.07", "3.30.23.1"),
+) |>
+  dplyr::mutate(across(-1, ~ round(.x, 3)))
+#                   Label 3.30.03.07 3.30.23.1
+# 1     NatM_p_1_Fem_GP_1      0.174        NA
+# 2     NatM_p_1_Mal_GP_1     -0.149        NA
+# 3 NatM_uniform_Fem_GP_1         NA     0.174
+# 4 NatM_uniform_Mal_GP_1         NA    -0.149
+# 5            SSB_Virgin     14.996    15.051
+# 6              SSB_2017     11.278    11.465
+# 7           Bratio_2017      0.752     0.762
+
 # update catches ----------------------------------------------------------
 
 mod_catches <- SS_read('model_runs/1.02_base_2017_3.30.23')
