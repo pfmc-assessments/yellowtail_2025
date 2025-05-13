@@ -1,7 +1,14 @@
+library(dplyr)
+library(tidyr)
+library(r4ss)
+library(dplyr)
+library(tidyverse)
+
+
 model_name <- "5.03_smurf" #model to compare data to
 model_dir <- here::here("Model_Runs",model_name)
-inputs<- SS_read('model_runs/2.02_bias_adjust')
-modcatch <-inputs$dat$catch%>%filter(fleet==1)%>%select(catch)
+inputs<- SS_read('model_runs/5.03_smurf')
+modcatch <-inputs$dat$catch%>%filter(fleet==1)%>%filter(year!=-999)%>%select(catch)
 rownames(modcatch) <- NULL
 colnames(modcatch) <- NULL
 
@@ -88,8 +95,17 @@ for(irow in 1:nrow(rec_OR)){
  
 catch_tab<-  data.frame(year=catch_tab$Yr,round(catch_tab[2:12],1))
 
+
 #writing in a csv to the tables - can transfer code to code chunk in quarto alternatively
-write.csv(catch_tab, "report/Tables/CatchTable.csv")  
+catch_table <- catch_tab%>%select(-ComModelTotal)
+write.csv(catch_table, "report/Tables/CatchTable.csv")  
 
 
-inputs$dat$catch%>%filter(fleet==2)%>%select(catch)
+#checking ASHOP and rec totals
+
+ashop_catch_mod <-inputs$dat$catch%>%filter(fleet==2)%>%filter(year!=-999)%>%select(catch)
+ashop_catch_compare <- cbind(catch_tab%>%select(year, ASHOP), ashop_catch_mod)
+
+rec_catch_mod <-inputs$dat$catch%>%filter(fleet==3)%>%filter(year!=-999)%>%select(catch)
+totalrec<-rowSums(catch_tab%>%select(RecWA, RecOR, RecCA))
+rec_catch_compare <- cbind(catch_tab%>%select(year),totalrec,rec_catch_mod)
