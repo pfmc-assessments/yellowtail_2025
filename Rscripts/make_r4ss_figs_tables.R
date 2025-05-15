@@ -117,3 +117,23 @@ file.rename(
   "report/Figures/comp_lendat__aggregated_across_time.png",
   "report/Figures/comp_lendat__aggregated_across_time_SURVEYS.png"
 )
+
+r4ss::SSplotComps(
+  model,
+  kind = "AGE",
+  subplots = 21,
+  fleets = 1:3,
+  maxrows = 1,
+  maxcols = 3,
+  datonly = TRUE, 
+  plot = FALSE,
+  print = TRUE,
+  plotdir = "report/Figures",
+  pwidth = 6.5,
+  pheight = 3.5,
+  ybuffer = .3
+)
+file.rename(
+  "report/Figures/comp_agedat__aggregated_across_time.png",
+  "report/Figures/comp_agedat__aggregated_across_time_FISHERIES.png"
+)
