@@ -352,6 +352,25 @@ sensi_mod$ctl$F_iter <- 4
 
 SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'hybrid_f'))
 
+
+## Raw pacfin comps --------------------------------------------------------
+
+sensi_mod <- base_model
+
+pacfin_raw_len <- read.csv('data/processed/pacfin_lcomps_raw.csv')
+pacfin_raw_age <- read.csv('data/processed/pacfin_acomps_raw.csv')
+
+sensi_mod$dat$agecomp[sensi_mod$dat$agecomp$fleet == 1, 
+                      stringr::str_detect(colnames(sensi_mod$dat$agecomp), '[:digit:]')] <- pacfin_raw_age |>
+  select(f1:m30)
+
+sensi_mod$dat$lencomp[sensi_mod$dat$lencomp$fleet == 1, 
+                      stringr::str_detect(colnames(sensi_mod$dat$lencomp), '[:digit:]')] <- pacfin_raw_len |>
+  filter(sex == 3) |>
+  select(f20:m56)
+
+SS_write(sensi_mod, file.path(model_directory, 'sensitivities', 'raw_pacfin_comps'))
+
 # Run stuff ---------------------------------------------------------------
 
 sensi_dirs <- list.files(file.path(model_directory, 'sensitivities'))
@@ -462,10 +481,12 @@ indices <- data.frame(dir = c('no_indices',
 
 comp_data <- data.frame(dir = c('M_I_weighting',
                                 'no_fishery_len',
-                                'unsexed_lengths'),
+                                'unsexed_lengths',
+                                'raw_pacfin_comps'),
                         pretty = c('McAllister & Ianelli',
                                    '- Fishery lengths',
-                                   '+ Unsexed commercial lengths')
+                                   '+ Unsexed commercial lengths',
+                                   'Raw commercial comps')
 )
 
 sens_names <- bind_rows(modeling,

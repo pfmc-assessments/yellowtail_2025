@@ -91,6 +91,7 @@ source(here::here('Rscripts/table_decision.R'))
 # - [ ] run Rscripts/make_r4ss_figs_tables.R
 # - [ ] run Rscripts/run_diagnostics.R
 # - [ ] run Rscripts/sensitivities.R
+# - [ ] run Rscript/CatchTable.R if catches changed
 # - [ ] update any hardwired values in the text (or make them dynamic)
 #   - [ ] text on 2024 discards "inadvertently left out of the base model"
 #   - [ ] if changing selectivity, try freeing up triennial peak selectivity (fixed at 55cm)
