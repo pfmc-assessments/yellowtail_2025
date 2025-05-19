@@ -24,8 +24,8 @@ library(gt)
 #| tbl-cap: "Total removals (mt) of yellowtail rockfish for the commercial (Com.), foreign (For.), at-sea hake (ASHOP), and recreational (Rec.) fleets used in the assessment model. Foreign catches are included in the commercial fleet."
 
 
-CatchTable <- read.csv("Tables/CatchTable.csv")%>%
-select(-ComModelTotal)
+CatchTable <- read.csv("Tables/CatchTable.csv") #%>%
+#select(-ComModelTotal)
 CatchTable[is.na(CatchTable)] <- 0
 CatchTable |>
   gt() |>
