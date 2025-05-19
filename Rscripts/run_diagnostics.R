@@ -67,6 +67,27 @@ run_diagnostics(mydir = "Model_Runs", model_settings = model_settings)
 # r10 <- SS_output('Model_Runs/5.02_forecast_retro_15_yr_peel/retro/retro-10', printstats = FALSE, verbose = FALSE)
 # r15 <- SS_output('Model_Runs/5.02_forecast_retro_15_yr_peel/retro/retro-15', printstats = FALSE, verbose = FALSE)
 
+retros <- SSgetoutput(
+  dirvec = file.path(
+    'Model_Runs/5.09_no_extra_SE_retro_16_yr_peel/retro/',
+    paste0('retro-', 1:15)
+  )
+)
+retros <- c(list(base = mod_out), retros)
+retro_sum <- SSsummarize(retros)
+
+png(
+  file.path("report/diagnostics", "recruitment_retrospective_squid_long1.png"),
+  width = 6.5, height = 5, units = "in", res = 300
+)
+SSplotRetroRecruits(
+  endyrvec = c(2024 + 0:-16),
+  cohorts = 2006:2024,
+  retroSummary = retro_sum,
+  main = NULL
+)
+dev.off()
+
 # make new time series figures for profiles but with fewer lines
 # files exist only after running nwfscDiag commands above
 
