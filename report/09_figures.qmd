@@ -745,7 +745,9 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
+#| fig-cap: "Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40°10', but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling approach."
 #| fig-alt: "A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
+#| fig-pos: H
 
 knitr::include_graphics(
     "Figures/historical_assessment_timeseries.png"
