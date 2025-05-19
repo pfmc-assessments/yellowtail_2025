@@ -772,7 +772,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| #| fig-cap: "Change in quantities of interest related to spawning output across a range of log(R0) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
+#| fig-cap: "Change in quantities of interest related to spawning output across a range of log(R0) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
 #| fig-alt: "The spawning output at initial remains more stable over the range of log-R0 values than the final spawning output so at low log-R0 the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low log-R0 values are not supported by the data."
 #| fig-pos: H
 
