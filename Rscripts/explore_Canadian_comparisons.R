@@ -52,3 +52,11 @@ r4ss::plot_twopanel_comparison(
   xlim = c(1940, 2025),
   dir = "report/Figures/"
 )
+
+png("Figures/Canada_vs_US_timeseries.png", width = 7, height = 7, units = "in", res = 300)
+par(mfrow = c(2, 1), mar = c(4, 4, 1, 1))
+SSplotCatch(can2024, subplots = 2, minyr = 1940, maxyr = 2025, plot = TRUE)
+title(main = "Canadian model from 2024")
+SSplotCatch(mod_out, subplots = 2, minyr = 1940, maxyr = 2025, plot = TRUE)
+title(main = "U.S. base model")
+dev.off()
