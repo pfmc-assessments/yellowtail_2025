@@ -80,7 +80,7 @@ growth_space <- filter(yt_n_survey_bio, Age_years <= 20, Age_years > 6) |>
 occurence_depth <- yt_n_survey_bio |>
   ggplot(aes(x = Latitude_dd, y = Age_years)) +
   geom_point(alpha = 0.1, position = 'jitter') +
-  stat_smooth(method = 'loess', col = 'black', se = FALSE) +
+  stat_smooth(method = 'loess', col = 'red', se = FALSE) +
   labs(x = 'Latitude (degrees)', y = 'Age (yrs)')
 
 
@@ -115,3 +115,66 @@ sex_ratio <- all_bio_data |>
 
 cowplot::plot_grid(growth_space, growth_time, occurence_depth, sex_ratio, labels = paste0(letters[1:4], ')'))
 ggsave('report/figures/biology.png', device = 'png', width = 9, height = 7)
+
+# These are for presentations ---------------------------------------------
+
+strata <- nwfscSurvey::CreateStrataDF.fn(
+  names = c("shallow_OR/CA", "deep_OR/CA", "shallow_WA", "deep_WA"),
+  depths.shallow = c(55, 183, 55, 183),
+  depths.deep = c(183, 400, 183, 400),
+  lats.south = c(40.166667, 40.166667, 46, 46),
+  lats.north = c(46, 46, 49, 49)
+)
+
+db_index <- nwfscSurvey::get_design_based(yt_survey_catch, strata = strata)  
+db_index$biomass_by_strata |>
+  tidyr::separate_wider_delim(cols = stratum, delim = "_", names = c('depth', 'latitude')) |>
+  group_by(year, latitude) |>
+  summarise(ntows = sum(ntows),
+            area = sum(area),
+            mean_cpue = sum(area * mean_cpue) / sum(area),
+            var_cpue = sum(var_cpue * area^2 / sum(area)^2),
+            mean_est = sum(est),
+            se = sqrt(sum(var))
+  ) |>
+  mutate(cv = se / mean_est,
+         log_var = log(cv^2 + 1),
+         est = mean_est * exp(-0.5 * log_var),
+         se_log = sqrt(log_var),
+         lwr = exp((log(est) + qnorm(0.025, sd = se_log))), 
+         upr = exp((log(est) + qnorm(0.975, sd = se_log)))
+         # year = ifelse(latitude == 'S', year + 0.2, year)
+  ) |>
+  select(year, est, se_log, lwr, upr, latitude) |>
+  bind_rows(mutate(db_index$biomass, latitude = 'N. of 40-10')) |>
+  ggplot(aes(x = year, y = est, 
+             # ymin = lwr, ymax = upr, 
+             group = latitude)) + 
+  geom_point(aes(col = latitude)) +
+  geom_line(linetype = 'dashed') +
+  # geom_linerange(aes(col = latitude), alpha = 0.5) +
+  labs(x = 'Year', y = 'Design-based index (mt)', col = 'Area')
+ggsave('figures/index_by_area.png', device = 'png', dpi = 500, width = 6, height = 4, units = 'in')
+
+yt_n_survey_bio |>
+  filter(!is.na(Age_years), Year >= 2011) |>
+  mutate(is_2008 = case_when(Year - Age_years == 2008 & Latitude_dd < 46 ~ '2008 OR/CA',
+                             Year - Age_years == 2008 ~ '2008 WA',
+                             TRUE ~ 'Other yr class')) |>
+  count(Year, Age_years, is_2008) |>
+  filter(Age_years <= 30) |>
+  ggplot() +
+  geom_col(aes(x = Age_years, y = n, fill = is_2008)) +
+  facet_wrap(~ Year, nrow = 3) +
+  labs(x = 'Age (yrs)', y = '# of samples', fill = 'Year class') +
+  scale_fill_manual(values = viridis::viridis(n = 5)[c(1,3,4)])
+ggsave('figures/highlight_2008.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+yt_n_survey_bio |>
+  filter(Sex != 'U') |>
+  ggplot() +
+  geom_point(aes(x = Age_years, y = Length_cm, col = Sex), alpha = 0.1) +
+  scale_color_manual(values = c(F = 'red', M = 'blue')) +
+  labs(x = 'Age (yrs)', y = "Length (cm)")
+# Large fish female, old fish male prevails, but not as notable as with canary.
+ggsave(here('figures/age_length_scatter.png'), dpi = 500)
