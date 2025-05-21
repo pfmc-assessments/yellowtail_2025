@@ -74,7 +74,7 @@ plot_sel_ret <- function(mod,
 #' `r4ss::SS_output()`
 #' @export
 #' @author Ian G. Taylor
-plot_yellowtail_tv_selex <- function(mod, file = "rerport/figures/selectivity_time-varying.png") {
+plot_yellowtail_tv_selex <- function(mod, file = "report/figures/selectivity_time-varying.png") {
   png(file, width = 6.5, height = 6.5, units = "in", res = 300, pointsize = 10)
 
   # plot selectivity
