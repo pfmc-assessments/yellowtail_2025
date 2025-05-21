@@ -74,12 +74,17 @@ plot_sel_ret <- function(mod,
 #' `r4ss::SS_output()`
 #' @export
 #' @author Ian G. Taylor
-plot_yellowtail_tv_selex <- function(mod) {
-  file <- "report/Figures/selectivity_time-varying.png"
+plot_yellowtail_tv_selex <- function(mod, file = "report/figures/selectivity_time-varying.png") {
   png(file, width = 6.5, height = 6.5, units = "in", res = 300, pointsize = 10)
-  par(mfrow = c(3, 1), oma = c(3, 2, 0, 0), las = 1)
 
   # plot selectivity
+  if (any(grepl("Commercial(1)_BLK", mod$parameters$Label, fixed = TRUE))) {
+    par(mfcol = c(2, 2), oma = c(3, 2, 0, 0), las = 1)
+    plot_sel_ret(mod, Factor = "Lsel", fleet = 1, sex = 1)
+    mtext(glue::glue("Selectivity for {mod$FleetNames[1]} (females and males)"), side = 3, line = 0.5)
+  } else {
+    par(mfrow = c(3, 1), oma = c(3, 2, 0, 0), las = 1)
+  }
   plot_sel_ret(mod, Factor = "Lsel", fleet = 2, sex = 1)
   mtext(glue::glue("Selectivity for {mod$FleetNames[2]} (females and males)"), side = 3, line = 0.5)
   plot_sel_ret(mod, Factor = "Lsel", fleet = 3, sex = 1)

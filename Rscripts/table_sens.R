@@ -112,7 +112,7 @@ table_clean_labels <- function(tab) {
 #'
 #' Copied from https://github.com/pfmc-assessments/lingcod/blob/main/R/table_sens.R
 #' and then from the petrale sole assessment repository.
-#' @param file_csv A file path to the csv file.
+#' @param file_csv Either a file path to the csv file or a data frame.
 #' @param caption Text you want in the caption.
 #' @param caption_extra Additional text to add after the default
 #' caption.
@@ -160,10 +160,13 @@ table_sens <- function(file_csv,
   conditional_color <- function(x) {
     kableExtra::cell_spec(x,
       color = ifelse(is.na(x) | x >= 0, "black", "red"),
-      format = "latex"
+      format = format
     )
   }
-  data <- utils::read.csv(file_csv, check.names = FALSE) |>
+  if (!is.data.frame(file_csv)) {
+    file_csv <- utils::read.csv(file_csv, check.names = FALSE) 
+  }
+  data <- file_csv |>
     dplyr::filter(!grepl("VonBert", Label)) |> # remove VonBert K to fit on page
     dplyr::filter(!grepl("Forecast", Label)) |> # remove VonBert K to fit on page
     dplyr::rename_with(~ gsub(" & ", "-", .x)) |>

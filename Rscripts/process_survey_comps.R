@@ -10,40 +10,27 @@ source("Rscripts/bins.R")
 dir_wcgbts <- here::here("Data/Raw_not_confidential/wcgbts")
 dir_tri <- here::here("Data/Raw_not_confidential/triennial")
 
-# pull survey data from data warehouse (skip unless it's been updated)
-new_pull <- FALSE
-if (new_pull) {
-  yt_survey_bio <- nwfscSurvey::pull_bio(
-    common_name = "yellowtail rockfish",
-    survey = "NWFSC.Combo",
-    dir = dir_wcgbts
-  )
-  yt_tri_bio <- nwfscSurvey::pull_bio(
-    common_name = "yellowtail rockfish",
-    survey = "Triennial",
-    dir = dir_tri
-  )
-  yt_survey_catch <- nwfscSurvey::pull_catch(
-    common_name = "yellowtail rockfish",
-    survey = "NWFSC.Combo",
-    dir = dir_wcgbts
-  )
-  yt_tri_catch <- nwfscSurvey::pull_catch(
-    common_name = "yellowtail rockfish",
-    survey = "Triennial",
-    dir = dir_tri
-  )
-} else {
-  # read saved data files TODO: update after 2024 survey data is available
-  load(file.path(dir_wcgbts, "bio_yellowtail rockfish_NWFSC.Combo_2025-01-28.rdata"))
-  yt_survey_bio <- x
-  load(file.path(dir_tri, "bio_yellowtail rockfish_Triennial_2025-01-28.rdata"))
-  yt_tri_bio <- x
-  load(file.path(dir_wcgbts, "catch_yellowtail rockfish_NWFSC.Combo_2025-01-28.rdata"))
-  yt_survey_catch <- x
-  load(file.path(dir_tri, "catch_yellowtail rockfish_Triennial_2025-01-28.rdata"))
-  yt_tri_catch <- x
-}
+# pull survey data from data warehouse
+yt_survey_bio <- nwfscSurvey::pull_bio(
+  common_name = "yellowtail rockfish",
+  survey = "NWFSC.Combo",
+  dir = dir_wcgbts
+)
+yt_tri_bio <- nwfscSurvey::pull_bio(
+  common_name = "yellowtail rockfish",
+  survey = "Triennial",
+  dir = dir_tri
+)
+yt_survey_catch <- nwfscSurvey::pull_catch(
+  common_name = "yellowtail rockfish",
+  survey = "NWFSC.Combo",
+  dir = dir_wcgbts
+)
+yt_tri_catch <- nwfscSurvey::pull_catch(
+  common_name = "yellowtail rockfish",
+  survey = "Triennial",
+  dir = dir_tri
+)
 
 # filter by latitude
 yt_n_survey_bio <- filter(yt_survey_bio, Latitude_dd > 40 + 1 / 6)

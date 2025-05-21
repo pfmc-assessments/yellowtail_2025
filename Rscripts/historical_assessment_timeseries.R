@@ -1,9 +1,6 @@
 # make plot of historical time series for yellowtail rockfish
 # adapted from https://github.com/iantaylor-NOAA/YTRK_doc/blob/master/Rcode/historical_assessment_timeseries.R
 
-# read base model
-# TODO: make this dynamic
-mod1 <- SS_output('Model_Runs/4.12_age_and_M')
 
 # switch on whether to create the CSV file with the data or not
 # (only needed to be run once but saving code here for future reference)
@@ -55,7 +52,7 @@ if (make_csv) {
   )
 }
 
-totcatch <- aggregate(mod1$catch$dead_bio, by = list(mod1$catch$Yr), FUN = sum)
+totcatch <- aggregate(mod_out$catch$dead_bio, by = list(mod_out$catch$Yr), FUN = sum)
 names(totcatch) <- c("Yr", "dead_bio")
 
 # compare summary biomass across previous stock assessments
@@ -108,27 +105,27 @@ for (istock in 1:ncol(stocks)) {
 
 # add current model estimate
 lines(
-  mod1$timeseries[mod1$timeseries$Yr <= 2025, c("Yr", "Bio_smry")],
+  mod_out$timeseries[mod_out$timeseries$Yr <= 2025, c("Yr", "Bio_smry")],
   col = 1,
   lwd = 3
 )
 abline(
-  h = mod1$timeseries$Bio_smry[1],
+  h = mod_out$timeseries$Bio_smry[1],
   col = 1,
   lwd = 1,
   lty = 3
 )
 text(
   x = 2010,
-  y = 1.2 * mod1$timeseries$Bio_smry[1],
+  y = 1.2 * mod_out$timeseries$Bio_smry[1],
   col = 1,
   labels = "unfished equilibrium\nin base model"
 )
 arrows(
   x0 = 2010,
   x1 = 2015,
-  y0 = 1.12 * mod1$timeseries$Bio_smry[1],
-  y1 = mod1$timeseries$Bio_smry[1],
+  y0 = 1.12 * mod_out$timeseries$Bio_smry[1],
+  y1 = mod_out$timeseries$Bio_smry[1],
   length = 0.05
 )
 legendnames <- c(
