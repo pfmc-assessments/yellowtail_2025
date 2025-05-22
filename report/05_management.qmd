@@ -6,7 +6,13 @@ Reference points based on the biomass target of 40% of unfished spawning output,
 
 ## Harvest Projections and Decision Tables
 
-Harvest projections for the candidate base model assuming a P* of 0.45 are in @tbl-projections The decision table will be completed after the STAR panel.
+Harvest projections for the candidate base model assuming a P* of 0.45, sigma = 0.5, and the time-varying buffer are in @tbl-projections. After exploration of alternative axes of uncertainty during the review panel, the chosen axis of uncertainty was the parameter for equilibrium recruitment on a log scale: $\log(R_0)$.
+
+The range of values was based on the following guidance in the terms of reference:
+
+> One method bases uncertainty in management quantities for the decision table on the asymptotic standard deviation for the OFL in the final year of the model from the base model. Specifically, the current year spawning biomass for the high and low states of nature are given by the base model mean plus or minus 1.15 standard deviations (i.e., the 12.5th and 87.5th percentiles). A search across fixed values of lnR0 are then used to attain the current year spawning biomass values for the high and low states of nature.
+
+The asymptotic standard deviation for the 2025 OFL from the base model was 0.186 and the point estimate of the 2025 OFL was 5440 mt. The associated 12.5th and 87.5th percentiles were 4392 mt and 6739 mt. Model runs from the likelihood profiles for $\log(R_0)$ which had OFL values which best matched these two values had $\log(R_0)$ = 10.25 and 10.75 relative to a base model estimate of 10.51.
 
 ## Evaluation of Scientific Uncertainty
 
