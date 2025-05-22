@@ -2,7 +2,8 @@ library(ggplot2)
 library(dplyr)
 theme_set(theme_classic())
 
-# LOAD DATA
+
+# Load data ---------------------------------------------------------------
 
 maturity <- readRDS('data/raw_not_confidential/maturity.rds')
 
@@ -24,7 +25,8 @@ bds_clean <- bds.pacfin |>
 recfin_ages <- read.csv(here::here("Data/Confidential/rec/SD506--1984---2024_ages.csv")) |>
   tibble::as_tibble()
 
-# MAKE PLOTS
+
+# Make document plots -----------------------------------------------------
 
 maturity |>
   ggplot(aes(x = age)) +
@@ -178,3 +180,163 @@ yt_n_survey_bio |>
   labs(x = 'Age (yrs)', y = "Length (cm)")
 # Large fish female, old fish male prevails, but not as notable as with canary.
 ggsave(here('figures/age_length_scatter.png'), dpi = 500)
+
+
+# STAR request 1 ----------------------------------------------------------
+
+
+bds_clean <- bds.pacfin |>
+  pacfintools::cleanPacFIN(keep_sample_type = c('M', 'S'),
+                           keep_age_method = c('B', 'S'), CLEAN = FALSE) 
+
+
+
+comm_freq <- bind_cols(bds.pacfin, select(bds_clean, CLEAN)) |>
+  mutate(fleet = 1) |> # assign everything to fleet 1
+  filter(SAMPLE_TYPE == 'M' | (AGENCY_CODE == 'O' & SAMPLE_YEAR <= 1986),  # keep old OR special request
+         AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA',
+         CLEAN = TRUE,
+         PACFIN_GEAR_CODE == 'MDT',
+         !is.na(age1),
+         SAMPLE_YEAR >= 2017, SAMPLE_YEAR < 2025,
+         SEX_CODE != 'U') |> # only y-t north
+  count(SAMPLE_YEAR, age1, SEX_CODE) |>
+  rename(Sex = SEX_CODE, Year = SAMPLE_YEAR, Age_years = age1)
+
+surv_freq <- yt_n_survey_bio |>
+  filter(Year >= 2017, !is.na(Age_years), Sex != 'U') |>
+  count(Year, Age_years, Sex) 
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, Year, source) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |>
+  ggplot() +
+  geom_line(aes(x = Age_years, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  facet_wrap(~Year) +
+  geom_hline(yintercept = 0)
+ggsave('figures/star_request_1.png', device = 'png', dpi = 500, width = 9, height = 5, units = 'in')  
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, source, Age_years) |>
+  summarise(n = sum(n)) |>
+  mutate(freq = (n / sum(n)),
+             freq = ifelse(Sex == 'F', freq, -1 * freq)) |>
+  # ungroup() |> group_by(source, Sex) |> summarise(sum(freq))
+
+  ggplot() +
+  # geom_col(aes(x = Age_years, y = freq, fill = source), position = 'dodge') +
+  geom_line(aes(x = Age_years, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0)
+ggsave('figures/star_request_1_age_agg.png', device = 'png', dpi = 500, width = 4.5, height = 5, units = 'in')  
+
+comm_freq <- bind_cols(bds.pacfin, select(bds_clean, CLEAN, lengthcm)) |>
+  mutate(fleet = 1) |> # assign everything to fleet 1
+  filter(SAMPLE_TYPE == 'M' | (AGENCY_CODE == 'O' & SAMPLE_YEAR <= 1986),  # keep old OR special request
+         AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA',
+         CLEAN = TRUE,
+         PACFIN_GEAR_CODE == 'MDT',
+         !is.na(lengthcm),
+         SAMPLE_YEAR >= 2017, SAMPLE_YEAR < 2025,
+         SEX_CODE != 'U') |> # only y-t north
+  mutate(len_bin = pacfintools::comps_bins(vector = lengthcm, breaks = len_bin, includeplusgroup = FALSE, 
+                                           returnclass = 'numeric')) |>
+  count(SAMPLE_YEAR, len_bin, SEX_CODE) |>
+  mutate(n = ifelse(SEX_CODE == 'F', n, -n)) |>
+  rename(Sex = SEX_CODE, Year = SAMPLE_YEAR)
+
+
+surv_freq <- yt_n_survey_bio |>
+  filter(Year >= 2017, !is.na(Length_cm), Sex != 'U') |>
+  mutate(len_bin = pacfintools::comps_bins(vector = Length_cm, breaks = len_bin, includeplusgroup = FALSE,
+                                           returnclass = 'numeric')) |>
+  count(Year, len_bin, Sex) |>
+  mutate(n = ifelse(Sex == 'F', n, -n))
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, Year, source) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |> 
+  ggplot() +
+  geom_line(aes(x = len_bin, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0) +
+  xlab('Length (cm)') +
+  facet_wrap(~ Year)
+ggsave('figures/star_request_1_lengths.png', device = 'png', dpi = 500, width = 9, height = 5, units = 'in')  
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, source, len_bin) |>
+  summarise(n = sum(n)) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |> 
+  ggplot() +
+  geom_line(aes(x = len_bin, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0) +
+  xlab('Length (cm)')
+ggsave('figures/star_request_1_len_agg.png', device = 'png', dpi = 500, width = 4.5, height = 5, units = 'in')  
+
+
+# STAR request 10 ---------------------------------------------------------
+
+load(here('Data/Confidential/Commercial/pacfin-2025-03-10/PacFIN.YTRK.CompFT.10.Mar.2025.RData'))
+
+quotas <- read.csv('data/raw_not_confidential/GMT016-final specifications-.csv') |>
+  filter(SPECIFICATION_NAME == 'SB IFQ Total', 
+         YEAR < 2025)
+
+cum_catch_dat <- catch.pacfin |>
+  filter(PACFIN_GROUP_GEAR_CODE == 'TWL',
+         PACFIN_YEAR %in% 2011:2024,
+         AGENCY_CODE == 'O' | AGENCY_CODE == 'W' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA') |> 
+  left_join(quotas, by = c(LANDING_YEAR = 'YEAR')) |>
+  mutate(j_day = lubridate::yday(LANDING_DATE),
+         sector = case_when(PACFIN_GEAR_CODE == 'MDT' & DAHL_GROUNDFISH_CODE %in% c('03', '17') ~ 'shoreside hake',
+                            PACFIN_GEAR_CODE == 'MDT' ~ 'midwater rockfish',
+                            TRUE ~ 'bottom trawl')) |> 
+  group_by(PACFIN_YEAR, sector) |>
+  arrange(PACFIN_YEAR, sector, j_day) |> 
+  mutate(cum_catch_sector = cumsum(ROUND_WEIGHT_MTONS)) |>
+  ungroup() |>
+  group_by(PACFIN_YEAR) |>
+  arrange(PACFIN_YEAR, j_day) |>
+  mutate(cum_catch = cumsum(ROUND_WEIGHT_MTONS)) |>
+  ungroup() |>
+  mutate(attainment_sector = cum_catch_sector / VAL,
+         attainment = cum_catch / VAL)
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = cum_catch_sector, col = sector)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_catch_sector.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = attainment_sector, col = sector)) +
+  facet_wrap(~ LANDING_YEAR, scales = 'free_y', ncol = 5) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/attain_sector.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = cum_catch)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  geom_hline(aes(yintercept = VAL), data = rename(quotas, LANDING_YEAR = YEAR)) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_catch.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = attainment)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  ylim(0,1) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/attain.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+
