@@ -32,7 +32,7 @@
 #' )
 table_decision <- function(
     ...,
-    years = 2023:2034,
+    years = 2025:2036,
     format = c("latex", "html"),
     caption = formals(kableExtra::kbl)$caption,
     label = formals(kableExtra::kbl)$label,

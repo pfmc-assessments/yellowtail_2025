@@ -845,7 +845,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Time series of fraction of unfished spawning output (top) and recruitment deviations (bottom) for the current base model and the 2024 Canadian stock assessment. The Canadian model estimates are based on MLE estimates and associated uncertainty rather than the posterior distributions used in the production assessment."
+#| fig-cap: "Time series of fraction of unfished spawning output (top) and recruitment deviations (bottom) for the current base model and the 2024 Canadian stock assessment. The Canadian model estimates are based on MLE estimates and associated uncertainty rather than the posterior distributions used in the production assessment. The Canadian model used the empirical weight-at-age approach with different empirical weight-at-age values by year, which contributes to the higher inter-annual variability in the spawning output."
 #| fig-alt: "Canadian and U.S. models show similar declines over the 1960s, stability in the 1980s, and increases in the 2000s."
 #| fig-pos: H
 

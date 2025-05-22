@@ -99,6 +99,23 @@ parvec <- mod_sum$pars |>
   dplyr::filter(Label == "SR_LN(R0)") |> 
   dplyr::select(dplyr::starts_with("replist")) |> 
   as.numeric()
+# for states of nature (STAR request 13), figure out which ones have OFLs close to the 12.5 and 87.5 percentiles of the base model
+OFL_low_high <- qlnorm(p = c(0.125, 0.875), meanlog = log(mod_out$derived_quants["OFLCatch_2025", "Value"]), sdlog = mod_out$OFL_sigma)
+OFLvec <- mod_sum$quants |> 
+  dplyr::filter(Label == "OFLCatch_2025") |> 
+  dplyr::select(dplyr::starts_with("replist"))
+(lowR0mod <- which(abs(OFLvec - OFL_low_high[1]) == min(abs(OFLvec - OFL_low_high[1]))))
+# [1] 2
+(highR0mod <- which(abs(OFLvec - OFL_low_high[2]) == min(abs(OFLvec - OFL_low_high[2]))))
+# [1] 9
+parvec[c(lowR0mod, highR0mod)]
+# 10.25 10.75
+OFLvec[c(2,9)] # profiles values
+#   replist2 replist9
+# 1  4223.42  6701.23
+OFL_low_high # target values
+# 4391.647 6738.685
+
 # choose which to keep
 keep <- which(parvec > 9.5 & parvec < 11.5 & parvec != round(mod_out$parameters["SR_LN(R0)", "Value"], 1))
 # subset models and add base model
@@ -133,6 +150,23 @@ parvec <- mod_sum$pars |>
   dplyr::filter(Label == parlabel) |> 
   dplyr::select(dplyr::starts_with("replist")) |> 
   as.numeric()
+# for states of nature (STAR request 13), figure out which ones have OFLs close to the 12.5 and 87.5 percentiles of the base model
+OFL_low_high <- qlnorm(p = c(0.125, 0.875), meanlog = log(mod_out$derived_quants["OFLCatch_2025", "Value"]), sdlog = mod_out$OFL_sigma)
+OFLvec <- mod_sum$quants |> 
+  dplyr::filter(Label == "OFLCatch_2025") |> 
+  dplyr::select(dplyr::starts_with("replist"))
+(lowMmod <- which(abs(OFLvec - OFL_low_high[1]) == min(abs(OFLvec - OFL_low_high[1]))))
+# [1] 4
+(highMmod <- which(abs(OFLvec - OFL_low_high[2]) == min(abs(OFLvec - OFL_low_high[2]))))
+# [1] 17
+parvec[c(lowMmod, highMmod)]
+# [1] 0.140 0.175
+OFLvec[c(4,17)] # profiles values
+#   replist4 replist17
+# 1  4387.89   6666.14
+OFL_low_high # target values
+# 4391.647 6738.685
+
 # choose which to keep
 keep <- which(
   parvec > 0.12 & 
