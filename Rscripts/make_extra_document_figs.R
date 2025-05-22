@@ -339,4 +339,10 @@ cum_catch_dat |>
   theme(strip.text = element_text(size = 10))
 ggsave('figures/attain.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
 
+cum_catch_dat |>
+  ggplot(aes(col = LANDING_YEAR, group = LANDING_YEAR)) +
+  geom_line(aes(x = j_day, y = attainment)) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_attain_color.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
 
