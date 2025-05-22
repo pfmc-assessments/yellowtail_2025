@@ -1,12 +1,13 @@
 # Canadian yellowtail rockfish assessment from 2024
-# SS3 input files stored at 
+# SS3 input files stored at
 # https://github.com/pbs-software/pbs-synth/tree/master/PBSsynth/inst/input/2024/YTR/BC/Base/B1.R02v2/02.01
 # but need to be run locally to get output
 
 
-# load base model from elsewhere 
-can2024inputs <- SS_read('C:/Users/ian.taylor/Documents/reviews/2024_DFO_yellowtail/models/02.01')
-base_inputs <- SS_read('Model_Runs/5.09_no_extra_SE')
+# load base model from elsewhere
+can2024 <- SS_output("C:/Users/ian.taylor/Documents/reviews/2024_DFO_yellowtail/models/02.01")
+can2024inputs <- SS_read("C:/Users/ian.taylor/Documents/reviews/2024_DFO_yellowtail/models/02.01")
+base_inputs <- SS_read("Model_Runs/5.09_no_extra_SE")
 
 
 
@@ -69,3 +70,114 @@ SS_write(new, dir = "Model_Runs/6.20_transboundary", overwrite = TRUE)
 run("Model_Runs/6.20_transboundary")
 
 m6.20 <- SS_output("Model_Runs/6.20_transboundary", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+
+# create a new model with area 1 = US, area 2 = Canada
+
+# change to data file
+new_spatial <- new
+new_spatial$dat$N_areas <- 2
+new_spatial$dat$fleetinfo$area <- c(rep(1, 7), rep(2, 7))
+
+# change to control file
+new_spatial$ctl$N_areas <- 2
+new_spatial$ctl$recr_dist_method <- 2
+new_spatial$ctl$recr_dist_read <- 2
+# add new recruitment distribution
+new_spatial$ctl$recr_dist_pattern <- data.frame(
+  GPattern = 1,
+  month = 1,
+  area = 1:2,
+  age = 0
+)
+new_spatial$ctl$N_moveDef <- 0
+
+# create a dataframe with two rows and the same columns as new_spatial$ctl$MG_parms
+newrows <- data.frame(
+  MGparm = c("RecrDist_1", "RecrDist_2"),
+  init_value = c(0.5, 0.5),
+  min = c(0, 0),
+  max = c(1, 1),
+  phase = c(1, 1),
+  block = c(0, 0)
+)
+# copy first two rows of new_spatial$ctl$MG_parms to get column names and dimensions
+newrows <- new_spatial$ctl$MG_parms[1:4, ]
+newrows$LO <- -3
+newrows$HI <- 3
+newrows$INIT <- 0
+newrows$PRIOR <- 0
+newrows$PR_SD <- 0
+newrows$PR_type <- 0
+newrows$PHASE <- c(-1, -1, 1, -1) # only estimate allocation to area 2
+rownames(newrows) <- c("RecrDist_GP_1", "RecrDist_1", "RecrDist_2", "RecrDist_month_1")
+new_spatial$ctl$MG_parms <- rbind(new$ctl$MG_parms[1:20, ], newrows, new$ctl$MG_parms[21:22, ])
+
+SS_write(new_spatial, dir = "Model_Runs/6.21_transboundary_spatial", overwrite = TRUE)
+
+# add deviations in recruitment allocation
+new_spatial2 <- new_spatial
+new_spatial2$ctl$MG_parms["RecrDist_2", "dev_minyr"] <- 1962
+new_spatial2$ctl$MG_parms["RecrDist_2", "dev_maxyr"] <- 2024
+new_spatial2$ctl$MG_parms["RecrDist_2", "dev_PH"] <- 6
+new_spatial2$ctl$MG_parms["RecrDist_2", "dev_link"] <- 2
+
+# dev_se and autocorr parameters from 2015 Canary assessment
+new_spatial2$ctl$MG_parms_tv <- data.frame(
+  LO = c(0.0001, -0.9900),
+  HI = c(2.00, 0.99),
+  INIT = c(0.5, 0.0),
+  PRIOR = c(0.5, 0.0),
+  PR_SD = c(0.5, 0.5),
+  PR_type = c(6, 6),
+  PHASE = c(-5, -6),
+  row.names = c("RecrDist_Area_2_dev_se", "RecrDist_Area_2_dev_autocorr")
+)
+
+SS_write(new_spatial2, dir = "Model_Runs/6.22_transboundary_spatial_recrdist", overwrite = TRUE)
+
+m6.21 <- SS_output("Model_Runs/6.21_transboundary_spatial", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+m6.22 <- SS_output("Model_Runs/6.22_transboundary_spatial_recrdist", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+
+dir.create("figures/US_plus_Canada")
+SSplotComparisons(SSsummarize(list(mod_out, m6.21, m6.22)),
+  plotdir = "figures/US_plus_Canada",
+  legendlabels = c("Base", "U.S. + Canada", "U.S. + Canada + deviations in recruitment allocation"),
+  plot = FALSE,
+  print = TRUE,
+  legendloc = "bottomleft"
+)
+
+ts_area1 <- m6.22$timeseries |> filter(Area == 1) |> select(Yr, Bio_all)
+ts_area2 <- m6.22$timeseries |> filter(Area == 2) |> select(Yr, Bio_all)
+ts_base <- mod_out$timeseries |> select(Yr, Bio_all)
+ts_can <- can2024$timeseries |> select(Yr, Bio_all)
+
+ts_all <- rbind(
+  ts_base |> mutate(Area = "U.S. (Base model)"),
+  ts_can |> mutate(Area = "Canada-only"),
+  ts_area1 |> mutate(Area = "U.S. area within joint model"),
+  ts_area2 |> mutate(Area = "Canada within joint model")
+)
+
+# plot timeseries of ts_all with ggplot2
+library(ggplot2)
+ggplot(ts_all, aes(x = Yr, y = Bio_all, color = Area)) +
+    geom_line(size = 1) +
+    labs(
+        x = "Year",
+        y = "Total Biomass",
+        color = "Area"
+    ) +
+    theme_classic() +
+    expand_limits(y = 0)
+ggsave("figures/US_plus_Canada/biomass_timeseries.png", width = 6.5, height = 3.5)
+
+
+dir.create("figures/US_plus_Canada_one_area")
+SSplotComparisons(SSsummarize(list(mod_out, m6.20)),
+  plotdir = "figures/US_plus_Canada_one_area",
+  legendlabels = c("Base", "U.S. + Canada (one area)"),
+  plot = FALSE,
+  print = TRUE,
+  legendloc = "bottomleft"
+)
