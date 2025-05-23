@@ -126,3 +126,54 @@ facet_coastwide <-ggplot(data=coastwide,aes(x=year, y=est, col=species))+
 png("figures/STAR_request14/facet_coastwide.png",res=600, width=4800, height=3000)
 facet_coastwide
 dev.off()
+
+#### Comparison of NS indices
+yellowtail_NS <- read.csv("Data/Processed/STAR_requests/est_by_area.csv")%>%filter(area=="North of Cape Mendocino")%>%
+  mutate(species="yellowtail")
+canary_NS <- read.csv("Data/Processed/STAR_requests/est_Canary_Mendo.csv")%>%filter(area=="North of Cape Mendocino")%>%
+  mutate(species="canary")
+widow_NS <- read.csv("Data/Processed/STAR_requests/est_Widow_Mendo.csv")%>%filter(area=="North of Cape Mendocino")%>%
+  mutate(species="widow")
+NS<-yellowtail_NS%>%bind_rows(canary_NS)%>%bind_rows(widow_NS)
+box<-data.frame(xmin=c(2013.5,2013.5,2013.5),
+                xmax=c(2019.5,2019.5,2019.5), 
+                ymin = c(0,0,0),
+                ymax = c(40000,15000,80000), 
+                species=c("canary","widow", "yellowtail"))
+
+facet_NS <-ggplot(data=NS,aes(x=year, y=est, col=species))+
+  geom_point(cex=1.5)+
+  ggtitle("North of Cape Mendoncino")+
+  # geom_ribbon(aes(ymin=lwr,ymax=upr, fill=area),  alpha=0.1)+
+  # geom_line(aes(y=upr), lty=2)+
+  geom_errorbar(aes(ymin = lwr, ymax = upr))+
+  facet_wrap(~species,scales="free")+
+  geom_rect(data=box, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax =ymax), 
+            alpha = .25,inherit.aes = FALSE)+
+  xlim(c(2003, 2025))+
+  theme_bw()
+facet_NS 
+
+png("figures/STAR_request14/facet_NS.png",res=600, width=4800, height=3000)
+facet_NS
+dev.off()
+
+#### Comparison of NS indices
+yellowtail <- read.csv("Data/Processed/STAR_requests/est_by_area.csv")%>%
+  mutate(species="yellowtail")
+canary <- read.csv("Data/Processed/STAR_requests/est_Canary_Mendo.csv")%>%
+  mutate(species="canary")%>%filter(area=="North of Cape Mendocino" | area=="South of Cape Mendocino")
+widow <- read.csv("Data/Processed/STAR_requests/est_Widow_Mendo.csv")%>%
+  mutate(species="widow")%>%filter(area=="North of Cape Mendocino" | area=="South of Cape Mendocino")
+
+ggplot(data=canary,aes(x=year, y=est, col=species, group=area, col=area))+
+  geom_line(aes(col=area, group = area))+
+  ggtitle("Canary")+
+  xlim(c(2003, 2025))+
+  theme_bw()
+
+ggplot(data=widow,aes(x=year, y=est, col=species, group=area, col=area))+
+  geom_line(aes(col=area, group = area))+
+  ggtitle("Widow")+
+  xlim(c(2003, 2025))+
+  theme_bw()

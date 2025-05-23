@@ -195,7 +195,7 @@ configuration_wr <- configuration |>
 configuration_wr[, "species"]<- "widow rockfish"
 configuration_to_run <- configuration_wr |>
   dplyr::filter(
-    formula == "catch_weight ~ 0 + fyear*split_mendocino + pass_scaled"
+    formula == "catch_weight ~ 0 + fyear*split_mendocino + pass_scaled"&source == "NWFSC.Combo" & family == "sdmTMB::delta_lognormal()"
   )
 
 data <- configuration_to_run |>
