@@ -388,7 +388,7 @@ inputs_high$fore$ForeCatch <- hcr_catch
 SS_write(inputs_high, dir = "model_runs/6.25_M_I_weighting_forecast", overwrite = TRUE)
 m6.25 <- SS_output("model_runs/6.25_M_I_weighting_forecast", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 
-# apply forecast catch to low R0
+# apply forecast catch to low and high R0
 inputs_low_R0 <- mod_inputs
 inputs_high_R0 <- mod_inputs
 inputs_low_R0$ctl$SR_parms["SR_LN(R0)", "INIT"] <- 10.25
@@ -415,7 +415,7 @@ SSplotComparisons(
   filenameprefix = "STAR_request13_forecast"
 )
 
-# apply forecast catch to low R0
+# apply average recent attainment of forecast HCR catch to low R0, high R0, and base model
 inputs_low_R0 <- mod_inputs
 inputs_high_R0 <- mod_inputs
 mod <- mod_inputs
