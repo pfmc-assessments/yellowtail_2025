@@ -1,0 +1,7 @@
+﻿Smooth,edf,Ref df,F,p-value 
+s(CutiSTI),1.93,1.99,4.76,0.019**
+s(DDegg),1.71,1.91,2.31,0.100*
+s(LSTpjuv),1.79,1.95,3.43,0.078*
+s(ONIpjuv),1.72,1.92,8.51,0.0054**
+Covariate,Estimate,SE,t value,Pr(>|t|) 
+Intercept,-0.78,0.063,-1.15,0.27

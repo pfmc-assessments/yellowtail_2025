@@ -232,7 +232,8 @@ MC|>
 #| tbl-cap: "Coefficients for best-fit model (Model 1)."
 library(readxl)
 
-coef <-readxl::read_excel("Tables/Coefs_Oceanographic.xlsx") 
+coef <-read.csv("Tables/Coefs_Oceanographic.csv") 
+
 
 coef|>
   gt::gt() |>
