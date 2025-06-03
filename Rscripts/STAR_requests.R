@@ -436,3 +436,9 @@ run("model_runs/6.30_base_forecast_avg_attain", extras = "-nohess", skipfinished
 m6.28 <- SS_output("model_runs/6.28_lowR0_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 m6.29 <- SS_output("model_runs/6.29_highR0_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 m6.30 <- SS_output("model_runs/6.30_base_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+
+list(m6.28, m6.29, m6.30) |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3,5,18), new = FALSE, endyrvec = 2036,
+                    legendlabels = c('low R0', 'high R0', 'base'), 
+                    plotdir = 'figures/STAR_request15', png = TRUE)
