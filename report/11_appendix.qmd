@@ -1,4 +1,4 @@
-# Appendix: Oceanographic index 
+# Appendix: oceanographic index 
 
 Contributed by: Megan Feddern and Nick Tolimieri
 
@@ -12,13 +12,13 @@ Contributed by: Megan Feddern and Nick Tolimieri
 2) Using GLORYS-based environmental times series when available to avoid temporal discontinuities of ROMS identified in the 2023 petrale sole stock assessment [@Taylor_petrale_2023]
 3) Evaluate predictive capacity of oceanographic models in addition to model fit
 
-## Conceptual Life History Model{}
+## Conceptual life history model{}
 
   A literature-based, conceptual life-history model for northern yellowtail was developed that included seven lifestages from preconditioning through benthic recruitment (@tbl-LH) [@Darby]. To summarize the methods of @Darby, each life-history stage that could contribute to the size of each yellowtail year class was identified, starting with female condition prior to the start of the spawning season (@tbl-LH). Typically, larger, older mothers invest more resources into larval quality, promoting larval survival and contributing significantly to recruitment [@Beyer2015]. Nutritional stores in these females, which are gained during the summer upwelling season, are activated for ovarian development during the late fall and winter [@Macfarlane1993]. Therefore, the summer through the winter prior to spawning (July – March) may be important for female preconditioning. Copulation (spawning) occurs from August to October in the same year, with fertilization of the eggs occurring approximately 30 days after copulation (November – December). Rockfish carry developing embryos enclosed in egg envelopes for most of gestation but the larvae hatch several days prior to parturition [@Macfarlane1995]. Parturition occurs from January to April with a peak in February of the following year. Birth of live larvae takes place at depths shallower than 180 meters [@stephens_status_2017]. Larvae are often distributed below the surface in the mixed portion of the water column between 20 and 70 meters [@Petersen2010]. Pelagic juveniles recruit to nearshore waters throughout the summer months before migrating to deeper waters (up to ~550 meters deep) in the fall where their preferred habitat is the midwater over reefs and boulder fields [@stephens_status_2017]. The timing of reproduction corresponds to the larval lifestage aligning with upwelling-induced food production [@Barnett2015]. The importance of this phenological alignment between lifestage and recruitment was illustrated in 2005 when a long delay in the spring transition to upwelling-favorable conditions contributed to large-scale recruitment failures that were observed in many marine species [@Barth2007].
   
   Twenty-seven a priori hypotheses (specific to life-stage, time of year, and depth distribution) for oceanographic covariates (@fig-oc_TS) that may drive variation in northern Yellowtail rockfish recruitment were developed. For each hypothesis, the time and depth range for the potential predictor were specified, for example, mixed layer depth between February and March at 0 – 90 m depth may affect where larvae are distributed in the water column (@tbl-LH). In some cases, the literature suggested multiple (or overlapping) time periods or depth ranges over which environmental or biological variables might influence recruitment. When this occurred, the broader time periods and depth ranges were included in our analyses to reduce the number of predictors considered. The resulting testable hypotheses fall into four general categories (@tbl-LH): temperature, transport, upwelling indices, and basin-scale processes (i.e., El Niño Southern Oscillation).
   
-## Oceanographic Time Series{}
+## Oceanographic time series{}
 
   For each hypothesized relationship between northern Yellowtail recruitment and physical oceanographic parameters, a time series was derived from Copernicus Marine Environment Monitoring Service [CMEMS] Global Ocean Reanalysis products [@Cabanes2010]. These models provide a higher global ocean eddy permitting resolution (1/4°) reanalysis system, with the objective of describing the mean and time-varying state of ocean circulation over the past several decades. This approach produces a comprehensive record of how ocean properties, such as temperature and mixed layer depth, are changing over time [@Cabanes2010].
   
@@ -41,7 +41,7 @@ Contributed by: Megan Feddern and Nick Tolimieri
 
   The Pacific Decadal Oscillation (PDO) describes North Pacific sea surface temperature (SSTa) anomalies that may persist for many years. Positive PDOs are associated with warmer SSTa and lower productivity in the California Current Ecosystem, while negative PDOs indicate cooler SSTa and are associated with higher productivity. There is evidence that the ecological meaning of the PDO has been changing through time [@Litzow2018; @Malick2020] particularly in the Gulf of Alaska and in relation to Pacific salmon. However the evidence of nonstationary (i.e., time-varying relationships) between the PDO and local physical conditions in the CCS are less conclusive, with relatively stable relationships between the PDO and regional sea surface height, temperature, bifurcation index, and sea level pressure (SLP) through time [@Litzow2018]. Recent research has shown that PDO has not changed in pattern or strength, and a pattern of pan-basin warming now overwhelms SSTa changes, producing periods that diverge from what is expected from classic PDO expression [@Cluett]. Altogether, this indicates that the PDO may still be an important climate index for non-salmon species in the CCS as the PDO still represents basin-scale patterns in SSTa warranting its inclusion, but any interpretations of PDO relationships should consider the pan-basin warming pattern which has been the dominant expression of SSTa since 2014 [@Cluett]. PDO data included here are from N. Mantua, NMFS/SWFSC, and are served on the CCIEA ERDDAP server [https://oceanview.pfeg.noaa.gov/erddap/tabledap/cciea_OC_PDO.html]((https://oceanview.pfeg.noaa.gov/erddap/tabledap/cciea_OC_PDO.html)).
   
-## Index Development{}
+## Index development{}
 
   Generalized Additive Models (GAM) were used to fit the relationship between oceanographic conditions and recruitment deviations of the base model. GAMs offer a potential  improvement over linear models used for oceanographic indices in previous stock assessments by providing additional flexibility for the shape of the relationship between recruitment and oceanographic conditions by fitting non-linear smoothed terms. In order to ensure that the relationship between driver (oceanographic time series) and response variables (recruitment deviations) were ecologically realistic, each smoothed term was only allowed to have up to three knots (k = 3). As such, the relationship could represent linear, threshold, or dome-shaped relationships, but relationships were not permitted to be more “wiggly” than a parabola. 
   
@@ -69,7 +69,7 @@ Contributed by: Megan Feddern and Nick Tolimieri
 
 For the final selected model, residual plots were visually inspected.
 
-## Model Comparison and Selection{}
+## Model comparison and selection{}
 
   No models had a ΔAIC<2 (Model 1, @tbl-MC) and this model was also the highest ranked model based on LOO-CV, had the highest R^2^ of 0.53, and explained 65% of the deviance, the highest of any of the candidate models (@tbl-MC). Model 1 included four predictors of recruitment deviations, CutiSTI, DDegg, LSTpjuv, and ONIpjuv (see @tbl-LH for all abbreviations) each of which were identified to be significant predictors of recruitment deviations (p < 0.1; @tbl-coefOC). Of the highest ranked models based on LOO-CV, CutiSTI and ONIpjuv were both included in all models. During development of the SMURF index it was noted by OSU collaborators that upwelling conditions would be a valuable inclusion for oceanographically informed indices of juvenile abundance (Kirsten Grorud-Colvert, OSU, personal communication, February 20 2025). At the 2025 northern Yellowtail pre-assessment workshop, participants noted observations of El Niño events impacting the stock and suggested consideration for its inclusion in the stock assessment.
 
@@ -79,7 +79,7 @@ For the final selected model, residual plots were visually inspected.
 
   Based on the collective weight of evidence from model selection criteria and model diagnostics, model 1 was considered the best model. Residual plots showed reasonable residuals (@fig-oc_rsq) and thus model 1 used as the oceanographic index of recruitment for northern Yellowtail. 
   
-## Oceanographic Index{}
+## Oceanographic index{}
 
   The selected model included the spring transition index from the Coastal Upwelling Transport Index (CutiSTI), degree days during egg fertilization (DDegg), along-shore transport during the pelagic juvenile lifestage (LSTpjuv), and the Oceanic Niño Index during the pelagic lifestage (ONIpjuv). Yellowtail rockfish recruitment was positively correlated with CutiSTI at low values and negatively correlated with CutiSTI at high values indicating average timing of the spring transition, occurring around March 23rd, is optimal for yellowtail recruitment (@fig-oc_partials). The shape of the relationship was similar with long-shore transport, where optimal conditions for recruitment occurred when transport was slightly above average values. The relationship was highly uncertain at values that were more than 1 sd above the mean; this is likely because a period of exceptionally high LSTpjuv began in 2019 and continued through 2024. DDegg indicated a threshold relationship, where there was a strong negative relationship until the mean, when the relationship levels off and is mostly flat. This indicates that for degree days during egg fertilization, the mean is a critical point for declines in recruitment in response to temperature expose of eggs. Finally, we find the relationship between ONIpjuv and recruitment is negative at all values (linearly negative), although the relationship is uncertain and may be weaker at 1 sd above the mean. El Niño conditions negatively impact yellowtail recruitment when they occur during the pelagic juvenile phase. Overall, the shapes of the relationships identified from GAM models are ecologically realistic and align with the hypothesized relationships identified from the literature (@tbl-LH). 
   
@@ -153,7 +153,7 @@ knitr::include_graphics("Figures/OCJackr2rmse.png")
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| fig-cap: "Residual plots showed reasonable residuals for the best-fit model although there were some minor deviation from the 1:1 line. (note: looks better with unexpanded rec devs)"
+#| fig-cap: "Residual plots showed reasonable residuals for the best-fit model although there were some minor deviation from the 1:1 line. (note: looks better with unexpanded rec devs)."
 #| fig-alt: "Residual plots show no obvious concerns"
 
 knitr::include_graphics("Figures/OCResiduals.png")
@@ -165,7 +165,7 @@ knitr::include_graphics("Figures/OCResiduals.png")
 #| echo: false 
 #| warning: false 
 #| eval: true 
-#| fig-cap: "Partial residual plots of oceanographic predictors of recruitment. LST = along-shelf transport, DD = degree days, ONI = Oceanic Nino Index, Cuti = Coastal Upwelling Transport Index, STI= Spring Transition Index, T = temperature, pjuv = pelagic juvenile, and egg = egg stage"
+#| fig-cap: "Partial residual plots of oceanographic predictors of recruitment. LST = along-shelf transport, DD = degree days, ONI = Oceanic Nino Index, Cuti = Coastal Upwelling Transport Index, STI= Spring Transition Index, T = temperature, pjuv = pelagic juvenile, and egg = egg stage."
 #| fig-alt: "LSTpjuv and CutiSTI have dome shaped relationships, ONIpjuv and LSTpjuv are linear"
 
 knitr::include_graphics("Figures/OCModelPartials.png")
@@ -181,7 +181,7 @@ knitr::include_graphics("Figures/OCModelPartials.png")
 #| label: tbl-LH
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of oceanographic conditions influencing yellowtail rockfish life history. Abbreviations: DD = degree days,T = temperature, MLD = mixed-layer depth, LST = longshore transport, CST = crossshelf transport, Beuti = Biologically Effective Upwelling Transport Index, Cuti = Coastal Upwelling Transport Index, STI= Spring Transition Index, TUMI = Total Upwelling Magnitude Index, pre = female precondition period prior to spawning, egg = egg stage, larv = larval stage, pjuv = pelagic juveniles, ben = benthic juveniles"
+#| tbl-cap: "Summary of oceanographic conditions influencing yellowtail rockfish life history. Abbreviations: DD = degree days,T = temperature, MLD = mixed-layer depth, LST = longshore transport, CST = crossshelf transport, Beuti = Biologically Effective Upwelling Transport Index, Cuti = Coastal Upwelling Transport Index, STI= Spring Transition Index, TUMI = Total Upwelling Magnitude Index, pre = female precondition period prior to spawning, egg = egg stage, larv = larval stage, pjuv = pelagic juveniles, ben = benthic juveniles."
 library(readxl)
 
 LH <-readxl::read_excel("Tables/ConceptualLifeHistory.xls") 
@@ -229,7 +229,7 @@ MC|>
 #| label: tbl-coefOC
 #| echo: false
 #| warning: false
-#| tbl-cap: "Coefficients for best-fit model (Model 1)"
+#| tbl-cap: "Coefficients for best-fit model (Model 1)."
 library(readxl)
 
 coef <-readxl::read_excel("Tables/Coefs_Oceanographic.xlsx") 

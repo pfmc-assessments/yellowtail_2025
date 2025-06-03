@@ -21,7 +21,7 @@ uncertainty <- "recdevs2_withbars.png" %in% dir("r4ss_plots")
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Map depicting the two genetic stocks of Yellowtail within the U.S. West Coast Exclusive Economic Zone."
+#| fig-cap: "Map depicting the two genetic stocks of yellowtail rockfish within the U.S. West Coast Exclusive Economic Zone."
 #| fig-alt: "A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary."
 
 knitr::include_graphics(
@@ -99,7 +99,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington hook and line surveys"
+#| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington hook and line surveys."
 #| fig-alt: "A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
 
 knitr::include_graphics(
@@ -112,7 +112,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Q-Q plot diagnostics for the combined Oregon and Washington hook and line surveys"
+#| fig-cap: "Q-Q plot diagnostics for the combined Oregon and Washington hook and line surveys."
 #| fig-alt: "A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
@@ -169,7 +169,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Indices of recruitment and age-0 abundance standardized by subtracting the mean anddividing by the standard deviation for the 2016 - 2024 time period"
+#| fig-cap: "Indices of recruitment and age-0 abundance standardized by subtracting the mean anddividing by the standard deviation for the 2016 - 2024 time period."
 #| fig-alt: "sill"
 
 knitr::include_graphics(
@@ -211,9 +211,9 @@ knitr::include_graphics(
 
 ### Biological data
 
-![Length-weight relationship used with data](figures/length_weight_with_data.png){#fig-length-weight fig-alt="figure illustrated a well-fitting length-weight relationship with similar curve for males and females but females have a larger length"}
+![Length-weight relationship with fitted data](figures/length_weight_with_data.png){#fig-length-weight fig-alt="figure illustrated a well-fitting length-weight relationship with similar curve for males and females but females have a larger length"}
 
-![Fitted maturity curve with data](figures/maturity_with_data.png){#fig-maturity fig-alt='figure illustrating maturity as described in WHERE'}
+![Maturity curve with fitted data.](figures/maturity_with_data.png){#fig-maturity fig-alt='figure illustrating maturity as described in WHERE'}
 
 ## Model
 
@@ -310,7 +310,7 @@ knitr::include_graphics(
 ```
 
 
-### Fits to Data
+### Fits to data
 
 
 ```{r}
@@ -332,7 +332,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed)"
+#| fig-cap: "Length composition aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed)."
 #| fig-alt: "Aggregated length comps are fit reasonably well."
 
 knitr::include_graphics(
@@ -435,7 +435,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fit-cap: "Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length."
+#| fig-cap: "Marginal age compositions aggregated across years by fleet with the model with estimated fit to the data by sex (red female, blue male, green unsexed). The WCGBTS ages are not included as they are conditioned on length."
 #| fig-alt: "Aggregated age comps are fit reasonably well."
 
 knitr::include_graphics(
@@ -562,7 +562,7 @@ knitr::include_graphics(
 )
 ```
 
-### Time-series
+### Time series
 
 ```{r} 
 #| label: fig-sb
@@ -716,11 +716,11 @@ knitr::include_graphics(
 
 ### Sensitivity analyses
 
-![Comparison of various management quantities across all sensitivities. Metrics are terminal year relative spawning output, fishing mortality rate at SPR = 0.5, yield at SPR = 0.5, unfished spawning output, and terminal year spawning output. Bars at the top of the figure represent 95% confidence intervals for the metrics in the base model. See legend for which metric each color represents](figures/sensitivities/sens_summary.png){#fig-sens-summary}
+![Comparison of various management quantities across all sensitivities. Metrics are terminal year relative spawning output, fishing mortality rate at SPR = 0.5, yield at SPR = 0.5, unfished spawning output, and terminal year spawning output. Bars at the top of the figure represent 95% confidence intervals for the metrics in the base model. See legend for which metric each color represents.](figures/sensitivities/sens_summary.png){#fig-sens-summary}
 
-![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for index sensitivities](figures/sensitivities/indices_comparison.png){#fig-indices-comparison fig-alt='TODO'}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for index sensitivities.](figures/sensitivities/indices_comparison.png){#fig-indices-comparison fig-alt='TODO'}
 
-![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for modeling sensitivities](figures/sensitivities/indices_comparison.png){#fig-modeling-comparison fig-alt='TODO'}
+![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for modeling sensitivities.](figures/sensitivities/indices_comparison.png){#fig-modeling-comparison fig-alt='TODO'}
 
 ![Spawning output (trillions of eggs, top), and relative spawning output (bottom) for composition data sensitivities](figures/sensitivities/comp_data_comparison.png){#fig-comp_data-comparison fig-alt='TODO'}
 
@@ -740,20 +740,7 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-historical
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40°10', but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling approach."
-#| fig-alt: "A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
-#| fig-pos: H
-
-knitr::include_graphics(
-    "Figures/historical_assessment_timeseries.png"
-)
-```
-
+![Comparison of time series of age 4+ biomass for Yellowtail Rockfish across past assessments. Previous assessments were focused only on the area north of 40°10', but some also included a small area within Canada. The 2013 assessment used the data-moderate approach and the line represents the posterior median of a Sampling Importance Resampling approach.](Figures/historical_assessment_timeseries.png){#fig-historical fig-alt='A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment.'}
 
 ```{r}
 #| label: fig-r0-profile
@@ -769,26 +756,14 @@ knitr::include_graphics(
 )
 ```
 
-```{r}
-#| label: fig-r0-profile-pars
-#| echo: false
-#| warning: false
-#| eval: true
-#| fig-cap: "Change in quantities of interest related to spawning output across a range of log(R0) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure)."
-#| fig-alt: "The spawning output at initial remains more stable over the range of log-R0 values than the final spawning output so at low log-R0 the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low log-R0 values are not supported by the data."
-#| fig-pos: H
-
-knitr::include_graphics(
-    "diagnostics/parameter_panel_SR_LN(R0).png"
-)
-```
+![Change in quantities of interest related to spawning output across a range of log(R0) values: fraction of unfished spawning output in 2025 (top-right), spawning output in 2025 (bottom-right), and unfished equilibrium spawning output (bottom-left). These are shown along with the change in total negative log-likelihood (top-left, matches previous figure).](diagnostics/parameter_panel_SR_LN(R0).png){#fig-r0-profile-pars fig-alt='The spawning output at initial remains more stable over the range of log-R0 values than the final spawning output so at low log-R0 the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low log-R0 values are not supported by the data.'}
 
 ```{r}
 #| label: fig-m-profile
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Change in the negative log-likelihood across a range of female natural mortality (M) values"
+#| fig-cap: "Change in the negative log-likelihood across a range of female natural mortality (M) values."
 #| fig-alt: "U-shaped profiles show some differences among data types and fleets over M values explored with the age and length data supporting a higher M while the indices and recruitment penalties support a lower M."
 #| fig-pos: H
 
@@ -816,7 +791,7 @@ knitr::include_graphics(
 #| echo: false
 #| warning: false
 #| eval: true
-#| fig-cap: "Change in the negative log-likelihood across a range of steepness (h) values"
+#| fig-cap: "Change in the negative log-likelihood across a range of steepness (h) values."
 #| fig-alt: "All data sources with the exception of the commercial length comps support a high steepness value (close to 1.0)."
 #| fig-pos: H
 

@@ -54,7 +54,7 @@ CatchTable |>
 #| label: tbl-comm_lengths
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of the number of length samples and trips for  for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
+#| tbl-cap: "Summary of the number of length samples and trips for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
 
 
 commlengths <- read.csv("Tables/pacfin_lengths.csv") 
@@ -146,7 +146,7 @@ rec_bio_table |>
 #| label: tbl-percent_pos
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
+#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW."
 
 
 read.csv("Tables/yellowtail_percent_pos.csv") |> 
@@ -166,7 +166,7 @@ read.csv("Tables/yellowtail_percent_pos.csv") |>
 #| label: tbl-orbs_mod_select
 #| echo: false
 #| warning: false
-#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
+#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index."
 
 orbs_modselect <- read.csv("Tables/yellowtail_model_selection.csv")[1:10, ]
 orbs_modselect[orbs_modselect == "Included"] <- "Incl."
@@ -190,7 +190,7 @@ orbs_modselect |>
 #| label: tbl-hl_percent_pos
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey"
+#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey."
 
 
 percposHL <- read.csv("Tables/HL_yellowtail_percent_pos.csv") 
@@ -209,7 +209,7 @@ percposHL|>
 #| label: tbl-hl_mod_slx
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey"
+#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey."
 
 
 modslxHL <- read.csv("Tables/HL_yellowtail_model_selection.csv") 
@@ -230,7 +230,7 @@ modslxHL|>
 #| label: tbl-smurf_mod_select
 #| echo: false
 #| warning: false
-#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index"
+#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index."
 
 smurf_modselect <- read.csv("Tables/SMURF_model_selection.csv")
 smurf_modselect[smurf_modselect == "Included"] <- "Incl."
@@ -301,7 +301,7 @@ tri_bio_table |>
 #| label: tbl-consider
 #| echo: false
 #| warning: false
-#| tbl-cap: "Comparison of potential age-0 abundance and recruitment indices by data sourse"
+#| tbl-cap: "Comparison of potential age-0 abundance and recruitment indices by data source."
 
 
 comp <-read.csv("Tables/YOYComparison.csv") 

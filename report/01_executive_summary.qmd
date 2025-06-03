@@ -405,7 +405,7 @@ The most important future research need is to better understand the catchability
 
 {{< pagebreak >}}
 
-## Risk Table{-}
+## Risk table{-}
 ```{r, tbl-risk, results = "asis"}
 #| label: tbl-risk
 #| echo: false

@@ -7,7 +7,7 @@ Genetic evidence indicates that there are two stocks of yellowtail rockfish, wit
 
 The current assessment is for the northern stock only. A map showing the scope of the current assessment and depicting boundaries for the two west coast stocks is provided in @fig-assessregionmap. The 2017 yellowtail rockfish assessment included the first full length and age integrated assessment model south of Cape Mendocino. However, it was withdrawn by the assessment team and has not been used in management.
 
-## Life History
+## Life history
 <!-- Important features of life history that affect management (e.g., migration, sexual dimorphism, bathymetric demography).   -->
 
 Rockfish are in general long-lived and slow-growing; however, yellowtail rockfish have a high growth rate relative to other rockfish species, reaching a maximum size of about 55 cm in approximately 15 years [@Tagart1991]. Yellowtail are reported to live at least 64 years [@Love2011], but no fish that old occur in data available for this assessment (the 95th percentile of age is 35 years for females and 45 years for males).  The maximum age plausibly observed in the data is 60. There were additional data we considered to be outliers and possibly erroneous, including three fish in the commercial data reported to be 70, 99, and 101.
@@ -36,7 +36,7 @@ Canary and widow rockfish, two common co-occurring species [@Tagart1988; @Rogers
 
 Canary and widow rockfish were declared rebuilt in 2015 [@thorson_status_2015; @hicks_status_2015], and commercial and recreational yellowtail catch increased substantially beginning when those assessments were first used for harvest specifications in 2017. 
 
-## Management History
+## Management history
 <!---
 Summary of management history (e.g., changes in mesh sizes, trip limits, or other management actions that may have significantly altered selection, catch rates, or discards). 
 --->

@@ -1,4 +1,4 @@
-## Model Diagnostics
+## Model diagnostics
 
 ```{=html}
 <!-- If a range of model runs is used to characterize uncertainty, it is important to provide some qualitative or quantitative information about relative probability of each. If no statements about relative probability can be made, then it is important to state that all scenarios (or all scenarios between the bounds depicted by the runs) are equally likely.  
@@ -18,7 +18,7 @@ jit_total <- nrow(jit)
 
 The maximum parameter gradient was `r signif(mod_out$maximum_gradient_component, 2)` and the jitter analysis showed that `r jit_good` out of `r jit_total` model runs with jittered initial values converged to the same model estimate. Those that did not converge to the same model estimate converged to worse likelihoods. Exploratory MCMC runs indicated that posterior distributions largely matched these asymptotic distributions.
 
-### Sensitivity Analyses{#sec-sensitivities}
+### Sensitivity analyses{#sec-sensitivities}
 
 We conducted a number of model runs exploring sensitivity of the model to decisions regarding data and model structure. They are briefly described below:
 
@@ -101,13 +101,13 @@ The McAllister \& Ianelli data weight method leads to a higher unfished recruitm
 
 Removing fishery lengths leads to a higher unfished spawning output, but similar terminal year spawning output, so a lower relative spawning output. Unfished recruitment is fairly similar but natural mortality is lower and the somatic growth rate is higher.
 
-### Retrospective Analysis
+### Retrospective analysis
 
 The retrospective analysis showed little change in the population trajectory (@fig-retro1). 
 
 Age 4+ abundance is used to compare among historical assessments (@fig-historical) due to different assumptions about maturity and fecundity that make spawning output and fraction of unfished spawning output difficult to compare. Similar patterns of decline throughout the 1970s and 1980s are estimated among all previous among assessments although there were differences in estimated scale. The models conducted in 2005 and more recently have all estimated increases in the 2000s, but the timing of when the increase began has differed among assessments. The differences in age 4+ biomass between this assessment and that from 2017 are a low scale in the current assessment and a later recent peak in biomass (2019 rather than 2005). 
 
-### Likelihood Profiles {#sec-profiles}
+### Likelihood profiles {#sec-profiles}
 
 ```{r}
 #| label: 'profiles'
@@ -159,7 +159,7 @@ All data sources with the exception of the commercial length comps support a hig
 
 At low steepness values, the initial spawning output increases and the final spawning output decreases, leading to a smaller fraction of unfished (@fig-h-profile-pars). However, the change in likelihood at those values is large, indicating that low steepness is not supported by the data.
 
-## Unresolved Problems and Major Uncertainties {#sec-unresolved}
+## Unresolved problems and major uncertainties {#sec-unresolved}
 
 The composition data regularly include 30+ year-old fish, and support a medium-lived population. The likelihood profiles indicate the survey likelihood is maximized at a lower natural mortality than the estimated value. However, the \gls{s-wcgbt} index doubles and then halves again over a period of approximately five years, and the model is not able to fit this dynamic. Intuitively, a higher natural mortality could make the population more dynamic, so it is unclear why the survey likelihood is maximized at a lower natural mortality. The doubling could come from the large 2008 and, to a lesser extent, 2010 year classes, but the estimated recruitment deviation is not large enough to support the magnitude of the increase observed in the survey (and in observer catch rates on midwater trawl vessels). In addition, it is difficult for a population with relatively constant catches since 2017 and with individuals that regularly survive to 30+ years to have adult biomass decrease by approximately one-half over only two years (2019-2021). While changes in natural mortality could be possible, ocean conditions were relatively positive during those years [@harvey_2022] and changes in natural mortality more often impact younger individuals. The large 2008 year class becomes less apparent in age-composition data in different years for the commercial fleet and the \gls{s-wcgbt}, and the mechanism for this "blurring" is unclear (several hypotheses: movement and selectivity changes, natural mortality, fishing mortality, increasing ageing error as the year class ages, some combination). Overall, we were unable to find a reliable mechanistic way to simultaneously fit the survey and composition data; the candidate base model fits the composition data at the expense of the survey index. All data sources and the candidate base model indicate the population is at a more depleted state than it was in 2017 and than the 2017 assessment estimated the population was in 2017 (two distinct quantities). The magnitude of the change is less clear.
 
