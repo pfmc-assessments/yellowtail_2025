@@ -547,7 +547,6 @@ tibble::tibble(
   'CA Rec.' = c(3.1, 3.1),
   'year' = 2025:2026) |>
   gt::gt(rowname_col = 'year') |>
-  gt::tab_header('Fleet within Stock Assessment') |>
   gt::tab_spanner(label = 'At-sea hake', columns = 'CP & MSCV') |>
   gt::tab_spanner(label = 'Commercial', columns = c('IFQ', 'Tribal Shoreside', 'Incidental', 'Non-Trawl Commercial')) |>
   gt::tab_spanner(label = 'Recreational', columns = c('WA Rec.', 'OR Rec.', 'CA Rec.')) |>
