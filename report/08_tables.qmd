@@ -416,6 +416,50 @@ kableExtra::kable(
   )
 ```
 
+::: {.landscape}
+
+\pagebreak
+
+
+```{r}
+#| label: tbl-sens-indices
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/indices_table.csv"))
+``` 
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-sens-modeling
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/modeling_table.csv"))
+
+``` 
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: tbl-sens-comp_data
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-pos: H
+table_sens(here::here("report/Figures/sensitivities/comp_data_table.csv"))
+
+``` 
+
+:::
+
 
 ## Management
 
@@ -480,46 +524,43 @@ table_decision(
 
 ```
 
-::: {.landscape}
-
 \pagebreak
 
+::: {.landscape}
 
-```{r}
-#| label: tbl-sens-indices
+```{r, results = "asis"}
+#| label: tbl-assumed_catch
 #| warning: false
 #| echo: false
 #| eval: !expr eval_tables 
-#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
+#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ latitude in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment."
 #| tbl-pos: H
-table_sens(here::here("report/Figures/sensitivities/indices_table.csv"))
-``` 
 
-{{< pagebreak >}}
-
-```{r}
-#| label: tbl-sens-modeling
-#| warning: false
-#| echo: false
-#| eval: !expr eval_tables 
-#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
-#| tbl-pos: H
-table_sens(here::here("report/Figures/sensitivities/modeling_table.csv"))
-
-``` 
-
-{{< pagebreak >}}
-
-
-```{r}
-#| label: tbl-sens-comp_data
-#| warning: false
-#| echo: false
-#| eval: !expr eval_tables 
-#| tbl-cap: "Differences in negative log-likelihood, estimates of key parameters, and estimates of derived quantities between the base model and several alternative models (columns). See main text for details on each sensitivity analysis. Red values indicate negative log-likelihoods that were lower (fit better to that component) than the base model."
-#| tbl-pos: H
-table_sens(here::here("report/Figures/sensitivities/comp_data_table.csv"))
-
-``` 
+tibble::tibble(
+  'CP & MSCV' = c(360, 360),
+  'IFQ' = c(3112, 3018),
+  'Tribal Shoreside' = c(350, 450),
+  'Incidental' = c(23, 23),
+  'Non-Trawl Commercial' = c(12, 12),
+  'WA Rec.' = c(100, 100),
+  'OR Rec.' = c(100, 100),
+  'CA Rec.' = c(3.1, 3.1),
+  'year' = 2025:2026) |>
+  gt::gt(rowname_col = 'year') |>
+  gt::tab_header('Fleet within Stock Assessment') |>
+  gt::tab_spanner(label = 'At-sea hake', columns = 'CP & MSCV') |>
+  gt::tab_spanner(label = 'Commercial', columns = c('IFQ', 'Tribal Shoreside', 'Incidental', 'Non-Trawl Commercial')) |>
+  gt::tab_spanner(label = 'Recreational', columns = c('WA Rec.', 'OR Rec.', 'CA Rec.')) |>
+  gt::tab_stubhead(label = 'Catch Projection Year') |>
+  gt::tab_options(
+    table.font.size = 12, 
+    heading.title.font.size = 12, stub.font.size = 12, heading.subtitle.font.size = 12, column_labels.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(80)
+  ) |>
+  gt::as_latex()
+```
 
 :::
