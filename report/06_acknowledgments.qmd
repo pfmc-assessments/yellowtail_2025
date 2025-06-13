@@ -1,10 +1,12 @@
 # Acknowledgements {#sec-acknowledgements}
 
-A number of people produced, managed, and analyzed data and code that went into this assessment as well as provided assistance and review with the document. 
+A number of people produced, managed, and analyzed data and code that went into this assessment as well as provided general assistance and review. 
 
-Owen Hamel, Marlene Bellman, and John Budrick provided constructive comments on an earlier version of the document.
+The STAR panel of John Budrick (chair), Geoff Tingley, Martin Liermann, and Tommy Moore was extremely constructive and worked diligently to understand the model, the data, and the stock dynamics to ensure the best assessment possible. Katlyn Lockhart (GMT representative) and Gerry Richter (GAP representative) provided important context about the fishery during the review, and Katlyn Lockhart provided forecast catches for 2025-2026 and accompanying text describing their derivation. Industry members provided public comment describing their on-the-water experience on the first day that helped shaped the direction of the review. Marlene Bellman (PFMC staff) ensured the document and review conformed with the terms of reference, and Marlene Bellman, Owen Hamel, and Kristin Marshall coordinated the STAR panel review.
 
-Sam Schiano developed the \{asar\} package used to produce this document and provided assistance with document structure and formatting questions. 
+Owen Hamel provided a pre-STAR panel technical review.
+
+Sam Schiano (OST) developed the \{asar\} package used to produce this document and provided assistance with document structure and formatting questions. 
 
 Chantel Wetzel manages a number of NWFSC R packages used for analyzing commercial and NWFSC survey data and formatting it for stock synthesis. 
 
@@ -14,17 +16,20 @@ Eric Ward, Chantel Wetzel, and Claire Rosemond assisted with bottom trawl index 
 
 Emily Sellinger produced the sensitivity exploring time-varying weight-length relationships. 
 
-Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmnetal conditions for the risk table. 
+Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri contributed the ecosystem and environmental conditions for the risk table. 
 
 Cameron Royer (OSU) processed SMURF samples for this assessment and Su Sponaugle (OSU) and Kirsten Grorud-Colvert (OSU) provided additional expertise. Ryan Fields (ODFW) and Moritz Schmid (ODFW) provided mooring data for the SMURF index. 
 
-Tanya Rogers produced the RREAS index. 
+Tanya Rogers (SWFSC) produced the RREAS index. 
 
-E.J. Dick provided catch histories for California and context for how to separate historical data at the relevant biogeographic break, and Theresa Tsou provided assistance with the Washington catch history.
+E.J. Dick (SWFSC) provided catch histories for California and context for how to separate historical data at the relevant biogeographic break, and Theresa Tsou (WDFW) provided assistance with the Washington catch history.
 
 John Wallace provided discard rates from the Pikitch study.
 
+Kate Richerson provided WCGOP data and assistance understanding its intricacies.
+
+Emily Wallingford and Liz Ortiz at the CAP lab and Sandra Rosenfield and Jennifer Topping at WDFW read all otoliths since the 2017 assessment, and Patrick McDonald provided additional aging coordination.
+
 The population ecology program at NWFSC and its SWFSC collaborators are some of the sharpest, kindest, and most dedicated minds in stock assessment today. They were constantly available to answer questions, brainstorm, and provide any other manner of assistance we needed.
 
-Finally, a stock assessment is useless without high quality data over long time horizons to inform models, and we are eternally gratefully to have enormous amounts of data available for this assessment. Hundreds of people have contributed to this assessment as observers, port samplers, survey staff, and survey volunteers. Agers at WDFW and the CAP lab over many decades produced enormous volumes of ages that were critical. In particular, Emily Wallingford and Liz Ortiz at the CAP lab and Sandra Rosenfield and Jennifer Topping at WDFW read all otoliths since the 2017 assessment, and Patrick McDonald provided additional coordination.
-
+Finally, a stock assessment is useless without high quality data over long time horizons to inform models, and we are eternally grateful to have enormous amounts of data available for this assessment. Hundreds of people have contributed to this assessment as agers, observers, port samplers, survey staff, and survey volunteers. Thank you also to the government agencies that committed the time, personnel, and funding to collect this long-term data spanning many decades and individual careers. Each single piece of data is small, but in aggregate it provides robust information on the dynamics of numerous fish populations and the marine ecosystem at large.

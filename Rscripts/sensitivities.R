@@ -1,6 +1,7 @@
 library(here)
 library(r4ss)
 library(dplyr)
+library(ggplot2)
 model_directory <- 'model_runs'
 base_model_name <- '5.09_no_extra_se'
 exe_loc <- here('model_runs/ss3.exe')
@@ -90,7 +91,7 @@ flt <- base_model$dat$Nfleets + 1
 
 ocean <- read.csv('Data/raw_not_confidential/OceanographicIndex/OceanographicIndexV1.csv') |>
   mutate(month = 7, 
-         index = ifelse(year >= 2015, flt, -flt) # include 10 years of index
+         index = ifelse(year >= 2020, flt, -flt) # include 5 years of index
   ) |>
   select(year, month, index, obs = fit, se_log = se.p)
 

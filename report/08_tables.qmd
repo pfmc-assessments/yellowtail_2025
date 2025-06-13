@@ -478,8 +478,12 @@ table_sens(here::here("report/Figures/sensitivities/comp_data_table.csv"))
 projections_table |>
   gt::gt() |>
   gt::fmt_number(
-    columns = c(2:5, 7:9),
+    columns = c(2:5, 7:8),
     decimals = 0
+  ) |>
+  gt::fmt_number(
+    columns = 9,
+    decimals = 2
   ) |>
   gt::fmt_number(
     columns = c(6, 10),
@@ -533,7 +537,7 @@ table_decision(
 #| warning: false
 #| echo: false
 #| eval: !expr eval_tables 
-#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ latitude in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment."
+#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ latitude in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment. CP is catcher processor, MSCV is mother ship catcher vessel, and IFQ is individual fishing quota. All units are in metric tons."
 #| tbl-pos: H
 
 tibble::tibble(
