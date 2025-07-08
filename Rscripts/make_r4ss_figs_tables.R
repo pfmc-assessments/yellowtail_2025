@@ -140,3 +140,6 @@ file.rename(
 
 # historical assessment timeseries plot
 source("Rscripts/historical_assessment_timeseries.R")
+
+# N-at-age matrix for electronic supplement
+write.csv(mod_out$natage, file = 'report/tables/n_at_age.csv', row.names = FALSE)
