@@ -278,6 +278,10 @@ SStableComparisons(SSsummarize(biglist12),
 ) |>
   table_sens(format = "html")
 
+# additional plot for discussion of request 12 (time series of spawning output starting in 2003 when the WCGBTS begins)
+# this helps show that the changes over time are not as dramatic as when the full model time series is shown
+SSplotTimeseries(mod_out, subplot = 1, minyr = 2003)
+
 ### STAR request 13:  Explore states of nature
 
 # distribution from M prior
@@ -417,3 +421,70 @@ SSplotComparisons(
   endyrvec = 2036,
   filenameprefix = "STAR_request13_forecast"
 )
+
+
+dir.create("figures/states_of_nature")
+SSplotComparisons(
+  SSsummarize(list(mod_out, m6.26, m6.27)),
+  plotdir = "figures/states_of_nature",
+  legendlabels = c("Base (logR0 = 10.51)", "Low (logR0 = 10.25)", "High (logR0 = 10.75)"),
+  print = TRUE,
+  plot = FALSE,
+  endyrvec = 2036,
+  filenameprefix = "states_of_nature_"
+)
+
+SSplotTimeseries(mod_out, subplot = 1, minyr = 2003)
+
+# sample sizes for STAR report
+commages <-read.csv("report/Tables/pacfin_ages.csv") 
+commlengths <- read.csv("report/Tables/pacfin_lengths.csv")
+tri_bio_table <- read.csv("Data/Processed/input_n_tri.csv", check.names = FALSE)
+wcgbts_bio_table <- read.csv("Data/Processed/input_n_wcgbts.csv", check.names = FALSE)
+ashop_comp <- read.csv("report/Tables/ashop_comps.csv") 
+rec_bio_table <- read.csv("Data/Processed/rec_bio_sample_size_table.csv", check.names = FALSE)
+
+n_lengths <- c(
+  commlengths[, grepl("n_fish$", names(commlengths))] |> sum(),
+  tri_bio_table$n_lengths |> sum(),
+  wcgbts_bio_table$n_lengths |> sum(),
+  ashop_comp$nfish.length |> sum(),
+  rec_bio_table |> dplyr::select(-Year, -`Washington ages`) |> sum()
+)
+
+n_ages <- c(
+  commages[, grepl("n_fish$", names(commages))] |> sum(),
+  tri_bio_table$n_ages |> sum(),
+  wcgbts_bio_table$n_ages |> sum(),
+  ashop_comp$nfish.age |> sum(),
+  rec_bio_table |> dplyr::select(`Washington ages`) |> sum()
+)
+
+n_lengths |> sum()
+n_ages |> sum()
+
+
+### exploring female M distributions vs prior for states of nature
+### inspired by email from Adam Langley
+
+# re-ran states of nature in "_hess" directories to get uncertainty
+ybase <- SS_output('Model_Runs/5.09_no_extra_SE')
+ylo <- SS_output('Model_Runs/6.26_lowR0_forecast_hess')
+yhi <- SS_output('Model_Runs/6.27_highR0_forecast_hess')
+# colors from r4ss::SSplotPars()
+colvec <- c("blue", "red", "black", "gray60", rgb(0, 0, 0, 0.5))
+# make plot
+png("figures/M_distributions_states_of_nature.png", width = 6.5, height = 5, units = "in", res = 300)
+colvec[1] <- "red"
+SSplotPars(ylo, strings = "NatM_uniform_Fem", nrows = 1, ncols = 1, colvec = colvec, 
+  showlegend = FALSE, showinit = FALSE)
+colvec[1] <- "blue"
+SSplotPars(ybase, strings = "NatM_uniform_Fem", nrows = 1, ncols = 1, colvec = colvec, add = TRUE, 
+  showlegend = FALSE, showinit = FALSE)
+colvec[1] <- "green3"
+SSplotPars(yhi, strings = "NatM_uniform_Fem", nrows = 1, ncols = 1, colvec = colvec, add = TRUE, 
+  showlegend = FALSE, showinit = FALSE)
+legend('topleft', 
+  legend = c("Prior", "Base", "Low R0", "High R0"), 
+  col = c("black", "blue", "red", "green3"), lty = 1, lwd = c(2, 1, 1, 1), bty = "n")
+dev.off()
