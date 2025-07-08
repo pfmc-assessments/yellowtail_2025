@@ -746,8 +746,12 @@ yt_survey_bio |>
   stat_smooth(se = FALSE)
 # Latitudinal age structure: below 43 degrees, avg age ~10, above 45 degrees, avg age ~15
 
-ggplot(yt_n_survey_bio) +
-  geom_point(aes(x = Age_years, y = Length_cm, col = Sex), alpha = 0.1)
+yt_n_survey_bio |>
+  filter(Sex != 'U') |>
+  ggplot() +
+  geom_point(aes(x = Age_years, y = Length_cm, col = Sex), alpha = 0.1) +
+  scale_color_manual(values = c(F = 'red', M = 'blue')) +
+  labs(x = 'Age (yrs)', y = "Length (cm)")
 # Large fish female, old fish male prevails, but not as notable as with canary.
 
 yt_n_survey_bio |>

@@ -1,28 +1,30 @@
 # Management
 
-## Reference Points
+## Reference points
 
 Reference points based on the biomass target of 40% of unfished spawning output, the spawners-per-recruit (SPR) target of 0.5, and the internal model estimate of maximum sustainable yield are shown in @tbl-ref-points-es and @fig-yield. 
 
-## Harvest Projections and Decision Tables
+## Harvest projections and decision tables
 
-Harvest projections for the candidate base model assuming a P* of 0.45, sigma = 0.5, and the time-varying buffer are in @tbl-projections. After exploration of alternative axes of uncertainty during the review panel, the chosen axis of uncertainty was the parameter for equilibrium recruitment on a log scale: $\log(R_0)$.
+Harvest projections for the candidate base model assuming a P* of 0.45, sigma = 0.5, and the time-varying buffer are in @tbl-projections. After exploration of alternative axes of uncertainty during the review panel, the chosen axis of uncertainty was the parameter for unfished recruitment on a log scale: $\log(R_0)$.
 
 The range of values was based on the following guidance in the terms of reference:
 
 > One method bases uncertainty in management quantities for the decision table on the asymptotic standard deviation for the OFL in the final year of the model from the base model. Specifically, the current year spawning biomass for the high and low states of nature are given by the base model mean plus or minus 1.15 standard deviations (i.e., the 12.5th and 87.5th percentiles). A search across fixed values of lnR0 are then used to attain the current year spawning biomass values for the high and low states of nature.
 
-The asymptotic standard deviation for the 2025 OFL from the base model was 0.186 and the point estimate of the 2025 OFL was 5440 mt. The associated 12.5th and 87.5th percentiles were 4392 mt and 6739 mt. Model runs from the likelihood profiles for $\log(R_0)$ which had OFL values which best matched these two values had $\log(R_0)$ = 10.25 and 10.75 relative to a base model estimate of 10.51.
+The asymptotic standard deviation for the 2025 OFL from the base model was `r round(mod_out$OFL_sigma, 3)` and the point estimate of the 2025 OFL was `r round(mod_out$derived_quants['OFLCatch_2025', 'Value'], 0)` mt. The associated 12.5th and 87.5th percentiles were `r round(qlnorm(0.125, meanlog = log(mod_out$derived_quants['OFLCatch_2025', 'Value']), mod_out$OFL_sigma), 0)` mt and `r round(qlnorm(0.875, meanlog = log(mod_out$derived_quants['OFLCatch_2025', 'Value']), mod_out$OFL_sigma), 0)` mt. Model runs from the likelihood profiles for $\log(R_0)$ which had OFL values which best matched these two values had $\log(R_0)$ = 10.25 and 10.75 relative to a base model estimate of `r round(mod_out$parameters['SR_LN(R0)', 'Value'], 2)`.
 
-## Evaluation of Scientific Uncertainty
+The Groundfish Management Team provided assumed catches for 2025 and 2026. These are based on a combination of the [\gls{gemm} report](https://connect.fisheries.noaa.gov/gemm_csv/), [Shorebased Individual Fishing Quota (IFQ) projections](https://www.pcouncil.org/documents/2024/07/2025-26-preferred-groundfish-harvest-specifications-and-management-measures-council-analytical-document.pdf/#page=107), 2025-2026 Harvest Specifications set asides, and the \gls{pacfin} Groundfish Species Scorecard for 2024 Yellowtail Rockfish North of 40° 10’ N. Lat. @tbl-assumed_catch lists out sector-specific catch assumptions and how those map onto modeled fleets.
 
-The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$OFL_sigma, 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5, and increase at a rate of 0.075 per year.
+## Evaluation of scientific uncertainty
+
+The model estimate of the coefficient of variation of the overfishing limit (OFL) in 2025 is `r round(mod_out$OFL_sigma, 3)`. This is less than the default SSC value of 0.5 for a category 1 assessment, so harvest projections assume an initial sigma of 0.5.
 
 {{< pagebreak >}}
 
-### Risk Table
+### Risk table
 
-‘Risk Table’ for northern yellowtail rockfish to document ecosystem and environmental factors potentially affecting stock productivity and uncertainty or other concerns arising from the stock assessment (see text). Level 1 is a favorable ranking, Level 2 neutral, and Level 3 unfavorable
+Below is a risk table for northern yellowtail rockfish to document 1) ecosystem and environmental factors, 2) stock assessment data inputs, and 3) assessment model fits and structural factors that could potentially affect stock productivity and/or uncertainty arising from the stock assessment (see text). Level 1 is favorable/less uncertain, Level 2 neutral, and Level 3 unfavorable/more uncertain
 
 ```{r, results = "asis"}
 #| label: 
@@ -48,7 +50,7 @@ risk|>
 
 ```
 
-#### Ecosystem and Environmental Conditions{}
+#### Ecosystem and environmental conditions{}
 
 To identify ecosystem and environmental processes impacting northern yellowtail rockfish we evaluated recent trends in environmental drivers, focusing on the years after main recruitment deviations are estimated (2019 - 2025). We considered trends in environmental drivers of yellowtail recruitment, habitat and distribution, prey, competitors and predators, and the climate vulnerability assessment (CVA) by @mcclure2023. We did not consider non-fisheries human activities as none were identified to be applicable to yellowtail. Overall we consider ecosystem and environmental conditions to be neutral (Level 2) with medium to high confidence based on agreement between a majority of indicators, robust but uncertain evidence, and no apparent concerns. We use this, plus information related to the stock assessment, to fill out the ‘risk table’ in @tbl-risk, based on the framework outlined by the California Current Integrated Ecosystem Assessment (CCIEA) team [@Golden2024]. The ecosystem and environmnetal conditions discussed here were contributed by Megan Feddern, Isaac Kaplan, Nick Tolimieri, Chris Harvey and Jameal Samhouri.
 
@@ -60,18 +62,18 @@ The Washington nearshore rockfish survey in OCNMS [@Tolimieri2023; @Cope2023wa],
 
 Overall, based on the collective evidence recruitment is characterized as neutral to unfavorable conditions with robust evidence. 
 
-##### Distribution and Habitat{}
+##### Distribution and habitat{}
 Young of the year yellowtail rockfish settle to nearshore areas and are known to utilize kelp bed habitat. Giant and bull kelp abundance based on the Kelp Watch Report Card remain close to the historical average in Washington [@Bell2023]. However, Oregon bull kelp cover is low, and is estimated to be at only 39% of historical levels, and over the last five years cover has been at only 19% of historical levels. Kelp abundance in California regions is also low relative to the historical mean. @Tolimieri2020 and @Taylor_petrale_2023 used spatio-temporal models to examine the distribution and abundance of groundfish along the West Coast. We considered updated spatio-temporal models for young (less than 4.5 years) and adult yellowtail rockfish, separately. These models indicate no changes in distribution. Collectively, habitat and distribution information indicate neutral to somewhat unfavorable conditions due to low kelp cover in Oregon. 
 
 ##### Prey{}
 
 Overall, most available evidence suggests adequate forage for yellowtail in 2024 and recent years and is characterized as neutral to favorable. The CCIEA RREAS euphausiid (krill) indicator shows an increasing trend in the central Central California Current over the last five years, including 2024 (@Leising2025; see Figure I.2). RREAS data for 42 - 46 degrees N indicates no strong trend over the last five years, and krill abundance and size from the Trinidad Head Line were near average for most of 2024. Herring abundance sampled by JSOES  in the Northern California Current has been stable in recent years, although the 2023 acoustic survey estimates of coastwide herring abundance suggest a decline from 2019 levels  [@stierhoff2024distribution]. Production of juvenile hake was estimated in the stock assessment to be above average in 2020 and 2021, though there is high uncertainty in the stock assessment estimates of recruitment for more recent years [@Johnson2025]. Copepods are found in diets of juvenile yellowtail, and sampling at the Newport Hydrographic Line (@Leising2025; see Figure 3.1) suggested average feeding conditions over the last 5 years, with improvements once El Niño conditions waned in early 2024. We note that the coastwide krill abundance index, derived from acoustic data, was not available in 2024, but the 2023 values for this index were the 2nd lowest since the beginning of sampling in 2007.
 
-##### Predators and Competitors{}
+##### Predators and competitors{}
 
 Predators that impose the largest amounts of predation mortality on yellowtail rockfish were identified from Ecopath food web modeling. The Ecopath models of @field2006top and @koehn2016 were recently revised (C.  Best-Otubu, P.Y. Hernvann, N. Lezama Ochoa, I. Kaplan). The highest sources of predation mortality on yellowtail rockfish, from greatest to least, derive from seven predators: California sea lions, lingcod, porpoises, fur seals, harbor seals, sablefish and skates. Based on changes in abundance over the last 5 years, six of the seven main predators are unlikely to drive any changes in predation over the last 5 years [@Caretta2024; @Taylor2019; @Gertseva2019; @Taylor2021]. One predator, sablefish, may have imposed some increased predation pressure on the ecosystem [@Johnson2023], but the linkage to yellowtail specifically is very uncertain. Similarly, we considered hake as a potential competitor for krill, however the lack of evidence of krill being a limiting prey source for yellowtail and lack of direct evidence of competition makes this link highly uncertain. Overall, we scored predation and competition effects  as neutral, with some uncertainty.
 
-##### Climate Vulnerability Assessment{}
+##### Climate vulnerability assessment{}
 
 @mcclure2023 found that yellowtail rockfish had a climate vulnerability of moderate/high and an overall climate exposure of high, due largely to potential impacts from ocean acidification on prey (ranked very high) and mean sea surface temperature (ranked high). We consider the effects of temperature and prey availability to be well informed in other sections of this risk table and the assessment and as a result the CVA ranking was not included in our final scoring of the ecosystem and environmental considerations.
 
@@ -79,7 +81,7 @@ Predators that impose the largest amounts of predation mortality on yellowtail r
 
 Currently yellowtail rockfish is managed with distinct harvest specifications north and south of $40^\circ 10'$ N. latitude. This assessment aligns with the entire northern stock and therefore does not provide a recommended method for allocating harvests at a finer regional scale. Current genetic, oceanographic, and life history evidence indicates a single break in the population around Cape Mendocino, near $40^\circ 10'$ N. latitude.
 
-## Research and Data Needs
+## Research and data needs
 
 ### Response to recommendations in previous assessment
 

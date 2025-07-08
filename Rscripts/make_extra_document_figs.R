@@ -2,7 +2,8 @@ library(ggplot2)
 library(dplyr)
 theme_set(theme_classic())
 
-# LOAD DATA
+
+# Load data ---------------------------------------------------------------
 
 maturity <- readRDS('data/raw_not_confidential/maturity.rds')
 
@@ -24,7 +25,8 @@ bds_clean <- bds.pacfin |>
 recfin_ages <- read.csv(here::here("Data/Confidential/rec/SD506--1984---2024_ages.csv")) |>
   tibble::as_tibble()
 
-# MAKE PLOTS
+
+# Make document plots -----------------------------------------------------
 
 maturity |>
   ggplot(aes(x = age)) +
@@ -80,7 +82,7 @@ growth_space <- filter(yt_n_survey_bio, Age_years <= 20, Age_years > 6) |>
 occurence_depth <- yt_n_survey_bio |>
   ggplot(aes(x = Latitude_dd, y = Age_years)) +
   geom_point(alpha = 0.1, position = 'jitter') +
-  stat_smooth(method = 'loess', col = 'black', se = FALSE) +
+  stat_smooth(method = 'loess', col = 'red', se = FALSE) +
   labs(x = 'Latitude (degrees)', y = 'Age (yrs)')
 
 
@@ -115,3 +117,232 @@ sex_ratio <- all_bio_data |>
 
 cowplot::plot_grid(growth_space, growth_time, occurence_depth, sex_ratio, labels = paste0(letters[1:4], ')'))
 ggsave('report/figures/biology.png', device = 'png', width = 9, height = 7)
+
+# These are for presentations ---------------------------------------------
+
+strata <- nwfscSurvey::CreateStrataDF.fn(
+  names = c("shallow_OR/CA", "deep_OR/CA", "shallow_WA", "deep_WA"),
+  depths.shallow = c(55, 183, 55, 183),
+  depths.deep = c(183, 400, 183, 400),
+  lats.south = c(40.166667, 40.166667, 46, 46),
+  lats.north = c(46, 46, 49, 49)
+)
+
+db_index <- nwfscSurvey::get_design_based(yt_survey_catch, strata = strata)  
+db_index$biomass_by_strata |>
+  tidyr::separate_wider_delim(cols = stratum, delim = "_", names = c('depth', 'latitude')) |>
+  group_by(year, latitude) |>
+  summarise(ntows = sum(ntows),
+            area = sum(area),
+            mean_cpue = sum(area * mean_cpue) / sum(area),
+            var_cpue = sum(var_cpue * area^2 / sum(area)^2),
+            mean_est = sum(est),
+            se = sqrt(sum(var))
+  ) |>
+  mutate(cv = se / mean_est,
+         log_var = log(cv^2 + 1),
+         est = mean_est * exp(-0.5 * log_var),
+         se_log = sqrt(log_var),
+         lwr = exp((log(est) + qnorm(0.025, sd = se_log))), 
+         upr = exp((log(est) + qnorm(0.975, sd = se_log)))
+         # year = ifelse(latitude == 'S', year + 0.2, year)
+  ) |>
+  select(year, est, se_log, lwr, upr, latitude) |>
+  bind_rows(mutate(db_index$biomass, latitude = 'N. of 40-10')) |>
+  ggplot(aes(x = year, y = est, 
+             # ymin = lwr, ymax = upr, 
+             group = latitude)) + 
+  geom_point(aes(col = latitude)) +
+  geom_line(linetype = 'dashed') +
+  # geom_linerange(aes(col = latitude), alpha = 0.5) +
+  labs(x = 'Year', y = 'Design-based index (mt)', col = 'Area')
+ggsave('figures/index_by_area.png', device = 'png', dpi = 500, width = 6, height = 4, units = 'in')
+
+yt_n_survey_bio |>
+  filter(!is.na(Age_years), Year >= 2011) |>
+  mutate(is_2008 = case_when(Year - Age_years == 2008 & Latitude_dd < 46 ~ '2008 OR/CA',
+                             Year - Age_years == 2008 ~ '2008 WA',
+                             TRUE ~ 'Other yr class')) |>
+  count(Year, Age_years, is_2008) |>
+  filter(Age_years <= 30) |>
+  ggplot() +
+  geom_col(aes(x = Age_years, y = n, fill = is_2008)) +
+  facet_wrap(~ Year, nrow = 3) +
+  labs(x = 'Age (yrs)', y = '# of samples', fill = 'Year class') +
+  scale_fill_manual(values = viridis::viridis(n = 5)[c(1,3,4)])
+ggsave('figures/highlight_2008.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+yt_n_survey_bio |>
+  filter(Sex != 'U') |>
+  ggplot() +
+  geom_point(aes(x = Age_years, y = Length_cm, col = Sex), alpha = 0.1) +
+  scale_color_manual(values = c(F = 'red', M = 'blue')) +
+  labs(x = 'Age (yrs)', y = "Length (cm)")
+# Large fish female, old fish male prevails, but not as notable as with canary.
+ggsave(here('figures/age_length_scatter.png'), dpi = 500)
+
+
+# STAR request 1 ----------------------------------------------------------
+
+
+bds_clean <- bds.pacfin |>
+  pacfintools::cleanPacFIN(keep_sample_type = c('M', 'S'),
+                           keep_age_method = c('B', 'S'), CLEAN = FALSE) 
+
+
+
+comm_freq <- bind_cols(bds.pacfin, select(bds_clean, CLEAN)) |>
+  mutate(fleet = 1) |> # assign everything to fleet 1
+  filter(SAMPLE_TYPE == 'M' | (AGENCY_CODE == 'O' & SAMPLE_YEAR <= 1986),  # keep old OR special request
+         AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA',
+         CLEAN = TRUE,
+         PACFIN_GEAR_CODE == 'MDT',
+         !is.na(age1),
+         SAMPLE_YEAR >= 2017, SAMPLE_YEAR < 2025,
+         SEX_CODE != 'U') |> # only y-t north
+  count(SAMPLE_YEAR, age1, SEX_CODE) |>
+  rename(Sex = SEX_CODE, Year = SAMPLE_YEAR, Age_years = age1)
+
+surv_freq <- yt_n_survey_bio |>
+  filter(Year >= 2017, !is.na(Age_years), Sex != 'U') |>
+  count(Year, Age_years, Sex) 
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, Year, source) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |>
+  ggplot() +
+  geom_line(aes(x = Age_years, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  facet_wrap(~Year) +
+  geom_hline(yintercept = 0)
+ggsave('figures/star_request_1.png', device = 'png', dpi = 500, width = 9, height = 5, units = 'in')  
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, source, Age_years) |>
+  summarise(n = sum(n)) |>
+  mutate(freq = (n / sum(n)),
+             freq = ifelse(Sex == 'F', freq, -1 * freq)) |>
+  # ungroup() |> group_by(source, Sex) |> summarise(sum(freq))
+
+  ggplot() +
+  # geom_col(aes(x = Age_years, y = freq, fill = source), position = 'dodge') +
+  geom_line(aes(x = Age_years, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0)
+ggsave('figures/star_request_1_age_agg.png', device = 'png', dpi = 500, width = 4.5, height = 5, units = 'in')  
+
+comm_freq <- bind_cols(bds.pacfin, select(bds_clean, CLEAN, lengthcm)) |>
+  mutate(fleet = 1) |> # assign everything to fleet 1
+  filter(SAMPLE_TYPE == 'M' | (AGENCY_CODE == 'O' & SAMPLE_YEAR <= 1986),  # keep old OR special request
+         AGENCY_CODE == 'W' | AGENCY_CODE == 'O' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA',
+         CLEAN = TRUE,
+         PACFIN_GEAR_CODE == 'MDT',
+         !is.na(lengthcm),
+         SAMPLE_YEAR >= 2017, SAMPLE_YEAR < 2025,
+         SEX_CODE != 'U') |> # only y-t north
+  mutate(len_bin = pacfintools::comps_bins(vector = lengthcm, breaks = len_bin, includeplusgroup = FALSE, 
+                                           returnclass = 'numeric')) |>
+  count(SAMPLE_YEAR, len_bin, SEX_CODE) |>
+  mutate(n = ifelse(SEX_CODE == 'F', n, -n)) |>
+  rename(Sex = SEX_CODE, Year = SAMPLE_YEAR)
+
+
+surv_freq <- yt_n_survey_bio |>
+  filter(Year >= 2017, !is.na(Length_cm), Sex != 'U') |>
+  mutate(len_bin = pacfintools::comps_bins(vector = Length_cm, breaks = len_bin, includeplusgroup = FALSE,
+                                           returnclass = 'numeric')) |>
+  count(Year, len_bin, Sex) |>
+  mutate(n = ifelse(Sex == 'F', n, -n))
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, Year, source) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |> 
+  ggplot() +
+  geom_line(aes(x = len_bin, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0) +
+  xlab('Length (cm)') +
+  facet_wrap(~ Year)
+ggsave('figures/star_request_1_lengths.png', device = 'png', dpi = 500, width = 9, height = 5, units = 'in')  
+
+bind_rows(list(wcgbts = surv_freq, mdt = comm_freq), .id = 'source') |> 
+  group_by(Sex, source, len_bin) |>
+  summarise(n = sum(n)) |>
+  mutate(freq = (n / sum(n)),
+         freq = ifelse(Sex == 'F', freq, -1 * freq)) |> 
+  ggplot() +
+  geom_line(aes(x = len_bin, y = freq, col = paste(source, Sex)), linewidth = 0.75) +
+  geom_hline(yintercept = 0) +
+  xlab('Length (cm)')
+ggsave('figures/star_request_1_len_agg.png', device = 'png', dpi = 500, width = 4.5, height = 5, units = 'in')  
+
+
+# STAR request 10 ---------------------------------------------------------
+
+load(here('Data/Confidential/Commercial/pacfin-2025-03-10/PacFIN.YTRK.CompFT.10.Mar.2025.RData'))
+
+quotas <- read.csv('data/raw_not_confidential/GMT016-final specifications-.csv') |>
+  filter(SPECIFICATION_NAME == 'SB IFQ Total', 
+         YEAR < 2025)
+
+cum_catch_dat <- catch.pacfin |>
+  filter(PACFIN_GROUP_GEAR_CODE == 'TWL',
+         PACFIN_YEAR %in% 2011:2024,
+         AGENCY_CODE == 'O' | AGENCY_CODE == 'W' | PACFIN_GROUP_PORT_CODE == 'CCA' | PACFIN_GROUP_PORT_CODE == 'ERA') |> 
+  left_join(quotas, by = c(LANDING_YEAR = 'YEAR')) |>
+  mutate(j_day = lubridate::yday(LANDING_DATE),
+         sector = case_when(PACFIN_GEAR_CODE == 'MDT' & DAHL_GROUNDFISH_CODE %in% c('03', '17') ~ 'shoreside hake',
+                            PACFIN_GEAR_CODE == 'MDT' ~ 'midwater rockfish',
+                            TRUE ~ 'bottom trawl')) |> 
+  group_by(PACFIN_YEAR, sector) |>
+  arrange(PACFIN_YEAR, sector, j_day) |> 
+  mutate(cum_catch_sector = cumsum(ROUND_WEIGHT_MTONS)) |>
+  ungroup() |>
+  group_by(PACFIN_YEAR) |>
+  arrange(PACFIN_YEAR, j_day) |>
+  mutate(cum_catch = cumsum(ROUND_WEIGHT_MTONS)) |>
+  ungroup() |>
+  mutate(attainment_sector = cum_catch_sector / VAL,
+         attainment = cum_catch / VAL)
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = cum_catch_sector, col = sector)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_catch_sector.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = attainment_sector, col = sector)) +
+  facet_wrap(~ LANDING_YEAR, scales = 'free_y', ncol = 5) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/attain_sector.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = cum_catch)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  geom_hline(aes(yintercept = VAL), data = rename(quotas, LANDING_YEAR = YEAR)) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_catch.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+
+cum_catch_dat |>
+  ggplot() +
+  geom_line(aes(x = j_day, y = attainment)) +
+  facet_wrap(~ LANDING_YEAR, ncol = 5) +
+  ylim(0,1) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/attain.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+
+cum_catch_dat |>
+  ggplot(aes(col = LANDING_YEAR, group = LANDING_YEAR)) +
+  geom_line(aes(x = j_day, y = attainment)) +
+  theme_minimal(base_size = 14) +
+  theme(strip.text = element_text(size = 10))
+ggsave('figures/cum_attain_color.png', device = 'png', dpi = 500, width = 9, height = 4, units = 'in')
+

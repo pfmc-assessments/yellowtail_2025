@@ -54,7 +54,7 @@ CatchTable |>
 #| label: tbl-comm_lengths
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of the number of length samples and trips for  for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
+#| tbl-cap: "Summary of the number of length samples and trips for California (CA), Oregon (OR), and Washington (WA) commercial fishery."
 
 
 commlengths <- read.csv("Tables/pacfin_lengths.csv") 
@@ -146,7 +146,7 @@ rec_bio_table |>
 #| label: tbl-percent_pos
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW"
+#| tbl-cap: "Summary of trips from ORBS dockside sampling from ODFW."
 
 
 read.csv("Tables/yellowtail_percent_pos.csv") |> 
@@ -166,7 +166,7 @@ read.csv("Tables/yellowtail_percent_pos.csv") |>
 #| label: tbl-orbs_mod_select
 #| echo: false
 #| warning: false
-#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index"
+#| tbl-cap: "Model selection for top ten covariate combinations considered for the ORBS index."
 
 orbs_modselect <- read.csv("Tables/yellowtail_model_selection.csv")[1:10, ]
 orbs_modselect[orbs_modselect == "Included"] <- "Incl."
@@ -190,7 +190,7 @@ orbs_modselect |>
 #| label: tbl-hl_percent_pos
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey"
+#| tbl-cap: "Summary of percent positive by number of trips for the combined OR-WA hook and line survey."
 
 
 percposHL <- read.csv("Tables/HL_yellowtail_percent_pos.csv") 
@@ -209,7 +209,7 @@ percposHL|>
 #| label: tbl-hl_mod_slx
 #| echo: false
 #| warning: false
-#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey"
+#| tbl-cap: "Summary of model selection for the combined OR-WA hook and line survey."
 
 
 modslxHL <- read.csv("Tables/HL_yellowtail_model_selection.csv") 
@@ -230,7 +230,7 @@ modslxHL|>
 #| label: tbl-smurf_mod_select
 #| echo: false
 #| warning: false
-#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index"
+#| tbl-cap: "Model selection for covariate combinations considered for the SMURF YOY index."
 
 smurf_modselect <- read.csv("Tables/SMURF_model_selection.csv")
 smurf_modselect[smurf_modselect == "Included"] <- "Incl."
@@ -301,7 +301,7 @@ tri_bio_table |>
 #| label: tbl-consider
 #| echo: false
 #| warning: false
-#| tbl-cap: "Comparison of potential age-0 abundance and recruitment indices by data sourse"
+#| tbl-cap: "Comparison of potential age-0 abundance and recruitment indices by data source."
 
 
 comp <-read.csv("Tables/YOYComparison.csv") 
@@ -416,70 +416,6 @@ kableExtra::kable(
   )
 ```
 
-
-## Management
-
-\pagebreak
-
-::: {.landscape}
-
-```{r, results = "asis"}
-#| label: tbl-projections
-#| warning: false
-#| echo: false
-#| eval: !expr eval_tables 
-#| tbl-cap: !expr if(eval_tables) projections_cap 
-#| tbl-pos: H
-
-projections_table |>
-  gt::gt() |>
-  gt::fmt_number(
-    columns = c(2:5, 7:9),
-    decimals = 0
-  ) |>
-  gt::fmt_number(
-    columns = c(6, 10),
-    decimals = 3
-  ) |>
-  gt::tab_options(
-    table.font.size = 12,
-    latex.use_longtable = TRUE 
-  ) |>
-  gt::sub_missing(
-    columns = tidyselect::everything(),
-    missing_text = "---"
-  ) |>
-  gt::cols_align(
-    align = "center"
-  ) |>
-  gt::cols_width(
-    tidyselect::everything() ~ px(75)
-  ) |>
-  gt::as_latex()
-
-```
-
-:::
-
-\pagebreak
-
-
-```{r, results = "asis"}
-#| label: tbl-decision
-#| warning: false
-#| echo: false
-#| eval: !expr eval_tables 
-#| tbl-cap: !expr if(eval_tables) decision_table_cap 
-#| tbl-pos: H
-
-table_decision(
-  list(mod_low_A, mod_base_A, mod_high_A) #,
-#  list(mod_low_B, mod_base_B, mod_high_B),
-#  list(mod_low_C, mod_base_C, mod_high_C)
-)
-
-```
-
 ::: {.landscape}
 
 \pagebreak
@@ -521,5 +457,113 @@ table_sens(here::here("report/Figures/sensitivities/modeling_table.csv"))
 table_sens(here::here("report/Figures/sensitivities/comp_data_table.csv"))
 
 ``` 
+
+:::
+
+
+## Management
+
+\pagebreak
+
+::: {.landscape}
+
+```{r, results = "asis"}
+#| label: tbl-projections
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) projections_cap 
+#| tbl-pos: H
+
+projections_table |>
+  gt::gt() |>
+  gt::fmt_number(
+    columns = c(2:5, 7:8),
+    decimals = 0
+  ) |>
+  gt::fmt_number(
+    columns = 9,
+    decimals = 2
+  ) |>
+  gt::fmt_number(
+    columns = c(6, 10),
+    decimals = 3
+  ) |>
+  gt::tab_options(
+    table.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::sub_missing(
+    columns = tidyselect::everything(),
+    missing_text = "---"
+  ) |>
+  gt::cols_align(
+    align = "center"
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(75)
+  ) |>
+  gt::as_latex()
+
+```
+
+:::
+
+\pagebreak
+
+
+```{r, results = "asis"}
+#| label: tbl-decision
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: !expr if(eval_tables) decision_table_cap 
+#| tbl-pos: H
+
+table_decision(
+  list(mod_low_A, mod_base_A, mod_high_A),
+ list(mod_low_B, mod_base_B, mod_high_B) #,
+#  list(mod_low_C, mod_base_C, mod_high_C)
+)
+
+```
+
+\pagebreak
+
+::: {.landscape}
+
+```{r, results = "asis"}
+#| label: tbl-assumed_catch
+#| warning: false
+#| echo: false
+#| eval: !expr eval_tables 
+#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ latitude in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment. CP is catcher processor, MSCV is mother ship catcher vessel, and IFQ is individual fishing quota. All units are in metric tons."
+#| tbl-pos: H
+
+tibble::tibble(
+  'CP & MSCV' = c(360, 360),
+  'IFQ' = c(3112, 3018),
+  'Tribal Shoreside' = c(350, 450),
+  'Incidental' = c(23, 23),
+  'Non-Trawl Commercial' = c(12, 12),
+  'WA Rec.' = c(100, 100),
+  'OR Rec.' = c(100, 100),
+  'CA Rec.' = c(3.1, 3.1),
+  'year' = 2025:2026) |>
+  gt::gt(rowname_col = 'year') |>
+  gt::tab_spanner(label = 'At-sea hake', columns = 'CP & MSCV') |>
+  gt::tab_spanner(label = 'Commercial', columns = c('IFQ', 'Tribal Shoreside', 'Incidental', 'Non-Trawl Commercial')) |>
+  gt::tab_spanner(label = 'Recreational', columns = c('WA Rec.', 'OR Rec.', 'CA Rec.')) |>
+  gt::tab_stubhead(label = 'Catch Projection Year') |>
+  gt::tab_options(
+    table.font.size = 12, 
+    heading.title.font.size = 12, stub.font.size = 12, heading.subtitle.font.size = 12, column_labels.font.size = 12,
+    latex.use_longtable = TRUE 
+  ) |>
+  gt::cols_width(
+    tidyselect::everything() ~ px(80)
+  ) |>
+  gt::as_latex()
+```
 
 :::

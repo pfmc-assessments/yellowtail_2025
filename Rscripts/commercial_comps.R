@@ -147,3 +147,42 @@ pacfin_exp |>
   )
 
 
+# Remove ntwl comps -------------------------------------------------------
+
+# run expansions
+pacfin_exp <- bds_clean |>
+  filter(# GRID != 'HKL' | SEX != 'U', # for now instead just use the 100 sample cutoff. more defensible.
+    year != 2025,
+    geargroup == 'TWL' | geargroup == 'TWS') |>
+  # exclude WA surface reads. OR surface reads are actually 'B', per email with ODFW.
+  mutate(Age = ifelse(age_method == 'S' & state == 'WA', NA, Age)) |> 
+  as.data.frame() |> 
+  pacfintools::get_pacfin_expansions(Catch = comm_catch, 
+                                     weight_length_estimates = w_l_pars, 
+                                     stratification.cols = 'state', 
+                                     Units = 'MT', maxExp = 0.8)
+
+# create length comps for SS3
+length_comps_ss3 <- filter(pacfin_exp, !is.na(lengthcm)) |>
+  pacfintools::getComps(
+    Comps = "LEN",
+    weightid = "Final_Sample_Size_L"
+  ) |>
+  pacfintools::writeComps(
+    fname = 'Data/Processed/pacfin_lcomps_twl.csv', 
+    column_with_input_n = 'n_stewart', partition = 0,
+    comp_bins = len_bin # sourced above
+  )
+
+age_comps_ss3 <- filter(pacfin_exp, !is.na(Age), 
+                        SEX != 'U') |> # very few unsexed ages (215, 0.1%)
+  pacfintools::getComps(
+    Comps = "AGE",
+    weightid = "Final_Sample_Size_A"
+  ) |> 
+  pacfintools::writeComps(
+    fname = 'Data/Processed/pacfin_acomps_twl.csv', 
+    month = 7, ageErr = 1, partition = 0,
+    column_with_input_n = 'n_stewart',
+    comp_bins = age_bin # sourced above
+  )

@@ -362,25 +362,23 @@ hcr_catch <- SS_ForeCatch(
     catch_or_F = "dead(B)",
   )
 
-# recent 5-year average catch
-avg_catch <-
-  SS_ForeCatch(
-    replist = mod_out,
-    yrs = 2027:2036,
-    average = TRUE,
-    avg.yrs = 2020:2024
-  ) |>
-  dplyr::rename(
-    year = "#Year",
-    seas = "Seas",
-    fleet = "Fleet",
-    catch_or_F = "dead(B)",
-  )
-avg_catch <- rbind(
-  hcr_catch |> dplyr::filter(year %in% 2025:2026),
-  avg_catch
-)
+avg_attain_catch <- hcr_catch |>
+  mutate(catch_or_F = ifelse(year %in% 2025:2026, catch_or_F, 0.55*catch_or_F))
 
+# # recent 5-year average catch
+# avg_catch <-
+#   SS_ForeCatch(
+#     replist = mod_out,
+#     yrs = 2027:2036,
+#     average = TRUE,
+#     avg.yrs = 2020:2024
+#   ) |>
+#   dplyr::rename(
+#     year = "#Year",
+#     seas = "Seas",
+#     fleet = "Fleet",
+#     catch_or_F = "dead(B)",
+#   )
 
 # apply forecast catch to downweight comps
 inputs_low <- SS_read("model_runs/6.07_STAR_request7_downweight_comps")
@@ -394,7 +392,7 @@ inputs_high$fore$ForeCatch <- hcr_catch
 SS_write(inputs_high, dir = "model_runs/6.25_M_I_weighting_forecast", overwrite = TRUE)
 m6.25 <- SS_output("model_runs/6.25_M_I_weighting_forecast", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 
-# apply forecast catch to low M
+# apply forecast catch to low and high R0
 inputs_low_R0 <- mod_inputs
 inputs_high_R0 <- mod_inputs
 inputs_low_R0$ctl$SR_parms["SR_LN(R0)", "INIT"] <- 10.25
@@ -410,7 +408,6 @@ run("model_runs/6.27_highR0_forecast", extras = "-nohess", skipfinished = FALSE)
 m6.26 <- SS_output("model_runs/6.26_lowR0_forecast", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 m6.27 <- SS_output("model_runs/6.27_highR0_forecast", SpawnOutputLabel = "Spawning output (trillions of eggs)")
 
-
 dir.create("figures/STAR_request13_forecast")
 SSplotComparisons(
   SSsummarize(list(mod_out, m6.24, m6.25, m6.26, m6.27)),
@@ -421,6 +418,34 @@ SSplotComparisons(
   endyrvec = 2036,
   filenameprefix = "STAR_request13_forecast"
 )
+
+# apply average recent attainment of forecast HCR catch to low R0, high R0, and base model
+inputs_low_R0 <- mod_inputs
+inputs_high_R0 <- mod_inputs
+mod <- mod_inputs
+inputs_low_R0$ctl$SR_parms["SR_LN(R0)", "INIT"] <- 10.25
+inputs_high_R0$ctl$SR_parms["SR_LN(R0)", "INIT"] <- 10.75
+inputs_low_R0$ctl$SR_parms["SR_LN(R0)", "PHASE"] <- -1
+inputs_high_R0$ctl$SR_parms["SR_LN(R0)", "PHASE"] <- -1
+inputs_low_R0$fore$ForeCatch <- avg_attain_catch
+inputs_high_R0$fore$ForeCatch <- avg_attain_catch
+mod$fore$ForeCatch <- avg_attain_catch
+
+SS_write(inputs_low_R0, dir = "model_runs/6.28_lowR0_forecast_avg_attain", overwrite = TRUE)
+SS_write(inputs_high_R0, dir = "model_runs/6.29_highR0_forecast_avg_attain", overwrite = TRUE)
+SS_write(mod, dir = "model_runs/6.30_base_forecast_avg_attain", overwrite = TRUE)
+run("model_runs/6.28_lowR0_forecast_avg_attain", extras = "-nohess", skipfinished = FALSE)
+run("model_runs/6.29_highR0_forecast_avg_attain", extras = "-nohess", skipfinished = FALSE)
+run("model_runs/6.30_base_forecast_avg_attain", extras = "-nohess", skipfinished = FALSE)
+m6.28 <- SS_output("model_runs/6.28_lowR0_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+m6.29 <- SS_output("model_runs/6.29_highR0_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+m6.30 <- SS_output("model_runs/6.30_base_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+
+list(m6.28, m6.29, m6.30) |>
+  SSsummarize() |>
+  SSplotComparisons(subplots = c(1,3,5,18), new = FALSE, endyrvec = 2036,
+                    legendlabels = c('low R0', 'high R0', 'base'), 
+                    plotdir = 'figures/STAR_request15', png = TRUE)
 
 
 dir.create("figures/states_of_nature")

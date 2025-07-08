@@ -1,4 +1,4 @@
-# Executive Summary
+# Executive summary
 
 ## Stock{-}
 
@@ -334,7 +334,7 @@ The largest uncertainty in this model is the inability to fit a marked increase 
 
 ## Decision table and harvest projections{-}
 
-Projections of the overfishing limit, acceptable biological catch, and annual catch limit, all based on a P* of 0.45 and a log-space standard deviation of the overfishing limit of 0.5 are included in @tbl-es-projections. Assumed catches for 2025 and 2026 for this projection were provided by the Groundfish Management Team, and catches from 2027 onward assume full attainment of the acceptable biological catch.
+Projections of the overfishing limit, acceptable biological catch, and annual catch limit, all based on a P* of 0.45 and a log-space standard deviation of the overfishing limit of 0.5 are included in @tbl-es-projections. Assumed catches for 2025 and 2026 for this projection were provided by the Groundfish Management Team, and catches from 2027 onward assume full attainment of the acceptable biological catch. Decision tables from the base model and low and high states of nature (axis of uncertainty is based on log of unfished recruitment) are in @tbl-es-decision. The first set of projections in the decision table are based on full attainment of the ACL from the base model; the second set of projections assumes similar attainment to recent years (55%).
 
 <!-- Projected yields (OFL, ABC and ACL), spawning biomass / output, and stock depletion levels for each year. OFL calculations should be based on the assumption that future catches equal ABCs and not OFLs. -->
 
@@ -355,7 +355,11 @@ projections_table |>
     decimals = 0
   ) |>
   gt::fmt_number(
-    columns = c(6, 9:10),
+    columns = 9,
+    decimals = 2
+  ) |>
+  gt::fmt_number(
+    columns = c(6, 10),
     decimals = 3
   ) |>
   gt::tab_options(
@@ -387,13 +391,12 @@ projections_table |>
 #| tbl-pos: H
 
 table_decision(
-  list(mod_low_A, mod_base_A, mod_high_A) #,
-  # list(mod_low_B, mod_base_B, mod_high_B),
-  # list(mod_low_C, mod_base_C, mod_high_C)
+  list(mod_low_A, mod_base_A, mod_high_A),
+ list(mod_low_B, mod_base_B, mod_high_B) #,
+#  list(mod_low_C, mod_base_C, mod_high_C)
 )
 
 ```
-
 
 ## Scientific uncertainty{-}
 
@@ -405,7 +408,7 @@ The most important future research need is to better understand the catchability
 
 {{< pagebreak >}}
 
-## Risk Table{-}
+## Risk table{-}
 ```{r, tbl-risk, results = "asis"}
 #| label: tbl-risk
 #| echo: false
