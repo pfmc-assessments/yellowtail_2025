@@ -537,7 +537,7 @@ table_decision(
 #| warning: false
 #| echo: false
 #| eval: !expr eval_tables 
-#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ latitude in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment. CP is catcher processor, MSCV is mother ship catcher vessel, and IFQ is individual fishing quota. All units are in metric tons."
+#| tbl-cap: "Catch projections for yellowtail rockfish north of 40°10’ N. Lat. in 2025-2026 with detailed sector breakdown for each fleet used within the stock assessment. CP is catcher processor, MSCV is mother ship catcher vessel, and IFQ is individual fishing quota. All units are in metric tons."
 #| tbl-pos: H
 
 tibble::tibble(

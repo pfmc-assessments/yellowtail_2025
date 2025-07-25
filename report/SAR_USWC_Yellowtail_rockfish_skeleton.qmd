@@ -46,7 +46,7 @@ format:
     include-in-header:
       - 'support_files/in-header.tex'
       - 'support_files/pfmc.tex'
-    toc: true
+    toc: false
     lof: false
     lot: false
     titlepage-geometry: 
@@ -117,7 +117,7 @@ cat(a, sep = '\n')
 
 Please cite this publication as: 
 
-Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Managment Council, Portland, Oregon. [XX] p.
+Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Management Council, Portland, Oregon. [XX] p.
 
  {{< pagebreak >}} 
 
@@ -129,6 +129,16 @@ Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status 
 a <- knitr::knit_child('002_load_tables.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
+
+```{=latex}
+{
+\hypersetup{linkcolor=.}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+```
+
+ {{< pagebreak >}} 
 
 ```{r, results='asis'}
 #| label: 'executive_summary'
