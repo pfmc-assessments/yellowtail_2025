@@ -13,6 +13,13 @@ format: html
 #| message: false
 #| eval: true
 
+# require packages
+require(r4ss)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(gt)
+
 # read model output
 mod_low_A <- r4ss::SS_output(here::here("model_runs/6.26_lowR0_forecast"), printstats = FALSE, verbose = FALSE)
 mod_low_B <- r4ss::SS_output(here::here("model_runs/6.28_lowR0_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
@@ -20,6 +27,10 @@ mod_base_A <- r4ss::SS_output(here::here("model_runs/5.09_no_extra_SE"), printst
 mod_base_B <- r4ss::SS_output(here::here("model_runs/6.30_base_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
 mod_high_A <- r4ss::SS_output(here::here("model_runs/6.27_highR0_forecast"), printstats = FALSE, verbose = FALSE)
 mod_high_B <- r4ss::SS_output(here::here("model_runs/6.29_highR0_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
+titles <- c(
+    "Estimated OFL values by state of nature for yellowtail rockfish catch stream A: default harvest control rule",
+    "Estimated OFL values by state of nature for yellowtail rockfish catch stream M: avg. ACL attainment = 55%"
+)
 
 #' Format a decision table
 #'
@@ -44,7 +55,6 @@ mod_high_B <- r4ss::SS_output(here::here("model_runs/6.29_highR0_forecast_avg_at
 #' The default value is `NULL`.
 #' @param digits A vector of digits for catch, spawning output, and fraction,
 #' unfished. It gets passed to `r4ss::SS_decision_table_stuff()`.
-#' @param tex TRUE/FALSE controlling whether to apply latex formatting.
 #' @export
 #' @author Kelli F. Johnson, Ian G. Taylor, Chantel R. Wetzel
 #' @examples
@@ -53,15 +63,12 @@ mod_high_B <- r4ss::SS_output(here::here("model_runs/6.29_highR0_forecast_avg_at
 #'     list(mod.low.B, mod.base.B, mod.high.B),
 #'     list(mod.low.C, mod.base.C, mod.high.C)
 #' )
-table_decision <- function(
+table_decision_with_OFL <- function(
     ...,
     years = 2025:2036,
-    digits = c(0, 0, 3),
-    tex = TRUE) {
+    digits = c(0, 0, 3)) {
+    # gather models into a list
     mods <- list(...)
-    # make sure that the format input is good
-    # chooses first option by default
-    format <- match.arg(format)
 
     # hardwired to prevent users from adding too-long inputs
     rowgroup <- c("A", "B", "C")
@@ -104,10 +111,6 @@ table_decision <- function(
         dplyr::rename(Catch = "catch...2") |>
         dplyr::select(-dplyr::starts_with("catch", ignore.case = FALSE))
 
-    # remove repeated lables in Mgmt column
-    results <- results |>
-        dplyr::mutate(Mgmt = ifelse(duplicated(Mgmt), "", Mgmt))
-
     # add column names
     rownames(results) <- NULL
     # note: column names could be modified to include informative descriptions
@@ -129,15 +132,100 @@ table_decision <- function(
 }
 
 
+#' Format Decision Table for HTML Output
+#'
+#' This function formats a decision table for HTML display using the `gt` package.
+#' It removes repeated labels in the "Mgmt" column, sets font size, table width, and font family.
+#'
+#' @param results A data frame containing the decision table to be formatted.
+#'
+#' @return A `gt` table object formatted for HTML output.
+#'
+#' @examples
+#' \dontrun{
+#' formatted_table <- format_decision_table_for_html(results)
+#' }
+#'
+#' @import dplyr
+#' @import gt
 format_decision_table_for_html <- function(results) {
+    # remove repeated lables in Mgmt column
     results |>
+        dplyr::mutate(Mgmt = ifelse(duplicated(Mgmt), "", Mgmt)) |>
         gt::gt() |>
         gt::tab_options(
             table.font.size = gt::px(11),
             table.width = gt::pct(90),
             table.font.names = "Arial"
         )
-    return(results)
+}
+
+#' Create a time series figure of OFL values for each state of nature
+#'
+#' This function generates a ggplot figure showing the time series of Overfishing Limit (OFL) values
+#' for each state of nature ("High OFL", "Base OFL", "Low OFL") and the catch used in all states.
+#' The input table is reshaped and filtered by management stream, then plotted with distinct colors and shapes
+#' for each state.
+#'
+#' @param table A data frame containing columns: `Mgmt`, `Catch`, `Year`, `Low OFL`, `Base OFL`, `High OFL`.
+#'
+#' @return A ggplot object displaying the time series of OFL and catch values by state of nature.
+#'
+#' @import dplyr
+#' @import tidyr
+#' @import ggplot2
+#'
+#' @examples
+#' \dontrun{
+#' make_ofl_figure(my_decision_table)
+#' }
+# make figure of timeseries of OFL values for each state of nature
+make_ofl_figure <- function(table, stream = "A") {
+    table_long <- table |>
+        dplyr::select(Mgmt, Catch, Year, `Low OFL`, `Base OFL`, `High OFL`) |>
+        tidyr::pivot_longer(
+            cols = c(Catch, `Low OFL`, `Base OFL`, `High OFL`),
+            names_to = "State",
+            values_to = "OFL"
+        ) |>
+        dplyr::mutate(State = factor(State,
+            levels = c("High OFL", "Base OFL", "Low OFL", "Catch"),
+            labels = c(
+                "OFL from High State",
+                "OFL from Base",
+                "OFL from Low State",
+                "Catch used in all states"
+            )
+        ))
+    table_long |>
+        dplyr::filter(Mgmt == stream) |>
+        ggplot(aes(x = Year, y = OFL, color = State, shape = State)) +
+        geom_line(linewidth = 1.5) +
+        geom_point(size = 3) +
+        scale_color_manual(
+            values = c(
+                "OFL from High State" = "darkolivegreen4",
+                "OFL from Base" = "blue",
+                "OFL from Low State" = "brown4",
+                "Catch used in all states" = "black"
+            )
+        ) +
+        scale_shape_manual(
+            values = c(
+                "OFL from High State" = 16, # solid circle
+                "OFL from Base" = 17, # solid triangle
+                "OFL from Low State" = 15, # solid square
+                "Catch used in all states" = NA # no points, just line
+            )
+        ) +
+        labs(
+            x = "Year",
+            y = "OFL or catch (mt)",
+            color = "State",
+            shape = "State"
+        ) +
+        theme_classic() +
+        scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05)))
 }
 ```
 
@@ -150,51 +238,25 @@ format_decision_table_for_html <- function(results) {
 #| tbl-cap: Decision table showing estimated OFL values for the three states of nature.
 
 # call the function defined above
-table_decision(
+table <- table_decision_with_OFL(
     list(mod_low_A, mod_base_A, mod_high_A),
-    list(mod_low_B, mod_base_B, mod_high_B),
+    list(mod_low_B, mod_base_B, mod_high_B)
     #  list(mod_low_C, mod_base_C, mod_high_C),
-    format = "html"
-) |>
-    format_decision_table_for_html()
+)
+table |> format_decision_table_for_html()
 
 ```
 
 ```{r}
-#| label: figure
+#| label: create figures
+#| echo: false
+#| warning: false
+#| message: false
+#| eval: true
 
 # make ggplot figure showing the values in the "Low OFL", "Base OFL", and "High OFL" columns
-
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
-results <- table_decision(
-    list(mod_low_A, mod_base_A, mod_high_A),
-    list(mod_low_B, mod_base_B, mod_high_B),
-    #  list(mod_low_C, mod_base_C, mod_high_C),
-    format = "html"
-)
-
-results_long <- results |>
-    dplyr::select(Year, `Low OFL`, `Base OFL`, `High OFL`) |>
-    tidyr::pivot_longer(
-        cols = c(`Low OFL`, `Base OFL`, `High OFL`),
-        names_to = "State",
-        values_to = "OFL"
-    )
-
-ggplot(results_long, aes(x = Year, y = OFL, color = State)) +
-    geom_line(size = 1.2) +
-    geom_point(size = 2) +
-    labs(
-        title = "Estimated OFL values by State of Nature",
-        x = "Year",
-        y = "OFL",
-        color = "State"
-    ) +
-    theme_minimal(base_size = 14)
-
-ggsave("OFL_timeseries_for_states_of_nature.png")
-
+for (stream in unique(table$Mgmt)) {
+    make_ofl_figure(table, stream)
+    ggsave(paste0("OFL_timeseries_for_states_of_nature_stream_", stream, ".png"), width = 7, height = 5)
+}
 ```
