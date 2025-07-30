@@ -20,17 +20,15 @@ require(dplyr)
 require(tidyr)
 require(gt)
 
-# read model output
+# read model output [EDIT HERE and stuff at the very top]
 mod_low_A <- r4ss::SS_output(here::here("model_runs/6.26_lowR0_forecast"), printstats = FALSE, verbose = FALSE)
 mod_low_B <- r4ss::SS_output(here::here("model_runs/6.28_lowR0_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
 mod_base_A <- r4ss::SS_output(here::here("model_runs/5.09_no_extra_SE"), printstats = FALSE, verbose = FALSE)
 mod_base_B <- r4ss::SS_output(here::here("model_runs/6.30_base_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
 mod_high_A <- r4ss::SS_output(here::here("model_runs/6.27_highR0_forecast"), printstats = FALSE, verbose = FALSE)
 mod_high_B <- r4ss::SS_output(here::here("model_runs/6.29_highR0_forecast_avg_attain"), printstats = FALSE, verbose = FALSE)
-titles <- c(
-    "Estimated OFL values by state of nature for yellowtail rockfish catch stream A: default harvest control rule",
-    "Estimated OFL values by state of nature for yellowtail rockfish catch stream M: avg. ACL attainment = 55%"
-)
+
+# NO NEED TO EDIT BEYOND HERE UNLESS YOU HAVE 3 STATES OF NATURE
 
 #' Format a decision table
 #'
