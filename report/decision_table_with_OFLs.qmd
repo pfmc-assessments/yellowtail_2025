@@ -1,9 +1,5 @@
 ---
-title: "Decision table showing OFLs for yellowtail rockfish"
-author: "Kiva L. Oken and Ian G. Taylor" 
-affiliation: 'NOAA Fisheries Northwest Fisheries Science Center, 2725 Montlake Blvd E, Seattle, WA 98112'
-date: today
-format: html
+format: docx
 ---
 
 ```{r}
@@ -117,11 +113,11 @@ table_decision_with_OFL <- function(
         "Year",
         "Catch",
         "Low Spawn",
-        "Low Frac",
+        "Low Fraction of Unfished",
         "Base Spawn",
-        "Base Frac",
+        "Base Fraction of Unfished",
         "High Spawn",
-        "High Frac"
+        "High Fraction of Unfished"
     )
 
     # replace spawning output with OFL
@@ -151,6 +147,10 @@ format_decision_table_for_html <- function(results) {
     results |>
         dplyr::mutate(Mgmt = ifelse(duplicated(Mgmt), "", Mgmt)) |>
         gt::gt() |>
+        gt::fmt_number(
+          columns = c(3:4, 6, 8),
+          decimals = 0
+        ) |>
         gt::tab_options(
             table.font.size = gt::px(11),
             table.width = gt::pct(90),
@@ -197,9 +197,9 @@ make_ofl_figure <- function(table, stream = "A") {
         ))
     table_long |>
         dplyr::filter(Mgmt == stream) |>
-        ggplot(aes(x = Year, y = OFL, color = State, shape = State)) +
-        geom_line(linewidth = 1.5) +
-        geom_point(size = 3) +
+        ggplot2::ggplot(ggplot2::aes(x = Year, y = OFL, color = State, shape = State)) +
+        ggplot2::geom_line(linewidth = 1.5) +
+        ggplot2::geom_point(size = 3) +
         scale_color_manual(
             values = c(
                 "OFL from High State" = "darkolivegreen4",
@@ -208,7 +208,7 @@ make_ofl_figure <- function(table, stream = "A") {
                 "Catch used in all states" = "black"
             )
         ) +
-        scale_shape_manual(
+        ggplot2::scale_shape_manual(
             values = c(
                 "OFL from High State" = 16, # solid circle
                 "OFL from Base" = 17, # solid triangle
@@ -216,14 +216,14 @@ make_ofl_figure <- function(table, stream = "A") {
                 "Catch used in all states" = NA # no points, just line
             )
         ) +
-        labs(
+        ggplot2::labs(
             x = "Year",
             y = "OFL or catch (mt)",
             color = "State",
             shape = "State"
         ) +
-        theme_classic() +
-        scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05)))
+        ggplot2::theme_classic() +
+        ggplot2::scale_y_continuous(limits = c(0, NA), expand = ggplot2::expansion(mult = c(0, 0.05)))
 }
 ```
 
@@ -233,15 +233,27 @@ make_ofl_figure <- function(table, stream = "A") {
 #| warning: false
 #| message: false
 #| eval: true
-#| tbl-cap: Decision table showing estimated OFL values for the three states of nature.
+#| tbl-cap: "ADD CAPTION BELOW IN THE TABLE_HEADER()"
 
 # call the function defined above
 table <- table_decision_with_OFL(
     list(mod_low_A, mod_base_A, mod_high_A),
     list(mod_low_B, mod_base_B, mod_high_B)
-    #  list(mod_low_C, mod_base_C, mod_high_C),
-)
-table |> format_decision_table_for_html()
+  ) 
+table |> 
+  gt::gt() |>
+  gt::fmt_number(
+    columns = c(3:4, 6, 8),
+    decimals = 0
+  ) |>
+  gt::tab_options(
+      table.font.size = gt::px(11),
+      table.width = gt::pct(90),
+      table.font.names = "Arial"
+  ) |>
+  gt::tab_header(
+    "Decision table summary of 10 year projections beginning in 2027 for alternative states of nature based on an axis of uncertainty about natural mortality for the base model. Columns range over low, base, and high states of nature and rows range over different catch level assumptions. EXPAND HERE."
+  )
 
 ```
 
@@ -257,4 +269,30 @@ for (stream in unique(table$Mgmt)) {
     make_ofl_figure(table, stream)
     ggsave(paste0("OFL_timeseries_for_states_of_nature_stream_", stream, ".png"), width = 7, height = 5)
 }
+```
+
+```{r}
+#| label: a-fig
+#| echo: false
+#| warning: false
+#| message: false
+#| eval: true
+#| fig-cap: "OFLs and assumed catch for management scenario A: the default harvest control rule $P$* = 0.45 and sigma = 0.5."
+knitr::include_graphics(
+  file.path("OFL_timeseries_for_states_of_nature_stream_A.png")
+)
+
+```
+
+```{r}
+#| label: b-fig
+#| echo: false
+#| warning: false
+#| message: false
+#| eval: true
+#| fig-cap: "OFLs and assumed catch for management scenario B: the default harvest control rule $P$* = 0.40 and sigma = 0.5."
+knitr::include_graphics(
+  file.path("OFL_timeseries_for_states_of_nature_stream_B.png")
+)
+
 ```
