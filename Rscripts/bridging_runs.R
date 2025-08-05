@@ -827,10 +827,19 @@ out3 <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
                                                 '5.09_no_extra_se')),
                     SpawnOutputLabel = 'Spawning Output (trillions of eggs)')
 
+out_gfsc <- SSgetoutput(dirvec = glue::glue('model_runs/{mod}',
+                                            mod = c('1.02_base_2017_3.30.23',
+                                                    '3.08_lengths_exp_pacfin',
+                                                    '3.10_exp_comps_2024',
+                                                    '4.15_rec_blocks_only',
+                                                    '5.09_no_extra_se')),
+                    SpawnOutputLabel = 'Spawning Output (trillions of eggs)')
+
+
 # bridging plots for group 1
 out1 |>
   SSsummarize() |>
-  SSplotComparisons(subplots = c(2,4), new = FALSE,
+  SSplotComparisons(subplots = c(2,4,18), new = FALSE,
                     legendlabels = c('2017',
                                      'Reanalyze catch', 
                                      '+ index', 
@@ -858,7 +867,7 @@ out1 |>
 # bridging plots for group 2
 c(list(base2017 = out1[[1]]), out2) |> 
   SSsummarize() |>
-  SSplotComparisons(subplots = c(2,4), new = FALSE,
+  SSplotComparisons(subplots = c(2,4,18), new = FALSE,
                     legendlabels = c('2017',
                                      'first steps',
                                      'reanalyze raw pacfin ages',
@@ -895,7 +904,7 @@ out3_smry$SpawnBioLower$replist3 <- out3_smry$SpawnBioUpper$replist3 <- out3_smr
 out3_smry$BratioLower$replist3 <- out3_smry$BratioUpper$replist3 <- out3_smry$Bratio$replist3
 
 out3_smry |>
-  SSplotComparisons(subplots = c(2,4), new = FALSE,
+  SSplotComparisons(subplots = c(2,4,18), new = FALSE,
                     legendlabels = c('2017',
                                      'reanalyze and extend data',
                                      'selectivity: rec blocks',
@@ -921,7 +930,41 @@ c(list(base2017 = out1[[1]]), out3) |>
     shadeForecast = FALSE
   )
 
+out_gfsc |>
+  r4ss::plot_twopanel_comparison(
+    dir = 'report/figures/bridging',
+    filename = 'bridging_gfsc_comparison.png',
+    legendlabels = c(
+      '2017',
+      'Reanalyze data',
+      'Extend data',
+      '+ Rec block',
+      '+ All other model changes (2025 base model)'
+    ),
+    legendloc = 'bottomleft',
+    endyrvec = c(2017, 2017, rep(2025, 3)),
+  )
 
+smry <- out_gfsc |>
+  SSsummarize() 
+smry$SmryBio <- smry$SmryBio |>
+  mutate(across(1:2, ~ifelse(Yr > 2017, NA, .)))
+
+smry |>
+  r4ss::SSplotComparisons(
+    plotdir = 'report/figures/bridging',
+    filenameprefix = 'bridging_gfsc_comparison_smry_bio',
+    legendlabels = c(
+      '2017',
+      'Reanalyze data',
+      'Extend data',
+      '+ Rec block',
+      '+ All other model changes (2025 base model)'
+    ),
+    legendloc = 'bottomleft',
+    subplots = 18, endyrvec = c(2017, 2017, 2025, 2025, 2025),
+    new = FALSE, png = TRUE
+  )
 # Update # Update # Update bias adjustment --------------------------------------------------
 
 
