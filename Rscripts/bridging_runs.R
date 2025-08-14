@@ -846,7 +846,8 @@ out1 |>
                                      '+ bio', 
                                      '+ discard'), 
                     png = TRUE, plotdir = 'report/figures/bridging', 
-                    filenameprefix = 'bridging1')
+                    filenameprefix = 'bridging1', 
+                    legendloc = 'bottomleft')
 
 
 out1 |>
@@ -876,7 +877,8 @@ c(list(base2017 = out1[[1]]), out2) |>
                                      'exp pacfin ages + lengths',
                                      'extend to 2024'), 
                     png = TRUE, plotdir = 'report/figures/bridging',
-                    filenameprefix = 'bridging2')
+                    filenameprefix = 'bridging2', 
+                    legendloc = 'bottomleft')
 
 c(list(base2017 = out1[[1]]), out2) |>
   r4ss::plot_twopanel_comparison(
@@ -911,7 +913,8 @@ out3_smry |>
                                      'selectivity: hake block, sex-specific rec',
                                      'add H&L, SMURF, various other updates'), 
                     png = TRUE, plotdir = 'report/figures/bridging',
-                    filenameprefix = 'bridging3')
+                    filenameprefix = 'bridging3', 
+                    legendloc = 'bottomleft')
 
 c(list(base2017 = out1[[1]]), out3) |>
   r4ss::plot_twopanel_comparison(

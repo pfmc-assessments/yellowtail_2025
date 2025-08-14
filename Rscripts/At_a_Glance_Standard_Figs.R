@@ -126,3 +126,22 @@ p1 + p2 + patchwork::plot_layout(design = layout)
 ggsave(filename = here::here("figures", "at_at_glance", "fraction_unfished.png"), height = 8/1.7, width = 8, dpi = 500)
 
 
+#### mean age
+
+png(filename = here::here("figures", "at_at_glance", "mean_age.png"), height = 6/1.7, width = 6, units = 'in', res = 500)
+r4ss::SSMethod.TA1.8(fit = model_output, type = 'age', fleet = 1, 
+                     plotadj = FALSE, label.part = FALSE, 
+                     fleetnames = rep('', 7))
+dev.off()
+
+#### rec index
+
+model_output$cpue |> 
+  filter(Fleet_name == 'SMURF') |>
+  ggplot(aes(x = Yr)) +
+  geom_line(aes(y = Exp), col = '#2297E6', linewidth = 1) +
+  geom_point(aes(y = Obs)) +
+  geom_linerange(aes(ymin = qlnorm(0.025, meanlog = log(Obs), sdlog = SE_input),
+                     ymax = qlnorm(0.975, meanlog = log(Obs), sdlog = SE_input))) +
+  labs(x = 'Year', y = 'Recruitment index') +
+  theme_bw(16)
