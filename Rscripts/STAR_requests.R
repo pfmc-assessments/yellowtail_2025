@@ -513,3 +513,29 @@ legend('topleft',
   legend = c("Prior", "Base", "Low R0", "High R0"), 
   col = c("black", "blue", "red", "green3"), lty = 1, lwd = c(2, 1, 1, 1), bty = "n")
 dev.off()
+
+
+
+# additional projection where the 0.55 is applied dynamically, rather than to all years
+# added on 2025-09-03 after discussion with Owen and Kiva
+mod <- SS_read("model_runs/5.09_no_extra_SE", ss_new = TRUE)
+# change buffer to apply 55% to the buffer, rather than the ACLs from the first scenario
+mod$fore$Flimitfraction_m$fraction[mod$fore$Flimitfraction_m$year >= 2027] <- 
+  0.55 * mod$fore$Flimitfraction_m$fraction[mod$fore$Flimitfraction_m$year >= 2027]
+# write files and run model
+SS_write(mod, "model_runs/6.31_base_forecast_0.55_buffer", overwrite = TRUE)
+run(
+  dir = "model_runs/6.31_base_forecast_0.55_buffer",
+  extras = "-nohess",
+  skipfinished = FALSE
+)
+
+# read output from each of the different average attainment projections
+m6.30 <- SS_output("model_runs/6.30_base_forecast_avg_attain", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+m6.31 <- SS_output("model_runs/6.31_base_forecast_0.55_buffer", SpawnOutputLabel = "Spawning output (trillions of eggs)")
+
+# look at differences in decision table values
+cbind(
+  SS_decision_table_stuff(m6.30, digits = c(0,2,3)), 
+  SS_decision_table_stuff(m6.31, digits = c(0,2,3))
+)
