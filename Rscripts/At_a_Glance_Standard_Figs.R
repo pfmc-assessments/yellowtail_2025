@@ -81,11 +81,11 @@ p1 <- ggplot(bratio_pt) +
            color = "red", vjust = 0, size = 5) +
   annotate(geom = "text", x = 2015, y = 0.26, label = "Minimum Stock Size Threshold", 
            color = "red", vjust = 0, size = 5) +
-  annotate(geom="text", x = 2027, y = 0.05, label = "Forecast Period", 
-           color = "gray35", hjust = 0, size = 5) +
-  annotate(geom = "text", x = 2000, y = 0.02, 
-           label = "Blue shading represents 95% uncertainty range\nfor the base model", 
-           color = "gray40", hjust = 0, vjust = 0, size = 4) +
+  # annotate(geom="text", x = 2027, y = 0.05, label = "Forecast Period", 
+  #          color = "gray35", hjust = 0, size = 5) +
+  # annotate(geom = "text", x = 2000, y = 0.02, 
+  #          label = "Blue shading represents 95% uncertainty range\nfor the base model", 
+  #          color = "gray40", hjust = 0, vjust = 0, size = 4) +
   theme_bw() +
   theme(
     # plot.margin = margin(60, 5.5, 5.5, 5.5, unit = 'pt'),
@@ -129,9 +129,22 @@ ggsave(filename = here::here("figures", "at_at_glance", "fraction_unfished.png")
 #### mean age
 
 png(filename = here::here("figures", "at_at_glance", "mean_age.png"), height = 6/1.7, width = 6, units = 'in', res = 500)
+par(
+  mar = c(2, 2, 1, 1) + 0.1,
+  mgp = c(0, 0.5, 0),
+  oma = c(1.2, 1.2, 0, 0),
+  las = 1
+)
 r4ss::SSMethod.TA1.8(fit = model_output, type = 'age', fleet = 1, 
                      plotadj = FALSE, label.part = FALSE, 
-                     fleetnames = rep('', 7))
+                     fleetnames = rep('', 7), set.pars = FALSE)
+legend(x = 1995, y = 8, 
+       legend = c('Average commercial age', 'Uncertainty in average age', 'Model fit'), 
+       pch = c(21, NA, NA), 
+       col = palette()[c(1, 1, 4)],
+       lty = c(NA, 1, 1), 
+       pt.bg = c('gray80', NA, NA),
+       lwd = c(1, 3, 3), bty = 'n')
 dev.off()
 
 #### rec index
@@ -139,9 +152,10 @@ dev.off()
 model_output$cpue |> 
   filter(Fleet_name == 'SMURF') |>
   ggplot(aes(x = Yr)) +
-  geom_line(aes(y = Exp), col = '#2297E6', linewidth = 1) +
+  geom_line(aes(y = Exp), col = palette()[4], linewidth = 1) +
   geom_point(aes(y = Obs)) +
   geom_linerange(aes(ymin = qlnorm(0.025, meanlog = log(Obs), sdlog = SE_input),
                      ymax = qlnorm(0.975, meanlog = log(Obs), sdlog = SE_input))) +
   labs(x = 'Year', y = 'Recruitment index') +
   theme_bw(16)
+ggsave(here::here("figures", "at_at_glance", "recruitment.png"), height = 2.18*2, width = 2.28*2, units = 'in', dpi = 500)
