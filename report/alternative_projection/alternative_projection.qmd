@@ -36,13 +36,16 @@ p_star <- params$p_star
 spawn_output_decimals <- params$spawn_output_decimals
 
 base_mod <- '5.09_no_extra_se'
-mod_in <- SS_read(here('model_runs', base_mod))
 model_original <- SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
 ```
 
 ```{r}
+#| label: modify-projection
+#| eval: false
 
 # modify projection
+
+mod_in <- SS_read(here('model_runs', base_mod))
 
 ofl_2027 <- model_original$derived_quants |> 
   filter(grepl('OFLCatch_2027', Label)) |> 
@@ -56,6 +59,23 @@ mod_in$fore$Flimitfraction_m[3, 'fraction'] <- (ofl_2027-1) / ofl_2027
 mod_in$fore$Flimitfraction_m[4, 'fraction'] <- mean(c(1, buffer_2028))
 
 # SS_write(mod_in, here('Model_Runs/5.11_adj_hcr'), overwrite = TRUE)
+
+mod2 <- SS_read(here('Model_Runs/5.11_adj_hcr'))
+mod2$fore$FirstYear_for_caps_and_allocations <- 2029
+mod2$fore$Flimitfraction_m[3:4, 'fraction'] <- 1
+new_fixed_catches <- r4ss::SS_ForeCatch(model_original) |>
+  rename(year = `#Year`) |> 
+  filter(year %in% 2027:2028) |>
+  group_by(year) |>
+  mutate(pct = `dead(B)` / sum(`dead(B)`),
+         total2027 = 5050,
+         total2028 = 4730,
+         total = ifelse(year == 2027, total2027, total2028),
+         catch_or_F = pct * total) |>
+  select(year, seas = Seas, fleet = Fleet, catch_or_F)
+mod2$fore$ForeCatch <- bind_rows(mod_in$fore$ForeCatch, new_fixed_catches)
+# SS_write(mod2, here('Model_Runs/5.12_adj_hcr2'), overwrite = TRUE)
+
 ```
 
 ```{r}
@@ -64,7 +84,7 @@ mod_in$fore$Flimitfraction_m[4, 'fraction'] <- mean(c(1, buffer_2028))
 #| warning: false
 #| message: false
 
-model <- SS_output(here('model_runs', '5.11_adj_hcr'), verbose = FALSE, printstats = FALSE)
+model <- SS_output(here('model_runs', '5.12_adj_hcr2'), verbose = FALSE, printstats = FALSE)
 
 # define ranges of years to get values
 all_years <- assess_year:final_proj_year
@@ -176,15 +196,15 @@ format_table <- function(table) {
 table <- catch_only_projection_table(model,
     all_years = all_years, proj_years = proj_years, catch_years = catch_years
 ) |>
-  select(-"Spawning Output", -'Actual & Assumed Removals') |>
-  mutate(Buffer = Buffer_from_ratio, # overwrite buffer from PEPtools::get_buffer
-         ABC = ACL) |> # overwrite externally calculated ABC
+  select(-`Spawning Output`, -`Actual & Assumed Removals`, -Buffer) |>
+  mutate(# Buffer = Buffer_from_ratio, # overwrite buffer from PEPtools::get_buffer
+          ABC = ACL) |> # overwrite externally calculated ABC
   rename_with(~ paste(.x, "(yyyy)"), .cols = -Year)
 
 table_original <- catch_only_projection_table(model_original,
     all_years = head(all_years, 12), proj_years = proj_years - diff_years, catch_years = catch_years - diff_years
 ) |>
-  select(-Buffer, -'Spawning Output')
+  select(-`Spawning Output`)
 
 
 ```
@@ -205,7 +225,7 @@ wide_table3 <- dplyr::full_join(
   dplyr::select(
     Year,
     `OFL (yyyy)`, OFL,
-    `Buffer (yyyy)`,
+    `Buffer`,
     `ABC (yyyy)`, ABC,
     `Actual & Assumed Removals`,
     `ACL (yyyy)`, ACL,
@@ -213,8 +233,7 @@ wide_table3 <- dplyr::full_join(
   ) |>
   dplyr::rename_with(.fn = function(x) {
     gsub("yyyy", 'alt HCR', x)
-  })
-
+  }) 
 
 ```
 

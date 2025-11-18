@@ -1,0 +1,18 @@
+﻿label,type,caption,alt_text
+fig-assessregionmap,figure,,A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.
+fig-data,figure,,Tabular information for this figure can be found in the data file.
+fig-catch,figure,,See Table 11 for landings by fleet.
+fig-indices,figure,,Index observations can be found in the data file.
+fig-wcgbts-map,figure,,"Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State)."
+fig-hllength,figure,,"A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
+fig-hlqq,figure,,A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-orbsqq,figure,,A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-orbsindex,figure,,An annual relative index of abundance plotted from 2001 to 2024 with error bars.
+fig-smurfqq,figure,,A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-YOY,figure,,A time series of five YOY indices that are all elevated in 2021
+fig-biology,figure,,"A four-panel plot showing length by latitude with a smoothed line for each age class and lines are roughly horizontal, length by year with a smoothed line for each age and the lines dip slightly in 2020, Age by latitude with on smoothed increasing line, Fraction female by age for each fleet with age data, showing a decrease beginning around age 20 and higher fraction female for the recreational fleet"
+fig-len-all-bubbles,figure,,See 'Obs' column in CompReport.sso for values.
+fig-age-all-bubbles,figure,,See 'Obs' column in CompReport.sso for values.
+fig-length-weight,figure,,A well-fitting length-weight relationship with similar curve for males and females but females have a larger length
+fig-maturity,figure,,Figure illustrating maturity as described in section 2.4.3.
+fig-bridge1,figure,,

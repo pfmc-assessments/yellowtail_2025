@@ -22,7 +22,6 @@ uncertainty <- "recdevs2_withbars.png" %in% dir("r4ss_plots")
 #| warning: false
 #| eval: true
 #| fig-cap: "Map depicting the two genetic stocks of yellowtail rockfish within the U.S. West Coast Exclusive Economic Zone."
-#| fig-alt: "A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary."
 
 knitr::include_graphics(
     "Figures/assess_region_map_v2.png"
@@ -39,7 +38,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Data presence by year for each fleet, where circle area is relative within a data type. Circles are proportional to total catch for catches; to precision for indices, discards, and mean body weight observations; and to total sample size for compositions and mean weight- or length-at-age observations. Observations excluded from the likelihood have equal size for all years."
-#| fig-alt: "Tabular information for this figure can be found in the data file."
 
 knitr::include_graphics(
     "r4ss_plots/data_plot2.png"
@@ -52,7 +50,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Total catch (mt) by fleet (including discards) used in the base model."
-#| fig-alt: "See Table TODO for landings by fleet."
 #| fig-pos: H
 
 knitr::include_graphics(
@@ -68,7 +65,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Indices used in the model, each of which is scaled to have mean 1.0."
-#| fig-alt: "Index observations can be found in the data file."
 #| fig-pos: H
 
 knitr::include_graphics(
@@ -83,7 +79,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Distribution of catch in the WCGBTS."
-#| fig-alt: "Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State)."
 #| fig-pos: H
 
 knitr::include_graphics(
@@ -100,7 +95,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Comparison of lengths (cm) of fish caught in the Oregon and Washington hook and line surveys."
-#| fig-alt: "A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
 
 knitr::include_graphics(
     "Figures/HL_LengthbySurvey.png"
@@ -113,7 +107,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Q-Q plot diagnostics for the combined Oregon and Washington hook and line surveys."
-#| fig-alt: "A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
     "Figures/HL_qq.png"
@@ -129,7 +122,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Q-Q plot diagnostics for ORBS index."
-#| fig-alt: "A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
     "Figures/ORBSqq.png"
@@ -142,7 +134,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Time series of the relative index of abundance from ORBS dockside sampling from ODFW."
-#| fig-alt: "An annual relative index of abundance plotted from 2001 to 2024 with error bars."
 
 knitr::include_graphics(
     "Figures/ORBSIndex.png"
@@ -155,7 +146,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Q-Q plot diagnostics for SMURF YOY index."
-#| fig-alt: "A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well."
 
 knitr::include_graphics(
     "Figures/SMURFqq.png"
@@ -170,7 +160,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Indices of recruitment and age-0 abundance standardized by subtracting the mean and dividing by the standard deviation for the 2016 - 2024 time period."
-#| fig-alt: "sill"
 
 knitr::include_graphics(
     "Figures/YOYindices.png"
@@ -185,7 +174,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Length composition data for all fleets (red female, blue male, grey unsexed)."
-#| fig-alt: "See 'Obs' column in CompReport.sso for values."
 
 knitr::include_graphics(
     "r4ss_plots/comp_lendat__multi-fleet_comparison.png"
@@ -199,7 +187,6 @@ knitr::include_graphics(
 #| warning: false
 #| eval: true
 #| fig-cap: "Marginal age composition data for all fleets (red female, blue male, grey unsexed). The WCGBTS ages are not included as they are conditioned on length."
-#| fig-alt: "See 'Obs' column in CompReport.sso for values."
 
 knitr::include_graphics(
     "r4ss_plots/comp_agedat__multi-fleet_comparison.png"
@@ -211,9 +198,9 @@ knitr::include_graphics(
 
 ### Biological data
 
-![Length-weight relationship with fitted data](figures/length_weight_with_data.png){#fig-length-weight fig-alt="figure illustrated a well-fitting length-weight relationship with similar curve for males and females but females have a larger length"}
+![Length-weight relationship with fitted data](figures/length_weight_with_data.png){#fig-length-weight}
 
-![Maturity curve with fitted data.](figures/maturity_with_data.png){#fig-maturity fig-alt='figure illustrating maturity as described in WHERE'}
+![Maturity curve with fitted data.](figures/maturity_with_data.png){#fig-maturity}
 
 ## Model
 
