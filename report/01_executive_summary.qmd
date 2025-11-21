@@ -47,7 +47,6 @@ catches_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Landings in metric tons (mt) by year for each fleet."
-#| fig-alt: "See Table 9 for values."
 
 knitr::include_graphics("r4ss_plots/catch2_landings_stacked.png")
 
@@ -105,7 +104,6 @@ ssb_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated time series of spawning output (trillions of eggs) for the base model."
-#| fig-alt: "See table 26 for values."
 #| fig-pos: H
 
 knitr::include_graphics("r4ss_plots/ts7_Spawning_output_with_95_intervals.png")
@@ -118,7 +116,6 @@ knitr::include_graphics("r4ss_plots/ts7_Spawning_output_with_95_intervals.png")
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated time series of fraction of unfished spawning output for the base model."
-#| fig-alt: ""
 #| fig-pos: H
 
 knitr::include_graphics("r4ss_plots/ts9_Relative_spawning_output_intervals.png")
@@ -169,7 +166,6 @@ recr_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Estimated time series of age-0 recruits for the base model."
-#| fig-alt: ""
 #| fig-pos: H
 
 knitr::include_graphics("r4ss_plots/ts11_Age-0_recruits_(1000s)_with_95_asymptotic_intervals.png")
@@ -232,7 +228,6 @@ spr_es_table |>
 #| warning: false 
 #| eval: true 
 #| fig-cap: "Phase plot of fishing intensity versus fraction unfished. Each point represents the biomass ratio at the start of the year and the relative fishing intensity in that same year. Lines through the final point show 95% intervals based on the asymptotic uncertainty for each dimension. The shaded ellipse is a 95% region which accounts for the estimated correlation between the two quantities."
-#| fig-alt: "See table @tbl-ts for the values of the fraction unfished and fishing intensity which are related in this figure."
 #| fig-pos: H
 
 knitr::include_graphics("r4ss_plots/SPR4_phase.png")

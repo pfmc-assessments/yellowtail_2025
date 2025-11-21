@@ -1,18 +1,75 @@
-﻿label,type,caption,alt_text
-fig-assessregionmap,figure,,A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.
-fig-data,figure,,Tabular information for this figure can be found in the data file.
-fig-catch,figure,,See Table 11 for landings by fleet.
-fig-indices,figure,,Index observations can be found in the data file.
-fig-wcgbts-map,figure,,"Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State)."
-fig-hllength,figure,,"A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
-fig-hlqq,figure,,A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
-fig-orbsqq,figure,,A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
-fig-orbsindex,figure,,An annual relative index of abundance plotted from 2001 to 2024 with error bars.
-fig-smurfqq,figure,,A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
-fig-YOY,figure,,A time series of five YOY indices that are all elevated in 2021
-fig-biology,figure,,"A four-panel plot showing length by latitude with a smoothed line for each age class and lines are roughly horizontal, length by year with a smoothed line for each age and the lines dip slightly in 2020, Age by latitude with on smoothed increasing line, Fraction female by age for each fleet with age data, showing a decrease beginning around age 20 and higher fraction female for the recreational fleet"
-fig-len-all-bubbles,figure,,See 'Obs' column in CompReport.sso for values.
-fig-age-all-bubbles,figure,,See 'Obs' column in CompReport.sso for values.
-fig-length-weight,figure,,A well-fitting length-weight relationship with similar curve for males and females but females have a larger length
-fig-maturity,figure,,Figure illustrating maturity as described in section 2.4.3.
-fig-bridge1,figure,,
+label	type	caption	alt_text
+fig-assessregionmap	figure		A map of the west coast of the U.S. depicting the distribution of the northern stock of yellowtail rockfish with a southern boundary at forty degrees and ten minutes and a northern boundary at the Washington state and Canada boundary.
+fig-data	figure		Tabular information for this figure can be found in the data file.
+fig-catch	figure		See Table 11 for landings by fleet.
+fig-indices	figure		Index observations can be found in the data file.
+fig-wcgbts-map	figure		"Bubbles of different sizes are shown next to a map of the U.S. West Coast, with the largest points between about 46 and 48 degrees north (off the coast of Washington State)."
+fig-hllength	figure		"A 2-panel boxplot showing the distributions of lengths caught in the Orgeon (panel 1) and Washington (panel 2) surveys and the number of fish in each survey, n equals 256 in Oregon and n equals one thousand four hundred and sixty-five in Washington"
+fig-hlqq	figure		A q-q plot for the combined Oregon and Washington hook and line survey index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-orbsqq	figure		A q-q plot for the ORBS index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-orbsindex	figure		An annual relative index of abundance plotted from 2001 to 2024 with error bars.
+fig-smurfqq	figure		A q-q plot for the SMURF index depicting the sample quantiles on the y-axis and theoretical quantiles on the x-axis. Data fit the one-to-one line well.
+fig-YOY	figure		A time series of five YOY indices that are all elevated in 2021
+fig-biology	figure		"A four-panel plot showing length by latitude with a smoothed line for each age class and lines are roughly horizontal, length by year with a smoothed line for each age and the lines dip slightly in 2020, Age by latitude with on smoothed increasing line, Fraction female by age for each fleet with age data, showing a decrease beginning around age 20 and higher fraction female for the recreational fleet"
+fig-len-all-bubbles	figure		See 'Obs' column in CompReport.sso for values.
+fig-age-all-bubbles	figure		See 'Obs' column in CompReport.sso for values.
+fig-length-weight	figure		A well-fitting length-weight relationship with similar curve for males and females but females have a larger length
+fig-maturity	figure		Figure illustrating maturity as described in section 2.4.3.
+fig-bridge1	figure		"Effects of reanalyzing catch, index, maturity, and discard data on spawning output and relative spawning output in bridging analysis"
+fig-bridge1-smry-bio	figure		"Effects of reanalyzing catch, index, maturity, and discard data on summary biomass in bridging analysis"
+fig-bridge2	figure		Effects of reanalyzing and properly expanding age and length data on spawning output and relative spawning output in bridging analysis
+fig-bridge2-smry-bio	figure		Effects of reanalyzing and properly expanding age and length data on summary biomass in bridging analysis
+fig-bridge3	figure		Effects of other model changes on spawning output and relative spawning output in bridging analysis
+fig-bridge3-smry-bio	figure		Effects of other model changes on spawning output and relative spawning output in bridging analysis
+fig-s-r	figure		Estimate of spawner-recruit curve and annual estimates of recruitment show weak relationship with high variability
+fig-param-dist	figure		Prior distribution and MLE assuming asymptotic normality show weak influence of prior on female natural mortality
+fig-growth1	figure		Growth curves for females and males diverge are similar up to about age 8 after which females are notably larger. For both sexes the growth asymptotes around age 20. See parameter table for growth parameters.
+fig-growth2	figure		See biology at age and biology at length tables in Report.sso for information on the relationship between growth maturity and weight.
+fig-sel-length	figure		See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values.
+fig-sel-age	figure		See the AGE_SELEX table (with Factor = 'Asel2') in Report.sso file for values.
+fig-sel-tv	figure		See the LEN_SELEX table (with Factor = 'Lsel') in Report.sso file for values.
+fig-indices_fit	figure		"See the INDEX_2 table in Report.sso for index expected values, observations, and standard errors."
+fig-len-agg-fit	figure		Aggregated length comps are fit reasonably well.
+fig-len-all-pearson	figure		See 'Pearson' column in CompReport.sso for values.
+fig-mean-len-1	figure		observed mean length declines from the 1970s to the 1990s and then increases to about 2010 and declines after that. The expectation mostly fits this pattern but does not capture the peak in 2010 very well.
+fig-mean-len-2	figure		Mean length has been relatively stable is fit well by the model.
+fig-mean-len-3	figure		Mean length has been relatively stable is fit well by the model.
+fig-mean-len-4	figure		The mean length is uncertain due to low sample sizes and shows little change over the 2010 to 2024 period with data. The model expectation fits reasonably well.
+fig-mean-len-5	figure		"The observed and expected show relatively little change over the years of the triennial survey, but the model fits the changes reasonably well."
+fig-mean-len-6	figure		"The observed and expected show relatively little change over the 2003-2024 time series, with the exception of an anomolously low observed mean length in 2013 that was not fit well by the model."
+fig-age-agg-fit	figure		Aggregated age comps are fit reasonably well.
+fig-age-all-pearson	figure		See 'Pearson' column in CompReport.sso for values.
+fig-caal-page1	figure		See 'Pearson' column in CompReport.sso for values.
+fig-caal-page2	figure		See 'Pearson' column in CompReport.sso for values.
+fig-caal-page3	figure		See 'Pearson' column in CompReport.sso for values.
+fig-mean-age-1	figure		Observed mean age declines from the 1970s to the 1990s and then increases to about 2010 and is somewhat stable after. The expectation mostly fit this pattern well.
+fig-mean-age-2	figure		There are only two years of observations. The observations are slightly different but the expectation is the same for these two years.
+fig-mean-age-3	figure		Mean ages are patchy with high variance until 2014. After that they are relatively stable and mostly well fit by the model.
+fig-mean-age-4	figure		The observed and expected decline in mean age from 1980 to 1983 and an increase from 1995 to 2004 but are noisy and fit less well in the middle period.
+fig-mean-age-5	figure		"The observed and expected show relatively little change over the 2003-2024 time series, with the exception of an anomolously low observed Mean age in 2013 that was not fit well by the model."
+fig-sb	figure		See table 28
+fig-depl	figure		See table 28
+fig-recdevs	figure		See table 28
+fig-spr	figure		See table 28
+fig-spr-phase	figure		See table 28 for the values of the fraction of unfished spawning output and fishing intensity which are related in this figure.
+fig-yield	figure		"Yield curve shows equilibrium yield as a domed function of fraction of unfished spawning output, with a peak slightly above 0.2, a target at 0.4, and a current estimate around 0.6."
+fig-dyn-b0	figure		Dynamic B0 decreases in 1990s and increases in early 2000s. The difference between the two lines is greatest in the 1980s and 1990s.
+fig-sens-summary	figure		"Decrease WCGBTS CV, add ORBS index, single M, breakpoint M have largest negative impacts on management quantities. McAllister & Ianelli data weighting, no indices have largest positive impacts on management quantities."
+fig-indices-comparison	figure		"Add ORBS index and decrease WCGBTS CV have higher unfished spawning output, lower terminal spawning output, and lower relative spawning output. No indices has a higher peak around 2012 in both figures but similar is similar at the start and end of the time series. Add RREAS index is higher during the forecast period. All other lines are similar."
+fig-modeling-comparison	figure		Breakpoint M and single M have higher unfished spawning output and lower terminal year values in both figures. All other lines are similar.
+fig-comp_data-comparison	figure		"McAllister-Ianelli data weighting has somewhat higher unfished spawning output, much higher peak spawning output and relative spawning output around 2010-2012, higher terminal year values, but then simlar values by the end of the projection period. Removing fishery lengths has somewhat higher unfished spawning output and terminal year values. All other lines are similar."
+fig-retro1	figure		Time series is similar for all models.
+fig-historical	figure		"A time series of 13 colored lines showing estimates from 9 different assessments. The majority of the lines had similar scale and declined at a similar rate in the 1970s and 80s, but whereas the assessments conducted between 1991 and 2005 show one-way trips, those conducted in 2013 and onward show increases starting between 1990 and 2000. The current base model shows a lower scale than the previous assessment."
+fig-r0-profile	figure		U-shaped profiles show consistent support for similar log-R0 values with some minor differences among data types and fleets.
+fig-r0-profile-pars	figure		"The spawning output at initial remains more stable over the range of log-R0 values than the final spawning output so at low log-R0 the stock is estimated to be at a small fraction of unfished. However, the change in likelihood at those values is large, indicating that the low log-R0 values are not supported by the data."
+fig-m-profile	figure		U-shaped profiles show some differences among data types and fleets over M values explored with the age and length data supporting a higher M while the indices and recruitment penalties support a lower M.
+fig-m-profile-pars	figure		"At low M values, the final spawning output decreases while the initial remains stable, leading to a smaller fraction of unfished. However, the change in likelihood at those values is large, indicating that low M is not supported by the data."
+fig-h-profile	figure		All data sources with the exception of the commercial length comps support a high steepness value (close to 1.0).
+fig-h-profile-pars	figure		"At low steepness values, the initial spawning output increases and the final spawning output decreases, leading to a smaller fraction of unfished. However, the change in likelihood at those values is large, indicating that low steepness is not supported by the data."
+fig-can-timeseries	figure		"Canadian and U.S. models show similar declines over the 1960s, stability in the 1980s, and increases in the 2000s."
+fig-can-recdevs	figure		"Recruitment deviations showing significant correlation, with 1990, 2000, and 2008 as some of the biggest recruitment deviations in both models."
+fig-es-landings	figure		See Table 11 for landings by fleet.
+fig-es-sb	figure		See table 28
+fig-es-depl	figure		See table 28
+fig-es-recruits	figure		See table 28
+fig-es-kobe	figure		See table 28 for the values of the fraction of unfished spawning output and fishing intensity which are related in this figure.
