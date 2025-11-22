@@ -75,3 +75,10 @@ es-depl,figure,,See table 28
 es-recruits,figure,,See table 28
 es-kobe,figure,,See table 28 for the values of the fraction of unfished spawning output and fishing intensity which are related in this figure.
 wcgop,figure,,wcgop and wcgbts indices both peak in 2016 and decline to a lower level that is constant in recent years
+oc_TS,figure,,Trends in oceanographic conditions oscillate around the mean
+oc_corr,figure,,"Some, but not all, oceanographic time series are higly correlated"
+oc_model,figure,,"Model 1 has a better fit, even in recent years, than model 6"
+oc_jack1,figure,,Only 2008 for model 6 shows different out of sample predictions compared to the entire model
+oc_rsq,figure,,Model 6 is has more variable R-squared
+oc_residuals,figure,,Residual plots show no obvious concerns
+oc_partials,figure,,"LSTpjuv and CutiSTI have dome shaped relationships, ONIpjuv and LSTpjuv are linear"
