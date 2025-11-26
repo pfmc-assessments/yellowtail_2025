@@ -1,6 +1,8 @@
 ```{r}
 #| echo: false
 
+# rds files are created by r4ss::table_all() in make_r4ss_figs_tables.R
+
 if (file.exists(here::here("report/Tables"))) {
   all_files <- list.files(here::here("report/Tables"), full.names = TRUE)
   all_rda_files <- all_files[grep(".rda", all_files)]
