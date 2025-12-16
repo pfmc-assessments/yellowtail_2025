@@ -38,7 +38,7 @@ cover:
 pdf-engine: lualatex
 format: 
   pdf: 
-    documentclass: scrartcl
+    documentclass: article
     number-sections: true
     template-partials:
       - 'support_files/before-body.tex'
@@ -102,11 +102,11 @@ mod_out <- r4ss::SS_output(here('model_runs', base_mod), verbose = FALSE, prints
 
 ```
 
-{{< pagebreak >}} 
+<!-- {{< pagebreak >}}  -->
 
 ```{r, results='asis'}
 #| label: 'disclaimer'
-#| eval: true
+#| eval: false
 #| echo: false
 #| warning: false
 a <- knitr::knit_child('00a_disclaimer.qmd', quiet = TRUE)
@@ -117,9 +117,30 @@ cat(a, sep = '\n')
 
 Please cite this publication as: 
 
-Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Management Council, Portland, Oregon. [XX] p.
+Oken, K.L., I.G. Taylor, M.L. Feddern, A.D. Whitman, F.P. Caltabellotta. Status of the yellowtail rockfish stock off the U.S. West Coast north of 40°10$\prime$ in 2025. Pacific Fishery Management Council, Portland, Oregon. 175 p.
 
- {{< pagebreak >}} 
+ <!-- {{< pagebreak >}}  -->
+
+ <!-- This includes the two-pagers at the top of the executive summary -->
+
+\clearpage
+\thispagestyle{empty}
+\noindent
+\begin{tikzpicture}[remember picture, overlay]
+    \node[inner sep=0pt, anchor=north west] 
+    at (current page.north west) {
+        \includegraphics[width=8.5in, height=11in, alt={summary graphic containing images similar to figures 50 and 8 and tables 32 and 33}]{figures/YTRK_at_a_glance_1.png}
+    };
+\end{tikzpicture}
+\clearpage
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+    \node[inner sep=0pt, anchor=north west] 
+    at (current page.north west) {
+        \includegraphics[width=8.5in, height=11in, alt={second page of summary graphic containing figure 36 (bottom right panel, fit to SMURF index), summary of text in section 3.3.5 (bridging), and risk table from section 4.3.1}]{figures/YTRK_at_a_glance_2.png}
+    };
+\end{tikzpicture}
+\clearpage
 
 ```{r, results='asis'}
 #| label: 'load_tables'

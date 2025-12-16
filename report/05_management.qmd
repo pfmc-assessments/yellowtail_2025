@@ -6,7 +6,7 @@ Reference points based on the biomass target of 40% of unfished spawning output,
 
 ## Harvest projections and decision tables
 
-Harvest projections for the candidate base model assuming a P* of 0.45, sigma = 0.5, and the time-varying buffer are in @tbl-projections. After exploration of alternative axes of uncertainty during the review panel, the chosen axis of uncertainty was the parameter for unfished recruitment on a log scale: $\log(R_0)$.
+Harvest projections for the candidate base model assuming a P* of 0.45, sigma = 0.5, and the time-varying buffer are in @tbl-projections. After exploration of alternative axes of uncertainty during the review panel, the chosen axis of uncertainty was the parameter for unfished recruitment on a log scale: $\log(R_0)$ (@tbl-decision).
 
 The range of values was based on the following guidance in the terms of reference:
 
