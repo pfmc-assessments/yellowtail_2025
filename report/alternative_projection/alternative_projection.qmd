@@ -18,9 +18,14 @@ params:
   p_star: 0.45
   spawn_output_decimals: 2
   spawn_output_units: "(trillions of eggs)"
+  base_mod: "model_runs/5.09_no_extra_se"
+  new_mod: "model_runs/5.12_adj_hcr2"
 ---
 
-```{r, message = FALSE}
+```{r}
+#| label: get-params
+#| message: false
+
 library(r4ss)
 library(here)
 library(dplyr)
@@ -35,8 +40,17 @@ sigma <- params$sigma
 p_star <- params$p_star
 spawn_output_decimals <- params$spawn_output_decimals
 
-base_mod <- '5.09_no_extra_se'
-model_original <- SS_output(here('model_runs', base_mod), verbose = FALSE, printstats = FALSE)
+base_mod <- params$base_mod 
+model_original <- SS_output(here(base_mod), verbose = FALSE, printstats = FALSE)
+new_mod <- params$new_mod
+model <- SS_output(here(new_mod), verbose = FALSE, printstats = FALSE)
+
+# define ranges of years to get values
+all_years <- assess_year:final_proj_year
+proj_years <- (current_year + 2):final_proj_year
+catch_years <- assess_year:(assess_year + 1)
+alt_years <- (assess_year + 2):(assess_year + 3)
+
 ```
 
 ```{r}
@@ -83,14 +97,6 @@ mod2$fore$ForeCatch <- bind_rows(mod_in$fore$ForeCatch, new_fixed_catches)
 #| echo: false
 #| warning: false
 #| message: false
-
-model <- SS_output(here('model_runs', '5.12_adj_hcr2'), verbose = FALSE, printstats = FALSE)
-
-# define ranges of years to get values
-all_years <- assess_year:final_proj_year
-proj_years <- (current_year + 2):final_proj_year
-catch_years <- 2025:2026
-diff_years <- current_year - assess_year
 
 # function to get model outputs
 catch_only_projection_table <- function(model, all_years, proj_years, catch_years) {
@@ -186,27 +192,14 @@ format_table <- function(table) {
             everything() ~ px(65)
         ) |>
         gt::data_color(
-            columns = tidyselect::contains('HCR'),
+            columns = !c(tidyselect::contains('HCR'),
+                         tidyselect::matches('Year'),
+                         tidyselect::matches('Buffer')),
             palette = "gray90",
             na_color = "gray90"
         ) |>
         gt::as_latex()
 }
-
-table <- catch_only_projection_table(model,
-    all_years = all_years, proj_years = proj_years, catch_years = catch_years
-) |>
-  select(-`Spawning Output`, -`Actual & Assumed Removals`, -Buffer) |>
-  mutate(# Buffer = Buffer_from_ratio, # overwrite buffer from PEPtools::get_buffer
-          ABC = ACL) |> # overwrite externally calculated ABC
-  rename_with(~ paste(.x, "(yyyy)"), .cols = -Year)
-
-table_original <- catch_only_projection_table(model_original,
-    all_years = head(all_years, 12), proj_years = proj_years - diff_years, catch_years = catch_years - diff_years
-) |>
-  select(-`Spawning Output`)
-
-
 ```
 
 ```{r}
@@ -215,8 +208,19 @@ table_original <- catch_only_projection_table(model_original,
 #| warning: true
 #| message: true
 
+table_original <- catch_only_projection_table(model_original,
+    all_years = head(all_years, 12), proj_years = proj_years, catch_years = catch_years
+) |>
+  select(-`Spawning Output`)
+
+table <- catch_only_projection_table(model,
+    all_years = all_years, proj_years = proj_years, catch_years = catch_years
+) |>
+  select(-`Actual & Assumed Removals`, -Buffer) |>
+  mutate(ABC = ifelse(Year %in% alt_years, ACL, ABC)) |> # overwrite externally calculated ABC for alternative HCR years
+  rename_with(~ paste(.x, "(yyyy)"), .cols = -Year)
+
 # combine the two tables
-  
 wide_table3 <- dplyr::full_join(
   table,
   table_original,
@@ -224,20 +228,22 @@ wide_table3 <- dplyr::full_join(
 ) |>
   dplyr::select(
     Year,
-    `OFL (yyyy)`, OFL,
+    OFL, `OFL (yyyy)`,
     `Buffer`,
-    `ABC (yyyy)`, ABC,
+    ABC, `ABC (yyyy)`,
     `Actual & Assumed Removals`,
-    `ACL (yyyy)`, ACL,
-    `Stock Status (yyyy)`, `Stock Status`
+    ACL, `ACL (yyyy)`,
+    `Spawning Output (yyyy)`,
+    `Stock Status`, `Stock Status (yyyy)`
   ) |>
   dplyr::rename_with(.fn = function(x) {
     gsub("yyyy", 'alt HCR', x)
   }) 
 
+table_cap <- glue::glue("Adopted {assess_year} benchmark assessment projection and projection with an alternative HCR for {alt_years[1]} and {alt_years[2]}. Table includes OFLs (mt), buffer for the alternative HCR, ABCs (mt), actual & assumed catch (mt), ACLs (mt), and stock status (fraction of unfished spawning output) given the removals. The gray shading indicates values associated with the proposed alternative HCR. For {assess_year + 4} and beyond, the default HCR with 40-10 rule and P* of {p_star} is assumed")
 ```
 
-::: {.landscape}
+<!-- ::: {.landscape} -->
 
 ```{r}
 #| label: tbl-proj
@@ -245,7 +251,7 @@ wide_table3 <- dplyr::full_join(
 #| warning: false
 #| message: false
 #| eval: true
-#| tbl-cap: "Adopted 2025 benchmark assessment projection and projection with an alternative HCR for 2027 and 2028. Table includes OFLs (mt), buffer for the alternative HCR, ABCs (mt), actual & assumed catch (mt), ACLs (mt), and stock status (fraction of unfished spawning output) given the removals. The gray shading indicates values associated with the proposed alternative HCR. For 2029 and beyond, the default HCR with 40-10 rule and P* of 0.45 is assumed"
+#| tbl-cap: !expr table_cap
 format_table(wide_table3)
 ```
 
